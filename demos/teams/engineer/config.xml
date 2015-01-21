@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Team>
+	<Name>Engineer2</Name>
+	<IconPath>dekat.png</IconPath>
+	<SoundPath>dekat.wav</SoundPath>
+	<Description>Equipe d'ingénieur défensif un peu plus intelligent</Description>
+	<AgentsBrainControllers>
+		<WarExplorer>WarExplorerBrainController.class</WarExplorer>
+		<WarRocketLauncher>WarRocketLauncherBrainController.class</WarRocketLauncher>
+		<WarBase>WarBaseBrainController.class</WarBase>
+		<WarKamikaze>WarKamikazeBrainController.class</WarKamikaze>
+		<WarEngineer>WarEngineerBrainController.class</WarEngineer>
+		<WarTurret>WarTurretBrainController.class</WarTurret>
+	</AgentsBrainControllers>
+</Team>

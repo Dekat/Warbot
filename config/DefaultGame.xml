@@ -1,0 +1,132 @@
+<Warbot>
+    <Simulation>
+        <DefaultStartParameters>
+            <NbAgentsAtStart>
+	            <WarBase>1</WarBase>
+	            <WarExplorer>5</WarExplorer>
+	            <WarRocketLauncher>5</WarRocketLauncher>
+	            <WarKamikaze>0</WarKamikaze>
+	            <WarEngineer>0</WarEngineer>
+	            <WarTurret>0</WarTurret>
+	        </NbAgentsAtStart>
+            <FoodAppearanceRate>
+                <!-- Correspond au nombre de ticks séparant chaque apparition de food -->
+                150
+            </FoodAppearanceRate>
+	  	    <DefaultLoggerLevel>
+	  	        <!-- Logger levels :
+	  	        	- ALL
+		  	    	- SEVERE
+		  	    	- WARNING
+		  	    	- INFO
+		  	    	- CONFIG
+		  	    	- FINE
+		  	    	- FINER
+		  	    	- FINEST -->
+	  	        WARNING
+			</DefaultLoggerLevel>
+			<DefaultPerception>
+			    <!-- Plusieurs possibles :
+			    	- InConePerceptsGetter
+			    	- InRadiusPerceptsGetter
+			   	-->
+			    InConePerceptsGetter
+			</DefaultPerception>
+			<NbResourcesAreasPerTeam>1</NbResourcesAreasPerTeam>
+			<RadiusResourcesAreas>40</RadiusResourcesAreas>
+			<MaxDistanceOfResourcesAreasFromOwnerTeam>300</MaxDistanceOfResourcesAreasFromOwnerTeam>
+			<OpenWorld>false</OpenWorld>
+    	</DefaultStartParameters>
+    </Simulation>
+    <WarControllableAgents>
+        <MaxDistanceGive>5</MaxDistanceGive>
+        <WarBase>
+            <HitboxRadius>4</HitboxRadius>
+            <AngleOfView>360</AngleOfView>
+            <DistanceOfView>80</DistanceOfView>
+            <Cost>12000</Cost>
+            <MaxHealth>12000</MaxHealth>
+            <BagSize>4</BagSize>
+        </WarBase>
+        <WarExplorer>
+            <HitboxRadius>2</HitboxRadius>
+            <AngleOfView>180</AngleOfView>
+            <DistanceOfView>50</DistanceOfView>
+            <Cost>2000</Cost>
+            <MaxHealth>6000</MaxHealth>
+            <BagSize>4</BagSize>
+            <Speed>1.2</Speed>
+        </WarExplorer>
+        <WarRocketLauncher>
+            <HitboxRadius>3</HitboxRadius>
+            <AngleOfView>120</AngleOfView>
+            <DistanceOfView>30</DistanceOfView>
+            <Cost>3000</Cost>
+            <MaxHealth>8000</MaxHealth>
+            <BagSize>4</BagSize>
+            <Speed>0.8</Speed>
+            <TicksToReload>50</TicksToReload>
+    	</WarRocketLauncher>
+        <WarKamikaze>
+        	<HitboxRadius>2</HitboxRadius>
+        	<AngleOfView>150</AngleOfView>
+        	<DistanceOfView>20</DistanceOfView>
+        	<Cost>1000</Cost>
+        	<MaxHealth>3000</MaxHealth>
+        	<BagSize>4</BagSize>
+        	<Speed>1.0</Speed>
+        </WarKamikaze>
+        <WarEngineer>
+        	<HitboxRadius>2</HitboxRadius>
+        	<AngleOfView>150</AngleOfView>
+        	<DistanceOfView>40</DistanceOfView>
+        	<Cost>5000</Cost>
+        	<MaxHealth>3000</MaxHealth>
+        	<BagSize>4</BagSize>
+        	<Speed>1.0</Speed>
+        </WarEngineer>
+        <WarTurret>
+        	<HitboxRadius>3</HitboxRadius>
+        	<AngleOfView>180</AngleOfView>
+        	<DistanceOfView>35</DistanceOfView>
+        	<Cost>1000</Cost>
+        	<MaxHealth>8000</MaxHealth>
+        	<BagSize>4</BagSize>
+        	<TicksToReload>30</TicksToReload>
+        </WarTurret>
+  	</WarControllableAgents>
+  	<WarProjectiles>
+  	    <WarRocket>
+            <HitboxRadius>1</HitboxRadius>
+  	        <Speed>3.0</Speed>
+            <ExplosionRadius>10</ExplosionRadius>
+            <Autonomy>20</Autonomy>
+            <Damage>200</Damage>
+  	    </WarRocket>
+  	    <WarBomb>
+  	    	<HitboxRadius>1</HitboxRadius>
+  	    	<Speed>0.0</Speed>
+  	    	<ExplosionRadius>50</ExplosionRadius>
+  	    	<Autonomy>0</Autonomy>
+  	    	<Damage>1000</Damage>
+  	    </WarBomb>
+  	    <WarDeathRocket>
+  	    	<HitboxRadius>1</HitboxRadius>
+  	    	<Speed>3.0</Speed>
+  	    	<ExplosionRadius>25</ExplosionRadius>
+  	    	<Autonomy>20</Autonomy>
+  	    	<Damage>500</Damage>
+  	    </WarDeathRocket>
+  	</WarProjectiles>
+  	<WarResources>
+  	    <MaxDistanceTake>5</MaxDistanceTake>
+  	    <WarFood>
+            <HitboxRadius>1</HitboxRadius>
+  	        <HealthGived>200</HealthGived>
+  	    </WarFood>
+  	</WarResources>
+  	<WarGrounds>
+  	    <Grass>
+  	    </Grass>
+  	</WarGrounds>
+</Warbot>
