@@ -13,7 +13,7 @@ import org.xml.sax.SAXException;
 import edu.warbot.tools.WarXmlReader;
 
 /**
- * Classe servant � la lecture du document XML d�finit par l'utilisateur, contenant les informations sur son �quipe.
+ * Classe servant à la lecture du document XML définit par l'utilisateur, contenant les informations sur son équipe.
  */
 public class TeamXMLReader {
 
@@ -26,7 +26,7 @@ public class TeamXMLReader {
 	private Document _document = null;
 
 	/**
-	 * M�thode permettant d'ouvrir le fichier XML et d'obtenir l'�l�ment racine.
+	 * Méthode permettant d'ouvrir le fichier XML et d'obtenir l'élément racine.
 	 */
 	public void Ouverture(InputStream input) {
 		try {

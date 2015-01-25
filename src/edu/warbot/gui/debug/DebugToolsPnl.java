@@ -63,7 +63,7 @@ public class DebugToolsPnl extends JPanel {
 		groupBattleGroundTools.add(_deleteTool);
 		
 		_moveTool = new DebugToolOnOffBtn("move.png", "move_s.png",
-				"D�placer un agent du champ de bataille",
+				"Déplacer un agent du champ de bataille",
 				'm', _debugToolBar, new MoveToolMouseListener(_debugToolBar));
 		pnlBattlegroundTools.add(_moveTool);
 		groupBattleGroundTools.add(_moveTool);

@@ -42,7 +42,7 @@ public class WarBaseBrainController extends WarBaseAbstractBrainController {
 		/*** Etats ***/
 		WarAgentType agentType[] = {WarAgentType.WarExplorer, WarAgentType.WarRocketLauncher};
 		int nombre[] = {1, 1};
-		WarEtat etatCreerUnite = new WarEtat("Etat creer unit�", new WarPlanCreateUnit(getBrain(), agentType, nombre, WarBase.MAX_HEALTH, 50));
+		WarEtat etatCreerUnite = new WarEtat("Etat creer unité", new WarPlanCreateUnit(getBrain(), agentType, nombre, WarBase.MAX_HEALTH, 50));
 		fsm.addEtat(etatCreerUnite);
 
 		fsm.setFirstEtat(etatCreerUnite);

@@ -59,7 +59,7 @@ public class WarPercept implements Comparable<WarPercept>{
 	
 	@Override
 	public String toString(){
-		return "Percept : " + _type + " " + _id + " : team = " + _teamName + " : " + _angle + "� " + _distance;
+		return "Percept : " + _type + " " + _id + " : team = " + _teamName + " : " + _angle + "° " + _distance;
 	}
 
 	@Override

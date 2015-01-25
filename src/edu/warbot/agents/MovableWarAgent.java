@@ -56,7 +56,7 @@ public abstract class MovableWarAgent extends ControllableWarAgent implements Pi
 		return isGoingToBeOutOfMap() || isGoingToBeOnAnOtherAgent();
 	}
 
-	// TODO � quoi sert cette fonction ?
+	// TODO à quoi sert cette fonction ?
 	public CoordPolar getPositonforGroupeOfTank(ArrayList<Integer> listId) {
 		final int distanceFormation = (int) super.getDistanceOfView();
 
@@ -97,7 +97,7 @@ public abstract class MovableWarAgent extends ControllableWarAgent implements Pi
 			resultatPolaire = new CoordPolar(this._speed, angleMoyenne);
 		}
 
-		// sinon c'est qu'on est bien plac�
+		// sinon c'est qu'on est bien placé
 		resultatPolaire = new CoordPolar(0, 0);
 
 		return resultatPolaire;
@@ -129,16 +129,16 @@ public abstract class MovableWarAgent extends ControllableWarAgent implements Pi
 
 	/**
 	 * 
-	 * @param unit�
+	 * @param unité
 	 *            qui l'on veut encercler
 	 * @param listAgent
-	 *            Liste des ID des agents qui vont encercler l'unit�e
+	 *            Liste des ID des agents qui vont encercler l'unitée
 	 * @param rayon
 	 *            Rayon du l'encerclement
-	 * @return Les coordon�es polaire o� doit ce placer l'unit� courante pour
-	 *         encercler l'unt� pass� en parametre. ATTENTION : si les
-	 *         cooredonn�es polaire sont ceux o� ce trouve deja l'unit� ca ne
-	 *         sert a rien de ce d�placer.
+	 * @return Les coordonées polaire où doit se placer l'unité courante pour
+	 *         encercler l'unté passée en parametre. ATTENTION : si les
+	 *         cooredonnées polaire sont ceux où se trouve déjà l'unité ça ne
+	 *         sert à rien de se déplacer.
 	 * 
 	 */
 	public CoordPolar circleThisEnemie(CoordPolar tank, ArrayList<Integer> listAgent, int rayon) {
@@ -151,7 +151,7 @@ public abstract class MovableWarAgent extends ControllableWarAgent implements Pi
 
 		// Si je suis a distance du reyon du cercle
 		if (tank.getDistance() < rayon) {
-			// Mon positionement dans la liste des agents me permet de savoir o�
+			// Mon positionement dans la liste des agents me permet de savoir où
 			// je vais me placer
 			int positionementListe = listAgent.indexOf(this.getID());
 			// Je trouve mon angle de positionement
@@ -159,7 +159,7 @@ public abstract class MovableWarAgent extends ControllableWarAgent implements Pi
 			// Je doit etre a cette angle la pour l'enemie donc langle pour
 			// lequel je vais voir l'enemi est myAngle + 180
 			myAngle += 180;
-			double deltaAngle = 5; // Pour eviter les tranblements des unit�es
+			double deltaAngle = 5; // Pour eviter les tranblements des unitées
 			deltaAngle = (this._speed / rayon) * 1.1;
 			// * 1.1 pour que la valeur soient un peu supperieure sinon il y
 			// aura trop de va et viens pou ce positionner
@@ -183,7 +183,7 @@ public abstract class MovableWarAgent extends ControllableWarAgent implements Pi
 			// Je suis trop loin je m'approche dans la direction de l'enemie
 			polaireRes = new CoordPolar(tank.getDistance(), tank.getAngle());
 		} else {
-			// Je suis bien plac�
+			// Je suis bien placé
 			polaireRes = new CoordPolar(0, tank.getAngle());
 		}
 

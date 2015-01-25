@@ -30,7 +30,7 @@ public class ControllableWarAgentInformationsPnl extends JPanel implements IWarA
 		add(_distanceOfView);
 		_angleOfView = new InfoLabel("Angle de vue");
 		add(_angleOfView);
-		_health = new InfoLabel("Sant�");
+		_health = new InfoLabel("Santé");
 		add(_health);
 		_bag = new InfoLabel("Sac");
 		add(_bag);

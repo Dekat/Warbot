@@ -11,7 +11,6 @@ import edu.warbot.communications.WarMessage;
 
 /**
  * Raporte la nouriture
- * @author Olivier
  *
  */
 public class WarActionRaporterNouriture extends WarAction{
@@ -41,7 +40,7 @@ public class WarActionRaporterNouriture extends WarAction{
 			if(m != null)
 				getBrain().setHeading(m.getAngle());
 			
-			//j'envoi un message a la base pour savoir o� ell est�
+			//j'envoi un message a la base pour savoir où elle est
 			//getBrain().broadcastMessageDefaultRole(WarBase., "whereAreYou", null);
 			
 			return MovableWarAgent.ACTION_MOVE;

@@ -38,7 +38,7 @@ public class MoveToolMouseListener implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		_debugToolBar.getViewer().setMapExplorationEventsEnabled(false);
 		
-		// On s�lectionne l'agent sous le clique de souris
+		// On sélectionne l'agent sous le clique de souris
 		ArrayList<WarAgent> agents = Game.getInstance().getAllAgentsInRadius(
 				e.getX() / _debugToolBar.getViewer().getCellSize(),
 				e.getY() / _debugToolBar.getViewer().getCellSize(),
@@ -57,7 +57,7 @@ public class MoveToolMouseListener implements MouseListener {
 			newPos.normalize(0, Game.getInstance().getMap().getWidth() - 1, 0, Game.getInstance().getMap().getHeight() - 1);
 			_currentSelectedAgent.setPosition(newPos);
 			
-			// TODO � remplacer par une simple actualisation de l'affichage
+			// TODO à remplacer par une simple actualisation de l'affichage
 			_debugToolBar.getViewer().sendMessage(_debugToolBar.getViewer().getCommunity(), TKOrganization.ENGINE_GROUP,
 					TKOrganization.SCHEDULER_ROLE,
 					new SchedulingMessage(SchedulingAction.STEP));

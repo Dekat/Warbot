@@ -75,15 +75,15 @@ public class SaveSituationButton extends JButton implements ActionListener {
 			if (!fileName.endsWith(DebugModeToolBar.SITUATION_FILES_EXTENSION))
 				file = new File(fileName + DebugModeToolBar.SITUATION_FILES_EXTENSION);
 			if (saveSituation(file))
-				JOptionPane.showMessageDialog(this, "Situation sauvegard�e dans " + file.getAbsolutePath(), "Sauvegarde effectu�e", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Situation sauvegardée dans " + file.getAbsolutePath(), "Sauvegarde effectuée", JOptionPane.INFORMATION_MESSAGE);
 			else
-				JOptionPane.showMessageDialog(this, "Erreur lors de la sauvegarde dans " + file.getAbsolutePath(), "Sauvegarde �chou�e", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Erreur lors de la sauvegarde dans " + file.getAbsolutePath(), "Sauvegarde échouée", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	private boolean saveSituation(File file) {
 		try {
-			// Cr�ation du document
+			// Création du document
 			Document doc;
 			DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			doc = docBuilder.newDocument();
@@ -134,7 +134,7 @@ public class SaveSituationButton extends JButton implements ActionListener {
 
 			return true;
 		} catch (ParserConfigurationException | TransformerFactoryConfigurationError | TransformerException | IOException e) {
-			System.err.println("Erreur lors de la cr�ation du fichier XML.");
+			System.err.println("Erreur lors de la création du fichier XML.");
 			e.printStackTrace();
 		}
 		return false;

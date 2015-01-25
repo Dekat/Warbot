@@ -50,7 +50,7 @@ public class AddToolMouseListener implements MouseListener {
 			_clickedPos = new CoordCartesian(e.getX() / _debugToolBar.getViewer().getCellSize(),
 					e.getY() / _debugToolBar.getViewer().getCellSize());
 		} else {
-			JOptionPane.showMessageDialog(_debugToolBar, "Veuillez s�lectionner un type d'agent.", "Cr�ation d'un agent impossible", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(_debugToolBar, "Veuillez sélectionner un type d'agent.", "Création d'un agent impossible", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -69,8 +69,8 @@ public class AddToolMouseListener implements MouseListener {
 					String[] choices = Game.getInstance().getPlayerTeamNames();
 					if (_lastSelectedTeam == null)
 						_lastSelectedTeam = choices[0];
-					String teamName = (String) JOptionPane.showInputDialog(_debugToolBar, "A quelle �quipe appartient cet agent ?",
-							"Choix d'�quipe", JOptionPane.QUESTION_MESSAGE, null, choices, _lastSelectedTeam);
+					String teamName = (String) JOptionPane.showInputDialog(_debugToolBar, "A quelle équipe appartient cet agent ?",
+							"Choix d'équipe", JOptionPane.QUESTION_MESSAGE, null, choices, _lastSelectedTeam);
 					_lastSelectedTeam = teamName;
 					WarAgent a = Game.instantiateNewControllableWarAgent(_toolsPnl.getSelectedWarAgentTypeToCreate().toString(),
 							Game.getInstance().getPlayerTeam(teamName));
@@ -79,7 +79,7 @@ public class AddToolMouseListener implements MouseListener {
 					a.setPosition(_clickedPos);
 				}
 
-				// TODO � remplacer par une simple actualisation de l'affichage
+				// TODO à remplacer par une simple actualisation de l'affichage
 				_debugToolBar.getViewer().sendMessage(_debugToolBar.getViewer().getCommunity(), TKOrganization.ENGINE_GROUP,
 						TKOrganization.SCHEDULER_ROLE,
 						new SchedulingMessage(SchedulingAction.STEP));

@@ -13,10 +13,6 @@ import edu.warbot.brains.brains.WarRocketLauncherBrain;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.tools.CoordPolar;
 
-/**
- * @author Olivier
- *
- */
 public class WarActionDefendre extends WarAction{
 	
 	CoordPolar coordBase;
@@ -37,12 +33,12 @@ public class WarActionDefendre extends WarAction{
 		// si j'ai un enemy dans mon percept
 		if(perceptEnemy != null & perceptEnemy.size() > 0){
 			
-			// si j'ai recharg�
+			// si j'ai rechargé
 			if(getBrain().isReloaded()){
 				getBrain().setHeading(perceptEnemy.get(0).getAngle());
 				return WarRocketLauncher.ACTION_FIRE;
 				
-			}else{// si j'ai pas recharg�
+			}else{// si j'ai pas rechargé
 				if(perceptEnemy.get(0).getDistance() > WarRocket.EXPLOSION_RADIUS + WarRocketLauncher.SPEED + 1){
 					getBrain().setHeading(perceptEnemy.get(0).getAngle());
 					return MovableWarAgent.ACTION_MOVE;

@@ -25,7 +25,7 @@ public class WarRocketLauncher extends MovableWarAgent implements Agressive {
 
 	private boolean _reloaded;
 	private boolean _reloading;
-	private int _tickLeftBeforeReloaded; // Retient le tick global quand le reload a commenc�
+	private int _tickLeftBeforeReloaded; // Retient le tick global quand le reload a commencé
 	
 	static {
 		HashMap<String, String> data = WarConfig.getConfigOfControllableWarAgent("WarRocketLauncher");

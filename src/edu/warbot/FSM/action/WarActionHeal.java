@@ -16,9 +16,9 @@ import edu.warbot.brains.brains.WarRocketLauncherBrain;
 
 /**
  * Description de l'action
- * Si ma vie est inferieur au pourcentage pass� en parametre je me heal 
- * si ma vie est supperieur au pourentage pass� en parametre j'ai finit
- * Idem pour constructeur avec deux pourcentages (le deuxieme pour les unit� alli�)
+ * Si ma vie est inferieur au pourcentage passé en parametre je me heal 
+ * si ma vie est supperieur au pourentage passé en parametre j'ai finit
+ * Idem pour constructeur avec deux pourcentages (le deuxieme pour les unité allié)
  * Si plus de nourriure je finit
  * @author Olivier
  *
@@ -42,7 +42,7 @@ public class WarActionHeal extends WarAction{
 		this.pourcentageLifeAlly = pourcentageVieAllyBeforHeal;
 		this.healAlly = healAlly;
 		
-		// Recupere la vie max grace au type d'unit�
+		// Recupere la vie max grace au type d'unité
 		if(brain instanceof WarExplorerBrain)
 			this.maxLifeUnit = (WarExplorer.MAX_HEALTH);
 		else if(brain instanceof WarRocketLauncherBrain)
@@ -87,7 +87,7 @@ public class WarActionHeal extends WarAction{
 					if(p.getHealth() < this.pourcentageLifeAlly * maxHeath){
 						// TODO pour le give il faut mettre < ou <= ?
 						if(p.getDistance() < MovableWarAgent.MAX_DISTANCE_GIVE){
-							System.out.println("Je heal un alli�");
+							System.out.println("Je heal un allié");
 							getBrain().setIdNextAgentToGive(p.getID());
 							return MovableWarAgent.ACTION_GIVE;
 						}else{

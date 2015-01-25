@@ -26,13 +26,13 @@ public abstract class WarAction {
 	}
 	
 	/**
-	 * M�thode appel� a chaque tik o� l'action doit etre execut�
+	 * Méthode appelée à chaque tik où l'action doit être executée
 	 */
 	public abstract String executeAction();
 
 	/**
-	 * ATTENTION cette m�thode doit etre redefinit pour 
-	 * avoir acces aux m�thodes des agents specfiques sur 
+	 * ATTENTION cette méthode doit être redéfinie pour 
+	 * avoir accès aux méthodes des agents spécifiques sur 
 	 * lesquels l'action va s'appliquer
 	 */
 	public WarBrain getBrain(){
@@ -61,7 +61,7 @@ public abstract class WarAction {
 	}
 	
 	/**
-	 * M�thode appel� avant chaque premi�re execution de l'action
+	 * Méthode appelée avant chaque première exécution de l'action
 	 */
 	public void actionWillBegin(){
 		setActionTerminate(false);

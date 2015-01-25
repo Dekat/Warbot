@@ -128,7 +128,7 @@ public class WarLauncher extends TKLauncher {
 							System.err.println("Erreur lors de l'instanciation de l'agent. Type non reconnu : " + agentType);
 							e.printStackTrace();
 						}
-						// On cr�� autant de WarFood que d'agent au d�part
+						// On créé autant de WarFood que d'agent au départ
 						motherNatureTeam.createAndLaunchNewResource(this, WarAgentType.WarFood);
 					}
 				}
@@ -141,7 +141,7 @@ public class WarLauncher extends TKLauncher {
 
 
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | SecurityException e) {
-			System.err.println("Erreur lors de l'instanciation des classes � partir des donn�es XML");
+			System.err.println("Erreur lors de l'instanciation des classes à partir des données XML");
 			e.printStackTrace();
 		}
 	}
@@ -154,15 +154,15 @@ public class WarLauncher extends TKLauncher {
 		try {
 			for (String teamName : xmlSituationFileContent.keySet()) {
 
-				// On r�cup�re l'�quipe
+				// On récupère l'équipe
 				Team currentTeam;
 				if (teamName.equals(motherNatureTeam.getName()))
 					currentTeam = motherNatureTeam;
 				else {
 					currentTeam = Game.getInstance().getPlayerTeam(teamName);
-					// On v�rifie si le jar de l'�quipe existe
+					// On vérifie si le jar de l'équipe existe
 					if (Simulation.getInstance().getTeam(Team.getRealNameFromTeamName(teamName)) == null) {
-						System.err.println("Le fichier JAR de l'�quipe " + Team.getRealNameFromTeamName(teamName) + " est manquant.");
+						System.err.println("Le fichier JAR de l'équipe " + Team.getRealNameFromTeamName(teamName) + " est manquant.");
 					}
 				}
 
@@ -197,15 +197,15 @@ public class WarLauncher extends TKLauncher {
 					TKOrganization.ENGINE_GROUP, TKOrganization.SCHEDULER_ROLE, new SchedulingMessage(SchedulingAction.RUN)); 
 
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | SecurityException e) {
-			System.err.println("Erreur lors de l'instanciation des classes � partir des donn�es XML");
+			System.err.println("Erreur lors de l'instanciation des classes à partir des données XML");
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Retourne une hashmap contenant les �quipes (identifi�s par leur nom). Chaque �quipe est compos�e d'une liste d'agents.
-	 * Chaque donn�e de chaque agent est enregistr� dans une hashmap
-	 * Exemple : je veux la position en X du premier agent de l'�quipe "Test" :
+	 * Retourne une hashmap contenant les équipes (identifiées par leur nom). Chaque équipe est composée d'une liste d'agents.
+	 * Chaque donnée de chaque agent est enregistrée dans une hashmap
+	 * Exemple : je veux la position en X du premier agent de l'équipe "Test" :
 	 * 		Double.valueOf(getXmlSituationFileContent(file).get("Test").get(0).get("xPosition"));
 	 */
 	public HashMap<String, ArrayList<HashMap<String, String>>> getXmlSituationFileContent(File file) {
@@ -222,14 +222,14 @@ public class WarLauncher extends TKLauncher {
 			teamsNode = teamsNode.item(0).getChildNodes();
 			Node node;
 			int countColor = 0;
-			for (int i = 0; i < teamsNode.getLength(); i++) { // Parcours des �quipes
+			for (int i = 0; i < teamsNode.getLength(); i++) { // Parcours des équipes
 				if (teamsNode.item(i).getNodeType() == Node.ELEMENT_NODE) {
 					NodeList teamNode = teamsNode.item(i).getChildNodes();
-					// On r�cup�re l'�quipe courante (l'objet)
+					// On récupère l'équipe courante (l'objet)
 					String currentTeamName = teamNode.item(0).getFirstChild().getNodeValue();
 					Team team = null;
 					ArrayList<HashMap<String, String>> agentsOfCurrentTeam = new ArrayList<>();
-					// On charge l'�quipe dans la liste des �quipes
+					// On charge l'équipe dans la liste des équipes
 					if (currentTeamName.equals(Game.getInstance().getMotherNatureTeam().getName()))
 						team = Game.getInstance().getMotherNatureTeam();
 					else {
@@ -239,11 +239,11 @@ public class WarLauncher extends TKLauncher {
 						countColor++;
 					}
 
-					for (int j = 0; j < teamNode.getLength(); j++) { // Parcours des agents d'une �quipe
+					for (int j = 0; j < teamNode.getLength(); j++) { // Parcours des agents d'une équipe
 						node = teamNode.item(j);
 						if (node.getNodeType() == Node.ELEMENT_NODE) {
 							if (node.getNodeName().equals("WarAgent")) {
-								// On r�cup�re tous les param�tres de l'agent
+								// On récupère tous les paramètres de l'agent
 								agentsOfCurrentTeam.add(WarXmlReader.getNodesFromNodeList(doc, node.getChildNodes()));
 							}
 						}
@@ -280,13 +280,13 @@ public class WarLauncher extends TKLauncher {
 		TeamXMLReader analXML = new TeamXMLReader();
 		Team currentTeam;
 
-		// On va chercher les fichiers .jar dans le dossier ad�quate
+		// On va chercher les fichiers .jar dans le dossier adéquate
 		for (File currentFile : filesInJarDirectory) {
 			try {
 				if (currentFile.getCanonicalPath().endsWith(".jar")) {
 					JarFile jarCurrentFile = new JarFile(currentFile);
 
-					// On parcours les entr�es du fichier JAR � la recherche des fichiers souhait�s
+					// On parcours les entrées du fichier JAR à la recherche des fichiers souhaités
 					JarEntry currentEntry;
 					Enumeration<JarEntry> entries = jarCurrentFile.entries();
 					HashMap<String, JarEntry> allJarEntries = new HashMap<>();
@@ -296,7 +296,7 @@ public class WarLauncher extends TKLauncher {
 
 						// Si c'est le fichier config.xml
 						if (currentEntry.getName().endsWith("config.xml")) {
-							// On le lit et on l'analyse gr�ce � la classe TeamXmlReader
+							// On le lit et on l'analyse grâce à la classe TeamXmlReader
 							BufferedInputStream input = new BufferedInputStream(jarCurrentFile.getInputStream(currentEntry));
 							analXML.Ouverture(input);
 							input.close();
@@ -308,19 +308,19 @@ public class WarLauncher extends TKLauncher {
 						}
 					}
 					if (configFileFound) {
-						// On a maintenant tous les fichiers dans un tableau et le fichier de configuration a �t� analys�
+						// On a maintenant tous les fichiers dans un tableau et le fichier de configuration a été analysé
 
-						// On r�cup�re le logo
+						// On récupère le logo
 						JarEntry logoEntry = allJarEntries.get(analXML.getIconeName());
 						ImageIcon teamLogo = new ImageIcon(WarIOTools.toByteArray(jarCurrentFile.getInputStream(logoEntry)));
 						// On change sa taille
 						Image tmp = teamLogo.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 						teamLogo = new ImageIcon(tmp);
 
-						// On r�cup�re le son
-						// TODO ajouter le son aux �quipes
+						// On récupère le son
+						// TODO ajouter le son aux équipes
 
-						// On cr�� l'�quipe
+						// On cré l'équipe
 						currentTeam = new Team(analXML.getTeamName());
 						currentTeam.setLogo(teamLogo);
 						currentTeam.setDescription(analXML.getTeamDescription().trim());
@@ -345,20 +345,20 @@ public class WarLauncher extends TKLauncher {
 						// Puis on ferme le fichier JAR
 						jarCurrentFile.close();
 
-						// Si il y a d�j� une �quipe du m�me nom on ne l'ajoute pas
+						// Si il y a déjà une équipe du même nom on ne l'ajoute pas
 						if (Simulation.getInstance().getTeam(currentTeam.getName()) != null)
-							System.err.println("Erreur lors de la lecture d'une �quipe : le nom " + currentTeam.getName() + " est d�j� utilis�.");
+							System.err.println("Erreur lors de la lecture d'une équipe : le nom " + currentTeam.getName() + " est déjà utilisé.");
 						else
 							Simulation.getInstance().addAvailableTeam(currentTeam);
-					} else { // Si le fichier de configuration n'a pas �t� trouv�
+					} else { // Si le fichier de configuration n'a pas été trouvé
 						System.err.println("Le fichier de configuration est introuvable dans le fichier JAR " + currentFile.getCanonicalPath());
 					}
 				}
 			} catch (MalformedURLException e) {
-				System.err.println("Lecture des fichiers JAR : URL mal form�e");
+				System.err.println("Lecture des fichiers JAR : URL mal formée");
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
-				System.err.println("Lecture des fichiers JAR : Classe non trouv�e");
+				System.err.println("Lecture des fichiers JAR : Classe non trouvée");
 				e.printStackTrace();
 			} catch (IOException e) {
 				System.err.println("Lecture des fichiers JAR : Lecture de fichier");

@@ -6,7 +6,7 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.Team;
 
 /**
- * Contient toutes les donn�es sur l'�metteur d'un message et sur le contenu du message
+ * Contient toutes les données sur l'émetteur d'un message et sur le contenu du message
  */
 @SuppressWarnings("serial")
 public class WarKernelMessage extends Message {
@@ -33,55 +33,55 @@ public class WarKernelMessage extends Message {
 	}
 		
 	/**
-	 * M�thode renvoyant la coordonn�e X o� se trouve l'agent �metteur du message.
-	 * @return {@code int} - la coordonn�e X o� se trouve l'agent �metteur du message.
+	 * Méthode renvoyant la coordonnée X où se trouve l'agent émetteur du message.
+	 * @return {@code int} - la coordonnée X où se trouve l'agent émetteur du message.
 	 */
 	public double getXSender() {
 		return _xSender;
 	}
 	
 	/**
-	 * M�thode renvoyant la coordon�e Y o� se trouve l'agent �metteur du message.
-	 * @return {@code int} - la coordon�e Y o� se trouve l'agent �metteur du message.
+	 * Méthode renvoyant la coordonée Y où se trouve l'agent émetteur du message.
+	 * @return {@code int} - la coordonée Y où se trouve l'agent émetteur du message.
 	 */
 	public double getYsender() {
 		return _ySender;
 	}
 	
 	/**
-	 * M�thode renvoyant l'identifiant de l'agent �metteur du message.
-	 * @return {@code int} - l'identifiant de l'agent �metteur du message.
+	 * Méthode renvoyant l'identifiant de l'agent émetteur du message.
+	 * @return {@code int} - l'identifiant de l'agent émetteur du message.
 	 */
 	public int getSenderID() {
 		return _idSender;
 	}
 	
 	/**
-	 * M�thode renvoyant l'�quipe de l'agent �metteur du message.
-	 * @return {@code Team} - l'�quipe de l'agent �metteur du message.
+	 * Méthode renvoyant l'équipe de l'agent émetteur du message.
+	 * @return {@code Team} - l'équipe de l'agent émetteur du message.
 	 */
 	public Team getSenderTeam() {
 		return _senderTeam;
 	}
 	
 	/**
-	 * M�thode renvoyant le type de l'agent �metteur du message.
-	 * @return {@code WarAgentType} - le type de l'agent �metteur du message.
+	 * Méthode renvoyant le type de l'agent émetteur du message.
+	 * @return {@code WarAgentType} - le type de l'agent émetteur du message.
 	 */
 	public WarAgentType getType() {
 		return _senderType;
 	}
 	
 	/**
-	 * M�thode renvoyant le message envoy�.
-	 * @return {@code String} - le message envoy�.
+	 * Méthode renvoyant le message envoyé.
+	 * @return {@code String} - le message envoyé.
 	 */
 	public String getMessage() {
 		return _message;
 	}
 	
 	/**
-	 * M�thode renvoyant le contenu du message.
+	 * Méthode renvoyant le contenu du message.
 	 * @return {@code String[]} - contenu du message.
 	 */
 	public String[] getContent() {

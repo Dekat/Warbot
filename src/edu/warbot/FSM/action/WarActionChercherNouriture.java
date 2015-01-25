@@ -48,7 +48,7 @@ public class WarActionChercherNouriture extends WarAction{
 		}else{//Si il y a de la nouriture
 			WarPercept foodP = foodPercepts.get(0); //le 0 est le plus proche normalement
 			
-			//si il y a beaucoup de nourriture je previens mes alli�
+			//si il y a beaucoup de nourriture je previens mes alliés
 			if(foodPercepts.size() > 1)
 				getBrain().broadcastMessageToAgentType(WarAgentType.WarExplorer, "foodHere", "");
 			

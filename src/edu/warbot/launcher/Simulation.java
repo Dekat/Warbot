@@ -119,7 +119,7 @@ public class Simulation {
 		try {
 			return _perceptsGetter.getConstructor(ControllableWarAgent.class).newInstance(agent);
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			System.err.println("La classe " + _perceptsGetter.getName() + " ne peut pas �tre instanci�e. InRadiusPerceptsGetter pris � la place.");
+			System.err.println("La classe " + _perceptsGetter.getName() + " ne peut pas être instanciée. InRadiusPerceptsGetter pris à la place.");
 			e.printStackTrace();
 			return new InRadiusPerceptsGetter(agent);
 		}

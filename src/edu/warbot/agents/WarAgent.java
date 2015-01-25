@@ -170,7 +170,7 @@ public abstract class WarAgent extends Turtle {
 	}
 	
 	/**
-	 * @return Le nombre de tick pass�s depuis la mort de l'agent
+	 * @return Le nombre de tick passés depuis la mort de l'agent
 	 */
 	public int getDyingStep() {
 		return _dyingStep;

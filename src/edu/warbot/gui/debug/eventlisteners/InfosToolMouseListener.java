@@ -18,7 +18,7 @@ public class InfosToolMouseListener implements MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// On s�lectionne l'agent sous le clique de souris
+		// On sélectionne l'agent sous le clique de souris
 		ArrayList<WarAgent> agents = Game.getInstance().getAllAgentsInRadius(
 				e.getX() / _debugToolBar.getViewer().getCellSize(),
 				e.getY() / _debugToolBar.getViewer().getCellSize(),

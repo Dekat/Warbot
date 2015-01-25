@@ -19,7 +19,7 @@ import edu.warbot.game.Team;
 @SuppressWarnings("serial")
 public class WarScheduler extends TKScheduler implements Observer {
 
-	// D�lai initial entre chaque tick. Evite que le jeu aille trop vite.
+	// Délai initial entre chaque tick. Evite que le jeu aille trop vite.
 	public static final int INITIAL_DELAY = 10;
 
 	private GenericBehaviorActivator<WarAgent> _warAgentDoOnEachTickActivator;
@@ -60,7 +60,7 @@ public class WarScheduler extends TKScheduler implements Observer {
 			Game.getInstance().getMotherNatureTeam().createAndLaunchNewResource(this, WarAgentType.WarFood);
 		}
 
-		// Testes pour voir si une �quipe n'a plus de base
+		// Testes pour voir si une équipe n'a plus de base
 		for (Team t : Game.getInstance().getPlayerTeams()) {
 			if (t.getNbUnitsLeftOfType(WarAgentType.WarBase) == 0) {
 				Game.getInstance().removePlayerTeam(t);

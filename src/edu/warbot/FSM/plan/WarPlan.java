@@ -23,7 +23,7 @@ public abstract class WarPlan{
 	
 	/**
 	 * Ajoute les actions qui contituent le plan.
-	 * Les actions doivent etre li� avec des conditions
+	 * Les actions doivent etre liées avec des conditions
 	 */
 	public abstract void buildActionList();
 	
@@ -31,13 +31,13 @@ public abstract class WarPlan{
 		this.buildActionList();
 		
 		if(this.actions.size() < 1){
-			System.err.println("ERREUR le plan <" + this.nom + "> ne contient aucune actions � executer");
+			System.err.println("ERREUR le plan <" + this.nom + "> ne contient aucune actions à executer");
 			System.exit(0);
 		}
 		
 		if(this.firstAction == null){
 			this.firstAction = actions.get(0);
-			System.out.println("ATTENTION vous devez choisir une action de depart : par defaut la premi�re action ajouter est choisit comme action de d�part <" + this.firstAction.getNom() + ">");
+			System.out.println("ATTENTION vous devez choisir une action de depart : par defaut la première action ajouter est choisit comme action de départ <" + this.firstAction.getNom() + ">");
 		}
 	
 		
@@ -60,7 +60,7 @@ public abstract class WarPlan{
 		//On execute l'action
 		instructionResultat = this.actionCourante.executeAction();
 		
-		//On change d'�tat si besoin
+		//On change d'état si besoin
 		ArrayList<WarCondition> conditions = this.actionCourante.getConditions();
 			
 		for (WarCondition conditionCourante : conditions) {
@@ -72,7 +72,7 @@ public abstract class WarPlan{
 		}
 		
 		if(instructionResultat == null){
-			System.err.println("ERREUR l'instruction renvoy� par <" + this.actionCourante.getNom() + "> est vide");
+			System.err.println("ERREUR l'instruction renvoyée par <" + this.actionCourante.getNom() + "> est vide");
 			System.exit(0);
 		}
 		

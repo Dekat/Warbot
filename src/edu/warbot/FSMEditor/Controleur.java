@@ -114,11 +114,11 @@ public class Controleur {
 			modeleSource = panelSource.getModele();
 			modeleDest = panelDest.getModele();
 			
-			//Cr�e un nouveau modele condition et le donne au modele
+			//Crée un nouveau modele condition et le donne au modele
 			ModeleCondition mc = new ModeleCondition(d);
 			this.modele.addCondition(mc);
 			
-			//Cr�e un nouveau panel condition et le donne au panel
+			//Crée un nouveau panel condition et le donne au panel
 			PanelCondition pc = new PanelCondition(mc);
 			this.view.getPanelCenter().addCondition(pc);
 			
@@ -134,7 +134,7 @@ public class Controleur {
 			this.view.getListeModeleConditions().addElement(mc.getNom());
 			
 		}else{
-			System.out.println("Pour ajouter une condition deux etats doivent etre selectionn�s");
+			System.out.println("Pour ajouter une condition deux etats doivent etre selectionnés");
 		}
 		
 		view.getPanelCenter().repaint();

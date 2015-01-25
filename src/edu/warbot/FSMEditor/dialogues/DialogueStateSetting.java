@@ -67,7 +67,7 @@ public class DialogueStateSetting extends JDialog{
 	private void valider(){
 		
 		if(this.fieldNameEtat.getText().isEmpty())
-			console.setText("Entrer un nom pour l'�tat");
+			console.setText("Entrer un nom pour l'état");
 		else
 			this.dispose();
 	}

@@ -62,7 +62,7 @@ import edu.warbot.tools.WarMathTools;
 @SuppressWarnings("serial")
 public class WarViewer extends AbstractViewer {
 
-	// D�finit le niveau de zoom initial
+	// Définit le niveau de zoom initial
 	public static final int CELL_SIZE = 1;
 	
 	private static final int _healthBarDefaultSize = 10;
@@ -128,7 +128,7 @@ public class WarViewer extends AbstractViewer {
 
 		tabs = new JTabbedPane();
 		tabs.addTab("Vue standard", scrollPane);	
-		tabs.addTab("2D Isom�trique", gdxContainer);
+		tabs.addTab("2D Isométrique", gdxContainer);
 		gdxContainer.setSize(1024, 768);
 		
 		frame.add(tabs, BorderLayout.CENTER);
@@ -152,7 +152,7 @@ public class WarViewer extends AbstractViewer {
 	}
 	
 	private void showNoGdxLoaded() {
-		JLabel text = new JLabel("Vue isom�trique non charg�e");
+		JLabel text = new JLabel("Vue isométrique non chargée");
 		gdxContainer.add(text);
 	}
 
@@ -215,7 +215,7 @@ public class WarViewer extends AbstractViewer {
 		boolean haveOneColorChanged = false;
 		
 		for(WarAgent agent : team.getAllAgents()) {
-			// Si les couleurs ont �t� modifi�es, on restaure les couleurs
+			// Si les couleurs ont été modifiées, on restaure les couleurs
 			if (haveOneColorChanged) {
 				backgroundColor = team.getColor();
 				borderColor = backgroundColor.darker();
@@ -234,7 +234,7 @@ public class WarViewer extends AbstractViewer {
 				}
 			}
 			
-			// Si l'agent courant est vu par l'agent s�lectionn�
+			// Si l'agent courant est vu par l'agent sélectionné
 			if (_agentsIDsSeenBySelectedAgent.contains(agent.getID())) {
 				borderColor = Color.YELLOW;
 				haveOneColorChanged = true;
@@ -610,9 +610,9 @@ public class WarViewer extends AbstractViewer {
 			g.drawString("TPS : " + Game.getInstance().getFPS().toString(), 1, 11);
 			
 			if (_autorModeToolBar.getSelectedAgent() != null) {
-				// Update de l'affichage des infos sur l'unit� s�lectionn�e
+				// Update de l'affichage des infos sur l'unité sélectionnée
 				_autorModeToolBar.getAgentInformationsPanel().update();
-				// On r�cup�re la liste des agents vus par l'agent s�lectionn�
+				// On récupère la liste des agents vus par l'agent sélectionné
 				WarAgent selectedAgent = _autorModeToolBar.getSelectedAgent();
 				if (selectedAgent instanceof ControllableWarAgent) {
 					for(WarPercept p : ((ControllableWarAgent) selectedAgent).getPercepts())
@@ -620,10 +620,10 @@ public class WarViewer extends AbstractViewer {
 				}
 			}
 			
-			// Affichage de M�re Nature (resources)
+			// Affichage de Mère Nature (resources)
 			paintTeam(g, Game.getInstance().getMotherNatureTeam());
 
-			// Affichage des �quipes
+			// Affichage des équipes
 			for (Team t : Game.getInstance().getPlayerTeams()) {
 				paintTeam(g, t);
 			}

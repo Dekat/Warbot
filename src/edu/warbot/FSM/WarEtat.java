@@ -38,13 +38,13 @@ public class WarEtat {
 		}
 		
 		if(this.conditions.size() < 1)
-			System.out.println("ATTENTION l'�tat <" + this.nom + "> ne contient aucune conditions de sortie");
+			System.out.println("ATTENTION l'état <" + this.nom + "> ne contient aucune conditions de sortie");
 		
 		for (WarCondition cond : this.conditions) {
 			cond.init();
 		}
 		
-		System.out.println("\tL'�tat <" + this.getNom() + "> " + "contient le plan <" + this.getPlan().getNom() + ">" + " et " + this.conditions.size() + " conditions de sorties");
+		System.out.println("\tL'état <" + this.getNom() + "> " + "contient le plan <" + this.getPlan().getNom() + ">" + " et " + this.conditions.size() + " conditions de sorties");
 		
 		this.plan.initPlan();
 		

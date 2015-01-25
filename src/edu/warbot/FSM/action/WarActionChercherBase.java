@@ -35,7 +35,7 @@ public class WarActionChercherBase extends WarAction{
 			
 			String baseCoord[] = {String.valueOf(basePercepts.get(0).getAngle()), String.valueOf(basePercepts.get(0).getDistance()) };
 			
-			// Previent les autre unit� de o� est la base
+			// Previent les autres unités de où est la base
 			getBrain().broadcastMessageToAgentType(WarAgentType.WarRocketLauncher, WarFSMMessage.enemyBaseHere, baseCoord);
 
 			setActionTerminate(true);
@@ -56,7 +56,7 @@ public class WarActionChercherBase extends WarAction{
 			
 			WarMessage m = getMessageLocateBase();
 			
-			//Si j'ai un message qui me dit o� est la base
+			//Si j'ai un message qui me dit où est la base
 			if(m != null && m.getContent().length == 2){
 				this.coordPolarBase = getBrain().getIndirectPositionOfAgentWithMessage(m);
 				

@@ -31,7 +31,7 @@ public class WarActionFuire extends WarAction{
 		if(getBrain().getHealth() >= this.lifeBeforStopFuire)
 			setActionTerminate(true);
 		
-		//Si je n'ai pas denemie autour de moi j'ai termin�
+		//Si je n'ai pas denemie autour de moi j'ai terminé
 		ArrayList<WarPercept> percept = getBrain().getPerceptsEnemiesByType(WarAgentType.WarRocketLauncher);
 		
 		// si il y a des enemy je fuis

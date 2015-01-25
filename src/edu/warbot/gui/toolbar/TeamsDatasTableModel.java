@@ -29,7 +29,7 @@ public class TeamsDatasTableModel extends AbstractTableModel implements Observer
 	}
 	
 	public int getNbColumnsForTeamIdentification() {
-		return COLUMN_NAMES_FOR_TEAM_IDENTIFICATION.length; // + 1 pour la l�gende
+		return COLUMN_NAMES_FOR_TEAM_IDENTIFICATION.length; // + 1 pour la légende
 	}
 	
 	@Override
@@ -47,7 +47,7 @@ public class TeamsDatasTableModel extends AbstractTableModel implements Observer
 		if (columnIndex == 0)
 			return getRowName(rowIndex);
 		
-		// TODO Trouver une fa�on plus jolie d'emp�cher l'erreur du OutOfBound
+		// TODO Trouver une façon plus jolie d'empécher l'erreur du OutOfBound
 		ArrayList<Team> teams = Game.getInstance().getPlayerTeams();
 		int teamPosInListTeams = columnIndex - 1;
 		boolean isIndexOutOfBounds = teamPosInListTeams >= teams.size();

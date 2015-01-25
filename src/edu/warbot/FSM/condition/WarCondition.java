@@ -31,12 +31,12 @@ public abstract class WarCondition {
 
 	public void init() {
 		if(this.etatDestination == null & this.actionDestination == null){
-			System.err.println("ERREUR une condition doit obligatoirement avoir un �tat ou une action destination <" + this.toString() + ">");
+			System.err.println("ERREUR une condition doit obligatoirement avoir un état ou une action destination <" + this.toString() + ">");
 			System.exit(0);
 		}
 		
 		if(this.etatDestination == null){
-			System.out.println("ATTENTION la condition <" + this.getClass() + "> ne contient pas d'�tat de sortie. Par default l'action appel� sera celle de l'�tat courant");
+			System.out.println("ATTENTION la condition <" + this.getClass() + "> ne contient pas d'état de sortie. Par default l'action appelée sera celle de l'état courant");
 		}
 		
 		

@@ -11,7 +11,7 @@ import edu.warbot.brains.WarBrain;
 
 /**
  * Desciption du plan et de ces actions
- * ATTENTION ce plan est bas� sur la size bag d'un explorer et la la vie max d'un explorer
+ * ATTENTION ce plan est basé sur la size bag d'un explorer et la la vie max d'un explorer
  * @author Olivier
  *
  */

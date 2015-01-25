@@ -8,9 +8,9 @@ import edu.warbot.brains.MovableWarAgentBrain;
 /**
  * Desciption du plan et de ces actions
  * action ne pas bouger
- * Condition de sortie si j'ai perdu la moiti� de ma vie.
- * condition de sortie si l'action est termin� alors je la recommence (debug)
- * retourne dans pas bouger si j'ai plus de la moiti� de ma vie
+ * Condition de sortie si j'ai perdu la moitié de ma vie.
+ * condition de sortie si l'action est terminé alors je la recommence (debug)
+ * retourne dans pas bouger si j'ai plus de la moitié de ma vie
  * @author Olivier
  *
  */

@@ -21,10 +21,10 @@ public class Modele {
 	}
 
 	public void removeState(ModeleState m) {
-		//On supprime toutes les conditions de l'�tat source
+		//On supprime toutes les conditions de l'état source
 		this.conditions.removeAll(m.getModeleConditions());
 		
-		//on parcours toutes les condtions pour voir si il yen a qui vont jusqua l'�tat qui va etre suppr
+		//on parcours toutes les condtions pour voir si il yen a qui vont jusqua l'état qui va etre suppr
 		ArrayList<ModeleCondition> toDelet = new ArrayList<>();
 		for (ModeleCondition cond: this.conditions) {
 			if(cond.getDestination().equals(m)){

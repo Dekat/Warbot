@@ -21,7 +21,7 @@ public class MotherNatureTeam extends Team {
 	private ArrayList<WarResource> _resources;
 	
 	public MotherNatureTeam() {
-		super("M�re nature");
+		super("Mère nature");
 		_resources = new ArrayList<>();
 		setColor(Color.GREEN);
 	}
@@ -99,7 +99,7 @@ public class MotherNatureTeam extends Team {
 				newPos.normalize(0, Game.getInstance().getMap().getWidth(), 0, Game.getInstance().getMap().getHeight());
 				resource.setPosition(newPos);
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-				System.err.println("Erreur lors de la cr�ation d'une nouvelle ressource : " + resourceType);
+				System.err.println("Erreur lors de la création d'une nouvelle ressource : " + resourceType);
 				e.printStackTrace();
 			}
 		} else {

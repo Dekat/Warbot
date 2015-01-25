@@ -60,7 +60,7 @@ public class WarToolBar extends JToolBar {
 		lblLogo.setAlignmentX(CENTER_ALIGNMENT);
 		add(lblLogo);
 
-		// Affichage des �quipes
+		// Affichage des équipes
 		_teamsDataTable = new TeamsDatasTable();
 		JScrollPane pnlTeams = new JScrollPane(_teamsDataTable);
 		pnlTeams.setPreferredSize(new Dimension(pnlTeams.getPreferredSize().width, 20 * 9));
@@ -79,7 +79,7 @@ public class WarToolBar extends JToolBar {
 		pnlDisplay.add(_btnDisplayInfos);
 		_btnDisplayPercepts = new JToggleButton("Percepts");
 		pnlDisplay.add(_btnDisplayPercepts);
-		_btnDisplayHealthBars = new JToggleButton("Sant�");
+		_btnDisplayHealthBars = new JToggleButton("Santé");
 		pnlDisplay.add(_btnDisplayHealthBars);
 		_btnDisplayDebugMessages = new JToggleButton("Messages de debug");
 		pnlDisplay.add(_btnDisplayDebugMessages);
@@ -115,7 +115,7 @@ public class WarToolBar extends JToolBar {
 			public void actionPerformed(ActionEvent e) {
 				_viewer.sendMessage(_viewer.getCommunity(), TKOrganization.ENGINE_GROUP, TKOrganization.SCHEDULER_ROLE,
 						new SchedulingMessage(SchedulingAction.PAUSE));
-				int confirmation = JOptionPane.showConfirmDialog(_viewer.getDisplayPane(), "�tes-vous s�r de vouloir arr�ter le combat ?", "Demande de confirmation", JOptionPane.YES_NO_OPTION);
+				int confirmation = JOptionPane.showConfirmDialog(_viewer.getDisplayPane(), "Êtes-vous sûr de vouloir arrêter le combat ?", "Demande de confirmation", JOptionPane.YES_NO_OPTION);
 				if (confirmation == JOptionPane.YES_OPTION) {
 					Game.getInstance().stopTheGame();
 				} else {

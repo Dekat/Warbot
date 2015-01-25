@@ -34,7 +34,7 @@ public class WarAgentInformationsPnl extends JPanel implements IWarAgentInformat
 
 		_debugToolBar = debugToolBar;
 
-		add(new JLabel("Informations sur l'agent s�lectionn� : "));
+		add(new JLabel("Informations sur l'agent sélectionné : "));
 
 		_id = new InfoLabel("ID");
 		add(_id);

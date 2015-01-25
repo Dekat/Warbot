@@ -90,7 +90,7 @@ public class Frame extends JFrame {
 
 	private Component getPanelState() {
 		JPanel panel = new JPanel(new VerticalLayout());
-		panel.setBorder(new TitledBorder("Gestion des �tats"));
+		panel.setBorder(new TitledBorder("Gestion des états"));
 		
 		buttonAddSate = new JButton("Add State");
 		buttonEditState = new JButton("Edit State");

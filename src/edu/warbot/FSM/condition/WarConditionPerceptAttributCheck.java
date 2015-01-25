@@ -73,7 +73,7 @@ public class WarConditionPerceptAttributCheck extends WarCondition{
 		if(percepts == null || percepts.size() == 0)
 			return false;
 		
-		// Recupere des percepts, l'attributs qui va etre trait� 
+		// Recupere des percepts, l'attributs qui va etre traité
 		ArrayList<Integer> listeAttriuts = new ArrayList<>();
 		if(this.oneOf){
 			listeAttriuts.add(getAttribut(percepts.get(0), this.nameAtt));

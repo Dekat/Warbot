@@ -23,7 +23,7 @@ public class DeleteToolMouseListener implements MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// On s�lectionne l'agent sous le clique de souris
+		// On sélectionne l'agent sous le clique de souris
 		ArrayList<WarAgent> agents = Game.getInstance().getAllAgentsInRadius(
 				e.getX() / _debugToolBar.getViewer().getCellSize(),
 				e.getY() / _debugToolBar.getViewer().getCellSize(),
@@ -31,13 +31,13 @@ public class DeleteToolMouseListener implements MouseListener {
 		if (agents.size() > 0) {
 			WarAgent agentToDelete = agents.get(0);
 			int response = JOptionPane.showConfirmDialog(_debugToolBar,
-					"�tes-vous s�r de vouloir supprimer l'agent " + agentToDelete.toString(),
+					"êtes-vous sûr de vouloir supprimer l'agent " + agentToDelete.toString(),
 					"Suppression d'un agent",
 					JOptionPane.YES_NO_OPTION);
 			if (response == JOptionPane.YES_OPTION) {
 				agentToDelete.killAgent(agentToDelete);
 
-				// TODO � remplacer par une simple actualisation de l'affichage
+				// TODO à remplacer par une simple actualisation de l'affichage
 				_debugToolBar.getViewer().sendMessage(_debugToolBar.getViewer().getCommunity(), TKOrganization.ENGINE_GROUP,
 						TKOrganization.SCHEDULER_ROLE,
 						new SchedulingMessage(SchedulingAction.STEP));

@@ -17,17 +17,17 @@ public class WarFSM {
 
 	public void initFSM() {
 		System.out.println("*** Initialisation de la FSM ***");
-		System.out.println("La FSM contient " + this.listeEtat.size() + " �tats");
+		System.out.println("La FSM contient " + this.listeEtat.size() + " états");
 		
 		
 		if(this.listeEtat.size() < 1){
-			System.err.println("ERREUR La FSM doit contenir au moins 1 �tat !");
+			System.err.println("ERREUR La FSM doit contenir au moins 1 état !");
 			System.exit(0);
 		}
 		
 		if(firstEtat == null){
 			this.firstEtat = listeEtat.get(0);
-			System.out.println("ATTENTION vous devez choisir un �tat de depart : par defaut le premier �tat ajouter est choisit comme �tat de d�part <" + this.firstEtat.getNom() + ">");
+			System.out.println("ATTENTION vous devez choisir un état de depart : par defaut le premier état ajouter est choisit comme état de départ <" + this.firstEtat.getNom() + ">");
 		}
 	
 		this.etatCourant = firstEtat;
@@ -43,7 +43,7 @@ public class WarFSM {
 		String actionResultat = null;
 		
 		if(this.listeReflexe == null | this.listeEtat == null | this.etatCourant == null){
-			System.err.println("La FSM � des pointeur null etes vous sur de l'avoir ben initialis� ?");
+			System.err.println("La FSM a des pointeur null etes vous sur de l'avoir ben initialisé ?");
 			System.exit(0);
 		}
 		
@@ -56,7 +56,7 @@ public class WarFSM {
 		if(actionResultat == null)
 			actionResultat = this.etatCourant.getPlan().executePlan();
 
-		//On change d'�tat si besoin
+		//On change d'état si besoin
 		ArrayList<WarCondition> conditions = this.etatCourant.getConditions();
 			
 		for (WarCondition conditionCourante : conditions) {

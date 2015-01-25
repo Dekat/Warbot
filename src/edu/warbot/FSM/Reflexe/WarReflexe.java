@@ -21,8 +21,8 @@ public abstract class WarReflexe {
 	public abstract String executeReflexe();
 
 	/**
-	 * ATTENTION cette m�thode doit etre redefinit pour 
-	 * avoir acces aux m�thodes des agents specfiques sur 
+	 * ATTENTION cette méthode doit etre redefinit pour 
+	 * avoir acces aux méthodes des agents specfiques sur 
 	 * lesquels l'action va s'appliquer
 	 */
 	public WarBrain getBrain(){

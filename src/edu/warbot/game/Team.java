@@ -141,10 +141,10 @@ public class Team extends Observable {
 	}
 
 	/**
-	 * Retourne l'agent dont l'id est celui pass� en param�tre
-	 * @param id - id de l'agent � r�cup�rer
-	 * @return l'agent dont l'id est pass� en param�tre
-	 * @return null si aucun agent n'a �t� trouv�
+	 * Retourne l'agent dont l'id est celui passé en paramètre
+	 * @param id - id de l'agent à récupérer
+	 * @return l'agent dont l'id est passé en paramètre
+	 * @return null si aucun agent n'a été trouvé
 	 */
 	public WarAgent getAgentWithID(int id) {
 		for(WarAgent a : getAllAgents()) {
@@ -155,7 +155,7 @@ public class Team extends Observable {
 	}
 	
 	public void sendMessageToAllMembers(ControllableWarAgent sender, String message, String[] content) {
-		// A savoir que Madkit exclut la possibilit� qu'un agent s'envoie un message � lui-m�me, nous ne faisons donc pas le test ici
+		// A savoir que Madkit exclut la possibilité qu'un agent s'envoie un message à lui-même, nous ne faisons donc pas le test ici
 		for (WarAgent a : _controllableAgents) {
 			sender.sendMessage(a.getAgentAddressIn(getName(), DEFAULT_GROUP_NAME, a.getClass().getSimpleName()),
 					new WarKernelMessage(sender, message, content));

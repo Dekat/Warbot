@@ -3,16 +3,16 @@ package edu.warbot.agents.enums;
 import java.util.ArrayList;
 
 public enum WarAgentType {
-	// Unit�s non agressives
+	// Unités non agressives
 	WarExplorer (WarAgentCategory.Worker),
 	WarEngineer (WarAgentCategory.Worker),
 	
-	// Unit�s agressives
+	// Unités agressives
 	WarRocketLauncher (WarAgentCategory.Soldier),
 	WarKamikaze (WarAgentCategory.Soldier),
 	WarTurret (WarAgentCategory.Soldier),
 	
-	// B�timents
+	// Bâtiments
 	WarBase (WarAgentCategory.Building),
 	
 	// Projectiles

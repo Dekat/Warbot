@@ -47,7 +47,7 @@ public class WarConfig {
 		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(null, "Le fichier de configuration est introuvable.",
 					"Fichier manquant", JOptionPane.ERROR_MESSAGE);
-			// TODO G�n�rer un fichier de configuration par d�faut
+			// TODO Générer un fichier de configuration par défaut
 		} catch (ParserConfigurationException e) {
 			System.err.println("Error when trying to create a document builder.");
 		} catch (SAXException e) {
@@ -126,7 +126,7 @@ public class WarConfig {
 			Class<? extends PerceptsGetter> perceptGetter = (Class<? extends PerceptsGetter>) Class.forName(className);
 			return perceptGetter;
 		} catch (IllegalArgumentException | SecurityException | ClassNotFoundException e) {
-			System.err.println("Nom de classe invalide pour \"" + className + "\". InRadiusPerceptsGetter pris par d�faut.");
+			System.err.println("Nom de classe invalide pour \"" + className + "\". InRadiusPerceptsGetter pris par défaut.");
 			return InRadiusPerceptsGetter.class;
 		}
 	}

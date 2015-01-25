@@ -68,7 +68,7 @@ public abstract class ControllableWarAgent extends WarAgent {
 	@Override
 	protected void doOnEachTick() {
 		super.doOnEachTick();
-		_perceptsGetter.setPerceptsAlreadyInit(false); // On indique au PerceptGetter qu'un nouveau tick est pass�
+		_perceptsGetter.setPerceptsAlreadyInit(false); // On indique au PerceptGetter qu'un nouveau tick est passé
 	}
 
 	public String give() {
@@ -239,15 +239,15 @@ public abstract class ControllableWarAgent extends WarAgent {
 
 	/**
 	 * Renvoi la position d'un agent qui n'est pas dans le percept mais qui est
-	 * vu par un autre agent allie. L'agent allie doit envoyer un message aux
-	 * unites qui vont pouvoir connaitre la postion de l'agent enemie.
+	 * vu par un autre agent allié. L'agent allié doit envoyer un message aux
+	 * unités qui vont pouvoir connaître la postion de l'agent ennemi.
 	 *
 	 * @param message
-	 *            Le message recu par l'agent qui voit l'enemie dans son
+	 *            Le message reçu par l'agent qui voit l'enemi dans son
 	 *            percept. Le message doit OBLIGATOIRETMENT contenir un tableau
 	 *            de DEUX string : un pour la distance et l'autre pour l'angle
-	 *            correspondant a la distance et l'angle que l'agent allie voit l'enemie.
-	 * @return Coordonnee polaire de l'agent enemie percu indirectement
+	 *            correspondant à la distance et l'angle que l'agent allié voit l'ennemi.
+	 * @return Coordonnee polaire de l'agent ennemi perçu indirectement
 	 */
 	public CoordPolar getIndirectPositionOfAgentWithMessage(WarMessage message) {
 		if (message.getContent().length != 2) {

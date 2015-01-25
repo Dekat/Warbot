@@ -19,7 +19,7 @@ public class CreatorWarAgentInformationsPnl extends JPanel  implements IWarAgent
 		_debugToolBar = debugToolBar;
 		
 		add(new JLabel(" "));
-		_nextAgentToCreate = new InfoLabel("Prochain agent � cr�er");
+		_nextAgentToCreate = new InfoLabel("Prochain agent à créer");
 		add(_nextAgentToCreate);
 	}
 	

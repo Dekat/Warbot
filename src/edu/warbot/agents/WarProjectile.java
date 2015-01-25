@@ -59,7 +59,7 @@ public abstract class WarProjectile extends WarAgent implements Movable {
 	private void explode() {
 		if (isAlive()) {
 			killAgent(this);
-			// On va infliger des d�g�ts � tous les agents dans le radius de l'explosion
+			// On va infliger des dégâts à tous les agents dans le radius de l'explosion
 			List<WarAgent> touchedAgents = Game.getInstance().getAllAgentsInRadiusOf(this, _explosionRadius);
 			for (WarAgent agent : touchedAgents) {
 				if (agent instanceof ControllableWarAgent) {

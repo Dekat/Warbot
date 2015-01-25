@@ -37,8 +37,8 @@ public abstract class CreatorWarAgent extends ControllableWarAgent implements Cr
 
 	public static void defaultCreateUnit(Creator creatorAgent, WarAgentType agentTypeToCreate) {
 		if (creatorAgent instanceof WarAgent) {
-			// TODO ajout des conditions de cr�ation
-			// TODO contr�ler si la base n'est pas encercl�e. Dans ce cas, elle ne pourra pas cr�er d'agent car il n'y aura pas de place.
+			// TODO ajout des conditions de création
+			// TODO contrôler si la base n'est pas encerclée. Dans ce cas, elle ne pourra pas créer d'agent car il n'y aura pas de place.
 			((WarAgent) creatorAgent).getLogger().log(Level.FINEST, creatorAgent.toString() + " creating " + agentTypeToCreate);
 			try {
 				if (creatorAgent.isAbleToCreate(agentTypeToCreate)) {

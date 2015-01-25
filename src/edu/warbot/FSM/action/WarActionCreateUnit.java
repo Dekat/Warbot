@@ -8,9 +8,9 @@ import edu.warbot.brains.brains.WarBaseBrain;
 
 /**
  * Description de l'action
- * Si ma vie est inferieur au pourcentage pass� en parametre je me heal 
- * si ma vie est supperieur au pourentage pass� en parametre j'ai finit
- * Idem pour constructeur avec deux pourcentages (le deuxieme pour les unit� alli�)
+ * Si ma vie est inferieur au pourcentage passé en parametre je me heal 
+ * si ma vie est supperieur au pourentage passé en parametre j'ai finit
+ * Idem pour constructeur avec deux pourcentages (le deuxieme pour les unités alliées)
  * Si plus de nourriure je finit
  * @author Olivier
  *

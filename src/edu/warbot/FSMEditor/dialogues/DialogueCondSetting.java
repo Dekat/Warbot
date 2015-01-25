@@ -77,7 +77,7 @@ public class DialogueCondSetting extends JDialog{
 
 	private Component getPanelTitleAndType() {
 		JPanel panel = new JPanel(new GridLayout(2, 2));
-		panel.setBorder(new TitledBorder("G�n�ral"));
+		panel.setBorder(new TitledBorder("Général"));
 		
 		fieldNameCond = new JTextField();
 		comboTypeCond = new JComboBox<String>(Configuration.CONDITION);
@@ -93,7 +93,7 @@ public class DialogueCondSetting extends JDialog{
 	private Component getPanelActionTerminate() {
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder("Action terminate"));
-		panel.add(new JLabel("<Action terminate> s'applique � l'�tat source"));
+		panel.add(new JLabel("<Action terminate> s'applique à l'état source"));
 		return panel;
 	}
 
