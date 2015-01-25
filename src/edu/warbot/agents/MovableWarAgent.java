@@ -41,11 +41,11 @@ public abstract class MovableWarAgent extends ControllableWarAgent implements Pi
 	public String take() {
 		logger.log(Level.FINEST, this.toString() + " taking...");
 		if (getNbElementsInBag() < getBagSize()) {
-			ArrayList<WarResource> resources = Game.getInstance().getMotherNatureTeam().getAccessibleResourcesFor(this);
-			if (resources.size() > 0) {
-				killAgent(resources.get(0));
+			ArrayList<WarResource> reachableResources = Game.getInstance().getMotherNatureTeam().getAccessibleResourcesFor(this);
+			if (reachableResources.size() > 0) {
+				killAgent(reachableResources.get(0));
 				addElementInBag();
-				logger.log(Level.FINER, this.toString() + " take " + resources.get(0).getClass().getSimpleName());
+				logger.log(Level.FINER, this.toString() + " take " + reachableResources.get(0).getClass().getSimpleName());
 			}
 		}
 		return getBrainController().action();

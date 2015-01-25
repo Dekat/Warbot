@@ -73,14 +73,16 @@ public abstract class ControllableWarAgent extends WarAgent {
 
 	public String give() {
 		logger.log(Level.FINEST, this.toString() + " giving...");
-		WarAgent agent = getTeam().getAgentWithID(_idNextAgentToGive);
-		if (agent != null) { // Si agent existe
-			if (getDistanceFrom(agent) <= MAX_DISTANCE_GIVE) { // Si il n'est pas trop loins
-				if (agent instanceof ControllableWarAgent) { // Si c'est un ControllableWarAgent
-					if (((ControllableWarAgent) agent).getBagSize() > ((ControllableWarAgent) agent).getNbElementsInBag()) { // Si son sac a un emplacement vide
-						logger.log(Level.FINER, this.toString() + " give WarFood to " + agent.toString());
-						((ControllableWarAgent) agent).addElementInBag();
-						_nbElementsInBag--;
+		if(getNbElementsInBag() > 0) { // Si l'agent courant a quelque chose à donner
+			WarAgent agentToGive = getTeam().getAgentWithID(_idNextAgentToGive);
+			if (agentToGive != null) { // Si agent existe
+				if (getDistanceFrom(agentToGive) <= MAX_DISTANCE_GIVE) { // Si il n'est pas trop loin
+					if (agentToGive instanceof ControllableWarAgent) { // Si c'est un ControllableWarAgent
+						if (((ControllableWarAgent) agentToGive).getBagSize() > ((ControllableWarAgent) agentToGive).getNbElementsInBag()) { // Si son sac a un emplacement vide
+							logger.log(Level.FINER, this.toString() + " give WarFood to " + agentToGive.toString());
+							((ControllableWarAgent) agentToGive).addElementInBag();
+							_nbElementsInBag--;
+						}
 					}
 				}
 			}
