@@ -2,10 +2,11 @@ package edu.warbot.agents;
 
 import java.awt.Dimension;
 
-import com.badlogic.gdx.math.Circle;
-
 import madkit.kernel.AbstractAgent;
 import turtlekit.kernel.Turtle;
+
+import com.badlogic.gdx.math.Circle;
+
 import edu.warbot.agents.capacities.Movable;
 import edu.warbot.game.Game;
 import edu.warbot.game.Team;
@@ -50,6 +51,18 @@ public abstract class WarAgent extends Turtle {
 	public AbstractAgent.ReturnCode requestRole(String group, String role) {
 		createGroupIfAbsent(getTeam().getName(), group);
 		return requestRole(getTeam().getName(), group, role);
+	}
+	
+	public AbstractAgent.ReturnCode leaveRole(String group, String role) {
+		return super.leaveRole(getTeam().getName(), group, role);
+	}
+
+	public AbstractAgent.ReturnCode leaveGroup(String group) {
+		return super.leaveGroup(getTeam().getName(), group);
+	}
+
+	public int numberOfAgentsInRole(String group, String role) {
+		return (getAgentsWithRole(getTeam().getName(), group, role).size());
 	}
 
 	public Team getTeam() {
