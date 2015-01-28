@@ -46,14 +46,14 @@
             <DistanceOfView>80</DistanceOfView>
             <Cost>12000</Cost>
             <MaxHealth>12000</MaxHealth>
-            <BagSize>4</BagSize>
+            <BagSize>1000000</BagSize>
         </WarBase>
         <WarExplorer>
             <HitboxRadius>2</HitboxRadius>
             <AngleOfView>180</AngleOfView>
             <DistanceOfView>50</DistanceOfView>
-            <Cost>2000</Cost>
-            <MaxHealth>6000</MaxHealth>
+            <Cost>3000</Cost>
+            <MaxHealth>3000</MaxHealth>
             <BagSize>4</BagSize>
             <Speed>1.2</Speed>
         </WarExplorer>
@@ -61,7 +61,7 @@
             <HitboxRadius>3</HitboxRadius>
             <AngleOfView>120</AngleOfView>
             <DistanceOfView>30</DistanceOfView>
-            <Cost>3000</Cost>
+            <Cost>8000</Cost>
             <MaxHealth>8000</MaxHealth>
             <BagSize>4</BagSize>
             <Speed>0.8</Speed>
@@ -71,7 +71,7 @@
         	<HitboxRadius>2</HitboxRadius>
         	<AngleOfView>150</AngleOfView>
         	<DistanceOfView>20</DistanceOfView>
-        	<Cost>1000</Cost>
+        	<Cost>3000</Cost>
         	<MaxHealth>3000</MaxHealth>
         	<BagSize>4</BagSize>
         	<Speed>1.0</Speed>
@@ -89,8 +89,8 @@
         	<HitboxRadius>3</HitboxRadius>
         	<AngleOfView>180</AngleOfView>
         	<DistanceOfView>35</DistanceOfView>
-        	<Cost>1000</Cost>
-        	<MaxHealth>8000</MaxHealth>
+        	<Cost>1500</Cost>
+        	<MaxHealth>6000</MaxHealth>
         	<BagSize>4</BagSize>
         	<TicksToReload>30</TicksToReload>
         </WarTurret>
