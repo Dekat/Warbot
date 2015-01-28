@@ -38,13 +38,13 @@ import turtlekit.viewer.AbstractViewer;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
+import edu.warbot.agents.actions.MovableActions;
 import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.agents.WarEngineer;
 import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.agents.WarKamikaze;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.agents.WarTurret;
-import edu.warbot.agents.capacities.Movable;
 import edu.warbot.agents.percepts.InConePerceptsGetter;
 import edu.warbot.agents.percepts.InRadiusPerceptsGetter;
 import edu.warbot.agents.percepts.WarPercept;
@@ -268,7 +268,7 @@ public class WarViewer extends AbstractViewer {
 			else if (agent instanceof WarTurret)
 				paintWarTurret(g, (WarTurret) agent, borderColor, backgroundColor);
 
-			if (agent instanceof Movable) {
+			if (agent instanceof MovableActions) {
 				paintHeading(g, agent, borderColor);
 			}
 		}

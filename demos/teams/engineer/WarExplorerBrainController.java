@@ -6,10 +6,11 @@ import edu.warbot.agents.agents.WarEngineer;
 import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.agents.resources.WarFood;
-import edu.warbot.brains.braincontrollers.WarExplorerAbstractBrainController;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarExplorerAdapter;
 import edu.warbot.communications.WarMessage;
 
-public class WarExplorerBrainController extends WarExplorerAbstractBrainController {
+public class WarExplorerBrainController extends WarBrain<WarExplorerAdapter> {
 
 	private boolean _starving;
 	
@@ -21,33 +22,33 @@ public class WarExplorerBrainController extends WarExplorerAbstractBrainControll
 
 	@Override
 	public String action() {
-		ArrayList<WarPercept> percepts = getBrain().getPercepts();
+		ArrayList<WarPercept> percepts = getAgent().getPercepts();
 		
 		for (WarPercept p : percepts) {
 			switch(p.getType()) {
 			case WarFood :
-				if(p.getDistance() < WarFood.MAX_DISTANCE_TAKE && !getBrain().isBagFull()) {
-					getBrain().setHeading(p.getAngle());
+				if(p.getDistance() < WarFood.MAX_DISTANCE_TAKE && !getAgent().isBagFull()) {
+					getAgent().setHeading(p.getAngle());
 					return WarExplorer.ACTION_TAKE;
-				}else if(!getBrain().isBagFull()){
-					getBrain().setHeading(p.getAngle());
+				}else if(!getAgent().isBagFull()){
+					getAgent().setHeading(p.getAngle());
 				}
 				break;
 			case WarBase :
-				if(getBrain().isEnemy(p)) {
-					getBrain().broadcastMessageToAll("Enemy base on sight", String.valueOf(p.getAngle()), String.valueOf(p.getDistance()));
+				if(getAgent().isEnemy(p)) {
+					getAgent().broadcastMessageToAll("Enemy base on sight", String.valueOf(p.getAngle()), String.valueOf(p.getDistance()));
 				}
 				break;
 			case WarEngineer :
-				if(p.getDistance() < WarEngineer.MAX_DISTANCE_GIVE && getBrain().getNbElementsInBag() > 0) {
-					getBrain().setDebugString("Giving food");
-					getBrain().setIdNextAgentToGive(p.getID());
+				if(p.getDistance() < WarEngineer.MAX_DISTANCE_GIVE && getAgent().getNbElementsInBag() > 0) {
+					getAgent().setDebugString("Giving food");
+					getAgent().setIdNextAgentToGive(p.getID());
 					return WarExplorer.ACTION_GIVE;
 				}
-				if(getBrain().isBagEmpty()) {
-					getBrain().setDebugString("Searching food");
-					if (getBrain().isBlocked())
-						getBrain().setRandomHeading();
+				if(getAgent().isBagEmpty()) {
+					getAgent().setDebugString("Searching food");
+					if (getAgent().isBlocked())
+						getAgent().setRandomHeading();
 					return WarExplorer.ACTION_MOVE;
 				}
 				break;
@@ -56,29 +57,29 @@ public class WarExplorerBrainController extends WarExplorerAbstractBrainControll
 			}
 		}
 		
-		ArrayList<WarMessage> msgs = getBrain().getMessages();
+		ArrayList<WarMessage> msgs = getAgent().getMessages();
 		for(WarMessage msg : msgs) {
 			if (msg.getMessage().equals("Need food")) {
-				if(!getBrain().isBagEmpty())
+				if(!getAgent().isBagEmpty())
 				{
-					getBrain().setHeading(msg.getAngle());
+					getAgent().setHeading(msg.getAngle());
 					return WarExplorer.ACTION_MOVE;
 				}
 				else {
-					if (getBrain().isBlocked())
-						getBrain().setRandomHeading();
+					if (getAgent().isBlocked())
+						getAgent().setRandomHeading();
 					return WarExplorer.ACTION_MOVE;
 				}
 			}
 			if(msg.getMessage().equals("Don't need food anymore")) {
-				if (getBrain().isBlocked())
-					getBrain().setRandomHeading();
+				if (getAgent().isBlocked())
+					getAgent().setRandomHeading();
 				return WarExplorer.ACTION_MOVE;
 			}
 		}
 		
-		if (getBrain().isBlocked())
-			getBrain().setRandomHeading();
+		if (getAgent().isBlocked())
+			getAgent().setRandomHeading();
 		return WarExplorer.ACTION_MOVE;
 	}
 

@@ -4,19 +4,19 @@ import java.util.ArrayList;
 
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.condition.WarCondition;
-import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.ControllableWarAgentAdapter;
 
-public abstract class WarPlan{
+public abstract class WarPlan<AgentAdapterType extends ControllableWarAgentAdapter> {
 
-	private WarAction actionCourante;
-	private WarAction firstAction;
-	private ArrayList<WarAction> actions = new ArrayList<>();
+	private WarAction<AgentAdapterType> actionCourante;
+	private WarAction<AgentAdapterType> firstAction;
+	private ArrayList<WarAction<AgentAdapterType>> actions = new ArrayList<>();
 	
-	private WarBrain brain;
+	private AgentAdapterType brain;
 	
 	private String nom;
 	
-	public WarPlan(WarBrain brain, String nomPlan){
+	public WarPlan(AgentAdapterType brain, String nomPlan){
 		this.brain = brain;
 		this.nom = nomPlan;
 	}
@@ -61,9 +61,9 @@ public abstract class WarPlan{
 		instructionResultat = this.actionCourante.executeAction();
 		
 		//On change d'état si besoin
-		ArrayList<WarCondition> conditions = this.actionCourante.getConditions();
+		ArrayList<WarCondition<AgentAdapterType>> conditions = this.actionCourante.getConditions();
 			
-		for (WarCondition conditionCourante : conditions) {
+		for (WarCondition<AgentAdapterType> conditionCourante : conditions) {
 			if(conditionCourante.isValide()){
 				this.actionCourante = conditionCourante.getActionDestination();
 				this.actionCourante.actionWillBegin();
@@ -85,10 +85,10 @@ public abstract class WarPlan{
 		
 		System.out.println("\tLe plan contient <" + this.getNom() + "> contient " + this.actions.size() + " actions");
 		
-		for (WarAction act : this.actions) {
+		for (WarAction<AgentAdapterType> act : this.actions) {
 			System.out.println("\t\tL'action <" + act.getNom() + "> contient " + act.getConditions().size() + " conditions de sortie");
 			
-			for (WarCondition cond : act.getConditions()) {
+			for (WarCondition<AgentAdapterType> cond : act.getConditions()) {
 				System.out.println("\t\t\tLa condition <" + cond.getClass().getSimpleName() + " a pour destination <" + cond.getActionDestination().getNom() + ">");
 			}
 		}
@@ -96,11 +96,11 @@ public abstract class WarPlan{
 	}
 	
 
-	public void addAction(WarAction a){
+	public void addAction(WarAction<AgentAdapterType> a){
 		this.actions.add(a);
 	}
 	
-	public WarBrain getBrain(){
+	public AgentAdapterType getBrain(){
 		return this.brain;
 	}
 	
@@ -108,11 +108,11 @@ public abstract class WarPlan{
 		return this.nom;
 	}
 	
-	public void setFirstAction(WarAction a){
+	public void setFirstAction(WarAction<AgentAdapterType> a){
 		this.firstAction = a;
 	}
 	
-	public WarAction getFirstAction(){
+	public WarAction<AgentAdapterType> getFirstAction(){
 		return this.firstAction;
 	}
 	
@@ -120,7 +120,7 @@ public abstract class WarPlan{
 		this.printTrace = b;
 	}
 	
-	public ArrayList<WarAction> getListAction(){
+	public ArrayList<WarAction<AgentAdapterType>> getListAction(){
 		return this.actions;
 	}
 	

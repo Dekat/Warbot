@@ -2,15 +2,15 @@ package edu.warbot.FSM.plan;
 
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionDefendre;
-import edu.warbot.brains.MovableWarAgentBrain;
+import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
 /**
  * @author Olivier
  *
  */
-public class WarPlanDefendre extends WarPlan{
+public class WarPlanDefendre extends WarPlan<WarRocketLauncherAdapter> {
 	
-	public WarPlanDefendre(MovableWarAgentBrain brain) {
+	public WarPlanDefendre(WarRocketLauncherAdapter brain) {
 		super(brain, "Plan Defendre");
 	}
 
@@ -18,14 +18,10 @@ public class WarPlanDefendre extends WarPlan{
 		
 		setPrintTrace(true);
 		
-		WarAction actionDef = new WarActionDefendre(getBrain());
+		WarAction<WarRocketLauncherAdapter> actionDef = new WarActionDefendre(getBrain());
 		addAction(actionDef);
 		
 		setFirstAction(actionDef);
-	}
-	
-	public MovableWarAgentBrain getBrain(){
-		return (MovableWarAgentBrain)super.getBrain();
 	}
 	
 }

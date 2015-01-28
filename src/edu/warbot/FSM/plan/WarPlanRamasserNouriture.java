@@ -5,7 +5,7 @@ import edu.warbot.FSM.action.WarActionChercherNouriture;
 import edu.warbot.FSM.action.WarActionRaporterNouriture;
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.condition.WarConditionActionTerminate;
-import edu.warbot.brains.MovableWarAgentBrain;
+import edu.warbot.brains.MovableWarAgentAdapter;
 
 /**
  * Desciption du plan et de ces actions
@@ -16,9 +16,9 @@ import edu.warbot.brains.MovableWarAgentBrain;
  * @author Olivier
  *
  */
-public class WarPlanRamasserNouriture extends WarPlan{
+public class WarPlanRamasserNouriture<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
 	
-	public WarPlanRamasserNouriture(MovableWarAgentBrain brain) {
+	public WarPlanRamasserNouriture(AgentAdapterType brain) {
 		super(brain, "PlanRammaserNouriture");
 	}
 
@@ -26,17 +26,17 @@ public class WarPlanRamasserNouriture extends WarPlan{
 		
 		setPrintTrace(true);
 		
-		WarAction actionChercheN = new WarActionChercherNouriture(getBrain(), 4);
+		WarAction<AgentAdapterType> actionChercheN = new WarActionChercherNouriture<AgentAdapterType>(getBrain(), 4);
 		addAction(actionChercheN);
 
-		WarAction actionRamenerN = new WarActionRaporterNouriture(getBrain(), 0);
+		WarAction<AgentAdapterType> actionRamenerN = new WarActionRaporterNouriture<AgentAdapterType>(getBrain(), 0);
 		addAction(actionRamenerN);
 		
-		WarCondition condStopChercher = new WarConditionActionTerminate(getBrain(), actionChercheN);
+		WarCondition<AgentAdapterType> condStopChercher = new WarConditionActionTerminate<AgentAdapterType>(getBrain(), actionChercheN);
 		actionChercheN.addCondition(condStopChercher);
 		condStopChercher.setDestination(actionRamenerN);
 		
-		WarCondition condStopRamener = new WarConditionActionTerminate(getBrain(), actionRamenerN);
+		WarCondition<AgentAdapterType> condStopRamener = new WarConditionActionTerminate<AgentAdapterType>(getBrain(), actionRamenerN);
 		actionRamenerN.addCondition(condStopRamener);
 		condStopRamener.setDestination(actionChercheN);
 		

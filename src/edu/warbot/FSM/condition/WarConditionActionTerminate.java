@@ -1,13 +1,13 @@
 package edu.warbot.FSM.condition;
 
 import edu.warbot.FSM.action.WarAction;
-import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.ControllableWarAgentAdapter;
 
-public class WarConditionActionTerminate extends WarCondition{
+public class WarConditionActionTerminate<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType>{
 	
-	WarAction action;
+	WarAction<AgentAdapterType> action;
 	
-	public WarConditionActionTerminate(WarBrain brain, WarAction action){
+	public WarConditionActionTerminate(AgentAdapterType brain, WarAction<AgentAdapterType> action){
 		super(brain);
 		this.action = action;
 	}

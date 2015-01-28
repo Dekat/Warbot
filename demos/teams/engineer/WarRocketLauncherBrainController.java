@@ -6,10 +6,11 @@ import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.agents.resources.WarFood;
-import edu.warbot.brains.braincontrollers.WarRocketLauncherAbstractBrainController;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 import edu.warbot.communications.WarMessage;
 
-public class WarRocketLauncherBrainController extends WarRocketLauncherAbstractBrainController {
+public class WarRocketLauncherBrainController extends WarBrain<WarRocketLauncherAdapter> {
 	
 	private boolean _baseFound;
 	private boolean _inDanger;
@@ -29,37 +30,37 @@ public class WarRocketLauncherBrainController extends WarRocketLauncherAbstractB
 	public String action() {
 		
 		if(_baseId == 0) {
-			getBrain().broadcastMessageToAll("Your ID please", "");
+			getAgent().broadcastMessageToAll("Your ID please", "");
 		}
 		
-		if (getBrain().getHealth() <= (WarRocketLauncher.MAX_HEALTH / 5))
+		if (getAgent().getHealth() <= (WarRocketLauncher.MAX_HEALTH / 5))
 			return WarRocketLauncher.ACTION_EAT;
 		
-		ArrayList<WarPercept> percepts = getBrain().getPercepts();	
+		ArrayList<WarPercept> percepts = getAgent().getPercepts();	
 		for (WarPercept p : percepts) {
 			switch(p.getType()) {
 			case WarFood :
-				if (p.getDistance() < WarFood.MAX_DISTANCE_TAKE && !getBrain().isBagFull()) {
-					getBrain().setHeading(p.getAngle());
+				if (p.getDistance() < WarFood.MAX_DISTANCE_TAKE && !getAgent().isBagFull()) {
+					getAgent().setHeading(p.getAngle());
 					return WarExplorer.ACTION_TAKE;
-				}else if(!getBrain().isBagFull()){
-					getBrain().setHeading(p.getAngle());
+				}else if(!getAgent().isBagFull()){
+					getAgent().setHeading(p.getAngle());
 				}
 				break;
 			case WarBase :
-				if (getBrain().isEnemy(p)) {
+				if (getAgent().isEnemy(p)) {
 					_baseFound = true;
-					getBrain().setHeading(p.getAngle());
-					if (getBrain().isReloaded()) {
+					getAgent().setHeading(p.getAngle());
+					if (getAgent().isReloaded()) {
 						return WarRocketLauncher.ACTION_FIRE;
 					} else
 						return WarRocketLauncher.ACTION_RELOAD;
 				}
 				break;
 			case WarRocketLauncher :
-				if (getBrain().isEnemy(p)) {
-					getBrain().setHeading(p.getAngle());
-					if (getBrain().isReloaded()) {
+				if (getAgent().isEnemy(p)) {
+					getAgent().setHeading(p.getAngle());
+					if (getAgent().isReloaded()) {
 						return WarRocketLauncher.ACTION_FIRE;
 					} else
 						return WarRocketLauncher.ACTION_RELOAD;
@@ -70,10 +71,10 @@ public class WarRocketLauncherBrainController extends WarRocketLauncherAbstractB
 			}
 		}
 		
-		ArrayList<WarMessage> msgs = getBrain().getMessages();
+		ArrayList<WarMessage> msgs = getAgent().getMessages();
 		for(WarMessage msg : msgs) {
 			if(msg.getMessage().equals("Enemy base on sight") && !_inDanger) {
-				getBrain().setHeading(msg.getAngle());
+				getAgent().setHeading(msg.getAngle());
 			}
 			if(msg.getMessage().equals("We are under attack")) {
 				_inDanger = true;
@@ -85,16 +86,16 @@ public class WarRocketLauncherBrainController extends WarRocketLauncherAbstractB
 			}
 			if(msg.getMessage().equals("I am the danger")) {
 				_inDanger = false;
-				getBrain().setRandomHeading();
+				getAgent().setRandomHeading();
 			}
 		}
 		
 		if(_inDanger && !_baseFound) {
-			getBrain().setHeading(_basePosition);
+			getAgent().setHeading(_basePosition);
 		}
 		
-		if (getBrain().isBlocked())
-			getBrain().setRandomHeading();
+		if (getAgent().isBlocked())
+			getAgent().setRandomHeading();
 		return WarRocketLauncher.ACTION_MOVE;
 	}
 	

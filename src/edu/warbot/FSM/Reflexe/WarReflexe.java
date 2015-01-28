@@ -1,31 +1,26 @@
 package edu.warbot.FSM.Reflexe;
 
-import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.ControllableWarAgentAdapter;
 
-public abstract class WarReflexe {
+public abstract class WarReflexe<AgentAdapterType extends ControllableWarAgentAdapter> {
 	
-	private WarBrain brain;
+	private AgentAdapterType brain;
 
 	private String nom;
 	
-	public WarReflexe(WarBrain b){
+	public WarReflexe(AgentAdapterType b){
 		this.brain = b;
 		this.nom = this.getClass().getSimpleName();
 	}
 	
-	public WarReflexe(WarBrain b, String nom){
+	public WarReflexe(AgentAdapterType b, String nom){
 		this.brain = b;
 		this.nom = nom;
 	}
 
 	public abstract String executeReflexe();
 
-	/**
-	 * ATTENTION cette méthode doit etre redefinit pour 
-	 * avoir acces aux méthodes des agents specfiques sur 
-	 * lesquels l'action va s'appliquer
-	 */
-	public WarBrain getBrain(){
+	public AgentAdapterType getBrain(){
 		return this.brain;
 	}
 	

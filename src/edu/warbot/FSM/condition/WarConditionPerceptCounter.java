@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarPercept;
-import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.ControllableWarAgentAdapter;
 
-public class WarConditionPerceptCounter extends WarCondition{
+public class WarConditionPerceptCounter<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType> {
 	
 	int reference;
 	String operand;
@@ -23,7 +23,7 @@ public class WarConditionPerceptCounter extends WarCondition{
 	 * @param nameAtt
 	 * @param ref
 	 */
-	public WarConditionPerceptCounter(WarBrain brain, WarAgentType agentType, boolean enemy,
+	public WarConditionPerceptCounter(AgentAdapterType brain, WarAgentType agentType, boolean enemy,
 			String operand, int ref) {
 
 		super(brain);

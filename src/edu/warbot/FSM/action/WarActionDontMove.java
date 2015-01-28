@@ -1,19 +1,19 @@
 package edu.warbot.FSM.action;
 
 import edu.warbot.agents.MovableWarAgent;
-import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.MovableWarAgentAdapter;
 
 /**
  * Ne bouge pas pendant un certains nombre de pas (tik)
  * @author Olivier
  *
  */
-public class WarActionDontMove extends WarAction{
+public class WarActionDontMove<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType>{
 	
 	private final int nbPasMax;	
 	int nbPas = 0;
 	
-	public WarActionDontMove(WarBrain brain, int nombrePas) {
+	public WarActionDontMove(AgentAdapterType brain, int nombrePas) {
 		super(brain);
 		this.nbPasMax = nombrePas;
 	}

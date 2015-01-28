@@ -3,19 +3,19 @@ package edu.warbot.FSM.action;
 import java.util.Random;
 
 import edu.warbot.agents.MovableWarAgent;
-import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.MovableWarAgentAdapter;
 
 /**
  * Description de l'action
  * @author Olivier
  *
  */
-public class WarActionWiggle extends WarAction{
+public class WarActionWiggle<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType>{
 
 	private final int nbPasMax;	
 	int nbPas = 0;
 	
-	public WarActionWiggle(WarBrain brain, int nombrePas) {
+	public WarActionWiggle(AgentAdapterType brain, int nombrePas) {
 		super(brain);
 		this.nbPasMax = nombrePas;
 	}
@@ -32,11 +32,11 @@ public class WarActionWiggle extends WarAction{
 			return MovableWarAgent.ACTION_IDLE;
 		}
 		
-		double angle = getBrain().getHeading();
+		double angle = getAgent().getHeading();
 		
 		angle = angle + new Random().nextInt(30) - new Random().nextInt(30);
 		
-		getBrain().setHeading(angle);
+		getAgent().setHeading(angle);
 	
 		return MovableWarAgent.ACTION_MOVE;
 

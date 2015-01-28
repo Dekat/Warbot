@@ -3,21 +3,24 @@ package edu.warbot.agents;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import edu.warbot.agents.capacities.Movable;
-import edu.warbot.agents.capacities.Picker;
+import edu.warbot.agents.actions.MovableActions;
+import edu.warbot.agents.actions.PickerActions;
 import edu.warbot.agents.percepts.WarPercept;
-import edu.warbot.brains.WarBrainController;
+import edu.warbot.brains.MovableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.capacities.Movable;
+import edu.warbot.brains.capacities.Picker;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.game.Game;
 import edu.warbot.game.Team;
 import edu.warbot.tools.CoordPolar;
 
 @SuppressWarnings("serial")
-public abstract class MovableWarAgent extends ControllableWarAgent implements Picker, Movable {
+public abstract class MovableWarAgent extends ControllableWarAgent implements PickerActions, Picker, MovableActions, Movable {
 
 	private double _speed;
 
-	public MovableWarAgent(String firstActionToDo, Team team, double hitboxRadius, WarBrainController brainController, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize, double speed) {
+	public MovableWarAgent(String firstActionToDo, Team team, double hitboxRadius, WarBrain<? extends MovableWarAgentAdapter> brainController, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize, double speed) {
 		super(firstActionToDo, team, hitboxRadius, brainController, distanceOfView, angleOfView, cost, maxHealth, bagSize);
 
 		this._speed = speed;
@@ -34,7 +37,7 @@ public abstract class MovableWarAgent extends ControllableWarAgent implements Pi
 			logger.log(Level.FINER, this.toString() + " moved of " + getSpeed());
 			fd(getSpeed());
 		}
-		return getBrainController().action();
+		return getBrain().action();
 	}
 
 	@Override
@@ -48,7 +51,7 @@ public abstract class MovableWarAgent extends ControllableWarAgent implements Pi
 				logger.log(Level.FINER, this.toString() + " take " + reachableResources.get(0).getClass().getSimpleName());
 			}
 		}
-		return getBrainController().action();
+		return getBrain().action();
 	}
 
 	@Override
@@ -60,7 +63,7 @@ public abstract class MovableWarAgent extends ControllableWarAgent implements Pi
 	public CoordPolar getPositonforGroupeOfTank(ArrayList<Integer> listId) {
 		final int distanceFormation = (int) super.getDistanceOfView();
 
-		this.broadcastMessage("tankFormation1", null);
+		this.broadcastMessageToAll("tankFormation1");
 
 		ArrayList<WarMessage> messageFormation = new ArrayList<>();
 		WarMessage farMessage = null;

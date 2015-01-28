@@ -10,7 +10,9 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.PerceptsGetter;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.agents.resources.WarFood;
-import edu.warbot.brains.WarBrainController;
+import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.capacities.Controllable;
 import edu.warbot.communications.WarKernelMessage;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.game.Team;
@@ -18,9 +20,10 @@ import edu.warbot.launcher.Simulation;
 import edu.warbot.launcher.WarConfig;
 import edu.warbot.tools.CoordCartesian;
 import edu.warbot.tools.CoordPolar;
+import edu.warbot.tools.WarMathTools;
 
 @SuppressWarnings("serial")
-public abstract class ControllableWarAgent extends WarAgent {
+public abstract class ControllableWarAgent extends WarAgent implements Controllable {
 
 	public static final double MAX_DISTANCE_GIVE = WarConfig.getMaxDistanceGive();
 	public static final String ACTION_GIVE = "give";
@@ -36,12 +39,12 @@ public abstract class ControllableWarAgent extends WarAgent {
 	private int _bagSize;
 	private int _idNextAgentToGive;
 	private double _viewDirection;
-	private WarBrainController _brainController;
+	private WarBrain<? extends ControllableWarAgentAdapter> _brain;
 	private PerceptsGetter _perceptsGetter;
 	private String _debugString;
 	private Color _debugStringColor;
 
-	public ControllableWarAgent(String firstActionToDo, Team team, double hitboxRadius, WarBrainController brainController, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize) {
+	public ControllableWarAgent(String firstActionToDo, Team team, double hitboxRadius, WarBrain<? extends ControllableWarAgentAdapter> brain, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize) {
 		super(firstActionToDo, team, hitboxRadius);
 
 		_distanceOfView = distanceOfView;
@@ -52,9 +55,11 @@ public abstract class ControllableWarAgent extends WarAgent {
 		_bagSize = bagSize;
 		_nbElementsInBag = 0;
 		_viewDirection = 180 * new Random().nextDouble();
-		_brainController = brainController;
+		_brain = brain;
 		_debugString = "";
 		_debugStringColor = Color.BLACK;
+		
+		
 	}
 
 	@Override
@@ -62,7 +67,7 @@ public abstract class ControllableWarAgent extends WarAgent {
 		super.activate();
 		_perceptsGetter = Simulation.getInstance().getPerceptsGetterNewInstance(this);
 		randomHeading();
-		_brainController.activate();
+		_brain.activate();
 	}
 	
 	@Override
@@ -87,7 +92,7 @@ public abstract class ControllableWarAgent extends WarAgent {
 				}
 			}
 		}
-		return getBrainController().action();
+		return getBrain().action();
 	}
 
 	public String eat() {
@@ -97,23 +102,24 @@ public abstract class ControllableWarAgent extends WarAgent {
 			heal(WarFood.HEALTH_GIVEN);
 			logger.finer(this.toString() + " eat.");
 		}
-		return getBrainController().action();
+		return getBrain().action();
 	}
 
 	public String idle() {
 		logger.finer(this.toString() + " idle.");
-		return getBrainController().action();
+		return getBrain().action();
 	}
 
-	public WarBrainController getBrainController() {
-		return _brainController;
+	public WarBrain<? extends ControllableWarAgentAdapter> getBrain() {
+		return _brain;
 	}
 	
-	public void setBrainController(WarBrainController brainController) {
-		_brainController = brainController;
+	public void setBrain(WarBrain<? extends ControllableWarAgentAdapter> brain) {
+		_brain = brain;
 	}
 
-	public ReturnCode sendMessage(int idAgent, String message, String[] content) {
+	@Override
+	public ReturnCode sendMessage(int idAgent, String message, String... content) {
 		WarAgent agent = getTeam().getAgentWithID(idAgent);
 		if (agent != null) {
 			logger.finer(this.toString() + " send message to " + agent.toString());
@@ -123,30 +129,35 @@ public abstract class ControllableWarAgent extends WarAgent {
 		return ReturnCode.INVALID_AGENT_ADDRESS;
 	}
 
-	public ReturnCode broadcastMessage(WarAgentType agentType, String message, String[] content) {
+	@Override
+	public ReturnCode broadcastMessageToAgentType(WarAgentType agentType, String message, String... content) {
 		logger.finer(this.toString() + " send message to default role agents : " + agentType);
 		logger.finest("This message is : [" + message + "] " + content);
 		return sendMessage(getTeam().getName(), Team.DEFAULT_GROUP_NAME, agentType.toString(), new WarKernelMessage(this, message, content));
 	}
 
-	public ReturnCode broadcastMessage(String groupName, String roleName, String message, String[] content) {
+	@Override
+	public ReturnCode broadcastMessage(String groupName, String roleName, String message, String... content) {
 		logger.finer(this.toString() + " send message to agents from group " + groupName + " with role " + roleName);
 		logger.finest("This message is : [" + message + "] " + content);
 		return sendMessage(getTeam().getName(), groupName, roleName, new WarKernelMessage(this, message, content));
 	}
 
-	public void broadcastMessage(String message, String[] content) {
+	@Override
+	public void broadcastMessageToAll(String message, String... content) {
 		logger.finer(this.toString() + " send message to all his team.");
 		logger.finest("This message is : [" + message + "] " + content);
 		getTeam().sendMessageToAllMembers(this, message, content);
 	}
 
-	public ReturnCode reply(WarMessage warMessage, String message, String[] content) {
+	@Override
+	public ReturnCode reply(WarMessage warMessage, String message, String... content) {
 		logger.log(Level.FINER, this.toString() + " send reply to " + warMessage.getSenderID());
 		logger.log(Level.FINEST, "This message is : [" + message + "] " + content);
 		return sendMessage(warMessage.getSenderID(), message, content);
 	}
 
+	@Override
 	public ArrayList<WarMessage> getMessages() {
 		ArrayList<WarMessage> messages = new ArrayList<>();
 		Message msg;
@@ -173,10 +184,12 @@ public abstract class ControllableWarAgent extends WarAgent {
 		return _cost;
 	}
 
+	@Override
 	public int getHealth() {
 		return _health;
 	}
 
+	@Override
 	public int getMaxHealth() {
 		return _maxHealth;
 	}
@@ -198,30 +211,46 @@ public abstract class ControllableWarAgent extends WarAgent {
 		}
 	}
 
+	@Override
 	public int getNbElementsInBag() {
 		return _nbElementsInBag;
 	}
 
+	@Override
 	public int getBagSize() {
 		return _bagSize;
+	}
+	
+	@Override
+	public boolean isBagEmpty() {
+		return getNbElementsInBag() == 0;
+	}
+	
+	@Override
+	public boolean isBagFull() {
+		return getNbElementsInBag() == getBagSize();
 	}
 
 	public void addElementInBag() {
 		_nbElementsInBag++;
 	}
 
+	@Override
 	public void setIdNextAgentToGive(int idNextAgentToGive) {
 		_idNextAgentToGive = idNextAgentToGive;
 	}
 
+	@Override
 	public void setViewDirection(double newViewDirection) {
 		this._viewDirection = newViewDirection;
 	}
 
+	@Override
 	public double getViewDirection() {
 		return _viewDirection;
 	}
 
+	@Override
 	public ArrayList<WarPercept> getPercepts() {
 		return _perceptsGetter.getPercepts();
 	}
@@ -230,12 +259,33 @@ public abstract class ControllableWarAgent extends WarAgent {
 		return _perceptsGetter.getAgentsPercepts(ally);
 	}
 	
-	public ArrayList<WarPercept> getPerceptsRessource() {
+	@Override
+	public ArrayList<WarPercept> getPerceptsAllies() {
+		return getPercepts(true);
+	}
+	
+	@Override
+	public ArrayList<WarPercept> getPerceptsEnemies() {
+		return getPercepts(false);
+	}
+	
+	@Override
+	public ArrayList<WarPercept> getPerceptsResources() {
 		return _perceptsGetter.getResourcesPercepts();
 	}
 	
-	public ArrayList<WarPercept> getPerceptsOfAgentByType(WarAgentType agentType, boolean ally) {
+	public ArrayList<WarPercept> getPerceptsByAgentType(WarAgentType agentType, boolean ally) {
 		return _perceptsGetter.getPerceptsByType(agentType, ally);
+	}
+	
+	@Override
+	public ArrayList<WarPercept> getPerceptsAlliesByType(WarAgentType agentType) {
+		return getPerceptsByAgentType(agentType, true);
+	}
+	
+	@Override
+	public ArrayList<WarPercept> getPerceptsEnemiesByType(WarAgentType agentType) {
+		return getPerceptsByAgentType(agentType, false);
 	}
 
 
@@ -251,6 +301,7 @@ public abstract class ControllableWarAgent extends WarAgent {
 	 *            correspondant à la distance et l'angle que l'agent allié voit l'ennemi.
 	 * @return Coordonnee polaire de l'agent ennemi perçu indirectement
 	 */
+	@Override
 	public CoordPolar getIndirectPositionOfAgentWithMessage(WarMessage message) {
 		if (message.getContent().length != 2) {
 			System.out.println("ATTENTION vous devez envoyer un message avec des informations corrects dans getSecondPositionAgent");
@@ -279,8 +330,9 @@ public abstract class ControllableWarAgent extends WarAgent {
 	 * 
 	 * @return Coordonnee polaire de la position moyenne du groupe ou null si aucune unite
 	 */
+	@Override
 	public CoordPolar getAveragePositionOfUnitInPercept(WarAgentType agentType, boolean ally) {
-		ArrayList<WarPercept> listPercept = this.getPerceptsOfAgentByType(agentType, ally);
+		ArrayList<WarPercept> listPercept = this.getPerceptsByAgentType(agentType, ally);
 
 		if (listPercept.size() == 0)
 			return null;
@@ -305,18 +357,28 @@ public abstract class ControllableWarAgent extends WarAgent {
 		return baricentrePolaire;
 	}
 	
+	@Override
+	public CoordPolar getTargetedAgentPosition(double angleToAlly, double distanceFromAlly, double angleFromAllyToTarget, double distanceBetweenAllyAndTarget) {
+		return WarMathTools.addTwoPoints(new CoordPolar(distanceFromAlly, angleToAlly),
+				new CoordPolar(distanceBetweenAllyAndTarget, angleFromAllyToTarget));
+	}
+	
+	@Override
 	public String getDebugString() {
 		return _debugString;
 	}
 	
+	@Override
 	public void setDebugString(String debugString) {
 		_debugString = debugString;
 	}
 	
+	@Override
 	public Color getDebugStringColor() {
 		return _debugStringColor;
 	}
 
+	@Override
 	public void setDebugStringColor(Color color) {
 		_debugStringColor = color;
 	}

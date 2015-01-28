@@ -13,7 +13,7 @@ import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarResource;
 import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.resources.WarFood;
-import edu.warbot.brains.WarBrainController;
+import edu.warbot.brains.WarBrain;
 import edu.warbot.launcher.Simulation;
 import edu.warbot.maps.WarMap;
 import edu.warbot.tools.WarCircle;
@@ -142,7 +142,7 @@ public class Game extends Observable implements Observer {
 
 	public static ControllableWarAgent instantiateNewControllableWarAgent(String agentName, Team team) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
 		String agentToCreateClassName = WarBase.class.getPackage().getName() + "." + agentName;
-		Class<? extends WarBrainController> brainControllerClass = team.getBrainControllerOfAgent(agentName);
+		Class<? extends WarBrain> brainControllerClass = team.getBrainControllerOfAgent(agentName);
 		ControllableWarAgent a = (ControllableWarAgent) Class.forName(agentToCreateClassName).getConstructor(
 				Team.class, Class.forName(brainControllerClass.getSuperclass().getName())).newInstance(
 						team, brainControllerClass.newInstance());

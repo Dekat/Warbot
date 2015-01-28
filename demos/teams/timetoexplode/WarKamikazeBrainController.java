@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.agents.WarKamikaze;
 import edu.warbot.agents.percepts.WarPercept;
-import edu.warbot.brains.braincontrollers.WarKamikazeAbstractBrainController;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarKamikazeAdapter;
 import edu.warbot.communications.WarMessage;
 
-public class WarKamikazeBrainController extends WarKamikazeAbstractBrainController {
+public class WarKamikazeBrainController extends WarBrain<WarKamikazeAdapter> {
 	
 	public WarKamikazeBrainController() {
 		super();
@@ -17,20 +18,20 @@ public class WarKamikazeBrainController extends WarKamikazeAbstractBrainControll
 	@Override
 	public String action() {
 		
-		ArrayList<WarMessage> msgs = getBrain().getMessages();
+		ArrayList<WarMessage> msgs = getAgent().getMessages();
 		
 		for(WarMessage msg : msgs) {
 			if(msg.getMessage().equals("Enemy base on sight")) {
-				getBrain().setHeading(msg.getAngle());
+				getAgent().setHeading(msg.getAngle());
 			}
 		}
 		
-		ArrayList<WarPercept> percepts = getBrain().getPercepts();
+		ArrayList<WarPercept> percepts = getAgent().getPercepts();
 		
 		for (WarPercept p : percepts) {
 			switch(p.getType()) {
 			case WarBase :
-				if (getBrain().isEnemy(p)) {
+				if (getAgent().isEnemy(p)) {
 					return WarKamikaze.ACTION_FIRE;
 				}
 				break;
@@ -39,8 +40,8 @@ public class WarKamikazeBrainController extends WarKamikazeAbstractBrainControll
 			}
 		}
 		
-		if (getBrain().isBlocked())
-			getBrain().setRandomHeading();
+		if (getAgent().isBlocked())
+			getAgent().setRandomHeading();
 		return WarExplorer.ACTION_MOVE;
 	}
 }

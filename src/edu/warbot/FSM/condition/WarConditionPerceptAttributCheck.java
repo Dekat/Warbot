@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarPercept;
-import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.ControllableWarAgentAdapter;
 
-public class WarConditionPerceptAttributCheck extends WarCondition{
+public class WarConditionPerceptAttributCheck<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType> {
 	
 	int attribut;
 	int reference;
@@ -29,14 +29,14 @@ public class WarConditionPerceptAttributCheck extends WarCondition{
 	 * @param agentType null for all
 	 * @param oneOf oneOf = true, all = false
 	 */
-	public WarConditionPerceptAttributCheck(WarBrain brain, String nameAtt,
+	public WarConditionPerceptAttributCheck(AgentAdapterType brain, String nameAtt,
 			String operand, int ref, int poucentage, boolean enemy, WarAgentType agentType, boolean oneOf) {
 		
 		this(brain, nameAtt, operand, (Integer)(ref*poucentage/100), enemy, agentType, oneOf);
 
 	}
 	
-	public WarConditionPerceptAttributCheck(WarBrain brain, String nameAtt,
+	public WarConditionPerceptAttributCheck(AgentAdapterType brain, String nameAtt,
 			String operand, int ref, boolean enemy, WarAgentType agentType, boolean oneOf) {
 		
 		super(brain);
@@ -123,5 +123,4 @@ public class WarConditionPerceptAttributCheck extends WarCondition{
 
 	public static final String HEALTH = "getHealth";
 	public static final String NB_ELEMEN_IN_BAG = "getNbElementsInBag";
-
 }

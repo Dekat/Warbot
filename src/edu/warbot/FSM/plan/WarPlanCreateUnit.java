@@ -5,7 +5,7 @@ import edu.warbot.FSM.action.WarActionCreateUnit;
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.condition.WarConditionActionTerminate;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.brains.WarBaseBrain;
+import edu.warbot.brains.adapters.WarBaseAdapter;
 
 /**
  * Desciption du plan et de ces actions
@@ -13,18 +13,19 @@ import edu.warbot.brains.brains.WarBaseBrain;
  * @author Olivier
  *
  */
-public class WarPlanCreateUnit extends WarPlan{
+public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 	
 	
 	int nombreAgent[];
 	WarAgentType agentType[];
 	
-	WarAction actions[];
-	WarCondition cond[];
+	WarAction<WarBaseAdapter> actions[];
+	WarCondition<WarBaseAdapter> cond[];
 	
 	int minLife;
 	
-	public WarPlanCreateUnit(WarBaseBrain brain, WarAgentType agentTypes[], int nombreAgent[], int reference, int pourcentage) {
+	@SuppressWarnings("unchecked")
+	public WarPlanCreateUnit(WarBaseAdapter brain, WarAgentType agentTypes[], int nombreAgent[], int reference, int pourcentage) {
 		super(brain, "Plan healer");	
 		this.nombreAgent = nombreAgent;
 		this.agentType = agentTypes;
@@ -51,7 +52,7 @@ public class WarPlanCreateUnit extends WarPlan{
 		if(nbA > 1){
 			for(int i = 0; i < nbA; i++){
 				
-				cond[i%nbA] = new WarConditionActionTerminate(getBrain(), actions[i%nbA]);
+				cond[i%nbA] = new WarConditionActionTerminate<WarBaseAdapter>(getBrain(), actions[i%nbA]);
 				cond[i%nbA].setDestination(actions[(i+1)%nbA]);
 				actions[i%nbA].addCondition(cond[i%nbA]);
 			}

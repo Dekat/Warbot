@@ -10,11 +10,12 @@ import edu.warbot.FSM.condition.WarConditionPerceptCounter;
 import edu.warbot.FSM.plan.WarPlanCreateUnit;
 import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.braincontrollers.WarBaseAbstractBrainController;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarBaseAdapter;
 
-public class WarBaseBrainController extends WarBaseAbstractBrainController {
+public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
 
-	WarFSM fsm;
+	WarFSM<WarBaseAdapter> fsm;
 
 	public WarBaseBrainController() {
 		super();
@@ -31,18 +32,18 @@ public class WarBaseBrainController extends WarBaseAbstractBrainController {
 	}
 
 	private void initialisation() {
-		fsm = new WarFSM();
+		fsm = new WarFSM<WarBaseAdapter>();
 
 		/*** Refelexes ***/
-		fsm.addReflexe(new WarReflexeAnswerMessage(getBrain(), WarFSMMessage.whereAreYou, WarFSMMessage.here));
+		fsm.addReflexe(new WarReflexeAnswerMessage<WarBaseAdapter>(getAgent(), WarFSMMessage.whereAreYou, WarFSMMessage.here));
 
-		WarCondition condReflex = new WarConditionPerceptCounter(getBrain(), WarAgentType.WarRocketLauncher, true, ">", 0);
-		fsm.addReflexe(new WarReflexeWarnWithCondition(getBrain(), condReflex, WarAgentType.WarRocketLauncher, WarFSMMessage.baseIsAttack));
+		WarCondition<WarBaseAdapter> condReflex = new WarConditionPerceptCounter<WarBaseAdapter>(getAgent(), WarAgentType.WarRocketLauncher, true, ">", 0);
+		fsm.addReflexe(new WarReflexeWarnWithCondition<WarBaseAdapter>(getAgent(), condReflex, WarAgentType.WarRocketLauncher, WarFSMMessage.baseIsAttack));
 
 		/*** Etats ***/
 		WarAgentType agentType[] = {WarAgentType.WarExplorer, WarAgentType.WarRocketLauncher};
 		int nombre[] = {1, 1};
-		WarEtat etatCreerUnite = new WarEtat("Etat creer unité", new WarPlanCreateUnit(getBrain(), agentType, nombre, WarBase.MAX_HEALTH, 50));
+		WarEtat<WarBaseAdapter> etatCreerUnite = new WarEtat<WarBaseAdapter>("Etat creer unité", new WarPlanCreateUnit(getAgent(), agentType, nombre, WarBase.MAX_HEALTH, 50));
 		fsm.addEtat(etatCreerUnite);
 
 		fsm.setFirstEtat(etatCreerUnite);

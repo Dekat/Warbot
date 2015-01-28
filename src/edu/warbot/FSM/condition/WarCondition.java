@@ -2,30 +2,30 @@ package edu.warbot.FSM.condition;
 
 import edu.warbot.FSM.WarEtat;
 import edu.warbot.FSM.action.WarAction;
-import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.ControllableWarAgentAdapter;
 
-public abstract class WarCondition {
+public abstract class WarCondition<AgentAdapterType extends ControllableWarAgentAdapter> {
 	
-	WarBrain brain;
+	AgentAdapterType brain;
 	
-	private WarEtat etatDestination;
-	private WarAction actionDestination;
+	private WarEtat<AgentAdapterType> etatDestination;
+	private WarAction<AgentAdapterType> actionDestination;
 	
-	public WarCondition(WarBrain b){
+	public WarCondition(AgentAdapterType b){
 		this.brain = b;
 	}
 	
 	public abstract boolean isValide();
 
-	public void setDestination(WarEtat etatDestination) {
+	public void setDestination(WarEtat<AgentAdapterType> etatDestination) {
 		this.etatDestination = etatDestination;
 	}
 	
-	public void setDestination(WarAction a) {
+	public void setDestination(WarAction<AgentAdapterType> a) {
 		this.actionDestination = a;
 	}
 
-	public WarEtat getEtatDestination() {
+	public WarEtat<AgentAdapterType> getEtatDestination() {
 		return etatDestination;
 	}
 
@@ -42,11 +42,11 @@ public abstract class WarCondition {
 		
 	}
 
-	public WarAction getActionDestination() {
+	public WarAction<AgentAdapterType> getActionDestination() {
 		return this.actionDestination;
 	}
 	
-	public WarBrain getBrain(){
+	public AgentAdapterType getBrain(){
 		return this.brain;
 	}
 	

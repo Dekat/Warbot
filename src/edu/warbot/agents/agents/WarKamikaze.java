@@ -4,15 +4,16 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 import edu.warbot.agents.MovableWarAgent;
-import edu.warbot.agents.capacities.Agressive;
+import edu.warbot.agents.actions.AgressiveActions;
 import edu.warbot.agents.projectiles.WarBomb;
-import edu.warbot.brains.braincontrollers.WarKamikazeAbstractBrainController;
-import edu.warbot.brains.brains.WarKamikazeBrain;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarKamikazeAdapter;
+import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
 
 @SuppressWarnings("serial")
-public class WarKamikaze extends MovableWarAgent implements Agressive {
+public class WarKamikaze extends MovableWarAgent implements AgressiveActions, Agressive {
 
 	public static final double ANGLE_OF_VIEW;
 	public static final double HITBOX_RADIUS;
@@ -33,10 +34,10 @@ public class WarKamikaze extends MovableWarAgent implements Agressive {
 		SPEED = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_SPEED));
 	}
 	
-	public WarKamikaze(Team team, WarKamikazeAbstractBrainController brainController) {
-		super(ACTION_IDLE, team, HITBOX_RADIUS, brainController, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
+	public WarKamikaze(Team team, WarBrain<WarKamikazeAdapter> brain) {
+		super(ACTION_IDLE, team, HITBOX_RADIUS, brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
 		
-		getBrainController().setBrain(new WarKamikazeBrain(this));
+		brain.setAgentAdapter(new WarKamikazeAdapter(this));
 	}
 
 	@Override
@@ -44,12 +45,12 @@ public class WarKamikaze extends MovableWarAgent implements Agressive {
 		logger.log(Level.FINER, this.toString() + " fired.");
 		launchAgent(new WarBomb(getTeam(), this));
 		killAgent(this);
-		return getBrainController().action();
+		return getBrain().action();
 	}
 
 	@Override
 	public String beginReloadWeapon() {
-		return getBrainController().action();
+		return getBrain().action();
 	}
 
 	@Override

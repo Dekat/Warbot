@@ -7,7 +7,7 @@ import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.condition.WarConditionActionTerminate;
 import edu.warbot.FSM.condition.WarConditionAttributCheck;
 import edu.warbot.agents.agents.WarExplorer;
-import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.MovableWarAgentAdapter;
 
 /**
  * Desciption du plan et de ces actions
@@ -15,7 +15,7 @@ import edu.warbot.brains.WarBrain;
  * @author Olivier
  *
  */
-public class WarPlanHealer extends WarPlan{
+public class WarPlanHealer<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
 	
 	boolean healAlly = true;
 	
@@ -23,12 +23,12 @@ public class WarPlanHealer extends WarPlan{
 	
 	int pourcentageLifeAlly;
 
-	public WarPlanHealer(WarBrain brain, int  pourcentageLife) {
+	public WarPlanHealer(AgentAdapterType brain, int  pourcentageLife) {
 		this(brain, pourcentageLife, -1);
 		this.healAlly = false;
 	}
 	
-	public WarPlanHealer(WarBrain brain, int  lifePourcentage,
+	public WarPlanHealer(AgentAdapterType brain, int  lifePourcentage,
 			int lifePourcentageAlly) {
 		super(brain, "Plan healer");
 		
@@ -41,22 +41,22 @@ public class WarPlanHealer extends WarPlan{
 		
 		setPrintTrace(true);
 		
-		WarAction actionHeal = new WarActionHeal(getBrain(), this.pourcentageLife, 
+		WarAction<AgentAdapterType> actionHeal = new WarActionHeal<AgentAdapterType>(getBrain(), this.pourcentageLife, 
 				this.pourcentageLifeAlly, healAlly);
 		addAction(actionHeal);
 		
-		WarAction actionFindFood = new WarActionChercherNouriture(getBrain(), WarExplorer.BAG_SIZE);
+		WarAction<AgentAdapterType> actionFindFood = new WarActionChercherNouriture<AgentAdapterType>(getBrain(), WarExplorer.BAG_SIZE);
 		addAction(actionFindFood);
 		
-		WarCondition condTerminateHeal = new WarConditionActionTerminate(getBrain(), actionHeal);
+		WarCondition<AgentAdapterType> condTerminateHeal = new WarConditionActionTerminate<AgentAdapterType>(getBrain(), actionHeal);
 		condTerminateHeal.setDestination(actionFindFood);
 		actionHeal.addCondition(condTerminateHeal);
 		
-		WarCondition condTerminateFindFood = new WarConditionActionTerminate(getBrain(), actionFindFood);
+		WarCondition<AgentAdapterType> condTerminateFindFood = new WarConditionActionTerminate<AgentAdapterType>(getBrain(), actionFindFood);
 		condTerminateFindFood.setDestination(actionHeal);
 		actionFindFood.addCondition(condTerminateFindFood);
 		
-		WarCondition condLowLife = new WarConditionAttributCheck(getBrain(), WarConditionAttributCheck.HEALTH, "<", WarExplorer.MAX_HEALTH, 50);
+		WarCondition<AgentAdapterType> condLowLife = new WarConditionAttributCheck<AgentAdapterType>(getBrain(), WarConditionAttributCheck.HEALTH, "<", WarExplorer.MAX_HEALTH, 50);
 		condLowLife.setDestination(actionHeal);
 		actionFindFood.addCondition(condLowLife);
 		

@@ -6,37 +6,36 @@ import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarPercept;
-import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.brains.WarRocketLauncherBrain;
+import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 import edu.warbot.tools.CoordPolar;
 
 /**
  * @author Olivier
  */
-public class WarActionAttaquer extends WarAction{
+public class WarActionAttaquer extends WarAction<WarRocketLauncherAdapter> {
 	
 	CoordPolar coordBase;
 	WarAgentType agentType;
 	
-	public WarActionAttaquer(WarBrain brain, WarAgentType agentType) {
-		super(brain);
+	public WarActionAttaquer(WarRocketLauncherAdapter agentAdapter, WarAgentType agentType) {
+		super(agentAdapter);
 		this.agentType = agentType;
 	}
 
 	public String executeAction(){
 		
-		if(!getBrain().isReloaded() && !getBrain().isReloading()){
+		if(!getAgent().isReloaded() && !getAgent().isReloading()){
 			return WarRocketLauncher.ACTION_RELOAD;
 		}
 		
-		ArrayList<WarPercept> percept = getBrain().getPerceptsEnemiesByType(this.agentType);
+		ArrayList<WarPercept> percept = getAgent().getPerceptsEnemiesByType(this.agentType);
 		
 		// Je un agentType dans le percept
 		if(percept != null && percept.size() > 0){
 			
-			if(getBrain().isReloaded()){
+			if(getAgent().isReloaded()){
 				
-				getBrain().setHeading(percept.get(0).getAngle());
+				getAgent().setHeading(percept.get(0).getAngle());
 				return WarRocketLauncher.ACTION_FIRE;
 			}else{
 				//placement mieux
@@ -58,9 +57,4 @@ public class WarActionAttaquer extends WarAction{
 		super.actionWillBegin();
 	}
 	
-	@Override
-	public WarRocketLauncherBrain getBrain(){
-		return (WarRocketLauncherBrain)(super.getBrain());
-	}
-
 }

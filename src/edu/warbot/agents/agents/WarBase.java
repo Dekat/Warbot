@@ -3,15 +3,16 @@ package edu.warbot.agents.agents;
 import java.util.HashMap;
 
 import edu.warbot.agents.CreatorWarAgent;
-import edu.warbot.agents.capacities.Creator;
+import edu.warbot.agents.actions.CreatorActions;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.braincontrollers.WarBaseAbstractBrainController;
-import edu.warbot.brains.brains.WarBaseBrain;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarBaseAdapter;
+import edu.warbot.brains.capacities.Creator;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
 
 @SuppressWarnings("serial")
-public class WarBase extends CreatorWarAgent implements Creator {
+public class WarBase extends CreatorWarAgent implements CreatorActions, Creator {
 
 	public static final double ANGLE_OF_VIEW;
 	public static final double HITBOX_RADIUS;
@@ -30,10 +31,10 @@ public class WarBase extends CreatorWarAgent implements Creator {
 		BAG_SIZE = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_BAG_SIZE));
 	}
 	
-	public WarBase(Team team, WarBaseAbstractBrainController brainController) {
-		super(ACTION_IDLE, team, HITBOX_RADIUS, brainController, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE);
+	public WarBase(Team team, WarBrain<WarBaseAdapter> brain) {
+		super(ACTION_IDLE, team, HITBOX_RADIUS, brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE);
 		
-		getBrainController().setBrain(new WarBaseBrain(this));
+		brain.setAgentAdapter(new WarBaseAdapter(this));
 	}
 
 	@Override
