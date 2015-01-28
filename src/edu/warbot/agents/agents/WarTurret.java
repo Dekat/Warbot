@@ -5,7 +5,7 @@ import java.util.logging.Level;
 
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.actions.AgressiveActions;
-import edu.warbot.agents.projectiles.WarRocket;
+import edu.warbot.agents.projectiles.WarDeathRocket;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarTurretAdapter;
 import edu.warbot.brains.capacities.Agressive;
@@ -62,7 +62,7 @@ public class WarTurret extends ControllableWarAgent implements AgressiveActions,
 		logger.log(Level.FINEST, this.toString() + " firing...");
 		if (isReloaded()) {
 			logger.log(Level.FINER, this.toString() + " fired.");
-			launchAgent(new WarRocket(getTeam(), this));
+			launchAgent(new WarDeathRocket(getTeam(), this));
 			_reloaded = false;
 		}
 		return getBrain().action();
