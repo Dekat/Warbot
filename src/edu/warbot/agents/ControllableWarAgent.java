@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.logging.Level;
 
 import madkit.kernel.Message;
+import edu.warbot.agents.actions.ControllableActions;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.PerceptsGetter;
 import edu.warbot.agents.percepts.WarPercept;
@@ -17,18 +18,12 @@ import edu.warbot.communications.WarKernelMessage;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.Simulation;
-import edu.warbot.launcher.WarConfig;
 import edu.warbot.tools.CoordCartesian;
 import edu.warbot.tools.CoordPolar;
 import edu.warbot.tools.WarMathTools;
 
 @SuppressWarnings("serial")
-public abstract class ControllableWarAgent extends WarAgent implements Controllable {
-
-	public static final double MAX_DISTANCE_GIVE = WarConfig.getMaxDistanceGive();
-	public static final String ACTION_GIVE = "give";
-	public static final String ACTION_EAT = "eat";
-	public static final String ACTION_IDLE = "idle";
+public abstract class ControllableWarAgent extends WarAgent implements ControllableActions, Controllable {
 
 	private double _angleOfView;
 	private double _distanceOfView;
@@ -76,6 +71,7 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 		_perceptsGetter.setPerceptsAlreadyInit(false); // On indique au PerceptGetter qu'un nouveau tick est passé
 	}
 
+	@Override
 	public String give() {
 		logger.log(Level.FINEST, this.toString() + " giving...");
 		if(getNbElementsInBag() > 0) { // Si l'agent courant a quelque chose à donner
@@ -95,6 +91,7 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 		return getBrain().action();
 	}
 
+	@Override
 	public String eat() {
 		logger.finest(this.toString() + " eating...");
 		if (getNbElementsInBag() > 0) {
@@ -105,6 +102,7 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 		return getBrain().action();
 	}
 
+	@Override
 	public String idle() {
 		logger.finer(this.toString() + " idle.");
 		return getBrain().action();
