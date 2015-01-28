@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -21,18 +20,19 @@ import javax.swing.border.TitledBorder;
 import org.jfree.ui.tabbedui.VerticalLayout;
 
 import edu.warbot.FSMEditor.Configuration;
-import edu.warbot.FSMEditor.Frame;
+import edu.warbot.FSMEditor.View;
 
-public class DialogueCondSetting extends JDialog{
+public class DialogueCondSetting extends AbstractDialogue{
 	
-	public DialogueCondSetting(Frame f) {
+	private static final long serialVersionUID = 1L;
+
+	public DialogueCondSetting(View f) {
 		super(f, true);
 		
 		this.setTitle("Condition Setting");
 		this.setSize(new Dimension(322, 500));
 		
 		JPanel panelMain = new JPanel(new BorderLayout());
-		panelMain.setBounds(10, 10, 10, 10);
 		this.setContentPane(panelMain);
 		
 		//Top panel
@@ -62,8 +62,6 @@ public class DialogueCondSetting extends JDialog{
 		buttonOk = new JButton("Ok");
 		panelBottom.add(console);
 		panelBottom.add(buttonOk);
-		
-		
 		
 		buttonOk.addActionListener(new ActionListener() {
 			@Override
@@ -102,8 +100,8 @@ public class DialogueCondSetting extends JDialog{
 		panel.setBorder(new TitledBorder("Action terminate"));
 		
 		comboListAttribut = new JComboBox<String>(Configuration.ATTRIBUTES);
-		fieldOperateur = new JTextField("  ");
-		fieldValeurAttribut = new JTextField("     ");
+		fieldOperateur = new JTextField();
+		fieldValeurAttribut = new JTextField();
 		checkBoxPourcentage = new JCheckBox();
 		
 		panel.add(new JLabel("Attribut "));
@@ -131,6 +129,23 @@ public class DialogueCondSetting extends JDialog{
 	
 	public String getConditionType(){
 		return (String)(comboTypeCond.getSelectedItem());
+	}
+	
+	//Acceseurs
+	public String getAttributCheckName(){
+		return (String) comboListAttribut.getSelectedItem();
+	}
+	
+	public String getAttributCheckOperateur(){
+		return fieldOperateur.getText();
+	}
+	
+	public String getAttributCheckValue(){
+		return fieldValeurAttribut.getText();
+	}
+	
+	public boolean getAttributCheckPourcentage(){
+		return checkBoxPourcentage.isSelected();
 	}
 	
 	JComboBox<String> comboTypeCond;

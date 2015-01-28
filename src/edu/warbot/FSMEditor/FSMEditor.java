@@ -7,10 +7,9 @@ public class FSMEditor {
 	public FSMEditor() {
 		Modele modele = new Modele();
 		
-		Frame vu = new Frame(modele);
+		View vu = new View(modele);
 		
 		Controleur controleur = new Controleur(modele, vu);
 		
 	}
-
 }

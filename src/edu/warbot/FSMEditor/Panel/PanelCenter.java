@@ -1,15 +1,12 @@
 package edu.warbot.FSMEditor.Panel;
 
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 import edu.warbot.FSMEditor.Modele.Modele;
-import edu.warbot.FSMEditor.Modele.ModeleCondition;
-import edu.warbot.FSMEditor.Modele.ModeleState;
+import edu.warbot.FSMEditor.Modele.ModeleBrain;
 
 public class PanelCenter extends JPanel {
 
@@ -18,10 +15,10 @@ public class PanelCenter extends JPanel {
 	ArrayList<PanelState> panelSates = new ArrayList<>();
 	ArrayList<PanelCondition> panelConditions = new ArrayList<>();
 
-	Modele modele;
+	ModeleBrain modele;
 
 	public PanelCenter(Modele modele) {
-		this.modele = modele;
+		this.modele = modele.getModeleExplorer();
 	}
 
 	public void paintComponent(Graphics g) {

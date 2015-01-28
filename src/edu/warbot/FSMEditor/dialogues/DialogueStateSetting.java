@@ -1,7 +1,6 @@
 package edu.warbot.FSMEditor.dialogues;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,7 +11,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
@@ -20,8 +18,10 @@ import org.jfree.ui.tabbedui.VerticalLayout;
 
 import edu.warbot.FSMEditor.Configuration;
 
-public class DialogueStateSetting extends JDialog{
+public class DialogueStateSetting extends AbstractDialogue{
 
+	private static final long serialVersionUID = 1L;
+	
 	public DialogueStateSetting(JFrame f){
 		super(f, true);
 		
@@ -57,21 +57,28 @@ public class DialogueStateSetting extends JDialog{
 		buttonOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				valider();
+				eventValider();
 			}
 		});
 
 		this.setVisible(true);
 	}
 	
-	private void valider(){
+	private void eventValider(){
 		
 		if(this.fieldNameEtat.getText().isEmpty())
-			console.setText("Entrer un nom pour l'état");
-		else
+			console.setText("Entrer un nom pour l'�tat");
+		else{
+			checkValidity();
 			this.dispose();
+		}
 	}
 	
+	private void checkValidity() {
+		if(this.fieldNameEtat.getText().isEmpty() == false && this.comboxPlan.getSelectedIndex() != -1)
+			super.isValide = true;
+	}
+
 	public String getNom(){
 		return this.fieldNameEtat.getText();
 	}
@@ -85,4 +92,5 @@ public class DialogueStateSetting extends JDialog{
 	
 	JLabel console;
 	JButton buttonOk;
+
 }

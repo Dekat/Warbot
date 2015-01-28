@@ -2,11 +2,14 @@ package edu.warbot.FSMEditor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import edu.warbot.FSMEditor.Modele.Modele;
+import edu.warbot.FSMEditor.Modele.ModeleBrain;
 import edu.warbot.FSMEditor.Modele.ModeleCondition;
 import edu.warbot.FSMEditor.Modele.ModeleState;
 import edu.warbot.FSMEditor.Panel.PanelCondition;
@@ -17,60 +20,91 @@ import edu.warbot.FSMEditor.dialogues.DialogueStateSetting;
 public class Controleur {
 
 	public Modele modele;
-	public Frame view;
+	public View view;
 	
-	public Controleur(Modele modele, Frame vu) {
+	public Controleur(Modele modele, View vu) {
 		this.modele = modele;
 		this.view = vu;
 		
-		init();
+		placeListenerOnView();
+		placeListeerOnPanel();
+		placeListenerOnMenuBar();
 	}
 	
-	private void init(){
+	
+	private void placeListenerOnMenuBar() {
+		view.getMenuBarItemSave().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				eventMenuBarItemSave();
+			}
+		});
+		view.getMenuBarItemLoad().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				eventMenuBarItemLoad();
+			}
+		});
+	}
+	
+	public void eventMenuBarItemSave() {
+		FSMXMLSaver fsmSaver = new FSMXMLSaver();
 		
+		fsmSaver.saveFSM(modele, "FSM.xml");
+		
+	}
+	
+	public void eventMenuBarItemLoad(){
+		
+	}
+
+
+	private void placeListeerOnPanel() {
 		MouseListenerPanelCenter mouseListener = new MouseListenerPanelCenter(this);
 		view.getPanelCenter().addMouseListener(mouseListener);
-		view.getPanelCenter().addMouseMotionListener(mouseListener);
+		view.getPanelCenter().addMouseMotionListener(mouseListener);		
+	}
+
+
+	private void placeListenerOnView(){
 		
 		view.getButtonAddSate().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				addSate();
+				eventAddSate();
 			}
 		});
 		
 		view.getButtonAddCond().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				addCond();
+				eventAddCond();
 			}
 		});
 		
 		view.getButtonDelState().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				delState();
+				eventDelState();
 			}
 		});
 		
 		view.getButtonEditCond().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				editCond();
+				eventEditCond();
 			}
 		});
 		
 		view.getListeCondition().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
-				listeConditionEdition(e);
+				eventListeConditionEdition(e);
 			}
 		});
 		
-		//Pour debuger
-		addSate();addSate();addCond();
 	}
 	
-	private void listeConditionEdition(ListSelectionEvent e){
+	private void eventListeConditionEdition(ListSelectionEvent e){
 		//Deselctionne tous les elements
 		for (PanelCondition p : this.view.getPanelCenter().getPanelcondition()) {
 			p.isSelected = false;
@@ -84,21 +118,24 @@ public class Controleur {
 		this.view.getPanelCenter().repaint();
 	}
 	
-	private void addSate(){
+	private void eventAddSate(){
 		DialogueStateSetting d = new DialogueStateSetting(this.view); 
+
+		if(d.isValideComponent()){
+			//creation du modele
+			ModeleState s = new ModeleState(d);
+			this.modele.getModeleExplorer().addState(s);
+			
+			//Ajoute du panel
+			PanelState panel = new PanelState(s);
+			this.view.getPanelCenter().addState(panel);
+			
+			view.getPanelCenter().repaint();
+		}
 		
-		//creation du modele
-		ModeleState s = new ModeleState(d);
-		this.modele.addState(s);
-		
-		//Ajoute du panel
-		PanelState panel = new PanelState(s);
-		this.view.getPanelCenter().addState(panel);
-		
-		view.getPanelCenter().repaint();
 	}
 	
-	private void addCond(){
+	private void eventAddCond(){
 		
 		if(this.view.getPanelCenter().isTwoStatesSelected()){
 			
@@ -116,7 +153,7 @@ public class Controleur {
 			
 			//Crée un nouveau modele condition et le donne au modele
 			ModeleCondition mc = new ModeleCondition(d);
-			this.modele.addCondition(mc);
+			this.modele.getModeleExplorer().addCondition(mc);
 			
 			//Crée un nouveau panel condition et le donne au panel
 			PanelCondition pc = new PanelCondition(mc);
@@ -140,13 +177,13 @@ public class Controleur {
 		view.getPanelCenter().repaint();
 	}
 	
-	private void delState(){
+	private void eventDelState(){
 		if(this.view.getPanelCenter().isOneStateSelected()){
 			
 			PanelState panelToDelet = this.view.getPanelCenter().getFirstSelectedState();
 			
 			//ATTENTION : supprimer le modele avant le panel puisque on utilise le panel pour acceder au modele
-			this.modele.removeState(panelToDelet.getModele());
+			this.modele.getModeleExplorer().removeState(panelToDelet.getModele());
 			this.view.getPanelCenter().removePanelState(panelToDelet);
 			
 			this.view.getPanelCenter().setNoItemSelected();
@@ -156,14 +193,14 @@ public class Controleur {
 		
 	}
 
-	private void editCond(){
+	private void eventEditCond(){
 		String condSelec = this.view.getListeConditions().getSelectedValue();
 		
 		if(condSelec != null){
 			
 			ModeleCondition modeleCond;
 			
-			for (ModeleCondition modeleC : this.modele.getConditions()) {
+			for (ModeleCondition modeleC : this.modele.getModeleExplorer().getConditions()) {
 				if(modeleC.getNom().equals(condSelec)){
 					modeleCond = modeleC;
 					break;

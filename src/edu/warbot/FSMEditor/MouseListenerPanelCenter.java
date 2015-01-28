@@ -5,8 +5,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import edu.warbot.FSMEditor.Panel.AbstractPanel;
-import edu.warbot.FSMEditor.Panel.PanelCondition;
 import edu.warbot.FSMEditor.Panel.PanelState;
 
 public class MouseListenerPanelCenter implements MouseListener, MouseMotionListener {
