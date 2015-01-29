@@ -11,11 +11,12 @@ import edu.warbot.FSM.plan.WarPlanAttaquer;
 import edu.warbot.FSM.plan.WarPlanDefendre;
 import edu.warbot.FSM.plan.WarPlanPatrouiller;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.braincontrollers.WarRocketLauncherAbstractBrainController;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
-public class WarRocketLauncherBrainController extends WarRocketLauncherAbstractBrainController {
+public class WarRocketLauncherBrainController extends WarBrain<WarRocketLauncherAdapter> {
 
-	WarFSM fsm;
+	WarFSM<WarRocketLauncherAdapter> fsm;
 
 	public WarRocketLauncherBrainController() {
 		super();
@@ -32,36 +33,36 @@ public class WarRocketLauncherBrainController extends WarRocketLauncherAbstractB
 	}
 
 	private void initialisation() {
-		fsm = new WarFSM();
+		fsm = new WarFSM<WarRocketLauncherAdapter>();
 
 		/*** Refelxes ***/
-		WarCondition condReflex = new WarConditionPerceptCounter(getBrain(), WarAgentType.WarBase, true, ">", 0);
-		fsm.addReflexe(new WarReflexeWarnWithCondition(getBrain(), condReflex, WarAgentType.WarRocketLauncher, WarFSMMessage.enemyBaseHere));
+		WarCondition<WarRocketLauncherAdapter> condReflex = new WarConditionPerceptCounter<WarRocketLauncherAdapter>(getAgent(), WarAgentType.WarBase, true, ">", 0);
+		fsm.addReflexe(new WarReflexeWarnWithCondition<WarRocketLauncherAdapter>(getAgent(), condReflex, WarAgentType.WarRocketLauncher, WarFSMMessage.enemyBaseHere));
 
 		/*** Etats ***/
-		WarEtat etatPatrouille = new WarEtat("Etat patrouiler", new WarPlanPatrouiller(getBrain(), true));
+		WarEtat<WarRocketLauncherAdapter> etatPatrouille = new WarEtat<WarRocketLauncherAdapter>("Etat patrouiler", new WarPlanPatrouiller(getAgent(), true));
 		fsm.addEtat(etatPatrouille);
 
-		WarEtat etatAtt = new WarEtat("Etat Attaquer", new WarPlanAttaquer(getBrain(), WarAgentType.WarBase));
+		WarEtat<WarRocketLauncherAdapter> etatAtt = new WarEtat<WarRocketLauncherAdapter>("Etat Attaquer", new WarPlanAttaquer(getAgent(), WarAgentType.WarBase));
 		fsm.addEtat(etatAtt);
 
-		WarEtat etatDef = new WarEtat("Etat Defendre", new WarPlanDefendre(getBrain()));
+		WarEtat<WarRocketLauncherAdapter> etatDef = new WarEtat<WarRocketLauncherAdapter>("Etat Defendre", new WarPlanDefendre(getAgent()));
 		fsm.addEtat(etatDef);
 
 		/*** Conditions ***/
-		WarCondition cond1 = new WarConditionPerceptCounter(getBrain(), WarAgentType.WarBase, true, ">", 0);
+		WarCondition<WarRocketLauncherAdapter> cond1 = new WarConditionPerceptCounter<WarRocketLauncherAdapter>(getAgent(), WarAgentType.WarBase, true, ">", 0);
 		cond1.setDestination(etatAtt);
 		etatPatrouille.addCondition(cond1);
 
-		WarCondition cond2 = new WarConditionPerceptCounter(getBrain(), WarAgentType.WarBase, true, "==", 0);
+		WarCondition<WarRocketLauncherAdapter> cond2 = new WarConditionPerceptCounter<WarRocketLauncherAdapter>(getAgent(), WarAgentType.WarBase, true, "==", 0);
 		cond2.setDestination(etatAtt);
 		etatAtt.addCondition(cond2);
 
-		WarCondition cond3 = new WarConditionMessageChecker(getBrain(), WarAgentType.WarBase, WarFSMMessage.baseIsAttack);
+		WarCondition<WarRocketLauncherAdapter> cond3 = new WarConditionMessageChecker<WarRocketLauncherAdapter>(getAgent(), WarAgentType.WarBase, WarFSMMessage.baseIsAttack);
 		cond3.setDestination(etatDef);
 		etatPatrouille.addCondition(cond3);
 		/*
-		WarCondition cond4 = new WarConditionPerceptCounter(getBrain(), WarAgentType.WarRocketLauncher, true, "==", 0);
+		WarCondition cond4 = new WarConditionPerceptCounter(getAgent(), WarAgentType.WarRocketLauncher, true, "==", 0);
 		cond4.setDestination(etatAtt);
 		etatDef.addCondition(cond4);
 		*/

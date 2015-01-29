@@ -7,8 +7,7 @@ import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarPercept;
-import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.brains.WarRocketLauncherBrain;
+import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.tools.CoordPolar;
 
@@ -17,18 +16,18 @@ import edu.warbot.tools.CoordPolar;
  * @author Olivier
  *
  */
-public class WarActionChercherBase extends WarAction{
+public class WarActionChercherBase extends WarAction<WarRocketLauncherAdapter> {
 	
 	CoordPolar coordPolarBase;
 	
-	public WarActionChercherBase(WarBrain brain) {
+	public WarActionChercherBase(WarRocketLauncherAdapter brain) {
 		super(brain);
 	}
 
 	@Override
 	public String executeAction(){
 		
-		ArrayList<WarPercept> basePercepts = getBrain().getPerceptsEnemiesByType(WarAgentType.WarBase);
+		ArrayList<WarPercept> basePercepts = getAgent().getPerceptsEnemiesByType(WarAgentType.WarBase);
 		
 		// Je vois la base
 		if(basePercepts != null && basePercepts.size() > 0){ 
@@ -36,11 +35,11 @@ public class WarActionChercherBase extends WarAction{
 			String baseCoord[] = {String.valueOf(basePercepts.get(0).getAngle()), String.valueOf(basePercepts.get(0).getDistance()) };
 			
 			// Previent les autres unités de où est la base
-			getBrain().broadcastMessageToAgentType(WarAgentType.WarRocketLauncher, WarFSMMessage.enemyBaseHere, baseCoord);
+			getAgent().broadcastMessageToAgentType(WarAgentType.WarRocketLauncher, WarFSMMessage.enemyBaseHere, baseCoord);
 
 			setActionTerminate(true);
 			
-			getBrain().setHeading(basePercepts.get(0).getAngle());
+			getAgent().setHeading(basePercepts.get(0).getAngle());
 			return MovableWarAgent.ACTION_MOVE;
 			
 		
@@ -48,7 +47,7 @@ public class WarActionChercherBase extends WarAction{
 			
 			// Je me souvient d'ou est la base
 			if(coordPolarBase != null && coordPolarBase.getDistance() > WarRocketLauncher.DISTANCE_OF_VIEW){
-				getBrain().setHeading(coordPolarBase.getAngle());
+				getAgent().setHeading(coordPolarBase.getAngle());
 				return MovableWarAgent.ACTION_MOVE;
 			}else if(coordPolarBase != null && coordPolarBase.getDistance() < WarRocketLauncher.DISTANCE_OF_VIEW){
 				this.coordPolarBase = null;
@@ -58,17 +57,17 @@ public class WarActionChercherBase extends WarAction{
 			
 			//Si j'ai un message qui me dit où est la base
 			if(m != null && m.getContent().length == 2){
-				this.coordPolarBase = getBrain().getIndirectPositionOfAgentWithMessage(m);
+				this.coordPolarBase = getAgent().getIndirectPositionOfAgentWithMessage(m);
 				
-				getBrain().setHeading(coordPolarBase.getAngle());
+				getAgent().setHeading(coordPolarBase.getAngle());
 				return MovableWarAgent.ACTION_MOVE;
 			}else if(m != null){
-				getBrain().setHeading(m.getAngle());
+				getAgent().setHeading(m.getAngle());
 				return MovableWarAgent.ACTION_MOVE;
 			}
 			
-			if(getBrain().isBlocked())
-				getBrain().setRandomHeading();
+			if(getAgent().isBlocked())
+				getAgent().setRandomHeading();
 			
 			return MovableWarAgent.ACTION_MOVE;
 		}
@@ -76,7 +75,7 @@ public class WarActionChercherBase extends WarAction{
 	}
 
 	private WarMessage getMessageLocateBase() {
-		for (WarMessage m: getBrain().getMessages()) {
+		for (WarMessage m: getAgent().getMessages()) {
 			if(m.getMessage().equals(WarFSMMessage.enemyBaseHere))
 				return m;
 		}
@@ -88,9 +87,4 @@ public class WarActionChercherBase extends WarAction{
 		super.actionWillBegin();
 	}
 	
-	@Override
-	public WarRocketLauncherBrain getBrain(){
-		return (WarRocketLauncherBrain)(super.getBrain());
-	}
-
 }

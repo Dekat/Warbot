@@ -7,7 +7,10 @@ import turtlekit.kernel.Turtle;
 
 import com.badlogic.gdx.math.Circle;
 
-import edu.warbot.agents.capacities.Movable;
+import edu.warbot.agents.actions.MovableActions;
+import edu.warbot.agents.percepts.WarPercept;
+import edu.warbot.brains.capacities.CommonCapacities;
+import edu.warbot.brains.capacities.Movable;
 import edu.warbot.game.Game;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.Simulation;
@@ -16,7 +19,7 @@ import edu.warbot.tools.CoordPolar;
 import edu.warbot.tools.WarMathTools;
 
 @SuppressWarnings("serial")
-public abstract class WarAgent extends Turtle {
+public abstract class WarAgent extends Turtle implements CommonCapacities {
 
 	private double _hitboxRadius;
 	private Team _team;
@@ -48,25 +51,39 @@ public abstract class WarAgent extends Turtle {
 
 	protected void doOnEachTick() { }
 
+	@Override
 	public AbstractAgent.ReturnCode requestRole(String group, String role) {
 		createGroupIfAbsent(getTeam().getName(), group);
 		return requestRole(getTeam().getName(), group, role);
 	}
 	
+	@Override
 	public AbstractAgent.ReturnCode leaveRole(String group, String role) {
 		return super.leaveRole(getTeam().getName(), group, role);
 	}
 
+	@Override
 	public AbstractAgent.ReturnCode leaveGroup(String group) {
 		return super.leaveGroup(getTeam().getName(), group);
 	}
 
+	@Override
 	public int numberOfAgentsInRole(String group, String role) {
 		return (getAgentsWithRole(getTeam().getName(), group, role).size());
 	}
 
 	public Team getTeam() {
 		return _team;
+	}
+	
+	@Override
+	public String getTeamName() {
+		return getTeam().getName();
+	}
+	
+	@Override
+	public boolean isEnemy(WarPercept percept) {
+		return ! percept.getTeamName().equals(getTeamName());
 	}
 
 	public double getHitboxRadius() {
@@ -76,6 +93,16 @@ public abstract class WarAgent extends Turtle {
 	public String toString() {
 		return "[" + getID() + "] " + getClass().getSimpleName() + " (" + getTeam().getName() + ")";
 	}
+	
+	@Override
+	public void setRandomHeading() {
+		randomHeading();
+	}
+	
+	@Override
+	public void setRandomHeading(int range) {
+		randomHeading(range);
+	}
 
 	protected boolean isGoingToBeOutOfMap() {
 		// Si c'est un monde ouvert, l'agent ne sera jamais en dehors de la carte
@@ -83,7 +110,7 @@ public abstract class WarAgent extends Turtle {
 			return false;
 		
 		CoordCartesian nextPos = new CoordCartesian(getX(), getY());
-		if (this instanceof Movable)
+		if (this instanceof MovableActions)
 			nextPos.add(new CoordPolar(((Movable) this).getSpeed(), getHeading()).toCartesian());
 
 		Dimension mapSize = Game.getInstance().getMap().getSize();
@@ -97,13 +124,13 @@ public abstract class WarAgent extends Turtle {
 	protected boolean isGoingToBeOnAnOtherAgent() {
 		CoordCartesian futurePosition = getPosition();
 		double radius = getHitboxRadius();
-		if (this instanceof Movable) {
+		if (this instanceof MovableActions) {
 			radius += ((Movable) this).getSpeed();
 			futurePosition = WarMathTools.addTwoPoints(new CoordCartesian(getX(), getY()), new CoordPolar(((Movable) this).getSpeed(), getHeading()));
 		}
 		for(WarAgent a : Game.getInstance().getAllAgentsInRadius(futurePosition.getX(), futurePosition.getY(), radius)) {
 			if (a.getID() != getID() && a instanceof ControllableWarAgent) {
-				if (this instanceof Movable) {
+				if (this instanceof MovableActions) {
 					return isInCollisionWithAtPosition(futurePosition, a);
 				} else
 					return isInCollisionWith(a);

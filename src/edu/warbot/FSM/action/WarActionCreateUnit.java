@@ -3,8 +3,7 @@ package edu.warbot.FSM.action;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.brains.WarBaseBrain;
+import edu.warbot.brains.adapters.WarBaseAdapter;
 
 /**
  * Description de l'action
@@ -15,14 +14,14 @@ import edu.warbot.brains.brains.WarBaseBrain;
  * @author Olivier
  *
  */
-public class WarActionCreateUnit extends WarAction{
+public class WarActionCreateUnit extends WarAction<WarBaseAdapter> {
 
 	int minLife;
 	WarAgentType agentType;
 	int nbToCreate;
 	int nbCreate;
 	
-	public WarActionCreateUnit(WarBrain brain, WarAgentType agentType, int nb, int minLife) {
+	public WarActionCreateUnit(WarBaseAdapter brain, WarAgentType agentType, int nb, int minLife) {
 		super(brain);
 		this.agentType = agentType;
 		this.nbToCreate = nb;
@@ -36,11 +35,11 @@ public class WarActionCreateUnit extends WarAction{
 			return MovableWarAgent.ACTION_IDLE;
 		}
 		
-		if(!getBrain().isBagEmpty() && getBrain().getHealth() < this.minLife)
+		if(!getAgent().isBagEmpty() && getAgent().getHealth() < this.minLife)
 			return WarBase.ACTION_EAT;
 		
-		if(getBrain().getHealth() >= minLife){
-			getBrain().setNextAgentToCreate(agentType);
+		if(getAgent().getHealth() >= minLife){
+			getAgent().setNextAgentToCreate(agentType);
 			nbCreate++;
 			return WarBase.ACTION_CREATE;
 		}
@@ -52,13 +51,8 @@ public class WarActionCreateUnit extends WarAction{
 	@Override
 	public void actionWillBegin() {
 		super.actionWillBegin();
-		getBrain().setDebugString(getClass().getSimpleName() + " " + agentType.toString());
+		getAgent().setDebugString(getClass().getSimpleName() + " " + agentType.toString());
 		this.nbCreate = 0;
 	}
 	
-	@Override
-	public WarBaseBrain getBrain(){
-		return (WarBaseBrain)(super.getBrain());
-	}
-
 }

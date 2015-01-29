@@ -3,8 +3,8 @@ package edu.warbot.agents.agents;
 import java.util.HashMap;
 
 import edu.warbot.agents.MovableWarAgent;
-import edu.warbot.brains.braincontrollers.WarExplorerAbstractBrainController;
-import edu.warbot.brains.brains.WarExplorerBrain;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarExplorerAdapter;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
 
@@ -30,10 +30,10 @@ public class WarExplorer extends MovableWarAgent {
 		SPEED = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_SPEED));
 	}
 	
-	public WarExplorer(Team team, WarExplorerAbstractBrainController brainController) {
-		super(ACTION_IDLE, team, HITBOX_RADIUS, brainController, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
+	public WarExplorer(Team team, WarBrain<WarExplorerAdapter> brain) {
+		super(ACTION_IDLE, team, HITBOX_RADIUS, brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
 		
-		getBrainController().setBrain(new WarExplorerBrain(this));
+		brain.setAgentAdapter(new WarExplorerAdapter(this));
 	}
 
 }

@@ -8,11 +8,7 @@ import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarPercept;
-import edu.warbot.brains.MovableWarAgentBrain;
-import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.brains.WarBaseBrain;
-import edu.warbot.brains.brains.WarExplorerBrain;
-import edu.warbot.brains.brains.WarRocketLauncherBrain;
+import edu.warbot.brains.MovableWarAgentAdapter;
 
 /**
  * Description de l'action
@@ -23,7 +19,7 @@ import edu.warbot.brains.brains.WarRocketLauncherBrain;
  * @author Olivier
  *
  */
-public class WarActionHeal extends WarAction{
+public class WarActionHeal<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType>{
 
 	boolean healAlly = true;
 	
@@ -34,7 +30,7 @@ public class WarActionHeal extends WarAction{
 	
 	int pourcentageLifeAlly;
 	
-	public WarActionHeal(WarBrain brain, int  pourcentageLifeBeforHeal,
+	public WarActionHeal(AgentAdapterType brain, int  pourcentageLifeBeforHeal,
 			int pourcentageVieAllyBeforHeal, boolean healAlly) {
 		super(brain);
 		
@@ -42,29 +38,20 @@ public class WarActionHeal extends WarAction{
 		this.pourcentageLifeAlly = pourcentageVieAllyBeforHeal;
 		this.healAlly = healAlly;
 		
-		// Recupere la vie max grace au type d'unité
-		if(brain instanceof WarExplorerBrain)
-			this.maxLifeUnit = (WarExplorer.MAX_HEALTH);
-		else if(brain instanceof WarRocketLauncherBrain)
-			this.maxLifeUnit = (WarRocketLauncher.MAX_HEALTH);
-		else if(brain instanceof WarBaseBrain)
-			this.maxLifeUnit = (WarBase.MAX_HEALTH);
-		else
-			System.out.println("Brain not know " + this.getClass());
-		
+		this.maxLifeUnit = brain.getMaxHealth();
 		this.life = this.pourcentageLife * this.maxLifeUnit;
 		
 	}
 	
 	public String executeAction(){
 		
-		if(getBrain().isBagEmpty()){
+		if(getAgent().isBagEmpty()){
 			setActionTerminate(true);
 			return MovableWarAgent.ACTION_IDLE;
 		}
 		
 		if(!this.healAlly){
-			if(getBrain().getHealth() >= this.pourcentageLife){
+			if(getAgent().getHealth() >= this.pourcentageLife){
 				setActionTerminate(true);
 				return MovableWarAgent.ACTION_IDLE;
 			}else{
@@ -73,7 +60,7 @@ public class WarActionHeal extends WarAction{
 			
 		}else{
 			// Je heal mes allies
-			ArrayList<WarPercept> percept = getBrain().getPerceptsAllies();
+			ArrayList<WarPercept> percept = getAgent().getPerceptsAllies();
 			
 			if(percept.size() == 0){
 				setActionTerminate(true);
@@ -88,10 +75,10 @@ public class WarActionHeal extends WarAction{
 						// TODO pour le give il faut mettre < ou <= ?
 						if(p.getDistance() < MovableWarAgent.MAX_DISTANCE_GIVE){
 							System.out.println("Je heal un allié");
-							getBrain().setIdNextAgentToGive(p.getID());
+							getAgent().setIdNextAgentToGive(p.getID());
 							return MovableWarAgent.ACTION_GIVE;
 						}else{
-							getBrain().setHeading(p.getAngle());
+							getAgent().setHeading(p.getAngle());
 							return MovableWarAgent.ACTION_MOVE;
 						}
 						
@@ -122,10 +109,4 @@ public class WarActionHeal extends WarAction{
 	public void actionWillBegin() {
 		super.actionWillBegin();
 	}
-	
-	@Override
-	public MovableWarAgentBrain getBrain(){
-		return (MovableWarAgentBrain)(super.getBrain());
-	}
-
 }

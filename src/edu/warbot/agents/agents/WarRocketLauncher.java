@@ -4,15 +4,16 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 import edu.warbot.agents.MovableWarAgent;
-import edu.warbot.agents.capacities.Agressive;
+import edu.warbot.agents.actions.AgressiveActions;
 import edu.warbot.agents.projectiles.WarRocket;
-import edu.warbot.brains.braincontrollers.WarRocketLauncherAbstractBrainController;
-import edu.warbot.brains.brains.WarRocketLauncherBrain;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
+import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
 
 @SuppressWarnings("serial")
-public class WarRocketLauncher extends MovableWarAgent implements Agressive {
+public class WarRocketLauncher extends MovableWarAgent implements AgressiveActions, Agressive {
 
 	public static final double ANGLE_OF_VIEW;
 	public static final double HITBOX_RADIUS;
@@ -39,10 +40,10 @@ public class WarRocketLauncher extends MovableWarAgent implements Agressive {
 		TICKS_TO_RELOAD = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_TICKS_TO_RELOAD));
 	}
 
-	public WarRocketLauncher(Team team, WarRocketLauncherAbstractBrainController brainController) {
-		super(ACTION_IDLE, team, HITBOX_RADIUS, brainController, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
+	public WarRocketLauncher(Team team, WarBrain<WarRocketLauncherAdapter> brain) {
+		super(ACTION_IDLE, team, HITBOX_RADIUS, brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
 		
-		getBrainController().setBrain(new WarRocketLauncherBrain(this));
+		brain.setAgentAdapter(new WarRocketLauncherAdapter(this));
 		_tickLeftBeforeReloaded = TICKS_TO_RELOAD;
 		_reloaded = false;
 		_reloading = true;
@@ -66,7 +67,7 @@ public class WarRocketLauncher extends MovableWarAgent implements Agressive {
 			launchAgent(new WarRocket(getTeam(), this));
 			_reloaded = false;
 		}
-		return getBrainController().action();
+		return getBrain().action();
 	}
 
 	@Override
@@ -76,7 +77,7 @@ public class WarRocketLauncher extends MovableWarAgent implements Agressive {
 			_tickLeftBeforeReloaded = TICKS_TO_RELOAD;
 			_reloading = true;
 		}
-		return getBrainController().action();
+		return getBrain().action();
 	}
 
 	@Override

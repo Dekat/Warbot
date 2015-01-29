@@ -12,7 +12,7 @@ import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.WarBrainController;
+import edu.warbot.brains.WarBrain;
 import edu.warbot.communications.WarKernelMessage;
 import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.tools.WarMathTools;
@@ -26,7 +26,7 @@ public class Team extends Observable {
 	private ImageIcon _teamLogo;
 	private Color _color;
 	private String _description;
-	private HashMap<String, Class<? extends WarBrainController>> _brainControllers; 
+	private HashMap<String, Class<? extends WarBrain>> _brainControllers; 
 	private ArrayList<ControllableWarAgent> _controllableAgents;
 	private ArrayList<WarProjectile> _projectiles;
 	private HashMap<WarAgentType, Integer> _nbUnitsLeft;
@@ -47,7 +47,7 @@ public class Team extends Observable {
 	}
 	
 	public Team(String nom, Color color, ImageIcon logo, String description, ArrayList<ControllableWarAgent> controllableAgents, ArrayList<WarProjectile> projectiles,
-			HashMap<String, Class<? extends WarBrainController>> brainControllers, HashMap<WarAgentType, Integer> nbUnitsLeft, ArrayList<WarAgent> dyingAgents) {
+			HashMap<String, Class<? extends WarBrain>> brainControllers, HashMap<WarAgentType, Integer> nbUnitsLeft, ArrayList<WarAgent> dyingAgents) {
 		_name = nom;
 		_color = color;
 		_teamLogo = logo;
@@ -63,15 +63,15 @@ public class Team extends Observable {
         _teamLogo = logo;
     }
 	
-    public void addBrainControllerClassForAgent(String agent, Class<? extends WarBrainController> brainController) {
+    public void addBrainControllerClassForAgent(String agent, Class<? extends WarBrain> brainController) {
     	_brainControllers.put(agent, brainController);
     }
     
-    public Class<? extends WarBrainController> getBrainControllerOfAgent(String agentName) {
+    public Class<? extends WarBrain> getBrainControllerOfAgent(String agentName) {
     	return _brainControllers.get(agentName);
     }
     
-    public HashMap<String, Class<? extends WarBrainController>> getAllBrainControllers() {
+    public HashMap<String, Class<? extends WarBrain>> getAllBrainControllers() {
     	return _brainControllers;
     }
     

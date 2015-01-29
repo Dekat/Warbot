@@ -1,18 +1,10 @@
 package teams.timetoexplode;
 
-import java.util.ArrayList;
-
 import edu.warbot.agents.agents.WarEngineer;
-import edu.warbot.agents.agents.WarExplorer;
-import edu.warbot.agents.agents.WarRocketLauncher;
-import edu.warbot.agents.agents.WarTurret;
-import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.agents.percepts.WarPercept;
-import edu.warbot.agents.resources.WarFood;
-import edu.warbot.brains.braincontrollers.WarEngineerAbstractBrainController;
-import edu.warbot.communications.WarMessage;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarEngineerAdapter;
 
-public class WarEngineerBrainController extends WarEngineerAbstractBrainController {
+public class WarEngineerBrainController extends WarBrain<WarEngineerAdapter> {
 	
 	public WarEngineerBrainController() {
 		super();

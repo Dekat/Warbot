@@ -3,7 +3,8 @@ package edu.warbot.agents;
 import java.util.List;
 import java.util.logging.Level;
 
-import edu.warbot.agents.capacities.Movable;
+import edu.warbot.agents.actions.MovableActions;
+import edu.warbot.brains.capacities.Movable;
 import edu.warbot.game.Game;
 import edu.warbot.game.Team;
 import edu.warbot.tools.CoordCartesian;
@@ -11,7 +12,7 @@ import edu.warbot.tools.CoordPolar;
 import edu.warbot.tools.WarMathTools;
 
 @SuppressWarnings("serial")
-public abstract class WarProjectile extends WarAgent implements Movable {
+public abstract class WarProjectile extends WarAgent implements MovableActions, Movable {
 
 	private double _speed;
 	private double _explosionRadius;

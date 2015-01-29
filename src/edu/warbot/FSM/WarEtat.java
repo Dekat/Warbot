@@ -2,31 +2,31 @@ package edu.warbot.FSM;
 
 import java.util.ArrayList;
 
-import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.plan.WarPlan;
+import edu.warbot.brains.ControllableWarAgentAdapter;
 
-public class WarEtat {
+public class WarEtat<AgentAdapterType extends ControllableWarAgentAdapter> {
 	
-	private WarPlan plan;
-	private ArrayList<WarCondition> conditions = new ArrayList<>();
+	private WarPlan<AgentAdapterType> plan;
+	private ArrayList<WarCondition<AgentAdapterType>> conditions = new ArrayList<>();
 	
 	private String nom;
 	
-	public WarEtat(String nom, WarPlan plan){
+	public WarEtat(String nom, WarPlan<AgentAdapterType> plan){
 		this.nom = nom;
 		this.plan = plan;
 	}
 
-	public void addCondition(WarCondition cond1) {
+	public void addCondition(WarCondition<AgentAdapterType> cond1) {
 		this.conditions.add(cond1);
 	}
 
-	public WarPlan getPlan() {
+	public WarPlan<AgentAdapterType> getPlan() {
 		return this.plan;
 	}
 	
-	public ArrayList<WarCondition> getConditions() {
+	public ArrayList<WarCondition<AgentAdapterType>> getConditions() {
 		return this.conditions;
 	}
 
@@ -40,7 +40,7 @@ public class WarEtat {
 		if(this.conditions.size() < 1)
 			System.out.println("ATTENTION l'état <" + this.nom + "> ne contient aucune conditions de sortie");
 		
-		for (WarCondition cond : this.conditions) {
+		for (WarCondition<AgentAdapterType> cond : this.conditions) {
 			cond.init();
 		}
 		

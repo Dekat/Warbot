@@ -3,17 +3,17 @@ package edu.warbot.FSM.plan;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionAttaquer;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.MovableWarAgentBrain;
+import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
 /**
  * @author Olivier
  *
  */
-public class WarPlanAttaquer extends WarPlan{
+public class WarPlanAttaquer extends WarPlan<WarRocketLauncherAdapter> {
 	
 	WarAgentType agentType;
 	
-	public WarPlanAttaquer(MovableWarAgentBrain brain, WarAgentType agentType) {
+	public WarPlanAttaquer(WarRocketLauncherAdapter brain, WarAgentType agentType) {
 		super(brain, "Plan Attaquer");
 		this.agentType = agentType;
 	}
@@ -22,14 +22,10 @@ public class WarPlanAttaquer extends WarPlan{
 		
 		setPrintTrace(true);
 		
-		WarAction actionAttaquer = new WarActionAttaquer(getBrain(), this.agentType);
+		WarAction<WarRocketLauncherAdapter> actionAttaquer = new WarActionAttaquer(getBrain(), this.agentType);
 		addAction(actionAttaquer);
 		
 		setFirstAction(actionAttaquer);
-	}
-	
-	public MovableWarAgentBrain getBrain(){
-		return (MovableWarAgentBrain)super.getBrain();
 	}
 	
 }

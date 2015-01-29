@@ -6,12 +6,12 @@ import edu.warbot.FSM.action.WarActionChercherBase;
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.condition.WarConditionPerceptCounter;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.MovableWarAgentBrain;
+import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
 /**
  * @author Olivier
  */
-public class WarPlanPatrouiller extends WarPlan{
+public class WarPlanPatrouiller extends WarPlan<WarRocketLauncherAdapter> {
 	
 	boolean offensif;
 	
@@ -19,7 +19,7 @@ public class WarPlanPatrouiller extends WarPlan{
 	 * @param brain
 	 * @param offensif = true, defensif = false
 	 */
-	public WarPlanPatrouiller(MovableWarAgentBrain brain, boolean offensif) {
+	public WarPlanPatrouiller(WarRocketLauncherAdapter brain, boolean offensif) {
 		super(brain, "Plan Patrouiller");
 		this.offensif = offensif;
 	}
@@ -28,18 +28,18 @@ public class WarPlanPatrouiller extends WarPlan{
 		
 		setPrintTrace(true);
 		
-		WarAction actionSeekBase = new WarActionChercherBase(getBrain());
+		WarAction<WarRocketLauncherAdapter> actionSeekBase = new WarActionChercherBase(getBrain());
 		addAction(actionSeekBase);
 
 		if(this.offensif){
-			WarAction actionKillEnemy = new WarActionAttaquer(getBrain(), WarAgentType.WarRocketLauncher);
+			WarAction<WarRocketLauncherAdapter> actionKillEnemy = new WarActionAttaquer(getBrain(), WarAgentType.WarRocketLauncher);
 			addAction(actionKillEnemy);
 		
-			WarCondition condSeekToKill = new WarConditionPerceptCounter(getBrain(), WarAgentType.WarRocketLauncher, true, ">", 1);
+			WarCondition<WarRocketLauncherAdapter> condSeekToKill = new WarConditionPerceptCounter<WarRocketLauncherAdapter>(getBrain(), WarAgentType.WarRocketLauncher, true, ">", 1);
 			actionSeekBase.addCondition(condSeekToKill);
 			condSeekToKill.setDestination(actionKillEnemy);
 		
-			WarCondition condKillToSeek = new WarConditionPerceptCounter(getBrain(), WarAgentType.WarRocketLauncher, true, "==", 0);
+			WarCondition<WarRocketLauncherAdapter> condKillToSeek = new WarConditionPerceptCounter<WarRocketLauncherAdapter>(getBrain(), WarAgentType.WarRocketLauncher, true, "==", 0);
 			actionKillEnemy.addCondition(condKillToSeek);
 			condKillToSeek.setDestination(actionSeekBase);
 		

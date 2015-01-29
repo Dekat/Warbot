@@ -4,15 +4,16 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 import edu.warbot.agents.ControllableWarAgent;
-import edu.warbot.agents.capacities.Agressive;
-import edu.warbot.agents.projectiles.WarRocket;
-import edu.warbot.brains.braincontrollers.WarTurretAbstractBrainController;
-import edu.warbot.brains.brains.WarTurretBrain;
+import edu.warbot.agents.actions.AgressiveActions;
+import edu.warbot.agents.projectiles.WarDeathRocket;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarTurretAdapter;
+import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
 
 @SuppressWarnings("serial")
-public class WarTurret extends ControllableWarAgent implements Agressive {
+public class WarTurret extends ControllableWarAgent implements AgressiveActions, Agressive {
 
 	public static final double ANGLE_OF_VIEW;
 	public static final double HITBOX_RADIUS;
@@ -37,10 +38,10 @@ public class WarTurret extends ControllableWarAgent implements Agressive {
 		TICKS_TO_RELOAD = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_TICKS_TO_RELOAD));
 	}
 	
-	public WarTurret(Team team, WarTurretAbstractBrainController brainController) {
-		super(ACTION_IDLE, team, HITBOX_RADIUS, brainController, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE);
+	public WarTurret(Team team, WarBrain<WarTurretAdapter> brain) {
+		super(ACTION_IDLE, team, HITBOX_RADIUS, brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE);
 		
-		getBrainController().setBrain(new WarTurretBrain(this));
+		brain.setAgentAdapter(new WarTurretAdapter(this));
 		_tickLeftBeforeReloaded = TICKS_TO_RELOAD;
 		_reloaded = false;
 		_reloading = true;
@@ -61,10 +62,10 @@ public class WarTurret extends ControllableWarAgent implements Agressive {
 		logger.log(Level.FINEST, this.toString() + " firing...");
 		if (isReloaded()) {
 			logger.log(Level.FINER, this.toString() + " fired.");
-			launchAgent(new WarRocket(getTeam(), this));
+			launchAgent(new WarDeathRocket(getTeam(), this));
 			_reloaded = false;
 		}
-		return getBrainController().action();
+		return getBrain().action();
 	}
 
 	@Override
@@ -74,7 +75,7 @@ public class WarTurret extends ControllableWarAgent implements Agressive {
 			_tickLeftBeforeReloaded = TICKS_TO_RELOAD;
 			_reloading = true;
 		}
-		return getBrainController().action();
+		return getBrain().action();
 	}
 
 	@Override

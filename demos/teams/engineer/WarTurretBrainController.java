@@ -2,14 +2,12 @@ package teams.engineer;
 
 import java.util.ArrayList;
 
-import edu.warbot.agents.agents.WarExplorer;
-import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.agents.WarTurret;
 import edu.warbot.agents.percepts.WarPercept;
-import edu.warbot.agents.resources.WarFood;
-import edu.warbot.brains.braincontrollers.WarTurretAbstractBrainController;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarTurretAdapter;
 
-public class WarTurretBrainController extends WarTurretAbstractBrainController {
+public class WarTurretBrainController extends WarBrain<WarTurretAdapter> {
 	
 	private int _sight;
 	
@@ -26,15 +24,15 @@ public class WarTurretBrainController extends WarTurretAbstractBrainController {
 		if(_sight == 360) {
 			_sight = 0;
 		}
-		getBrain().setHeading(_sight);
+		getAgent().setHeading(_sight);
 		
-		ArrayList<WarPercept> percepts = getBrain().getPercepts();	
+		ArrayList<WarPercept> percepts = getAgent().getPercepts();	
 		for (WarPercept p : percepts) {
 			switch(p.getType()) {
 			case WarRocketLauncher :
-				if (getBrain().isEnemy(p)) {
-					getBrain().setHeading(p.getAngle());
-					if (getBrain().isReloaded()) {
+				if (getAgent().isEnemy(p)) {
+					getAgent().setHeading(p.getAngle());
+					if (getAgent().isReloaded()) {
 						return WarTurret.ACTION_FIRE;
 					} else
 						return WarTurret.ACTION_RELOAD;

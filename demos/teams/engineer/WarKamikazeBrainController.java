@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.percepts.WarPercept;
-import edu.warbot.brains.braincontrollers.WarKamikazeAbstractBrainController;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarKamikazeAdapter;
 
-public class WarKamikazeBrainController extends WarKamikazeAbstractBrainController {
+public class WarKamikazeBrainController extends WarBrain<WarKamikazeAdapter> {
 	
 	public WarKamikazeBrainController() {
 		super();
@@ -14,13 +15,13 @@ public class WarKamikazeBrainController extends WarKamikazeAbstractBrainControll
 
 	@Override
 	public String action() {
-		ArrayList<WarPercept> percepts = getBrain().getPercepts();
+		ArrayList<WarPercept> percepts = getAgent().getPercepts();
 		
 		for (WarPercept p : percepts) {
 			switch(p.getType()) {
 			case WarBase :
-				if (getBrain().isEnemy(p)) {
-					getBrain().broadcastMessageToAll("Ennemi Base Found", String.valueOf(p.getAngle()), String.valueOf(p.getDistance()));
+				if (getAgent().isEnemy(p)) {
+					getAgent().broadcastMessageToAll("Ennemi Base Found", String.valueOf(p.getAngle()), String.valueOf(p.getDistance()));
 				}
 				break;
 			default:
@@ -28,8 +29,8 @@ public class WarKamikazeBrainController extends WarKamikazeAbstractBrainControll
 			}
 		}
 		
-		if (getBrain().isBlocked())
-			getBrain().setRandomHeading();
+		if (getAgent().isBlocked())
+			getAgent().setRandomHeading();
 		return WarExplorer.ACTION_MOVE;
 	}
 }

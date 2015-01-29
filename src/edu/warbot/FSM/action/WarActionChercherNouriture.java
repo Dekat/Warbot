@@ -6,8 +6,7 @@ import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarPercept;
-import edu.warbot.brains.MovableWarAgentBrain;
-import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.MovableWarAgentAdapter;
 import edu.warbot.communications.WarMessage;
 
 /**
@@ -15,31 +14,31 @@ import edu.warbot.communications.WarMessage;
  * @author Olivier
  *
  */
-public class WarActionChercherNouriture extends WarAction{
+public class WarActionChercherNouriture<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType> {
 	
 	private final int nbMaxElement;	
 
-	public WarActionChercherNouriture(WarBrain brain, int nombreNuritureMax) {
+	public WarActionChercherNouriture(AgentAdapterType brain, int nombreNuritureMax) {
 		super(brain);
 		this.nbMaxElement = nombreNuritureMax;
 	}
 
 	public String executeAction(){
 		
-		if(getBrain().isBagFull() | getBrain().getNbElementsInBag() >=this.nbMaxElement)
+		if(getAgent().isBagFull() | getAgent().getNbElementsInBag() >=this.nbMaxElement)
 			setActionTerminate(true);
 		
-		if(getBrain().isBlocked())
-			getBrain().setRandomHeading();
+		if(getAgent().isBlocked())
+			getAgent().setRandomHeading();
 
-		ArrayList<WarPercept> foodPercepts = getBrain().getPerceptsResources();
+		ArrayList<WarPercept> foodPercepts = getAgent().getPerceptsResources();
 		
 		//Si il ny a pas de nouriture dans le percept
 		if(foodPercepts.size() == 0){
 			
 			WarMessage m = getMessageAboutFood();
 			if(m != null){
-				getBrain().setHeading(m.getAngle());
+				getAgent().setHeading(m.getAngle());
 			}
 			
 			//Sinon je vais tout droit
@@ -50,10 +49,10 @@ public class WarActionChercherNouriture extends WarAction{
 			
 			//si il y a beaucoup de nourriture je previens mes alliés
 			if(foodPercepts.size() > 1)
-				getBrain().broadcastMessageToAgentType(WarAgentType.WarExplorer, "foodHere", "");
+				getAgent().broadcastMessageToAgentType(WarAgentType.WarExplorer, "foodHere", "");
 			
 			if(foodP.getDistance() > ControllableWarAgent.MAX_DISTANCE_GIVE){
-				getBrain().setHeading(foodP.getAngle());
+				getAgent().setHeading(foodP.getAngle());
 				return MovableWarAgent.ACTION_MOVE;
 			}else{
 				return MovableWarAgent.ACTION_TAKE;
@@ -63,7 +62,7 @@ public class WarActionChercherNouriture extends WarAction{
 	}
 
 	private WarMessage getMessageAboutFood() {
-		for (WarMessage m : getBrain().getMessages()) {
+		for (WarMessage m : getAgent().getMessages()) {
 			if(m.getMessage().equals("foodHere"))
 				return m;
 		}
@@ -73,12 +72,7 @@ public class WarActionChercherNouriture extends WarAction{
 	@Override
 	public void actionWillBegin() {
 		super.actionWillBegin();
-		getBrain().setHeading(getBrain().getHeading() + 180);
-	}
-	
-	@Override
-	public MovableWarAgentBrain getBrain(){
-		return (MovableWarAgentBrain)(super.getBrain());
+		getAgent().setHeading(getAgent().getHeading() + 180);
 	}
 
 }

@@ -69,8 +69,12 @@ public class WarConfig {
 		return WarXmlReader.getNodesFromXPath(_document, "/Warbot/WarResources/" + agent);
 	}
 
-	public static HashMap<String, String> getConfigOfWarGround(String agent) {
-		return WarXmlReader.getNodesFromXPath(_document, "/Warbot/WarGrounds/" + agent);
+//	public static HashMap<String, String> getConfigOfWarGround(String agent) {
+//		return WarXmlReader.getNodesFromXPath(_document, "/Warbot/WarGrounds/" + agent);
+//	}
+
+	public static HashMap<String, String> getConfigOfWarBuildings(String agent) {
+		return WarXmlReader.getNodesFromXPath(_document, "/Warbot/WarBuildings/" + agent);
 	}
 
 	public static Level getLoggerLevel() {

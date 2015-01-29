@@ -5,32 +5,31 @@ import java.util.ArrayList;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarPercept;
-import edu.warbot.brains.MovableWarAgentBrain;
-import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.MovableWarAgentAdapter;
 import edu.warbot.communications.WarMessage;
 
 /**
  * Raporte la nouriture
  *
  */
-public class WarActionRaporterNouriture extends WarAction{
+public class WarActionRaporterNouriture<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType>{
 	
 	private final int nbElementToKeep;	
 
-	public WarActionRaporterNouriture(WarBrain brain, int nombreAGarder) {
+	public WarActionRaporterNouriture(AgentAdapterType brain, int nombreAGarder) {
 		super(brain);
 		this.nbElementToKeep = nombreAGarder;
 	}
 
 	public String executeAction(){
 		
-		if(getBrain().isBagEmpty() | getBrain().getNbElementsInBag() <= nbElementToKeep)
+		if(getAgent().isBagEmpty() | getAgent().getNbElementsInBag() <= nbElementToKeep)
 			setActionTerminate(true);
 		
-		if(getBrain().isBlocked())
-			getBrain().setRandomHeading();
+		if(getAgent().isBlocked())
+			getAgent().setRandomHeading();
 
-		ArrayList<WarPercept> basePercepts = getBrain().getPerceptsAlliesByType(WarAgentType.WarBase);
+		ArrayList<WarPercept> basePercepts = getAgent().getPerceptsAlliesByType(WarAgentType.WarBase);
 		
 		//Si je ne voit pas de base vois une base
 		if(basePercepts == null | basePercepts.size() == 0){
@@ -38,7 +37,7 @@ public class WarActionRaporterNouriture extends WarAction{
 			WarMessage m = this.getMessageFromBase();
 			//Si j'ai un message de la base je vais vers elle
 			if(m != null)
-				getBrain().setHeading(m.getAngle());
+				getAgent().setHeading(m.getAngle());
 			
 			//j'envoi un message a la base pour savoir où elle est
 			//getBrain().broadcastMessageDefaultRole(WarBase., "whereAreYou", null);
@@ -49,10 +48,10 @@ public class WarActionRaporterNouriture extends WarAction{
 			WarPercept base = basePercepts.get(0);
 			
 			if(base.getDistance() > MovableWarAgent.MAX_DISTANCE_GIVE){
-				getBrain().setHeading(base.getAngle());
+				getAgent().setHeading(base.getAngle());
 				return MovableWarAgent.ACTION_MOVE;
 			}else{
-				getBrain().setIdNextAgentToGive(base.getID());
+				getAgent().setIdNextAgentToGive(base.getID());
 				return MovableWarAgent.ACTION_GIVE;
 			}
 			
@@ -61,12 +60,12 @@ public class WarActionRaporterNouriture extends WarAction{
 	}
 	
 	private WarMessage getMessageFromBase() {
-		for (WarMessage m : getBrain().getMessages()) {
+		for (WarMessage m : getAgent().getMessages()) {
 			if(m.getSenderType().equals(WarAgentType.WarBase))
 				return m;
 		}
 		
-		getBrain().broadcastMessageToAgentType(WarAgentType.WarBase, "whereAreYou", "");
+		getAgent().broadcastMessageToAgentType(WarAgentType.WarBase, "whereAreYou", "");
 		return null;
 	}
 
@@ -74,10 +73,4 @@ public class WarActionRaporterNouriture extends WarAction{
 	public void actionWillBegin() {
 		super.actionWillBegin();
 	}
-	
-	@Override
-	public MovableWarAgentBrain getBrain(){
-		return (MovableWarAgentBrain)(super.getBrain());
-	}
-
 }

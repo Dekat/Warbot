@@ -2,18 +2,20 @@ package edu.warbot.agents;
 
 import java.util.logging.Level;
 
-import edu.warbot.agents.capacities.Creator;
+import edu.warbot.agents.actions.CreatorActions;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.WarBrainController;
+import edu.warbot.brains.CreatorWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.capacities.Creator;
 import edu.warbot.game.Game;
 import edu.warbot.game.Team;
 
 @SuppressWarnings("serial")
-public abstract class CreatorWarAgent extends ControllableWarAgent implements Creator {
+public abstract class CreatorWarAgent extends ControllableWarAgent implements CreatorActions, Creator {
 
 	private WarAgentType _nextAgentToCreate;
 
-	public CreatorWarAgent(String firstActionToDo, Team team, double hitboxRadius, WarBrainController brainController, double distanceOfView, double angleOfView, int cost,	int maxHealth, int bagSize) {
+	public CreatorWarAgent(String firstActionToDo, Team team, double hitboxRadius, WarBrain<? extends CreatorWarAgentAdapter> brainController, double distanceOfView, double angleOfView, int cost,	int maxHealth, int bagSize) {
 		super(firstActionToDo, team, hitboxRadius, brainController, distanceOfView, angleOfView, cost, maxHealth, bagSize);
 
 		_nextAgentToCreate = WarAgentType.WarExplorer;
@@ -22,7 +24,7 @@ public abstract class CreatorWarAgent extends ControllableWarAgent implements Cr
 	@Override
 	public String create() {
 		defaultCreateUnit(this, _nextAgentToCreate);
-		return getBrainController().action();
+		return getBrain().action();
 	}
 
 	@Override

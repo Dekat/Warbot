@@ -1,9 +1,10 @@
 package teams.fsm;
 
 import edu.warbot.agents.agents.WarExplorer;
-import edu.warbot.brains.braincontrollers.WarEngineerAbstractBrainController;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarEngineerAdapter;
 
-public class WarEngineerBrainController extends WarEngineerAbstractBrainController {
+public class WarEngineerBrainController extends WarBrain<WarEngineerAdapter> {
 	
 	public WarEngineerBrainController() {
 		super();
@@ -12,8 +13,8 @@ public class WarEngineerBrainController extends WarEngineerAbstractBrainControll
 	@Override
 	public String action() {
 		
-		if (getBrain().isBlocked())
-			getBrain().setRandomHeading();
+		if (getAgent().isBlocked())
+			getAgent().setRandomHeading();
 		return WarExplorer.ACTION_MOVE;
 	}
 }

@@ -42,7 +42,7 @@ import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.WarBrainController;
+import edu.warbot.brains.WarBrain;
 import edu.warbot.game.Game;
 import edu.warbot.game.MotherNatureTeam;
 import edu.warbot.game.Team;
@@ -335,7 +335,7 @@ public class WarLauncher extends TKLauncher {
 						for (String agentName : brainControllersClassesName.keySet()) {
 							JarEntry classEntry = allJarEntries.get(brainControllersClassesName.get(agentName));
 							currentTeam.addBrainControllerClassForAgent(agentName,
-									(Class<? extends WarBrainController>) Class.forName(classEntry.getName().replaceAll(".class", "").replaceAll("/", "."),
+									(Class<? extends WarBrain>) Class.forName(classEntry.getName().replaceAll(".class", "").replaceAll("/", "."),
 											true, classLoader));
 						}
 

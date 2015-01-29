@@ -3,7 +3,7 @@ package edu.warbot.FSM.plan;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionFuire;
 import edu.warbot.agents.agents.WarExplorer;
-import edu.warbot.brains.MovableWarAgentBrain;
+import edu.warbot.brains.MovableWarAgentAdapter;
 
 /**
  * Desciption du plan et de ces actions
@@ -14,9 +14,9 @@ import edu.warbot.brains.MovableWarAgentBrain;
  * @author Olivier
  *
  */
-public class WarPlanBeSecure extends WarPlan{
+public class WarPlanBeSecure<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
 	
-	public WarPlanBeSecure(MovableWarAgentBrain brain) {
+	public WarPlanBeSecure(AgentAdapterType brain) {
 		super(brain, "PlanBeSecure");
 	}
 
@@ -24,7 +24,7 @@ public class WarPlanBeSecure extends WarPlan{
 		
 		setPrintTrace(true);
 		
-		WarAction actionFuire = new WarActionFuire(getBrain(), WarExplorer.MAX_HEALTH, 100);
+		WarAction<AgentAdapterType> actionFuire = new WarActionFuire<AgentAdapterType>(getBrain(), WarExplorer.MAX_HEALTH, 100);
 		addAction(actionFuire);
 
 		/*
@@ -44,10 +44,6 @@ public class WarPlanBeSecure extends WarPlan{
 		condStopFuire.setDestination(actionDontMove);
 		 */
 		setFirstAction(actionFuire);
-	}
-	
-	public MovableWarAgentBrain getBrain(){
-		return (MovableWarAgentBrain)super.getBrain();
 	}
 	
 }

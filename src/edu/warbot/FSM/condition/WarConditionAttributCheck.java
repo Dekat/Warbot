@@ -3,9 +3,9 @@ package edu.warbot.FSM.condition;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.ControllableWarAgentAdapter;
 
-public class WarConditionAttributCheck extends WarCondition{
+public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType> {
 	
 	Object attribut;
 	Object reference;
@@ -14,7 +14,7 @@ public class WarConditionAttributCheck extends WarCondition{
 	String nameAtt;
 	Method methode;
 	
-	public WarConditionAttributCheck(WarBrain brain, String attributName,
+	public WarConditionAttributCheck(AgentAdapterType brain, String attributName,
 			String operand, Object reference, int poucentage) {
 		
 		this(brain, attributName, operand, (Integer)((Integer)(reference)*poucentage/100));
@@ -23,7 +23,7 @@ public class WarConditionAttributCheck extends WarCondition{
 		//System.out.println(a);
 	}
 	
-	public WarConditionAttributCheck(WarBrain brain, String nameAtt,
+	public WarConditionAttributCheck(AgentAdapterType brain, String nameAtt,
 			String operand, Object ref) {
 		
 		super(brain);

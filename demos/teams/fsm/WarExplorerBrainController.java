@@ -13,11 +13,12 @@ import edu.warbot.FSM.plan.WarPlanHealer;
 import edu.warbot.FSM.plan.WarPlanRamasserNouriture;
 import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.braincontrollers.WarExplorerAbstractBrainController;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarExplorerAdapter;
 
-public class WarExplorerBrainController extends WarExplorerAbstractBrainController {
+public class WarExplorerBrainController extends WarBrain<WarExplorerAdapter> {
 
-	private WarFSM fsm;
+	private WarFSM<WarExplorerAdapter> fsm;
 
 	public WarExplorerBrainController() {
 		super();
@@ -34,53 +35,53 @@ public class WarExplorerBrainController extends WarExplorerAbstractBrainControll
 	}
 
 	private void initialisation() {
-		fsm = new WarFSM();
+		fsm = new WarFSM<WarExplorerAdapter>();
 
 		/*** Reflexes ***/
-		WarCondition condReflex = new WarConditionPerceptCounter(getBrain(), WarAgentType.WarBase, true, ">", 0);
-		fsm.addReflexe(new WarReflexeWarnWithCondition(getBrain(), condReflex, WarAgentType.WarRocketLauncher, WarFSMMessage.enemyBaseHere));
+		WarCondition<WarExplorerAdapter> condReflex = new WarConditionPerceptCounter<WarExplorerAdapter>(getAgent(), WarAgentType.WarBase, true, ">", 0);
+		fsm.addReflexe(new WarReflexeWarnWithCondition<WarExplorerAdapter>(getAgent(), condReflex, WarAgentType.WarRocketLauncher, WarFSMMessage.enemyBaseHere));
 
 		/*** Etats ***/
-		WarEtat etatGetFood = new WarEtat("Etat get Food", new WarPlanRamasserNouriture(getBrain()));
+		WarEtat<WarExplorerAdapter> etatGetFood = new WarEtat<WarExplorerAdapter>("Etat get Food", new WarPlanRamasserNouriture<WarExplorerAdapter>(getAgent()));
 		fsm.addEtat(etatGetFood);
 
-		WarEtat etatHeal = new WarEtat("Etat heal", new WarPlanHealer(getBrain(), 50, 50));
+		WarEtat<WarExplorerAdapter> etatHeal = new WarEtat<WarExplorerAdapter>("Etat heal", new WarPlanHealer<WarExplorerAdapter>(getAgent(), 50, 50));
 		fsm.addEtat(etatHeal);
 
-		WarEtat etatSecure = new WarEtat("Etat be secure", new WarPlanBeSecure(getBrain()));
+		WarEtat<WarExplorerAdapter> etatSecure = new WarEtat<WarExplorerAdapter>("Etat be secure", new WarPlanBeSecure<WarExplorerAdapter>(getAgent()));
 		fsm.addEtat(etatSecure);
 
 		/*** Conditions ***/
-		WarCondition cond1 = new WarConditionAttributCheck(getBrain(), WarCondition.HEALTH, "<", WarExplorer.MAX_HEALTH, 20);
+		WarCondition<WarExplorerAdapter> cond1 = new WarConditionAttributCheck<WarExplorerAdapter>(getAgent(), WarCondition.HEALTH, "<", WarExplorer.MAX_HEALTH, 20);
 		cond1.setDestination(etatHeal);
 
 		etatGetFood.addCondition(cond1);
 
-		WarCondition cond2 = new WarConditionPerceptAttributCheck(getBrain(), WarCondition.HEALTH, "<", WarExplorer.MAX_HEALTH, 20, false, null, true);
+		WarCondition<WarExplorerAdapter> cond2 = new WarConditionPerceptAttributCheck<WarExplorerAdapter>(getAgent(), WarCondition.HEALTH, "<", WarExplorer.MAX_HEALTH, 20, false, null, true);
 		cond2.setDestination(etatHeal);
 		etatGetFood.addCondition(cond2);
 
-		WarCondition cond3 = new WarConditionAttributCheck(getBrain(), WarCondition.HEALTH, ">", WarExplorer.MAX_HEALTH, 80);
+		WarCondition<WarExplorerAdapter> cond3 = new WarConditionAttributCheck<WarExplorerAdapter>(getAgent(), WarCondition.HEALTH, ">", WarExplorer.MAX_HEALTH, 80);
 		cond3.setDestination(etatGetFood);
 		etatHeal.addCondition(cond3);
 
-		WarCondition cond4 = new WarConditionPerceptAttributCheck(getBrain(), WarCondition.HEALTH, ">", WarExplorer.MAX_HEALTH, 80, false, null, true);
+		WarCondition<WarExplorerAdapter> cond4 = new WarConditionPerceptAttributCheck<WarExplorerAdapter>(getAgent(), WarCondition.HEALTH, ">", WarExplorer.MAX_HEALTH, 80, false, null, true);
 		cond4.setDestination(etatGetFood);
 		etatHeal.addCondition(cond4);
 
-		WarCondition cond5 = new WarConditionPerceptCounter(getBrain(), WarAgentType.WarRocketLauncher, true, ">", 3);
+		WarCondition<WarExplorerAdapter> cond5 = new WarConditionPerceptCounter<WarExplorerAdapter>(getAgent(), WarAgentType.WarRocketLauncher, true, ">", 3);
 		cond5.setDestination(etatSecure);
 		etatHeal.addCondition(cond5);
 
-		WarCondition cond6 = new WarConditionPerceptCounter(getBrain(), WarAgentType.WarRocketLauncher, true, "==", 0);
+		WarCondition<WarExplorerAdapter> cond6 = new WarConditionPerceptCounter<WarExplorerAdapter>(getAgent(), WarAgentType.WarRocketLauncher, true, "==", 0);
 		cond6.setDestination(etatHeal);
 		etatSecure.addCondition(cond6);
 
-		WarCondition cond7 = new WarConditionPerceptCounter(getBrain(), WarAgentType.WarRocketLauncher, true, ">", 3);
+		WarCondition<WarExplorerAdapter> cond7 = new WarConditionPerceptCounter<WarExplorerAdapter>(getAgent(), WarAgentType.WarRocketLauncher, true, ">", 3);
 		cond7.setDestination(etatSecure);
 		etatGetFood.addCondition(cond7);
 
-		WarCondition cond8 = new WarConditionAttributCheck(getBrain(), WarCondition.HEALTH, "==", WarExplorer.MAX_HEALTH, 80);
+		WarCondition<WarExplorerAdapter> cond8 = new WarConditionAttributCheck<WarExplorerAdapter>(getAgent(), WarCondition.HEALTH, "==", WarExplorer.MAX_HEALTH, 80);
 		cond8.setDestination(etatGetFood);
 		etatSecure.addCondition(cond8);
 
