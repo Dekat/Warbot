@@ -1,12 +1,14 @@
 package edu.warbot.FSMEditor;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
+import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
 import javax.swing.DefaultListModel;
@@ -20,8 +22,7 @@ import javax.swing.border.TitledBorder;
 import org.jfree.ui.tabbedui.VerticalLayout;
 
 import edu.warbot.FSMEditor.Modele.Modele;
-import edu.warbot.FSMEditor.Modele.ModeleBrain;
-import edu.warbot.FSMEditor.Panel.PanelCenter;
+import edu.warbot.FSMEditor.Panel.PanelEditor;
 
 public class View extends JFrame {
 
@@ -49,9 +50,18 @@ public class View extends JFrame {
 		JPanel panelLeft = new JPanel(new VerticalLayout());
 		mainPanel.add(getPanelLeft(), BorderLayout.WEST);
 		
-		// Center Panel
-		panelCenter = new PanelCenter(this.modele);
-		mainPanel.add(panelCenter, BorderLayout.CENTER);
+		// Panel center
+		panelCardEditor = new JPanel(new CardLayout());
+		panelsEditor = new ArrayList<PanelEditor>();
+		
+		for(int i = 0; i < 3; i++){
+			PanelEditor currentPanelEditor = new PanelEditor(this.modele, "WarExplorer");
+//			currentPanelEditor.setToolTipText("Explorer");
+			panelsEditor.add(currentPanelEditor);
+			panelCardEditor.add(currentPanelEditor, "WarExplorer_" + i);
+		}
+		
+		mainPanel.add(panelCardEditor, BorderLayout.CENTER);
 
 		// Panel droite
 		
@@ -68,11 +78,13 @@ public class View extends JFrame {
 
 		miSave = new MenuItem("Save");
 		miLoad = new MenuItem("Load");
+		miSaveJar = new MenuItem("Export Jar");
 
 		Menu mSave = new Menu("Save");
 		Menu mLoad = new Menu("Load");
 		
 		mSave.add(miSave);
+		mSave.add(miSaveJar);
 		mLoad.add(miLoad);
 		
 		mb.add(mSave);
@@ -134,8 +146,9 @@ public class View extends JFrame {
 		return this.buttonAddSate;
 	}
 
-	public PanelCenter getPanelCenter() {
-		return this.panelCenter;
+	public PanelEditor getPanelCenter() {
+		return (PanelEditor) this.panelCardEditor.getComponent(0);
+//		return this.panelEditor;
 	}
 
 	public JButton getButtonAddCond() {
@@ -162,6 +175,31 @@ public class View extends JFrame {
 		return this.buttonEditCond;
 	}
 
+	public MenuItem getMenuBarItemSave() {
+		return miSave;
+	}
+
+	public MenuItem getMenuBarItemLoad() {
+		return miLoad;
+	}
+	
+	public MenuItem getMenuBarItemSaveJar() {
+		return miSaveJar;
+	}
+
+	private JList<String> listCond;
+	private DefaultListModel<String> listModeleCond;
+	
+
+	public JList<String> getListeCondition() {
+		return this.listCond;
+	}
+	
+	/**** Attributs ***/
+	
+	private ArrayList<PanelEditor> panelsEditor;
+	private JPanel panelCardEditor;
+
 	private JButton buttonAddSate;
 	private JButton buttonEditState;
 	private JButton buttonDelSate;
@@ -171,22 +209,6 @@ public class View extends JFrame {
 	
 	private MenuItem miSave;
 	private MenuItem miLoad;
-	
-	public MenuItem getMenuBarItemSave() {
-		return miSave;
-	}
-
-	public MenuItem getMenuBarItemLoad() {
-		return miLoad;
-	}
-
-	private JList<String> listCond;
-	private DefaultListModel<String> listModeleCond;
-	
-	private PanelCenter panelCenter;
-
-	public JList<String> getListeCondition() {
-		return this.listCond;
-	}
+	private MenuItem miSaveJar;
 
 }

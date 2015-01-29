@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import edu.warbot.FSMEditor.Controleurs.ControleurBrain;
 import edu.warbot.FSMEditor.Panel.PanelState;
 
 public class MouseListenerPanelCenter implements MouseListener, MouseMotionListener {
@@ -14,8 +15,8 @@ public class MouseListenerPanelCenter implements MouseListener, MouseMotionListe
 	
 	Point positionClick;
 	
-	Controleur controleur;
-	public MouseListenerPanelCenter(Controleur c) {
+	ControleurBrain controleur;
+	public MouseListenerPanelCenter(ControleurBrain c) {
 		this.controleur = c;
 	}
 	

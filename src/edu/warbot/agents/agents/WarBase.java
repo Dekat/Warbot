@@ -4,10 +4,10 @@ import java.util.HashMap;
 
 import edu.warbot.agents.CreatorWarAgent;
 import edu.warbot.agents.actions.CreatorActions;
+import edu.warbot.agents.capacities.Creator;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarBaseAdapter;
-import edu.warbot.brains.capacities.Creator;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
 

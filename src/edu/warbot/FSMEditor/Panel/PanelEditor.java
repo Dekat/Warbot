@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import edu.warbot.FSMEditor.Modele.Modele;
 import edu.warbot.FSMEditor.Modele.ModeleBrain;
 
-public class PanelCenter extends JPanel {
+public class PanelEditor extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -16,9 +16,12 @@ public class PanelCenter extends JPanel {
 	ArrayList<PanelCondition> panelConditions = new ArrayList<>();
 
 	ModeleBrain modele;
+	String panelName;
 
-	public PanelCenter(Modele modele) {
+	public PanelEditor(Modele modele, String panelName) {
 		this.modele = modele.getModeleExplorer();
+		this.panelName = panelName;
+//		this.setLayout(new CardLayout());
 	}
 
 	public void paintComponent(Graphics g) {

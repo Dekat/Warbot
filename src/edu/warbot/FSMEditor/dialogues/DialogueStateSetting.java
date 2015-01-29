@@ -17,6 +17,7 @@ import javax.swing.border.TitledBorder;
 import org.jfree.ui.tabbedui.VerticalLayout;
 
 import edu.warbot.FSMEditor.Configuration;
+import edu.warbot.FSMEditor.IntrospectionFSM;
 
 public class DialogueStateSetting extends AbstractDialogue{
 
@@ -32,7 +33,7 @@ public class DialogueStateSetting extends AbstractDialogue{
 		this.setContentPane(panel);
 
 		fieldNameEtat = new JTextField();
-		comboxPlan = new JComboBox<>(Configuration.PLAN);
+		comboxPlan = new JComboBox<>(planSimpleName);
 
 		console = new JLabel();
 		buttonOk = new JButton("Ok");
@@ -84,8 +85,11 @@ public class DialogueStateSetting extends AbstractDialogue{
 	}
 	
 	public String getPlanName(){//TODO warning
-		return (String) comboxPlan.getSelectedItem();
+		return (String) planName[comboxPlan.getSelectedIndex()];
 	}
+	
+	String[] planName = Configuration.PLAN;
+	String[] planSimpleName = Configuration.getSimpleName(planName);
 	
 	JComboBox<String> comboxPlan;
 	JTextField fieldNameEtat;

@@ -8,7 +8,6 @@ import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarPercept;
-import edu.warbot.brains.MovableWarAgentAdapter;
 
 /**
  * Description de l'action

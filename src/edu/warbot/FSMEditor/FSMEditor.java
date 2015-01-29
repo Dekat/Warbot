@@ -1,5 +1,6 @@
 package edu.warbot.FSMEditor;
 
+import edu.warbot.FSMEditor.Controleurs.Controleur;
 import edu.warbot.FSMEditor.Modele.Modele;
 
 public class FSMEditor {

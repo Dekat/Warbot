@@ -8,7 +8,7 @@ public class Modele {
 	
 	public Modele() {
 		//Ici on ajoute un modele pour les explorer
-		ModeleBrain modeleBrainExplorer = new ModeleBrain("Explorer");
+		ModeleBrain modeleBrainExplorer = new ModeleBrain("WarExplorer");
 		modeleBrains.add(modeleBrainExplorer);
 	}
 
