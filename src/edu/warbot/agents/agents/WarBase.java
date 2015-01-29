@@ -3,8 +3,6 @@ package edu.warbot.agents.agents;
 import java.util.HashMap;
 
 import edu.warbot.agents.CreatorWarAgent;
-import edu.warbot.agents.actions.CreatorActions;
-import edu.warbot.agents.capacities.Creator;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarBaseAdapter;
@@ -12,7 +10,7 @@ import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
 
 @SuppressWarnings("serial")
-public class WarBase extends CreatorWarAgent implements CreatorActions, Creator {
+public class WarBase extends CreatorWarAgent {
 
 	public static final double ANGLE_OF_VIEW;
 	public static final double HITBOX_RADIUS;
