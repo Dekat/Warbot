@@ -10,24 +10,24 @@ import edu.warbot.FSMEditor.Configuration;
 import edu.warbot.FSMEditor.FSMJarGenerator;
 import edu.warbot.FSMEditor.FSMXMLSaver;
 import edu.warbot.FSMEditor.MouseListenerPanelCenter;
-import edu.warbot.FSMEditor.View;
-import edu.warbot.FSMEditor.Modele.Modele;
-import edu.warbot.FSMEditor.Modele.ModeleBrain;
-import edu.warbot.FSMEditor.Modele.ModeleCondition;
-import edu.warbot.FSMEditor.Modele.ModeleState;
+import edu.warbot.FSMEditor.Modeles.Modele;
+import edu.warbot.FSMEditor.Modeles.ModeleBrain;
+import edu.warbot.FSMEditor.Modeles.ModeleCondition;
+import edu.warbot.FSMEditor.Modeles.ModeleState;
 import edu.warbot.FSMEditor.Panel.PanelCondition;
 import edu.warbot.FSMEditor.Panel.PanelState;
+import edu.warbot.FSMEditor.Views.ViewBrain;
 import edu.warbot.FSMEditor.dialogues.DialogueCondSetting;
 import edu.warbot.FSMEditor.dialogues.DialogueStateSetting;
 
 public class ControleurBrain {
 
-	public ModeleBrain modele;
-	public View view;
+	public ModeleBrain modeleBrain;
+	public ViewBrain viewBrain;
 	
-	public ControleurBrain(ModeleBrain modele, View view) {
-		this.modele = modele;
-		this.view = view;
+	public ControleurBrain(ModeleBrain modele, ViewBrain view) {
+		this.modeleBrain = modele;
+		this.viewBrain = view;
 		
 		placeListenerOnView();
 		placeListeerOnPanel();
@@ -37,41 +37,41 @@ public class ControleurBrain {
 	
 	private void placeListeerOnPanel() {
 		MouseListenerPanelCenter mouseListener = new MouseListenerPanelCenter(this);
-		view.getPanelCenter().addMouseListener(mouseListener);
-		view.getPanelCenter().addMouseMotionListener(mouseListener);		
+		viewBrain.getPanelCenter().addMouseListener(mouseListener);
+		viewBrain.getPanelCenter().addMouseMotionListener(mouseListener);		
 	}
 
 	private void placeListenerOnView(){
 		
-		view.getButtonAddSate().addActionListener(new ActionListener() {
+		viewBrain.getButtonAddSate().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				eventAddSate();
 			}
 		});
 		
-		view.getButtonAddCond().addActionListener(new ActionListener() {
+		viewBrain.getButtonAddCond().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				eventAddCond();
 			}
 		});
 		
-		view.getButtonDelState().addActionListener(new ActionListener() {
+		viewBrain.getButtonDelState().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				eventDelState();
 			}
 		});
 		
-		view.getButtonEditCond().addActionListener(new ActionListener() {
+		viewBrain.getButtonEditCond().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				eventEditCond();
 			}
 		});
 		
-		view.getListeCondition().addListSelectionListener(new ListSelectionListener() {
+		viewBrain.getListeCondition().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				eventListeConditionEdition(e);
 			}
@@ -81,101 +81,88 @@ public class ControleurBrain {
 	
 	private void eventListeConditionEdition(ListSelectionEvent e){
 		//Deselctionne tous les elements
-		for (PanelCondition p : this.view.getPanelCenter().getPanelcondition()) {
+		for (PanelCondition p : this.viewBrain.getPanelCenter().getPanelcondition()) {
 			p.isSelected = false;
 		}
 		
-		String stringCond = view.getListeCondition().getSelectedValue();
+		String stringCond = viewBrain.getListeCondition().getSelectedValue();
 		PanelCondition panelCond = this.getPanelConditionWithName(stringCond);
 		
-		panelCond.isSelected = true;
+		if(panelCond != null){
+			panelCond.isSelected = true;
+		}
 		
-		this.view.getPanelCenter().repaint();
+		this.viewBrain.getPanelCenter().repaint();
 	}
 	
 	private void eventAddSate(){
-		DialogueStateSetting d = new DialogueStateSetting(this.view); 
+		DialogueStateSetting d = new DialogueStateSetting(this.viewBrain); 
 
 		if(d.isValideComponent()){
-			//creation du modele
-			ModeleState s = new ModeleState(d);
-			this.modele.addState(s);
 			
-			//Ajoute du panel
-			PanelState panel = new PanelState(s);
-			this.view.getPanelCenter().addState(panel);
+			//Creation du modele avec la fenetre de dialogue
+			ModeleState s = new ModeleState(d.getNom(), d.getPlanName());
+			this.addState(s);
 			
-			view.getPanelCenter().repaint();
+			viewBrain.getPanelCenter().repaint();
 		}
 		
 	}
 	
 	private void eventAddCond(){
 		
-		if(this.view.getPanelCenter().isTwoStatesSelected()){
+		if(this.viewBrain.getPanelCenter().isTwoStatesSelected()){
 			
-			DialogueCondSetting d = new DialogueCondSetting(this.view);
+			DialogueCondSetting d = new DialogueCondSetting(this.viewBrain);
 			
 			PanelState panelSource;
 			PanelState panelDest;
-			ModeleState modeleSource;
-			ModeleState modeleDest;
+			ModeleState modeleStateSource;
+			ModeleState modeleStateDest;
 			
-			panelSource = this.view.getPanelCenter().getFirstSelectedState();
-			panelDest = this.view.getPanelCenter().getSecondeSelectedState();
-			modeleSource = panelSource.getModele();
-			modeleDest = panelDest.getModele();
+			panelSource = this.viewBrain.getPanelCenter().getFirstSelectedState();
+			panelDest = this.viewBrain.getPanelCenter().getSecondeSelectedState();
+			modeleStateSource = panelSource.getModele();
+			modeleStateDest = panelDest.getModele();
 			
-			//CrÃ©e un nouveau modele condition et le donne au modele
-			ModeleCondition mc = new ModeleCondition(d);
-			this.modele.addCondition(mc);
+			//Crée le nouveau modele condition
+			ModeleCondition mc = new ModeleCondition(d.getName(), d.getConditionType(), 
+					modeleStateSource, modeleStateDest);
 			
-			//CrÃ©e un nouveau panel condition et le donne au panel
-			PanelCondition pc = new PanelCondition(mc);
-			this.view.getPanelCenter().addCondition(pc);
+			addCondition(mc);
 			
-			//Donne au modele source le modele condition
-			modeleSource.addCondition(mc);
-			//Donne au modele condition source le modele destination
-			mc.setDestination(modeleDest);
-			
-			//Donne au panel condition le panel state source et destination
-			pc.setPanelSourceAndDestination(panelSource, panelDest);
-			
-			//Met a jour la liste de conditions dans la vu
-			this.view.getListeModeleConditions().addElement(mc.getNom());
 			
 		}else{
-			System.out.println("Pour ajouter une condition deux etats doivent etre selectionnÃ©s");
+			System.out.println("Pour ajouter une condition deux etats doivent être selectionnés");
 		}
 		
-		view.getPanelCenter().repaint();
+		viewBrain.getPanelCenter().repaint();
 	}
 	
 	private void eventDelState(){
-		if(this.view.getPanelCenter().isOneStateSelected()){
+		if(this.viewBrain.getPanelCenter().isOneStateSelected()){
 			
-			PanelState panelToDelet = this.view.getPanelCenter().getFirstSelectedState();
+			PanelState panelToDelet = this.viewBrain.getPanelCenter().getFirstSelectedState();
 			
 			//ATTENTION : supprimer le modele avant le panel puisque on utilise le panel pour acceder au modele
-			this.modele.removeState(panelToDelet.getModele());
-			this.view.getPanelCenter().removePanelState(panelToDelet);
+			this.modeleBrain.removeState(panelToDelet.getModele());
+			this.viewBrain.getPanelCenter().removePanelState(panelToDelet);
 			
-			this.view.getPanelCenter().setNoItemSelected();
+			this.viewBrain.getPanelCenter().setNoItemSelected();
 			
-			view.getPanelCenter().repaint();
+			viewBrain.getPanelCenter().repaint();
 		}
 		
 	}
 
 	private void eventEditCond(){
-		String condSelec = this.view.getListeConditions().getSelectedValue();
+		String condSelec = this.viewBrain.getListeConditions().getSelectedValue();
 		
 		if(condSelec != null){
 			
 			ModeleCondition modeleCond;
 			
-			for (ModeleCondition modeleC : this.modele.getConditions()) {
+			for (ModeleCondition modeleC : this.modeleBrain.getConditions()) {
 				if(modeleC.getNom().equals(condSelec)){
 					modeleCond = modeleC;
 					break;
@@ -191,11 +178,32 @@ public class ControleurBrain {
 	}
 	
 	private PanelCondition getPanelConditionWithName(String s){
-		for (PanelCondition p : this.view.getPanelCenter().getPanelcondition()) {
+		for (PanelCondition p : this.viewBrain.getPanelCenter().getPanelcondition()) {
 			if(p.getModele().getNom().equals(s))
 				return p;
 		}
 		return null;
+	}
+
+
+	public void addState(ModeleState state) {
+		this.modeleBrain.addState(state);
+		
+		//Création du panel
+		PanelState panel = new PanelState(state);
+		//Ajoute le panel 
+		this.viewBrain.getPanelCenter().addState(panel);		
+	}
+
+
+	public void addCondition(ModeleCondition condition) {
+
+		//Dit au modele d'ajouter la nouvelle condition
+		this.modeleBrain.addCondition(condition);
+		
+		//Dit à la vu d'ajouter la nouvelle condition
+		this.viewBrain.addCondition(condition);
+		
 	}
 	
 

@@ -1,9 +1,6 @@
 package edu.warbot.FSMEditor.dialogues;
 
 import javax.swing.JDialog;
-import javax.swing.JFrame;
-
-import edu.warbot.FSMEditor.View;
 
 public class AbstractDialogue extends JDialog{
 	
@@ -11,9 +8,11 @@ public class AbstractDialogue extends JDialog{
 
 	boolean isValide = false;
 	
-	public AbstractDialogue(JFrame f, boolean modal) {
-		super(f, modal);
-		this.setLocationRelativeTo(f);
+	public AbstractDialogue() {
+		super();
+		this.setModal(true);
+		//TODO il faut que le modal à true pour que la fenetre soit bloquante ?
+		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 	

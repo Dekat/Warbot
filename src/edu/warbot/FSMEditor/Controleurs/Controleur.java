@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 import edu.warbot.FSMEditor.FSMJarGenerator;
 import edu.warbot.FSMEditor.FSMXMLSaver;
-import edu.warbot.FSMEditor.View;
-import edu.warbot.FSMEditor.Modele.Modele;
-import edu.warbot.FSMEditor.Modele.ModeleBrain;
+import edu.warbot.FSMEditor.Modeles.Modele;
+import edu.warbot.FSMEditor.Views.View;
+import edu.warbot.FSMEditor.Views.ViewBrain;
 
 public class Controleur {
 	public Modele modele;
@@ -25,9 +25,18 @@ public class Controleur {
 		createControleursBrains();
 	}
 
+	public ControleurBrain getControleurBrain(String agentType) {
+		for (ControleurBrain controleurBrain : controleursBrains) {
+			if(controleurBrain.modeleBrain.getAgentType().equals(agentType))
+				return controleurBrain;
+		}
+		System.err.println("Impossible to find controleurBrain for agent type " + agentType);
+		return null;
+	}
+
 	private void createControleursBrains() {
-		for (ModeleBrain mBrain : this.modele.getModeleBrains()) {
-			controleursBrains.add(new ControleurBrain(mBrain, view));
+		for (ViewBrain vBrain : this.view.getViewBrains()) {
+			controleursBrains.add(new ControleurBrain(vBrain.getModele(), vBrain));
 		}
 	}
 	
@@ -61,7 +70,6 @@ public class Controleur {
 	
 	public void eventMenuBarItemSaveJar() {
 		FSMJarGenerator fsmSaver = new FSMJarGenerator(this.modele, "export.jar");
-		
 	}
 	
 	public void eventMenuBarItemLoad(){

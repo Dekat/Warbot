@@ -20,14 +20,14 @@ import javax.swing.border.TitledBorder;
 import org.jfree.ui.tabbedui.VerticalLayout;
 
 import edu.warbot.FSMEditor.Configuration;
-import edu.warbot.FSMEditor.View;
+import edu.warbot.FSMEditor.Views.ViewBrain;
 
 public class DialogueCondSetting extends AbstractDialogue{
 	
 	private static final long serialVersionUID = 1L;
 
-	public DialogueCondSetting(View f) {
-		super(f, true);
+	public DialogueCondSetting(ViewBrain f) {
+		super();
 		
 		this.setTitle("Condition Setting");
 		this.setSize(new Dimension(322, 500));
