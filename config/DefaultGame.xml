@@ -88,10 +88,10 @@
         <WarTurret>
         	<HitboxRadius>3</HitboxRadius>
         	<AngleOfView>180</AngleOfView>
-        	<DistanceOfView>35</DistanceOfView>
+        	<DistanceOfView>50</DistanceOfView>
         	<Cost>1500</Cost>
         	<MaxHealth>6000</MaxHealth>
-        	<BagSize>4</BagSize>
+        	<BagSize>10</BagSize>
         	<TicksToReload>30</TicksToReload>
         </WarTurret>
   	</WarControllableAgents>
@@ -114,7 +114,7 @@
   	    	<HitboxRadius>1</HitboxRadius>
   	    	<Speed>3.0</Speed>
   	    	<ExplosionRadius>25</ExplosionRadius>
-  	    	<Autonomy>20</Autonomy>
+  	    	<Autonomy>30</Autonomy>
   	    	<Damage>500</Damage>
   	    </WarDeathRocket>
   	</WarProjectiles>
