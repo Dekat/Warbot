@@ -2,7 +2,6 @@ package edu.warbot.agents.agents;
 
 import java.util.HashMap;
 
-import edu.warbot.agents.CreatorWarAgent;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.actions.CreatorActions;
 import edu.warbot.agents.enums.WarAgentType;
@@ -12,7 +11,6 @@ import edu.warbot.brains.capacities.Creator;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
 
-@SuppressWarnings("serial")
 public class WarEngineer extends MovableWarAgent implements CreatorActions, Creator {
 	
 	public static final double ANGLE_OF_VIEW;
@@ -44,7 +42,7 @@ public class WarEngineer extends MovableWarAgent implements CreatorActions, Crea
 
 	@Override
 	public String create() {
-		CreatorWarAgent.defaultCreateUnit(this, _nextAgentToCreate);
+		getTeam().createUnit(this, _nextAgentToCreate);
 		return getBrain().action();
 	}
 

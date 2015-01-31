@@ -4,19 +4,19 @@ import java.util.ArrayList;
 
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
-import edu.warbot.game.Game;
+import edu.warbot.game.WarGame;
 
 public class InConePerceptsGetter extends PerceptsGetter {
 
-	public InConePerceptsGetter(ControllableWarAgent agent) {
-		super(agent);
+	public InConePerceptsGetter(ControllableWarAgent agent, WarGame game) {
+		super(agent, game);
 	}
 
 	@Override
 	public ArrayList<WarPercept> getPercepts() {
 		ArrayList<WarPercept> toReturn = new ArrayList<>();
 		
-		for (WarAgent agentToTestVisible : Game.getInstance().getAllAgentsInRadiusOf(getAgent(), getAgent().getDistanceOfView())) {
+		for (WarAgent agentToTestVisible : getGame().getAllAgentsInRadiusOf(getAgent(), getAgent().getDistanceOfView())) {
 			
 			if (agentToTestVisible.getID() != getAgent().getID()) {
 				

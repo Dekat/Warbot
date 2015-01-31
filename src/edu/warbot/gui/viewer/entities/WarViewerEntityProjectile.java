@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import edu.warbot.agents.WarProjectile;
-import edu.warbot.game.Game;
 import edu.warbot.game.Team;
 import edu.warbot.gui.viewer.WarViewerObject;
 import edu.warbot.gui.viewer.animations.WarViewerAnimationExplosion;
@@ -13,17 +12,17 @@ import edu.warbot.gui.viewer.screens.WarViewerScreen;
 
 public class WarViewerEntityProjectile extends WarViewerEntity implements WarViewerObject {
 	
+	private WarProjectile projectile;
 	private Team team;
 	private Sprite sprite;
 	
-	public WarViewerEntityProjectile(int id, int patchX, int patchY, int width,
-			int height, Team team) {
-		this.id = id;
-		this.patchX = patchX;
-		this.patchY = patchY;
+	public WarViewerEntityProjectile(WarProjectile projectile, int width, int height) {
+		this.id = projectile.getID();
+		this.patchX = (int) projectile.getX();
+		this.patchY = (int) projectile.getY();
 		this.width = width;
 		this.height = height;
-		this.team = team;
+		this.team = projectile.getTeam();
 		this.sprite = new Sprite(
 				WarViewerScreen.GAME_SCREEN.getTexture("rocket"));
 		
@@ -40,15 +39,8 @@ public class WarViewerEntityProjectile extends WarViewerEntity implements WarVie
 	}
 	
 	private void updatePosition() {
-		Game g = Game.getInstance();
-		for (WarProjectile projectile: g.getPlayerTeam(team.getName()).getProjectiles()) {
-			if (projectile.getID() == id) {
-				patchX = (int) projectile.getX();
-				patchY = (int) projectile.getY();
-			}
-		}
-		
-		
+		patchX = (int) projectile.getX();
+		patchY = (int) projectile.getY();
 	}
 	
 	public WarViewerAnimationExplosion explode() {

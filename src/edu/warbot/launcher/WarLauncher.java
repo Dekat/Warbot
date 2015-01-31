@@ -1,70 +1,31 @@
 package edu.warbot.launcher;
 
-import java.awt.Color;
+import static turtlekit.kernel.TurtleKit.Option.launcher;
+
 import java.awt.Dimension;
-import java.awt.Image;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.util.Arrays;
+import java.util.Random;
 import java.util.logging.Level;
 
-import javax.swing.ImageIcon;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
 import madkit.action.SchedulingAction;
+import madkit.kernel.Madkit;
 import madkit.message.SchedulingMessage;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
 import turtlekit.agr.TKOrganization;
 import turtlekit.kernel.TKEnvironment;
 import turtlekit.kernel.TKLauncher;
 import turtlekit.kernel.TurtleKit;
-import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
-import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.WarBrain;
-import edu.warbot.game.Game;
 import edu.warbot.game.MotherNatureTeam;
 import edu.warbot.game.Team;
-import edu.warbot.gui.WarViewer;
-import edu.warbot.maps.WarMap;
+import edu.warbot.game.WarGame;
+import edu.warbot.launcher.WarMain.Shared;
+import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.tools.WarCircle;
-import edu.warbot.tools.WarIOTools;
-import edu.warbot.tools.WarXmlReader;
 
-@SuppressWarnings("serial")
 public class WarLauncher extends TKLauncher {
-
-	public static final String TEAMS_DIRECTORY_NAME = "teams";
-	public static final Color[] TEAM_COLORS = {
-		new Color(149, 149, 255), // Blue
-		new Color(255, 98, 98), // Red
-		Color.YELLOW,
-		Color.PINK,
-		Color.CYAN,
-		Color.ORANGE,
-		Color.MAGENTA 
-	};
 
 	public WarLauncher() {
 		super();
@@ -79,10 +40,10 @@ public class WarLauncher extends TKLauncher {
 	@Override
 	protected void createSimulationInstance() {
 		setLogLevel(Level.ALL);
-
+		
 		initProperties();
 		setMadkitProperty(TurtleKit.Option.startSimu, "false");
-		Dimension mapSize = Game.getInstance().getMap().getSize();
+		Dimension mapSize = Shared.getGame().getMap().getSize();
 		setMadkitProperty(TurtleKit.Option.envWidth, String.valueOf(mapSize.width));
 		setMadkitProperty(TurtleKit.Option.envHeight, String.valueOf(mapSize.height));
 
@@ -92,282 +53,63 @@ public class WarLauncher extends TKLauncher {
 
 		super.createSimulationInstance();
 
-		File xmlSituationFile = Simulation.getInstance().getXmlSituationFileToLoad();
-		if (xmlSituationFile == null)
+		WarGameSettings settings = Shared.getGame().getSettings();
+		if (settings.getSituationLoader() == null)
 			launchAllAgents();
 		else
-			launchAllAgentsFromXmlSituationFile(xmlSituationFile);
+			settings.getSituationLoader().launchAllAgentsFromXmlSituationFile(this);
+		
+		// Puis on lance la simulation
+		sendMessage(getMadkitProperty(turtlekit.kernel.TurtleKit.Option.community),
+				TKOrganization.ENGINE_GROUP, TKOrganization.SCHEDULER_ROLE, new SchedulingMessage(SchedulingAction.RUN)); 
 
-		Game.getInstance().setGameStarted();
+
+		Shared.getGame().setGameStarted();
 	}
 
-	@Override
-	protected void end() {
-		super.end();
-		// On ferme l'interface
-		Game.getInstance().setSimulationClosed();
+	public void executeLauncher(String... args) {
+		final ArrayList<String> arguments = new ArrayList<>(Arrays.asList(
+				Madkit.BooleanOption.desktop.toString(), "false",
+				Madkit.Option.configFile.toString(), "turtlekit/kernel/turtlekit.properties",
+				launcher.toString(), WarLauncher.class.getName()));
+		if (args != null) {
+			arguments.addAll(Arrays.asList(args));
+		}
+		new Madkit(arguments.toArray(new String[0]));
 	}
-
-	public void launchAllAgents() {
-		ArrayList<Team> playerTeams = Game.getInstance().getPlayerTeams();
-		WarMap map = Game.getInstance().getMap();
-		ArrayList<WarCircle> teamsPositions = map.getTeamsPositions();
+	
+	private void launchAllAgents() {
+		WarGame game = Shared.getGame();
+		ArrayList<Team> playerTeams = game.getPlayerTeams();
+		AbstractWarMap map = game.getMap();
+		ArrayList<ArrayList<WarCircle>> teamsPositions = map.getTeamsPositions();
 		int teamCount = 0;
-		MotherNatureTeam motherNatureTeam = Game.getInstance().getMotherNatureTeam();
+		MotherNatureTeam motherNatureTeam = game.getMotherNatureTeam();
 
 		try {
 			int compteur;
 			for (Team t : playerTeams) {
+				// On sélectionne aléatoirement la position de l'équipe depuis les différentes possibilités
+				WarCircle selectedPosition = teamsPositions.get(teamCount).get(new Random().nextInt(teamsPositions.get(teamCount).size()));
 				for (WarAgentType agentType : WarAgentType.values()) {
-					for (compteur = 0; compteur < Simulation.getInstance().getNbAgentOfType(agentType); compteur++) {
+					for (compteur = 0; compteur < game.getSettings().getNbAgentOfType(agentType); compteur++) {
 						try {
-							WarAgent agent = Game.instantiateNewControllableWarAgent(agentType.toString(), t);
+							WarAgent agent = t.instantiateNewControllableWarAgent(agentType.toString());
 							launchAgent(agent);
-							agent.setRandomPositionInCircle(teamsPositions.get(teamCount));
+							agent.setRandomPositionInCircle(selectedPosition);
 						} catch (InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
 							System.err.println("Erreur lors de l'instanciation de l'agent. Type non reconnu : " + agentType);
 							e.printStackTrace();
 						}
 						// On créé autant de WarFood que d'agent au départ
-						motherNatureTeam.createAndLaunchNewResource(this, WarAgentType.WarFood);
+						motherNatureTeam.createAndLaunchNewResource(game.getMap(), this, WarAgentType.WarFood);
 					}
 				}
 				teamCount++;
 			}
-
-			// Puis on lance la simulation
-			sendMessage(getMadkitProperty(turtlekit.kernel.TurtleKit.Option.community),
-					TKOrganization.ENGINE_GROUP, TKOrganization.SCHEDULER_ROLE, new SchedulingMessage(SchedulingAction.RUN)); 
-
-
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | SecurityException e) {
 			System.err.println("Erreur lors de l'instanciation des classes à partir des données XML");
 			e.printStackTrace();
 		}
-	}
-
-	public void launchAllAgentsFromXmlSituationFile(File file) {
-		HashMap<String, ArrayList<HashMap<String, String>>> xmlSituationFileContent = getXmlSituationFileContent(file);
-
-		MotherNatureTeam motherNatureTeam = Game.getInstance().getMotherNatureTeam();
-
-		try {
-			for (String teamName : xmlSituationFileContent.keySet()) {
-
-				// On récupère l'équipe
-				Team currentTeam;
-				if (teamName.equals(motherNatureTeam.getName()))
-					currentTeam = motherNatureTeam;
-				else {
-					currentTeam = Game.getInstance().getPlayerTeam(teamName);
-					// On vérifie si le jar de l'équipe existe
-					if (Simulation.getInstance().getTeam(Team.getRealNameFromTeamName(teamName)) == null) {
-						System.err.println("Le fichier JAR de l'équipe " + Team.getRealNameFromTeamName(teamName) + " est manquant.");
-					}
-				}
-
-				ArrayList<HashMap<String, String>> agentsOfCurrentTeam = xmlSituationFileContent.get(teamName);
-				for (HashMap<String, String> agentDatas : agentsOfCurrentTeam) {
-					WarAgent agent;
-					String agentTypeName = agentDatas.get("Type");
-					try {
-						if (WarAgentType.valueOf(agentTypeName).getCategory() == WarAgentCategory.Resource) {
-							agent = Game.instantiateNewWarResource(agentTypeName);
-						} else {
-							agent = Game.instantiateNewControllableWarAgent(agentTypeName, currentTeam);
-						}
-						launchAgent(agent);
-						agent.setPosition(Double.valueOf(agentDatas.get("xPosition")),
-								Double.valueOf(agentDatas.get("yPosition")));
-						if (agent instanceof ControllableWarAgent) {
-							agent.setHeading(Double.valueOf(agentDatas.get("Heading")));
-							((ControllableWarAgent) agent).setViewDirection(Double.valueOf(agentDatas.get("ViewDirection")));
-							((ControllableWarAgent) agent).init(Integer.valueOf(agentDatas.get("Health")),
-									Integer.valueOf(agentDatas.get("NbElementsInBag")));
-						}
-					} catch (InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
-						System.err.println("Erreur lors de l'instanciation de l'agent. Type non reconnu : " + agentTypeName);
-						e.printStackTrace();
-					}
-				}
-			}
-
-			// Puis on lance la simulation
-			sendMessage(getMadkitProperty(turtlekit.kernel.TurtleKit.Option.community),
-					TKOrganization.ENGINE_GROUP, TKOrganization.SCHEDULER_ROLE, new SchedulingMessage(SchedulingAction.RUN)); 
-
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | SecurityException e) {
-			System.err.println("Erreur lors de l'instanciation des classes à partir des données XML");
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Retourne une hashmap contenant les équipes (identifiées par leur nom). Chaque équipe est composée d'une liste d'agents.
-	 * Chaque donnée de chaque agent est enregistrée dans une hashmap
-	 * Exemple : je veux la position en X du premier agent de l'équipe "Test" :
-	 * 		Double.valueOf(getXmlSituationFileContent(file).get("Test").get(0).get("xPosition"));
-	 */
-	public HashMap<String, ArrayList<HashMap<String, String>>> getXmlSituationFileContent(File file) {
-		String rootPath = "/WarSituation";
-		String teamsPath = rootPath + "/Teams";
-		HashMap<String, ArrayList<HashMap<String, String>>> toReturn = new HashMap<>();
-		try {
-			// Ouverture du document
-			Document doc = WarXmlReader.openXmlFile(file.getAbsolutePath());
-
-			// Chargement
-			XPath xPath = XPathFactory.newInstance().newXPath();
-			NodeList teamsNode =  (NodeList) xPath.compile(teamsPath).evaluate(doc, XPathConstants.NODESET);
-			teamsNode = teamsNode.item(0).getChildNodes();
-			Node node;
-			int countColor = 0;
-			for (int i = 0; i < teamsNode.getLength(); i++) { // Parcours des équipes
-				if (teamsNode.item(i).getNodeType() == Node.ELEMENT_NODE) {
-					NodeList teamNode = teamsNode.item(i).getChildNodes();
-					// On récupère l'équipe courante (l'objet)
-					String currentTeamName = teamNode.item(0).getFirstChild().getNodeValue();
-					Team team = null;
-					ArrayList<HashMap<String, String>> agentsOfCurrentTeam = new ArrayList<>();
-					// On charge l'équipe dans la liste des équipes
-					if (currentTeamName.equals(Game.getInstance().getMotherNatureTeam().getName()))
-						team = Game.getInstance().getMotherNatureTeam();
-					else {
-						team = Team.duplicate(Simulation.getInstance().getTeam(Team.getRealNameFromTeamName(currentTeamName)), currentTeamName);
-						Color teamNextColor = WarLauncher.TEAM_COLORS[countColor];
-						Game.getInstance().addPlayerTeam(team, teamNextColor);
-						countColor++;
-					}
-
-					for (int j = 0; j < teamNode.getLength(); j++) { // Parcours des agents d'une équipe
-						node = teamNode.item(j);
-						if (node.getNodeType() == Node.ELEMENT_NODE) {
-							if (node.getNodeName().equals("WarAgent")) {
-								// On récupère tous les paramètres de l'agent
-								agentsOfCurrentTeam.add(WarXmlReader.getNodesFromNodeList(doc, node.getChildNodes()));
-							}
-						}
-					} // Fin parcours des agents
-
-					toReturn.put(currentTeamName, agentsOfCurrentTeam);
-				}
-			}
-		} catch (FileNotFoundException e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-		} catch (ParserConfigurationException | TransformerFactoryConfigurationError | IOException | SAXException | IllegalArgumentException | SecurityException e) {
-			System.err.println("Erreur lors du chargement depuis le fichier XML.");
-			e.printStackTrace();
-		} catch (XPathExpressionException e) {
-			System.err.println("Wrong XPath : " + teamsPath);
-			e.printStackTrace();
-		}
-
-		return toReturn;
-	}
-
-
-	@SuppressWarnings("unchecked")
-	public static void getTeamsFromDirectory() {
-		String jarDirectoryPath = WarLauncher.TEAMS_DIRECTORY_NAME + File.separator;
-		File jarDirectory = new File(jarDirectoryPath);
-		// On regarde si un dossier jar existe
-		if (! jarDirectory.exists() || jarDirectory.isDirectory()) {
-			jarDirectory.mkdir();
-		}
-		File[] filesInJarDirectory = jarDirectory.listFiles();
-
-		TeamXMLReader analXML = new TeamXMLReader();
-		Team currentTeam;
-
-		// On va chercher les fichiers .jar dans le dossier adéquate
-		for (File currentFile : filesInJarDirectory) {
-			try {
-				if (currentFile.getCanonicalPath().endsWith(".jar")) {
-					JarFile jarCurrentFile = new JarFile(currentFile);
-
-					// On parcours les entrées du fichier JAR à la recherche des fichiers souhaités
-					JarEntry currentEntry;
-					Enumeration<JarEntry> entries = jarCurrentFile.entries();
-					HashMap<String, JarEntry> allJarEntries = new HashMap<>();
-					boolean configFileFound = false;
-					while (entries.hasMoreElements()) {
-						currentEntry = entries.nextElement();
-
-						// Si c'est le fichier config.xml
-						if (currentEntry.getName().endsWith("config.xml")) {
-							// On le lit et on l'analyse grâce à la classe TeamXmlReader
-							BufferedInputStream input = new BufferedInputStream(jarCurrentFile.getInputStream(currentEntry));
-							analXML.Ouverture(input);
-							input.close();
-							configFileFound = true;
-						}
-						else { // Sinon, on ne peut pas encore identifier le fichier donc nous allons le conserver (il faut d'abord analyser le fichier de configuration)
-							String currentEntryName = currentEntry.getName();
-							allJarEntries.put(currentEntryName.substring(currentEntryName.lastIndexOf("/") + 1, currentEntryName.length()), currentEntry);
-						}
-					}
-					if (configFileFound) {
-						// On a maintenant tous les fichiers dans un tableau et le fichier de configuration a été analysé
-
-						// On récupère le logo
-						JarEntry logoEntry = allJarEntries.get(analXML.getIconeName());
-						ImageIcon teamLogo = new ImageIcon(WarIOTools.toByteArray(jarCurrentFile.getInputStream(logoEntry)));
-						// On change sa taille
-						Image tmp = teamLogo.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-						teamLogo = new ImageIcon(tmp);
-
-						// On récupère le son
-						// TODO ajouter le son aux équipes
-
-						// On cré l'équipe
-						currentTeam = new Team(analXML.getTeamName());
-						currentTeam.setLogo(teamLogo);
-						currentTeam.setDescription(analXML.getTeamDescription().trim());
-
-						// On recherche les classes de type BrainController
-						// Pour cela, on utilise un URLClassLoader
-						String urlName = currentFile.getCanonicalPath();
-						URLClassLoader classLoader = new URLClassLoader(new URL [] { new URL("jar:file:/" + urlName + "!/") });
-						// On parcours chaque nom de classe, puis on les charge
-						HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();
-
-						for (String agentName : brainControllersClassesName.keySet()) {
-							JarEntry classEntry = allJarEntries.get(brainControllersClassesName.get(agentName));
-							currentTeam.addBrainControllerClassForAgent(agentName,
-									(Class<? extends WarBrain>) Class.forName(classEntry.getName().replaceAll(".class", "").replaceAll("/", "."),
-											true, classLoader));
-						}
-
-						// On ferme le loader
-						classLoader.close();
-
-						// Puis on ferme le fichier JAR
-						jarCurrentFile.close();
-
-						// Si il y a déjà une équipe du même nom on ne l'ajoute pas
-						if (Simulation.getInstance().getTeam(currentTeam.getName()) != null)
-							System.err.println("Erreur lors de la lecture d'une équipe : le nom " + currentTeam.getName() + " est déjà utilisé.");
-						else
-							Simulation.getInstance().addAvailableTeam(currentTeam);
-					} else { // Si le fichier de configuration n'a pas été trouvé
-						System.err.println("Le fichier de configuration est introuvable dans le fichier JAR " + currentFile.getCanonicalPath());
-					}
-				}
-			} catch (MalformedURLException e) {
-				System.err.println("Lecture des fichiers JAR : URL mal formée");
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				System.err.println("Lecture des fichiers JAR : Classe non trouvée");
-				e.printStackTrace();
-			} catch (IOException e) {
-				System.err.println("Lecture des fichiers JAR : Lecture de fichier");
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public static void main() {
-		executeThisLauncher();
 	}
 }

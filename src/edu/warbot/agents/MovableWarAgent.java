@@ -11,11 +11,9 @@ import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Movable;
 import edu.warbot.brains.capacities.Picker;
 import edu.warbot.communications.WarMessage;
-import edu.warbot.game.Game;
 import edu.warbot.game.Team;
 import edu.warbot.tools.CoordPolar;
 
-@SuppressWarnings("serial")
 public abstract class MovableWarAgent extends ControllableWarAgent implements PickerActions, Picker, MovableActions, Movable {
 
 	private double _speed;
@@ -44,7 +42,7 @@ public abstract class MovableWarAgent extends ControllableWarAgent implements Pi
 	public String take() {
 		logger.log(Level.FINEST, this.toString() + " taking...");
 		if (getNbElementsInBag() < getBagSize()) {
-			ArrayList<WarResource> reachableResources = Game.getInstance().getMotherNatureTeam().getAccessibleResourcesFor(this);
+			ArrayList<WarResource> reachableResources = getTeam().getGame().getMotherNatureTeam().getAccessibleResourcesFor(this);
 			if (reachableResources.size() > 0) {
 				killAgent(reachableResources.get(0));
 				addElementInBag();

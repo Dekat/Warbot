@@ -11,14 +11,11 @@ import edu.warbot.agents.actions.MovableActions;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.capacities.CommonCapacities;
 import edu.warbot.brains.capacities.Movable;
-import edu.warbot.game.Game;
 import edu.warbot.game.Team;
-import edu.warbot.launcher.Simulation;
 import edu.warbot.tools.CoordCartesian;
 import edu.warbot.tools.CoordPolar;
 import edu.warbot.tools.WarMathTools;
 
-@SuppressWarnings("serial")
 public abstract class WarAgent extends Turtle implements CommonCapacities {
 
 	private double _hitboxRadius;
@@ -35,7 +32,6 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	@Override
 	protected void activate() {
 		super.activate();
-		setLogLevel(Simulation.getInstance().getDefaultLogLevel());
 		getTeam().addWarAgent(this);
 		requestRole(Team.DEFAULT_GROUP_NAME, getClass().getSimpleName());
 	}
@@ -106,19 +102,16 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 
 	protected boolean isGoingToBeOutOfMap() {
 		// Si c'est un monde ouvert, l'agent ne sera jamais en dehors de la carte
-		if (Simulation.getInstance().isOpenWorld())
+		if (getTeam().getGame().getSettings().isOpenWorld())
 			return false;
 		
 		CoordCartesian nextPos = new CoordCartesian(getX(), getY());
 		if (this instanceof MovableActions)
 			nextPos.add(new CoordPolar(((Movable) this).getSpeed(), getHeading()).toCartesian());
 
-		Dimension mapSize = Game.getInstance().getMap().getSize();
-		if (	((nextPos.getX() - getHitboxRadius()) < 0) || ((nextPos.getX() + getHitboxRadius()) > mapSize.width) ||
-				((nextPos.getY() - getHitboxRadius()) < 0) || ((nextPos.getY() + getHitboxRadius()) > mapSize.height))
-			return true;
-		else
-			return false;
+		Dimension mapSize = getTeam().getGame().getMap().getSize();
+		return ((nextPos.getX() - getHitboxRadius()) < 0) || ((nextPos.getX() + getHitboxRadius()) > mapSize.width) ||
+				((nextPos.getY() - getHitboxRadius()) < 0) || ((nextPos.getY() + getHitboxRadius()) > mapSize.height);
 	}
 
 	protected boolean isGoingToBeOnAnOtherAgent() {
@@ -128,7 +121,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 			radius += ((Movable) this).getSpeed();
 			futurePosition = WarMathTools.addTwoPoints(new CoordCartesian(getX(), getY()), new CoordPolar(((Movable) this).getSpeed(), getHeading()));
 		}
-		for(WarAgent a : Game.getInstance().getAllAgentsInRadius(futurePosition.getX(), futurePosition.getY(), radius)) {
+		for(WarAgent a : getTeam().getGame().getAllAgentsInRadius(futurePosition.getX(), futurePosition.getY(), radius)) {
 			if (a.getID() != getID() && a instanceof ControllableWarAgent) {
 				if (this instanceof MovableActions) {
 					return isInCollisionWithAtPosition(futurePosition, a);
@@ -140,17 +133,11 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	}
 
 	protected boolean isInCollisionWith(WarAgent agent) {
-		if (getDistanceFrom(agent) < 0)
-			return true;
-		else
-			return false;
+		return getDistanceFrom(agent) < 0;
 	}
 
 	protected boolean isInCollisionWithAtPosition(CoordCartesian pos, WarAgent agent) {
-		if (WarMathTools.getDistanceBetweenTwoPoints(pos.getX(), pos.getY(), agent.getX(), agent.getY()) < (getHitboxRadius() + agent.getHitboxRadius()))
-			return true;
-		else
-			return false;
+		return WarMathTools.getDistanceBetweenTwoPoints(pos.getX(), pos.getY(), agent.getX(), agent.getY()) < (getHitboxRadius() + agent.getHitboxRadius());
 	}
 	
 	public void setPositionAroundOtherAgent(WarAgent agent) {
@@ -165,7 +152,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	
 	public void moveOutOfCollisionZone() {
 		// Test of Collision with map
-		Dimension mapSize = Game.getInstance().getMap().getSize();
+		Dimension mapSize = getTeam().getGame().getMap().getSize();
 		if ((getX() - getHitboxRadius()) < 0)
 			setPosition(getHitboxRadius() + 1, getY());
 		else if ((getX() + getHitboxRadius()) > mapSize.width)
@@ -175,7 +162,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 		else if ((getY() + getHitboxRadius()) > mapSize.height)
 			setPosition(getX(), mapSize.height - getHitboxRadius() - 1);
 		
-		for(WarAgent a : Game.getInstance().getAllAgentsInRadiusOf(this, getHitboxRadius())) {
+		for(WarAgent a : getTeam().getGame().getAllAgentsInRadiusOf(this, getHitboxRadius())) {
 			if (a.getID() != getID() && a instanceof ControllableWarAgent) {
 				if (isInCollisionWith(a)) {
 					double angle = getPosition().getAngleToPoint(a.getPosition());

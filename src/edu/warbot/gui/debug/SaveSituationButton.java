@@ -25,7 +25,7 @@ import turtlekit.agr.TKOrganization;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
-import edu.warbot.game.Game;
+import edu.warbot.game.WarGame;
 import edu.warbot.game.Team;
 import edu.warbot.gui.toolbar.WarToolBar;
 import edu.warbot.tools.WarXmlWriter;
@@ -34,10 +34,12 @@ import edu.warbot.tools.WarXmlWriter;
 public class SaveSituationButton extends JButton implements ActionListener {
 
 	private WarToolBar _toolBar;
+	private WarGame game;
 
 	public SaveSituationButton(WarToolBar toolBar) {
 		super("Sauvegarder la situation");
 		_toolBar = toolBar;
+		this.game = _toolBar.getViewer().getGame();
 
 //		setIcon(WarViewer.getIconFromGuiImages("save.png"));
 //		setSelectedIcon(WarViewer.getIconFromGuiImages("save_s.png"));
@@ -93,7 +95,7 @@ public class SaveSituationButton extends JButton implements ActionListener {
 
 			Element teams = doc.createElement("Teams");
 			rootElement.appendChild(teams);
-			for (Team t : Game.getInstance().getAllTeams()) {
+			for (Team t : game.getAllTeams()) {
 				Element currentTeam = doc.createElement("Team");
 				rootElement.appendChild(currentTeam);
 				currentTeam.appendChild(WarXmlWriter.createTextElement(doc,

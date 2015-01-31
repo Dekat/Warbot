@@ -7,7 +7,6 @@ import edu.warbot.agents.WarProjectile;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
 
-@SuppressWarnings("serial")
 public class WarBomb extends WarProjectile {
 	
 	public static final double HITBOX_RADIUS;

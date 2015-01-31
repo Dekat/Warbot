@@ -3,7 +3,6 @@ package edu.warbot.agents;
 import edu.warbot.agents.actions.ControllableActions;
 import edu.warbot.game.Team;
 
-@SuppressWarnings("serial")
 public class WarBuilding extends WarAgent implements ControllableActions {
 
 	public WarBuilding(Team team, double hitboxRadius) {

@@ -8,7 +8,7 @@ import madkit.action.SchedulingAction;
 import madkit.message.SchedulingMessage;
 import turtlekit.agr.TKOrganization;
 import edu.warbot.agents.WarAgent;
-import edu.warbot.game.Game;
+import edu.warbot.game.WarGame;
 import edu.warbot.gui.debug.DebugModeToolBar;
 import edu.warbot.tools.CoordCartesian;
 
@@ -16,10 +16,12 @@ public class MoveToolMouseListener implements MouseListener {
 
 	private DebugModeToolBar _debugToolBar;
 	private WarAgent _currentSelectedAgent;
+	private WarGame game;
 
 	public MoveToolMouseListener(DebugModeToolBar debugToolBar) {
 		_debugToolBar = debugToolBar;
 		_currentSelectedAgent = null;
+		game = _debugToolBar.getViewer().getGame();
 	}
 
 	@Override
@@ -39,7 +41,7 @@ public class MoveToolMouseListener implements MouseListener {
 		_debugToolBar.getViewer().setMapExplorationEventsEnabled(false);
 		
 		// On sélectionne l'agent sous le clique de souris
-		ArrayList<WarAgent> agents = Game.getInstance().getAllAgentsInRadius(
+		ArrayList<WarAgent> agents = game.getAllAgentsInRadius(
 				e.getX() / _debugToolBar.getViewer().getCellSize(),
 				e.getY() / _debugToolBar.getViewer().getCellSize(),
 				1);
@@ -54,7 +56,7 @@ public class MoveToolMouseListener implements MouseListener {
 			CoordCartesian newPos = new CoordCartesian(
 					e.getX() / _debugToolBar.getViewer().getCellSize(),
 					e.getY() / _debugToolBar.getViewer().getCellSize());
-			newPos.normalize(0, Game.getInstance().getMap().getWidth() - 1, 0, Game.getInstance().getMap().getHeight() - 1);
+			newPos.normalize(0, game.getMap().getWidth() - 1, 0, game.getMap().getHeight() - 1);
 			_currentSelectedAgent.setPosition(newPos);
 			
 			// TODO à remplacer par une simple actualisation de l'affichage

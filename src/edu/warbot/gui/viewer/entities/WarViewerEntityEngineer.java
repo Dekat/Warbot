@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
 import edu.warbot.agents.ControllableWarAgent;
+import edu.warbot.agents.agents.WarEngineer;
 import edu.warbot.gui.viewer.screens.WarViewerScreen;
 
 public class WarViewerEntityEngineer extends WarViewerEntityControllable
@@ -23,16 +24,14 @@ public class WarViewerEntityEngineer extends WarViewerEntityControllable
 	protected TextureRegion currentFrame;
 	protected Animation[] animation;
 
-	public WarViewerEntityEngineer(int id, int patchX, int patchY,
-			int teamColor, double heading, int health, int maxHealth) {
-		super(id, patchX, patchY, teamColor, heading, health, maxHealth);
+	public WarViewerEntityEngineer(WarEngineer agent) {
+		super(agent);
 		
 		this.width = 24;
 		this.height = 24;
 		
 		texture = WarViewerScreen.GAME_SCREEN.getTexture("sheet_"
-				+ teamsColors[teamColor]);
-		this.heading = heading;
+				+ teamsColors[color]);
 		
 		nbFrames = 8;
 		

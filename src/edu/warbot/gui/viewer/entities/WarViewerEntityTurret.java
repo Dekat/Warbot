@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import edu.warbot.agents.ControllableWarAgent;
+import edu.warbot.agents.agents.WarTurret;
 import edu.warbot.gui.viewer.WarViewerObject;
 import edu.warbot.gui.viewer.screens.WarViewerScreen;
 
@@ -18,15 +19,14 @@ public class WarViewerEntityTurret extends WarViewerEntityControllable
 	protected TextureRegion currentOrientation;
 	protected Animation[] animation;
 	
-	public WarViewerEntityTurret(int id, int patchX, int patchY, int teamColor,
-			double heading, int health, int maxHealth) {
-		super(id, patchX, patchY, teamColor, heading, health, maxHealth);
+	public WarViewerEntityTurret(WarTurret agent) {
+		super(agent);
 		
 		this.width = 64;
 		this.height = 64;
 		
 		texture = WarViewerScreen.GAME_SCREEN.getTexture("turret_"
-				+ teamsColors[teamColor]);
+				+ teamsColors[color]);
 		
 		textureRegion = new TextureRegion[nbPositions][1];
 		TextureRegion[][] tmp = TextureRegion.split(texture,

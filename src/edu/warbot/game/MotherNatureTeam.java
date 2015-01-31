@@ -10,7 +10,9 @@ import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarResource;
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.agents.resources.WarFood;
 import edu.warbot.launcher.WarConfig;
+import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.tools.CoordCartesian;
 import edu.warbot.tools.CoordPolar;
 import edu.warbot.tools.WarCircle;
@@ -18,12 +20,15 @@ import edu.warbot.tools.WarMathTools;
 
 public class MotherNatureTeam extends Team {
 
+	public static final String NAME = "Mère nature";
+	
 	private ArrayList<WarResource> _resources;
 	
-	public MotherNatureTeam() {
-		super("Mère nature");
+	public MotherNatureTeam(WarGame game) {
+		super(NAME);
 		_resources = new ArrayList<>();
 		setColor(Color.GREEN);
+		setGame(game);
 	}
 
 //	public void init() {
@@ -87,16 +92,16 @@ public class MotherNatureTeam extends Team {
 		return toReturn;
 	}
 	
-	public void createAndLaunchNewResource(Agent launcher, WarAgentType resourceType) {
+	public void createAndLaunchNewResource(AbstractWarMap map, Agent launcher, WarAgentType resourceType) {
 		if (resourceType.getCategory() == WarAgentCategory.Resource) {
 			try {
-				WarResource resource = Game.instantiateNewWarResource(resourceType.toString());
+				WarResource resource = instantiateNewWarResource(resourceType.toString());
 				launcher.launchAgent(resource);
-				ArrayList<WarCircle> foodPositions = Game.getInstance().getMap().getFoodPositions();
+				ArrayList<WarCircle> foodPositions = map.getFoodPositions();
 				CoordCartesian newPos = WarMathTools.addTwoPoints(
 						foodPositions.get(new Random().nextInt(foodPositions.size())).getCenterPosition(),
 						CoordPolar.getRandomInBounds(WarConfig.getRadiusResourcesAreas()).toCartesian());
-				newPos.normalize(0, Game.getInstance().getMap().getWidth(), 0, Game.getInstance().getMap().getHeight());
+				newPos.normalize(0, map.getWidth(), 0, map.getHeight());
 				resource.setPosition(newPos);
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				System.err.println("Erreur lors de la création d'une nouvelle ressource : " + resourceType);
@@ -106,4 +111,15 @@ public class MotherNatureTeam extends Team {
 			System.err.println(resourceType + " n'est pas une resource.");
 		}
 	}
+	
+	public WarResource instantiateNewWarResource(String agentName) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
+		String resourceToCreateClassName = WarFood.class.getPackage().getName() + "." + agentName;
+		WarResource a = (WarResource) Class.forName(resourceToCreateClassName).getConstructor(Team.class).newInstance(this);
+		
+		a.setLogLevel(getGame().getSettings().getLogLevel());
+		
+		return a;
+	}
+
+
 }

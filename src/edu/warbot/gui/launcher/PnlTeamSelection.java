@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -20,21 +21,22 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 import edu.warbot.game.Team;
-import edu.warbot.launcher.Simulation;
 
 @SuppressWarnings("serial")
 public class PnlTeamSelection extends JPanel {
 
 	private ArrayList<JRadioButton> _radioButtons;
+	private Map<String, Team> availableTeams;
 
-	public PnlTeamSelection(String title) {
+	public PnlTeamSelection(String title, Map<String, Team> availableTeams) {
 		super();
+		this.availableTeams = availableTeams;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(new TitledBorder(title));
 
 		_radioButtons = new ArrayList<>();
 		ButtonGroup buttonGroup = new ButtonGroup();
-		for (Team t : Simulation.getInstance().getAvailableTeams().values()) {
+		for (Team t : availableTeams.values()) {
 			final JPanel pnlTeam = new JPanel();
 			pnlTeam.setLayout(new FlowLayout(FlowLayout.LEFT));
 			pnlTeam.setMaximumSize(new Dimension(500, 300));
@@ -71,7 +73,7 @@ public class PnlTeamSelection extends JPanel {
 	public Team getSelectedTeam() {
 		for (JRadioButton rb : _radioButtons) {
 			if (rb.isSelected()) {
-				return Simulation.getInstance().getTeam(rb.getName());
+				return availableTeams.get(rb.getName());
 			}
 		}
 		return null;

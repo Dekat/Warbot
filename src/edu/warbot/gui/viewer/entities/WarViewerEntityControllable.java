@@ -4,14 +4,11 @@ package edu.warbot.gui.viewer.entities;
 
 import java.awt.Point;
 
-
-
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
-import edu.warbot.game.Game;
 import edu.warbot.gui.viewer.animations.WarViewerAnimationExplosion;
 import edu.warbot.gui.viewer.entities.info.WarViewerEntityFoodIndicator;
 import edu.warbot.gui.viewer.entities.info.WarViewerEntityHealthBar;
@@ -31,6 +28,7 @@ public abstract class WarViewerEntityControllable extends WarViewerEntity {
 	protected static final String[] teamsColors = {"blue", "red"};
 	protected static int nbPositions = 8;
 	
+	protected ControllableWarAgent agent;
 	protected double heading;
 	protected int color;
 	protected Point lastPatch;
@@ -42,16 +40,16 @@ public abstract class WarViewerEntityControllable extends WarViewerEntity {
 	protected WarViewerEntityFoodIndicator foodIndicator;
 	protected WarViewerEntityUnityInfo unityInfo;
 	
-	public WarViewerEntityControllable(int id, int patchX, int patchY,
-			int teamColor, double heading, int health, int maxHealth) {
-		this.id = id;
-		this.patchX = patchX;
-		this.patchY = patchY;
-		this.health = health;
-		this.maxHealth = maxHealth;
-		this.color = teamColor;
+	public WarViewerEntityControllable(ControllableWarAgent agent) {
+		this.agent = agent;
+		this.id = agent.getID();
+		this.patchX = (int) agent.getX();
+		this.patchY = (int) agent.getY();
+		this.health = agent.getHealth();
+		this.maxHealth = agent.getMaxHealth();
+		this.color = 0; // TODO Correct that modification to display the correct color
 
-		this.heading = heading;
+		this.heading = agent.getHeading();
 			
 		x = getXByPatches();
 		y = getYByPatches();
@@ -106,14 +104,7 @@ public abstract class WarViewerEntityControllable extends WarViewerEntity {
 	}
 	
 	protected ControllableWarAgent getCurrentWarAgent() {
-		Game g = Game.getInstance();
-		for (ControllableWarAgent ag : g.getPlayerTeams().get(color)
-				.getControllableAgents()) {
-			if (ag.getID() == id) {
-				return ag;
-			}
-		}
-		return null;
+		return agent;
 	}
 	
 	protected boolean isMoving(WarAgent agent) {

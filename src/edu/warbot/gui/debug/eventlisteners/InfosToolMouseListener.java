@@ -5,7 +5,6 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import edu.warbot.agents.WarAgent;
-import edu.warbot.game.Game;
 import edu.warbot.gui.debug.DebugModeToolBar;
 
 public class InfosToolMouseListener implements MouseListener {
@@ -19,7 +18,7 @@ public class InfosToolMouseListener implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// On sélectionne l'agent sous le clique de souris
-		ArrayList<WarAgent> agents = Game.getInstance().getAllAgentsInRadius(
+		ArrayList<WarAgent> agents = _debugToolBar.getViewer().getGame().getAllAgentsInRadius(
 				e.getX() / _debugToolBar.getViewer().getCellSize(),
 				e.getY() / _debugToolBar.getViewer().getCellSize(),
 				1);

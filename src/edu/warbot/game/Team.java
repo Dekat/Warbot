@@ -1,6 +1,7 @@
 package edu.warbot.game;
 
 import java.awt.Color;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -11,8 +12,10 @@ import javax.swing.ImageIcon;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
+import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.capacities.Creator;
 import edu.warbot.communications.WarKernelMessage;
 import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.tools.WarMathTools;
@@ -31,6 +34,7 @@ public class Team extends Observable {
 	private ArrayList<WarProjectile> _projectiles;
 	private HashMap<WarAgentType, Integer> _nbUnitsLeft;
 	private ArrayList<WarAgent> _dyingAgents;
+	private WarGame game;
 	
 	public Team(String nom) {
 		_name = nom;
@@ -139,6 +143,14 @@ public class Team extends Observable {
 		toReturn.addAll(_projectiles);
 		return toReturn;
 	}
+	
+	public void removeAllAgents() {
+		_controllableAgents.clear();
+		_projectiles.clear();
+		_dyingAgents.clear();
+		for(WarAgentType type : WarAgentType.values())
+			_nbUnitsLeft.put(type, 0);
+	}
 
 	/**
 	 * Retourne l'agent dont l'id est celui passé en paramètre
@@ -215,7 +227,7 @@ public class Team extends Observable {
 	
 	public static Team duplicate(Team t, String newName) {
 		return new Team(newName,
-				new Color(t.getColor().getRGB()),
+				((t.getColor()==null)?null:(new Color(t.getColor().getRGB()))),
 				t.getImage(),
 				t.getDescription(),
 				new ArrayList<>(t.getControllableAgents()),
@@ -245,5 +257,47 @@ public class Team extends Observable {
 	
 	public ArrayList<WarAgent> getDyingAgents() {
 		return new ArrayList<>(_dyingAgents);
+	}
+
+	public WarGame getGame() {
+		return game;
+	}
+
+	public void setGame(WarGame game) {
+		this.game = game;
+	}
+	
+	public ControllableWarAgent instantiateNewControllableWarAgent(String agentName) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
+		String agentToCreateClassName = WarBase.class.getPackage().getName() + "." + agentName;
+		Class<? extends WarBrain> brainControllerClass = getBrainControllerOfAgent(agentName);
+		ControllableWarAgent a = (ControllableWarAgent) Class.forName(agentToCreateClassName)
+				.getConstructor(Team.class, Class.forName(brainControllerClass.getSuperclass().getName()))
+				.newInstance(this, brainControllerClass.newInstance());
+		
+		a.setLogLevel(getGame().getSettings().getLogLevel());
+		
+		return a;
+	}
+	
+	public void createUnit(Creator creatorAgent, WarAgentType agentTypeToCreate) {
+		if (creatorAgent instanceof WarAgent) {
+			// TODO ajout des conditions de création
+			// TODO contrôler si la base n'est pas encerclée. Dans ce cas, elle ne pourra pas créer d'agent car il n'y aura pas de place.
+			((WarAgent) creatorAgent).getLogger().log(Level.FINEST, creatorAgent.toString() + " creating " + agentTypeToCreate);
+			try {
+				if (creatorAgent.isAbleToCreate(agentTypeToCreate)) {
+					WarAgent a = instantiateNewControllableWarAgent(agentTypeToCreate.toString());
+					((WarAgent) creatorAgent).launchAgent(a);
+					a.setPositionAroundOtherAgent(((WarAgent) creatorAgent));
+					((ControllableWarAgent) creatorAgent).damage(((ControllableWarAgent) a).getCost());
+					((WarAgent) creatorAgent).getLogger().log(Level.FINER, creatorAgent.toString() + " create " + agentTypeToCreate);
+				} else {
+					((WarAgent) creatorAgent).getLogger().log(Level.FINER, creatorAgent.toString() + " can't create " + agentTypeToCreate);
+				}
+			} catch (Exception e) {
+				System.err.println("Erreur lors de l'instanciation du brainController de l'agent " + agentTypeToCreate.toString());
+				e.printStackTrace();
+			}
+		}
 	}
 }

@@ -20,10 +20,9 @@ import javax.swing.JToolBar;
 import madkit.action.SchedulingAction;
 import madkit.message.SchedulingMessage;
 import turtlekit.agr.TKOrganization;
-import edu.warbot.game.Game;
 import edu.warbot.gui.GuiIconsLoader;
-import edu.warbot.gui.WarViewer;
 import edu.warbot.gui.debug.SaveSituationButton;
+import edu.warbot.launcher.WarViewer;
 
 /**
  * 
@@ -61,7 +60,7 @@ public class WarToolBar extends JToolBar {
 		add(lblLogo);
 
 		// Affichage des équipes
-		_teamsDataTable = new TeamsDatasTable();
+		_teamsDataTable = new TeamsDatasTable(getViewer().getGame());
 		JScrollPane pnlTeams = new JScrollPane(_teamsDataTable);
 		pnlTeams.setPreferredSize(new Dimension(pnlTeams.getPreferredSize().width, 20 * 9));
 		add(pnlTeams);
@@ -117,7 +116,7 @@ public class WarToolBar extends JToolBar {
 						new SchedulingMessage(SchedulingAction.PAUSE));
 				int confirmation = JOptionPane.showConfirmDialog(_viewer.getDisplayPane(), "Êtes-vous sûr de vouloir arrêter le combat ?", "Demande de confirmation", JOptionPane.YES_NO_OPTION);
 				if (confirmation == JOptionPane.YES_OPTION) {
-					Game.getInstance().stopTheGame();
+					getViewer().getGame().stopTheGame();
 				} else {
 					_viewer.sendMessage(_viewer.getCommunity(), TKOrganization.ENGINE_GROUP, TKOrganization.SCHEDULER_ROLE,
 							new SchedulingMessage(SchedulingAction.RUN));

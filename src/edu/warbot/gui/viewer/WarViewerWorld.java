@@ -11,7 +11,7 @@ import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.agents.WarKamikaze;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.agents.WarTurret;
-import edu.warbot.game.Game;
+import edu.warbot.game.WarGame;
 import edu.warbot.game.Team;
 import edu.warbot.gui.viewer.animations.WarViewerAnimationExplosion;
 import edu.warbot.gui.viewer.entities.WarViewerEntity;
@@ -27,14 +27,14 @@ import edu.warbot.gui.viewer.entities.WarViewerEntityTurret;
 
 public class WarViewerWorld {
 	
-	private Game game;
+	private WarGame game;
 	private WarViewerMap map;
 	private Array<WarViewerEntityControllable> entitiesControllable;
 	private Array<WarViewerEntityProjectile> entitiesProjectile;
 	private Array<WarViewerEntityFood> entitiesResource;
 	private Array<WarViewerAnimationExplosion> entitiesControllableExplosions;
 	
-	public WarViewerWorld(Game game) {
+	public WarViewerWorld(WarGame game) {
 		this.game = game;
 		map = new WarViewerMap(0, "map_8x8-patch_125_75_64_32_2", 125, 75, 64, 32);
 		entitiesControllable = new Array<WarViewerEntityControllable>();
@@ -53,65 +53,21 @@ public class WarViewerWorld {
 		
 		
 		for (Team t : game.getPlayerTeams()) {
-			int color = determineTeamColor(t);
 			for (WarAgent ag : t.getAllAgents()) {
 				if (ag instanceof WarProjectile) {
-					entitiesProjectile.add(new WarViewerEntityProjectile(ag
-							.getID(), (int) ag.getX(), (int) ag.getY(), 32, 32,
-							t));
+					entitiesProjectile.add(new WarViewerEntityProjectile((WarProjectile) ag, 32, 32));
 				} else if (ag instanceof WarBase) {
-					entitiesControllable
-							.add(new WarViewerEntityBase(
-									ag.getID(), (int) ag.getX(), (int) ag
-											.getY(), color, ag
-											.getHeading(), ((WarBase) ag)
-											.getHealth(), ((WarBase) ag)
-											.getMaxHealth()));
-
+					entitiesControllable.add(new WarViewerEntityBase((WarBase) ag));
 				} else if (ag instanceof WarExplorer) {
-					entitiesControllable
-					.add(new WarViewerEntityExplorer(
-							ag.getID(), (int) ag.getX(), (int) ag
-									.getY(), color, ag
-									.getHeading(), ((WarExplorer) ag)
-									.getHealth(), ((WarExplorer) ag)
-									.getMaxHealth()));
-
+					entitiesControllable.add(new WarViewerEntityExplorer((WarExplorer) ag));
 				} else if (ag instanceof WarRocketLauncher) {
-					entitiesControllable
-					.add(new WarViewerEntityRocketLauncher(
-							ag.getID(), (int) ag.getX(), (int) ag
-									.getY(), color, ag
-									.getHeading(), ((WarRocketLauncher) ag)
-									.getHealth(), ((WarRocketLauncher) ag)
-									.getMaxHealth()));
-
+					entitiesControllable.add(new WarViewerEntityRocketLauncher((WarRocketLauncher) ag));
 				} else if (ag instanceof WarTurret) {
-					entitiesControllable
-							.add(new WarViewerEntityTurret(ag.getID(), (int) ag
-									.getX(), (int) ag.getY(), color,
-									ag.getHeading(),
-									((WarTurret) ag).getHealth(), ((WarTurret) ag)
-											.getMaxHealth()));
-
+					entitiesControllable.add(new WarViewerEntityTurret((WarTurret) ag));
 				} else if (ag instanceof WarEngineer) {
-					entitiesControllable
-					.add(new WarViewerEntityEngineer(
-							ag.getID(), (int) ag.getX(), (int) ag
-									.getY(), color, ag
-									.getHeading(), ((WarEngineer) ag)
-									.getHealth(), ((WarEngineer) ag)
-									.getMaxHealth()));
-
+					entitiesControllable.add(new WarViewerEntityEngineer((WarEngineer) ag));
 				} else if (ag instanceof WarKamikaze) {
-					entitiesControllable
-					.add(new WarViewerEntityKamikaze(
-							ag.getID(), (int) ag.getX(), (int) ag
-									.getY(), color, ag
-									.getHeading(), ((WarKamikaze) ag)
-									.getHealth(), ((WarKamikaze) ag)
-									.getMaxHealth()));
-
+					entitiesControllable.add(new WarViewerEntityKamikaze((WarKamikaze) ag));
 				} 
 			}
 		}
@@ -137,70 +93,31 @@ public class WarViewerWorld {
 			for (WarAgent ag: t.getAllAgents()) {	
 				if (ag instanceof WarProjectile) {
 					if (!existProjectileInEntities(ag)) {
-					entitiesProjectile.add(new WarViewerEntityProjectile(ag
-							.getID(), (int) ag.getX(), (int) ag.getY(), 32, 32,
-							t));
+						entitiesProjectile.add(new WarViewerEntityProjectile((WarProjectile) ag, 32, 32));
 					}
 				} else if (ag instanceof WarBase) {
 					if (!existControllableAgentInEntities(ag)) {
-						entitiesControllable
-								.add(new WarViewerEntityBase(
-										ag.getID(), (int) ag.getX(), (int) ag
-												.getY(), color, ag
-												.getHeading(), ((WarBase) ag)
-												.getHealth(), ((WarBase) ag)
-												.getMaxHealth()));
+						entitiesControllable.add(new WarViewerEntityBase((WarBase) ag));
 					}
 				} else if (ag instanceof WarExplorer) {
 					if (!existControllableAgentInEntities(ag)) {
-						entitiesControllable
-						.add(new WarViewerEntityExplorer(
-								ag.getID(), (int) ag.getX(), (int) ag
-										.getY(), color, ag
-										.getHeading(), ((WarExplorer) ag)
-										.getHealth(), ((WarExplorer) ag)
-										.getMaxHealth()));
+						entitiesControllable.add(new WarViewerEntityExplorer((WarExplorer) ag));
 					}
-
 				} else if (ag instanceof WarRocketLauncher) {
 					if (!existControllableAgentInEntities(ag)) {
-						entitiesControllable
-						.add(new WarViewerEntityRocketLauncher(
-								ag.getID(), (int) ag.getX(), (int) ag
-										.getY(), color, ag
-										.getHeading(), ((WarRocketLauncher) ag)
-										.getHealth(), ((WarRocketLauncher) ag)
-										.getMaxHealth()));
+						entitiesControllable.add(new WarViewerEntityRocketLauncher((WarRocketLauncher) ag));
 					}
 				} else if (ag instanceof WarTurret) {
 					if (!existControllableAgentInEntities(ag)) {
-						entitiesControllable.add(new WarViewerEntityTurret(ag
-								.getID(), (int) ag.getX(), (int) ag.getY(),
-								color, ag.getHeading(), ((WarTurret) ag)
-										.getHealth(), ((WarTurret) ag)
-										.getMaxHealth()));
+						entitiesControllable.add(new WarViewerEntityTurret((WarTurret) ag));
 					}
-
 				} else if (ag instanceof WarEngineer) {
 					if (!existControllableAgentInEntities(ag)) {
-						entitiesControllable
-						.add(new WarViewerEntityEngineer(
-								ag.getID(), (int) ag.getX(), (int) ag
-										.getY(), color, ag
-										.getHeading(), ((WarEngineer) ag)
-										.getHealth(), ((WarEngineer) ag)
-										.getMaxHealth()));
+						entitiesControllable.add(new WarViewerEntityEngineer((WarEngineer) ag));
 					}
-
 				} else if (ag instanceof WarKamikaze) {
 					if (!existControllableAgentInEntities(ag)) {
-						entitiesControllable
-						.add(new WarViewerEntityKamikaze(
-								ag.getID(), (int) ag.getX(), (int) ag
-										.getY(), color, ag
-										.getHeading(), ((WarKamikaze) ag)
-										.getHealth(), ((WarKamikaze) ag)
-										.getMaxHealth()));
+						entitiesControllable.add(new WarViewerEntityKamikaze((WarKamikaze) ag));
 					}
 				} 
 			}

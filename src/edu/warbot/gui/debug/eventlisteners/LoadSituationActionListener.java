@@ -9,7 +9,7 @@ import javax.swing.filechooser.FileFilter;
 
 import edu.warbot.gui.debug.DebugModeToolBar;
 import edu.warbot.gui.launcher.WarLauncherInterface;
-import edu.warbot.launcher.Simulation;
+import edu.warbot.launcher.SituationLoader;
 
 public class LoadSituationActionListener implements ActionListener {
 
@@ -40,8 +40,8 @@ public class LoadSituationActionListener implements ActionListener {
 			String fileName = file.toString();
 			if (!fileName.endsWith(DebugModeToolBar.SITUATION_FILES_EXTENSION))
 				file = new File(fileName + DebugModeToolBar.SITUATION_FILES_EXTENSION);
-			Simulation.getInstance().setXmlSituationFileToLoad(file);
-			_launcherInterface.startSimu(true);
+			_launcherInterface.getGameSettings().setSituationLoader(new SituationLoader(file));
+			_launcherInterface.startGame();
 		}
 	}
 

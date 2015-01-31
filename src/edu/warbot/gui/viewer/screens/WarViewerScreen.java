@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import edu.warbot.game.Game;
+import edu.warbot.game.WarGame;
 import edu.warbot.gui.viewer.WarViewerGdx;
 import edu.warbot.gui.viewer.WarViewerMap;
 import edu.warbot.gui.viewer.WarViewerWorld;
@@ -249,7 +249,7 @@ public class WarViewerScreen implements Screen, Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		if ((Integer)arg1 == Game.NEW_TICK) {
+		if ((Integer)arg1 == WarGame.NEW_TICK) {
 			newTick = true;
 		}
 	}

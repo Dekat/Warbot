@@ -12,7 +12,6 @@ import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
 
-@SuppressWarnings("serial")
 public class WarKamikaze extends MovableWarAgent implements AgressiveActions, Agressive {
 
 	public static final double ANGLE_OF_VIEW;

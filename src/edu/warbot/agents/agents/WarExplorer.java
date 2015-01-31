@@ -8,7 +8,6 @@ import edu.warbot.brains.adapters.WarExplorerAdapter;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
 
-@SuppressWarnings("serial")
 public class WarExplorer extends MovableWarAgent {
 
 	public static final double ANGLE_OF_VIEW;

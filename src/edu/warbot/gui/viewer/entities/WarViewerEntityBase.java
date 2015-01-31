@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import edu.warbot.agents.ControllableWarAgent;
+import edu.warbot.agents.agents.WarBase;
 import edu.warbot.gui.viewer.WarViewerObject;
 import edu.warbot.gui.viewer.screens.WarViewerScreen;
 
@@ -12,16 +13,14 @@ public class WarViewerEntityBase extends WarViewerEntityControllable implements 
 	
 	private Sprite sprite;
 
-	public WarViewerEntityBase(int id, int patchX, int patchY,
-			int teamColor, double heading, int health, int maxHealth) {
-		super(id, patchX, patchY, teamColor, heading, health,
-				maxHealth);
+	public WarViewerEntityBase(WarBase agent) {
+		super(agent);
 		
 		this.width = 127;
 		this.height = 100;
 
 		sprite = new Sprite(WarViewerScreen.GAME_SCREEN.getTexture("base_"
-				+ teamsColors[teamColor]));
+				+ teamsColors[color]));
 		
 		initInfos();
 	}

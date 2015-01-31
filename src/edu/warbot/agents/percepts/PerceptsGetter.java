@@ -6,11 +6,12 @@ import java.util.List;
 
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.Game;
+import edu.warbot.game.WarGame;
 
 public abstract class PerceptsGetter {
 
 	private ControllableWarAgent _agent;
+	private WarGame game;
 
 	boolean _arePerceptsAlreadyCatchedThisTick;
 
@@ -18,12 +19,17 @@ public abstract class PerceptsGetter {
 	private ArrayList<WarPercept> _allies;
 	private ArrayList<WarPercept> _resources;
 
-	public PerceptsGetter(ControllableWarAgent agent) {
+	public PerceptsGetter(ControllableWarAgent agent, WarGame game) {
 		_agent = agent;
+		this.game = game;
 	}
 
 	protected ControllableWarAgent getAgent() {
 		return _agent;
+	}
+	
+	protected WarGame getGame() {
+		return game;
 	}
 
 	public abstract ArrayList<WarPercept> getPercepts();
@@ -72,7 +78,7 @@ public abstract class PerceptsGetter {
 		this._resources = new ArrayList<>();
 
 		for (WarPercept perceptCourant : this.getPercepts()) {
-			if(perceptCourant.getTeamName().equals(Game.getInstance().getMotherNatureTeam().getName()))
+			if(perceptCourant.getTeamName().equals(game.getMotherNatureTeam().getName()))
 				this._resources.add(perceptCourant);
 			else if(perceptCourant.getTeamName().equals(_agent.getTeam().getName()))
 				this._allies.add(perceptCourant);

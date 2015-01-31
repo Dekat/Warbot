@@ -14,6 +14,7 @@ public enum WarAgentType {
 	
 	// Bâtiments
 	WarBase (WarAgentCategory.Building),
+	Wall (WarAgentCategory.Building),
 	
 	// Projectiles
 	WarRocket (WarAgentCategory.Projectile),

@@ -11,7 +11,7 @@ import javax.swing.table.AbstractTableModel;
 
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.Game;
+import edu.warbot.game.WarGame;
 import edu.warbot.game.Team;
 
 @SuppressWarnings("serial")
@@ -21,11 +21,14 @@ public class TeamsDatasTableModel extends AbstractTableModel implements Observer
 	private static final WarAgentType[] AGENT_TYPES_TO_FOLLOW = WarAgentType.getAgentsOfCategories(WarAgentCategory.Building, WarAgentCategory.Soldier, WarAgentCategory.Worker);
 	private final int _nbCols;
 	
-	public TeamsDatasTableModel() {
+	private WarGame game;
+	
+	public TeamsDatasTableModel(WarGame game) {
 		super();
+		this.game = game;
 		_nbCols = COLUMN_NAMES_FOR_TEAM_IDENTIFICATION.length + AGENT_TYPES_TO_FOLLOW.length;
 		
-		Game.getInstance().addObserver(this);
+		game.addObserver(this);
 	}
 	
 	public int getNbColumnsForTeamIdentification() {
@@ -39,7 +42,7 @@ public class TeamsDatasTableModel extends AbstractTableModel implements Observer
 
 	@Override
 	public int getColumnCount() { // Return nb rows because inverted table
-		return Game.getInstance().getPlayerTeams().size() + 1;
+		return game.getPlayerTeams().size() + 1;
 	}
 	
 	@Override
@@ -48,7 +51,7 @@ public class TeamsDatasTableModel extends AbstractTableModel implements Observer
 			return getRowName(rowIndex);
 		
 		// TODO Trouver une façon plus jolie d'empécher l'erreur du OutOfBound
-		ArrayList<Team> teams = Game.getInstance().getPlayerTeams();
+		ArrayList<Team> teams = game.getPlayerTeams();
 		int teamPosInListTeams = columnIndex - 1;
 		boolean isIndexOutOfBounds = teamPosInListTeams >= teams.size();
 		if (isIndexOutOfBounds)

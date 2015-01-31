@@ -3,9 +3,9 @@ package edu.warbot.agents.resources;
 import java.util.HashMap;
 
 import edu.warbot.agents.WarResource;
+import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
 
-@SuppressWarnings("serial")
 public class WarFood extends WarResource {
 
 	public static final int HEALTH_GIVEN;
@@ -17,7 +17,7 @@ public class WarFood extends WarResource {
 		HITBOX_RADIUS = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_HITBOX_RADIUS));
 	}
 
-	public WarFood() {
-		super(HITBOX_RADIUS);
+	public WarFood(Team team) {
+		super(HITBOX_RADIUS, team);
 	}
 }

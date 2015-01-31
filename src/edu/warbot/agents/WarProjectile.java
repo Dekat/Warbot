@@ -5,13 +5,11 @@ import java.util.logging.Level;
 
 import edu.warbot.agents.actions.MovableActions;
 import edu.warbot.brains.capacities.Movable;
-import edu.warbot.game.Game;
 import edu.warbot.game.Team;
 import edu.warbot.tools.CoordCartesian;
 import edu.warbot.tools.CoordPolar;
 import edu.warbot.tools.WarMathTools;
 
-@SuppressWarnings("serial")
 public abstract class WarProjectile extends WarAgent implements MovableActions, Movable {
 
 	private double _speed;
@@ -61,7 +59,7 @@ public abstract class WarProjectile extends WarAgent implements MovableActions, 
 		if (isAlive()) {
 			killAgent(this);
 			// On va infliger des dégâts à tous les agents dans le radius de l'explosion
-			List<WarAgent> touchedAgents = Game.getInstance().getAllAgentsInRadiusOf(this, _explosionRadius);
+			List<WarAgent> touchedAgents = getTeam().getGame().getAllAgentsInRadiusOf(this, _explosionRadius);
 			for (WarAgent agent : touchedAgents) {
 				if (agent instanceof ControllableWarAgent) {
 					((ControllableWarAgent) agent).damage(_damage);
@@ -73,7 +71,7 @@ public abstract class WarProjectile extends WarAgent implements MovableActions, 
 	}
 
 	protected boolean isGoingToCrossAnOtherAgent() {
-		for(WarAgent a : Game.getInstance().getAllAgentsInRadiusOf(this, getHitboxRadius() + getSpeed())) {
+		for(WarAgent a : getTeam().getGame().getAllAgentsInRadiusOf(this, getHitboxRadius() + getSpeed())) {
 			if (a.getID() != _sender.getID() && a.getID() != getID()) {
 				double currentStep = 0;
 				while(currentStep < getSpeed()) {

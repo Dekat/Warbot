@@ -13,17 +13,22 @@ import turtlekit.agr.TKOrganization;
 import turtlekit.kernel.TKScheduler;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.Game;
 import edu.warbot.game.Team;
+import edu.warbot.game.WarGame;
+import edu.warbot.launcher.WarMain.Shared;
 
-@SuppressWarnings("serial")
 public class WarScheduler extends TKScheduler implements Observer {
 
 	// Délai initial entre chaque tick. Evite que le jeu aille trop vite.
 	public static final int INITIAL_DELAY = 10;
 
 	private GenericBehaviorActivator<WarAgent> _warAgentDoOnEachTickActivator;
-
+	private WarGame game;
+	
+	public WarScheduler() {
+		this.game = Shared.getGame();
+	}
+	
 	@Override
 	protected void activate() {
 		super.activate();
@@ -33,7 +38,7 @@ public class WarScheduler extends TKScheduler implements Observer {
 
 		setDelay(INITIAL_DELAY);
 
-		Game.getInstance().addObserver(this);
+		game.addObserver(this);
 	}
 
 	@Override
@@ -56,18 +61,18 @@ public class WarScheduler extends TKScheduler implements Observer {
 		setGVT(getGVT() + 1);
 
 		// Apparition de WarResource
-		if(getGVT() % Simulation.getInstance().getFoodAppearanceRate() == 0) {
-			Game.getInstance().getMotherNatureTeam().createAndLaunchNewResource(this, WarAgentType.WarFood);
+		if(getGVT() % game.getSettings().getFoodAppearanceRate() == 0) {
+			game.getMotherNatureTeam().createAndLaunchNewResource(game.getMap(), this, WarAgentType.WarFood);
 		}
 
 		// Testes pour voir si une équipe n'a plus de base
-		for (Team t : Game.getInstance().getPlayerTeams()) {
+		for (Team t : game.getPlayerTeams()) {
 			if (t.getNbUnitsLeftOfType(WarAgentType.WarBase) == 0) {
-				Game.getInstance().removePlayerTeam(t);
+				game.removePlayerTeam(t);
 			}
 		}
 
-		Game.getInstance().doOnEachTick();
+		game.doOnEachTick();
 	}
 
 	protected GenericBehaviorActivator<WarAgent> getWarAgentDoOnEachTickActivator() {
@@ -77,8 +82,8 @@ public class WarScheduler extends TKScheduler implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		Integer reason = (Integer) arg;
-		if ((reason == Game.UPDATE_TEAM_REMOVED && Game.getInstance().getPlayerTeams().size() <= 1) ||
-				reason == Game.GAME_STOPPED) {
+		if ((reason == WarGame.UPDATE_TEAM_REMOVED && game.getPlayerTeams().size() <= 1) ||
+				reason == WarGame.GAME_STOPPED) {
 			sendMessage(
 					LocalCommunity.NAME, 
 					Groups.SYSTEM, 

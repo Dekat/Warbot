@@ -10,7 +10,6 @@ import madkit.action.SchedulingAction;
 import madkit.message.SchedulingMessage;
 import turtlekit.agr.TKOrganization;
 import edu.warbot.agents.WarAgent;
-import edu.warbot.game.Game;
 import edu.warbot.gui.debug.DebugModeToolBar;
 
 public class DeleteToolMouseListener implements MouseListener {
@@ -24,7 +23,7 @@ public class DeleteToolMouseListener implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// On sélectionne l'agent sous le clique de souris
-		ArrayList<WarAgent> agents = Game.getInstance().getAllAgentsInRadius(
+		ArrayList<WarAgent> agents = _debugToolBar.getViewer().getGame().getAllAgentsInRadius(
 				e.getX() / _debugToolBar.getViewer().getCellSize(),
 				e.getY() / _debugToolBar.getViewer().getCellSize(),
 				1);

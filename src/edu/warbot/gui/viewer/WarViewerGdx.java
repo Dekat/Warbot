@@ -3,7 +3,7 @@ package edu.warbot.gui.viewer;
 
 
 
-import edu.warbot.game.Game;
+import edu.warbot.game.WarGame;
 import edu.warbot.gui.viewer.screens.WarViewerPauseScreen;
 import edu.warbot.gui.viewer.screens.WarViewerScreen;
 
@@ -18,10 +18,10 @@ public class WarViewerGdx extends com.badlogic.gdx.Game {
 	private WarViewerScreen screen;
 	private WarViewerPauseScreen pauseScreen;
 		
-	private edu.warbot.game.Game game;
+	private WarGame game;
 	
-	public WarViewerGdx() {
-		game = Game.getInstance();
+	public WarViewerGdx(WarGame game) {
+		this.game = game;
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class WarViewerGdx extends com.badlogic.gdx.Game {
 		super.resume();
 	}
 	
-	public edu.warbot.game.Game getGame() {
+	public edu.warbot.game.WarGame getGame() {
 		return game;
 	}
 

@@ -6,7 +6,6 @@ import edu.warbot.agents.WarBuilding;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
 
-@SuppressWarnings("serial")
 public class Wall extends WarBuilding {
 
 	public static final double HITBOX_RADIUS;

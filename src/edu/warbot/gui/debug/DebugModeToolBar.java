@@ -14,8 +14,8 @@ import madkit.action.SchedulingAction;
 import madkit.message.SchedulingMessage;
 import turtlekit.agr.TKOrganization;
 import edu.warbot.agents.WarAgent;
-import edu.warbot.gui.WarViewer;
 import edu.warbot.gui.debug.infos.WarAgentInformationsPnl;
+import edu.warbot.launcher.WarViewer;
 
 @SuppressWarnings("serial")
 public class DebugModeToolBar extends JToolBar {

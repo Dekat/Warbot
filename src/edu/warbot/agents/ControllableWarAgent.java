@@ -17,12 +17,10 @@ import edu.warbot.brains.capacities.Controllable;
 import edu.warbot.communications.WarKernelMessage;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.game.Team;
-import edu.warbot.launcher.Simulation;
 import edu.warbot.tools.CoordCartesian;
 import edu.warbot.tools.CoordPolar;
 import edu.warbot.tools.WarMathTools;
 
-@SuppressWarnings("serial")
 public abstract class ControllableWarAgent extends WarAgent implements ControllableActions, Controllable {
 
 	private double _angleOfView;
@@ -53,14 +51,12 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 		_brain = brain;
 		_debugString = "";
 		_debugStringColor = Color.BLACK;
-		
-		
 	}
 
 	@Override
 	protected void activate() {
 		super.activate();
-		_perceptsGetter = Simulation.getInstance().getPerceptsGetterNewInstance(this);
+		_perceptsGetter = getTeam().getGame().getSettings().getPerceptsGetterNewInstance(this, getTeam().getGame());
 		randomHeading();
 		_brain.activate();
 	}

@@ -10,7 +10,7 @@ import madkit.message.SchedulingMessage;
 import turtlekit.agr.TKOrganization;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentCategory;
-import edu.warbot.game.Game;
+import edu.warbot.game.WarGame;
 import edu.warbot.gui.debug.DebugModeToolBar;
 import edu.warbot.gui.debug.DebugToolsPnl;
 import edu.warbot.tools.CoordCartesian;
@@ -23,12 +23,16 @@ public class AddToolMouseListener implements MouseListener {
 
 	private CoordCartesian _clickedPos;
 	private String _lastSelectedTeam;
+	
+	private WarGame game;
 
 	public AddToolMouseListener(DebugModeToolBar debugToolBar, DebugToolsPnl toolsPnl) {
 		_debugToolBar = debugToolBar;
 		_toolsPnl = toolsPnl;
 
 		_clickedPos = null;
+		
+		game = _debugToolBar.getViewer().getGame();
 	}
 
 	@Override
@@ -59,21 +63,20 @@ public class AddToolMouseListener implements MouseListener {
 		try {
 			if (_clickedPos != null) {
 				if (_toolsPnl.getSelectedWarAgentTypeToCreate().getCategory() == WarAgentCategory.Resource) {
-					WarAgent a = Game.instantiateNewWarResource(_toolsPnl.getSelectedWarAgentTypeToCreate().toString());
+					WarAgent a = game.getMotherNatureTeam().instantiateNewWarResource(_toolsPnl.getSelectedWarAgentTypeToCreate().toString());
 					_debugToolBar.getViewer().launchAgent(a);
 					a.setPosition(_clickedPos);
 				} else {
 					CoordCartesian mouseClickPosition = new CoordCartesian(e.getX() / _debugToolBar.getViewer().getCellSize(),
 							e.getY() / _debugToolBar.getViewer().getCellSize());
 					CoordPolar movement = new CoordCartesian(mouseClickPosition.getX() - _clickedPos.getX(), mouseClickPosition.getY() - _clickedPos.getY()).toPolar();
-					String[] choices = Game.getInstance().getPlayerTeamNames();
+					String[] choices = game.getPlayerTeamNames();
 					if (_lastSelectedTeam == null)
 						_lastSelectedTeam = choices[0];
 					String teamName = (String) JOptionPane.showInputDialog(_debugToolBar, "A quelle équipe appartient cet agent ?",
 							"Choix d'équipe", JOptionPane.QUESTION_MESSAGE, null, choices, _lastSelectedTeam);
 					_lastSelectedTeam = teamName;
-					WarAgent a = Game.instantiateNewControllableWarAgent(_toolsPnl.getSelectedWarAgentTypeToCreate().toString(),
-							Game.getInstance().getPlayerTeam(teamName));
+					WarAgent a = game.getPlayerTeam(teamName).instantiateNewControllableWarAgent(_toolsPnl.getSelectedWarAgentTypeToCreate().toString());
 					_debugToolBar.getViewer().launchAgent(a);
 					a.setHeading(movement.getAngle());
 					a.setPosition(_clickedPos);

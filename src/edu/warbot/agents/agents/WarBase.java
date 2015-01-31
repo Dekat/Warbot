@@ -9,7 +9,6 @@ import edu.warbot.brains.adapters.WarBaseAdapter;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
 
-@SuppressWarnings("serial")
 public class WarBase extends CreatorWarAgent {
 
 	public static final double ANGLE_OF_VIEW;
