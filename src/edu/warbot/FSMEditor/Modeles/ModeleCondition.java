@@ -46,6 +46,8 @@ public class ModeleCondition {
 		return type;
 	}
 	
+	
+	
 	public void setDestination(ModeleState d) {
 		this.modeleDest = d;
 	}

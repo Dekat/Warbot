@@ -69,7 +69,10 @@ public class Controleur {
 	}
 	
 	public void eventMenuBarItemSaveJar() {
-		FSMJarGenerator fsmSaver = new FSMJarGenerator(this.modele, "export.jar");
+		FSMJarGenerator fsmSaver = new FSMJarGenerator(this.modele, "FSM.jar");
+		fsmSaver.pushConfigurationInJarFile();
+		
+		System.out.println("Configuration file exported with success");
 	}
 	
 	public void eventMenuBarItemLoad(){

@@ -1,4 +1,4 @@
-package edu.warbot.FSM.Reflexe;
+package edu.warbot.FSM.reflexe;
 
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.agents.enums.WarAgentType;

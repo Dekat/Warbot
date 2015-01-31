@@ -3,7 +3,6 @@ package edu.warbot.FSMEditor;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
@@ -18,7 +17,7 @@ public class FSMXMLSaver {
 	
 	Document document;
 	FileWriter file;
-
+	
 	public void saveFSM(Modele modele, String fileName) {
 		
 		try {
@@ -48,6 +47,7 @@ public class FSMXMLSaver {
 			e.printStackTrace();
 		}
 		
+		System.out.println("FSMConfiguration file generated successfull");
 	}
 
 	private Element getContentConditionForBrain(ModeleBrain brain) {

@@ -2,8 +2,8 @@ package edu.warbot.FSM;
 
 import java.util.ArrayList;
 
-import edu.warbot.FSM.Reflexe.WarReflexe;
 import edu.warbot.FSM.condition.WarCondition;
+import edu.warbot.FSM.reflexe.WarReflexe;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 
 public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {

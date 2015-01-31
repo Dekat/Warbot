@@ -9,6 +9,9 @@ public class ModeleState {
 	private String name;
 	private String planName;
 	
+	//TODO ecq il faut laisser ça ici ?
+	private ArrayList<String> conditionsOutID = new ArrayList<String>();
+	
 	private ArrayList<ModeleCondition> conditionsOut = new ArrayList<>();
 	private ArrayList<ModeleCondition> conditionsIn = new ArrayList<>();
 
@@ -44,6 +47,10 @@ public class ModeleState {
 
 	public String getNom() {
 		return this.name;
+	}
+
+	public void setConditionsOutID(ArrayList<String> condID) {
+		this.conditionsOutID = condID;		
 	}
 	
 	
