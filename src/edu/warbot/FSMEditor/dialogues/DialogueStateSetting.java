@@ -7,8 +7,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -17,14 +15,14 @@ import javax.swing.border.TitledBorder;
 import org.jfree.ui.tabbedui.VerticalLayout;
 
 import edu.warbot.FSMEditor.Configuration;
-import edu.warbot.FSMEditor.IntrospectionFSM;
+import edu.warbot.FSMEditor.Views.ViewBrain;
 
 public class DialogueStateSetting extends AbstractDialogue{
 
 	private static final long serialVersionUID = 1L;
 	
-	public DialogueStateSetting(JFrame f){
-		super(f, true);
+	public DialogueStateSetting(ViewBrain f){
+		super();
 		
 		this.setTitle("State settings");
 		this.setSize(new Dimension(250, 150));

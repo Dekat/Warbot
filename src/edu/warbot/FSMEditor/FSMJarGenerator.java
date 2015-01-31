@@ -10,9 +10,9 @@ import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 
 import edu.warbot.FSM.WarEtat;
-import edu.warbot.FSMEditor.Modele.Modele;
-import edu.warbot.FSMEditor.Modele.ModeleBrain;
-import edu.warbot.FSMEditor.Modele.ModeleState;
+import edu.warbot.FSMEditor.Modeles.Modele;
+import edu.warbot.FSMEditor.Modeles.ModeleBrain;
+import edu.warbot.FSMEditor.Modeles.ModeleState;
 
 public class FSMJarGenerator {
 	

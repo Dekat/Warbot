@@ -1,4 +1,4 @@
-package edu.warbot.FSMEditor.Modele;
+package edu.warbot.FSMEditor.Modeles;
 
 import edu.warbot.FSMEditor.dialogues.DialogueCondSetting;
 
@@ -14,6 +14,18 @@ public class ModeleCondition {
 	String attCOperateur;
 	String attCValue;
 	boolean attCPourcentage;
+	
+	public ModeleCondition(String name, String type, 
+			ModeleState modeleStateSource, ModeleState modeleStateDestination) {
+		this.name = name;
+		this.type = type;
+		this.modeleSource = modeleStateSource;
+		this.modeleDest = modeleStateDestination;
+		
+		//Fait connaitre aux états leur condition (this)
+		modeleStateSource.addConditionOut(this);
+		modeleStateDestination.addConditionIn(this);
+	}
 	
 	public ModeleCondition(DialogueCondSetting d) {
 		this.name = d.getNom();

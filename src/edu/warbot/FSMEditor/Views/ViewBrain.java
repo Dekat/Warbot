@@ -1,19 +1,12 @@
-package edu.warbot.FSMEditor;
+package edu.warbot.FSMEditor.Views;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Menu;
-import java.awt.MenuBar;
-import java.awt.MenuItem;
-import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -21,76 +14,39 @@ import javax.swing.border.TitledBorder;
 
 import org.jfree.ui.tabbedui.VerticalLayout;
 
-import edu.warbot.FSMEditor.Modele.Modele;
+import edu.warbot.FSMEditor.Modeles.ModeleBrain;
+import edu.warbot.FSMEditor.Modeles.ModeleCondition;
+import edu.warbot.FSMEditor.Modeles.ModeleState;
+import edu.warbot.FSMEditor.Panel.PanelCondition;
 import edu.warbot.FSMEditor.Panel.PanelEditor;
+import edu.warbot.FSMEditor.Panel.PanelState;
 
-public class View extends JFrame {
+public class ViewBrain extends JPanel{
 
 	private static final long serialVersionUID = 1L;
-	
-	Modele modele;
 
-	public View(Modele modele) {
-		this.modele = modele;
+	ModeleBrain modeleBrain;
+
+	public ViewBrain(ModeleBrain modeleBrain) {
+		this.modeleBrain = modeleBrain;
 		createView();
 	}
 
 	public void createView() {
 
-		this.setName("FSMEditor");
-		this.setSize(new Dimension(800, 600));
-		this.setLocationRelativeTo(null);
-
-		JPanel mainPanel = new JPanel();
-		this.setContentPane(mainPanel);
-
-		mainPanel.setLayout(new BorderLayout());
+		this.setLayout(new BorderLayout());
 
 		// left panel les boutons
-		JPanel panelLeft = new JPanel(new VerticalLayout());
-		mainPanel.add(getPanelLeft(), BorderLayout.WEST);
+		this.add(getPanelLeft(), BorderLayout.WEST);
 		
-		// Panel center
-		panelCardEditor = new JPanel(new CardLayout());
-		panelsEditor = new ArrayList<PanelEditor>();
+		// Panel center (l'éditeur)
+		panelEditor = new PanelEditor(this.modeleBrain, "Explorer (class ViewBrain)");
 		
-		for(int i = 0; i < 3; i++){
-			PanelEditor currentPanelEditor = new PanelEditor(this.modele, "WarExplorer");
-//			currentPanelEditor.setToolTipText("Explorer");
-			panelsEditor.add(currentPanelEditor);
-			panelCardEditor.add(currentPanelEditor, "WarExplorer_" + i);
-		}
-		
-		mainPanel.add(panelCardEditor, BorderLayout.CENTER);
+		this.add(panelEditor, BorderLayout.CENTER);
 
 		// Panel droite
 		
-		//Menu barre
-		this.setMenuBar(getMainMenuBar());
-
-		this.setVisible(true);
-
 		// mainPanelEditor.afficherEnvironnement();
-	}
-
-	private MenuBar getMainMenuBar() {
-		MenuBar mb = new MenuBar();
-
-		miSave = new MenuItem("Save");
-		miLoad = new MenuItem("Load");
-		miSaveJar = new MenuItem("Export Jar");
-
-		Menu mSave = new Menu("Save");
-		Menu mLoad = new Menu("Load");
-		
-		mSave.add(miSave);
-		mSave.add(miSaveJar);
-		mLoad.add(miLoad);
-		
-		mb.add(mSave);
-		mb.add(mLoad);
-		
-		return mb;
 	}
 
 	private JPanel getPanelLeft() {
@@ -109,8 +65,10 @@ public class View extends JFrame {
 		buttonDelCond = new JButton("Delete condition");
 		
 		listModeleCond = new DefaultListModel<String>();
+		listModeleCond.addElement("None");
+		
 		listCond = new JList<String>(listModeleCond);
-		listCond.setVisibleRowCount(5); //TODO ici ca serait mieux si il affiche un truc de taille constante
+		listCond.setVisibleRowCount(5); //TODO ici ca serait mieux si il affiche un truc de taille dynamique
 		
 		panel.add(buttonAddCond);
 		panel.add(new JSeparator());
@@ -147,16 +105,15 @@ public class View extends JFrame {
 	}
 
 	public PanelEditor getPanelCenter() {
-		return (PanelEditor) this.panelCardEditor.getComponent(0);
-//		return this.panelEditor;
+		return (PanelEditor) this.panelEditor;
 	}
 
 	public JButton getButtonAddCond() {
 		return this.buttonAddCond;
 	}
 	
-	public Modele getModele(){
-		return this.modele;
+	public ModeleBrain getModele(){
+		return this.modeleBrain;
 	}	
 
 	public AbstractButton getButtonDelState() {
@@ -164,6 +121,10 @@ public class View extends JFrame {
 	}
 	
 	public JList<String> getListeConditions(){
+		return this.listCond;
+	}
+
+	public JList<String> getListeCondition() {
 		return this.listCond;
 	}
 
@@ -175,30 +136,13 @@ public class View extends JFrame {
 		return this.buttonEditCond;
 	}
 
-	public MenuItem getMenuBarItemSave() {
-		return miSave;
-	}
-
-	public MenuItem getMenuBarItemLoad() {
-		return miLoad;
-	}
 	
-	public MenuItem getMenuBarItemSaveJar() {
-		return miSaveJar;
-	}
 
+	/**** Attributs ***/
 	private JList<String> listCond;
 	private DefaultListModel<String> listModeleCond;
 	
-
-	public JList<String> getListeCondition() {
-		return this.listCond;
-	}
-	
-	/**** Attributs ***/
-	
-	private ArrayList<PanelEditor> panelsEditor;
-	private JPanel panelCardEditor;
+	private PanelEditor panelEditor;
 
 	private JButton buttonAddSate;
 	private JButton buttonEditState;
@@ -206,9 +150,34 @@ public class View extends JFrame {
 	private JButton buttonAddCond;
 	private JButton buttonEditCond;
 	private JButton buttonDelCond;
+
+	public void addCondition(ModeleCondition condition) {
+		//Crée le nouveau panel condition
+		PanelCondition pc = new PanelCondition(condition);	
+
+//		PanelState panelSource = this.getPanelCenter().getFirstSelectedState();
+//		PanelState panelDest = this.getPanelCenter().getSecondeSelectedState();
+
+		//Récupère les panelSource et destination pour avoir leurs positions
+		PanelState panelSource = getPanelStateForModele(condition.getSource());
+		PanelState panelDest = getPanelStateForModele(condition.getDestination());
+		
+		pc.setPanelSourceAndDestination(panelSource, panelDest);
+		
+		panelEditor.addCondition(pc);
+		
+		this.getListeModeleConditions().addElement(condition.getNom());	
+	}
+
+	//TODO pas super propre
+	private PanelState getPanelStateForModele(ModeleState modele) {
+		for (PanelState panel: panelEditor.getPanelState()) {
+			if(panel.getModele().equals(modele))
+				return panel;
+		}
+		return null;
+	}
 	
-	private MenuItem miSave;
-	private MenuItem miLoad;
-	private MenuItem miSaveJar;
+	
 
 }

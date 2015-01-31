@@ -6,14 +6,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-import edu.warbot.FSMEditor.Modele.ModeleCondition;
+import edu.warbot.FSMEditor.Modeles.ModeleCondition;
 
 public class PanelCondition extends AbstractPanel{
 
+	private static final long serialVersionUID = 1L;
+
 	private ModeleCondition modele;
 
-	private PanelState panelDep;
-	private PanelState panelArr;
+	private PanelState panelSource;
+	private PanelState panelDest;
 
 	public PanelCondition(ModeleCondition m) {
 		this.modele = m;
@@ -30,8 +32,8 @@ public class PanelCondition extends AbstractPanel{
 			g.setStroke(new BasicStroke(1));
 		}
 		
-		this.positionDep = panelDep.position;
-		this.positionArr = panelArr.position;
+		this.positionDep = panelSource.position;
+		this.positionArr = panelDest.position;
 
 		g.drawLine(this.positionDep.x, this.positionDep.y, this.positionArr.x,
 				this.positionArr.y);
@@ -50,8 +52,8 @@ public class PanelCondition extends AbstractPanel{
 	}
 
 	public void setPanelSourceAndDestination(PanelState s, PanelState d) {
-		this.panelDep = s;
-		this.panelArr = d;
+		this.panelSource = s;
+		this.panelDest = d;
 
 		this.positionDep = s.position;
 		this.positionArr = d.position;

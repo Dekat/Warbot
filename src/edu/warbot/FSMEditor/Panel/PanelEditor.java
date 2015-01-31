@@ -5,23 +5,21 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import edu.warbot.FSMEditor.Modele.Modele;
-import edu.warbot.FSMEditor.Modele.ModeleBrain;
+import edu.warbot.FSMEditor.Modeles.ModeleBrain;
 
 public class PanelEditor extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
 	ArrayList<PanelState> panelSates = new ArrayList<>();
-	ArrayList<PanelCondition> panelConditions = new ArrayList<>();
+	ArrayList<PanelCondition> panelsCondition = new ArrayList<>();
 
 	ModeleBrain modele;
 	String panelName;
 
-	public PanelEditor(Modele modele, String panelName) {
-		this.modele = modele.getModeleExplorer();
+	public PanelEditor(ModeleBrain modele, String panelName) {
+		this.modele = modele;
 		this.panelName = panelName;
-//		this.setLayout(new CardLayout());
 	}
 
 	public void paintComponent(Graphics g) {
@@ -46,7 +44,7 @@ public class PanelEditor extends JPanel {
 	}
 	
 	public void paintConditions(Graphics g) {
-		for (PanelCondition c : this.panelConditions) {
+		for (PanelCondition c : this.panelsCondition) {
 			c.paint(g);
 		}
 	}
@@ -62,7 +60,7 @@ public class PanelEditor extends JPanel {
 	}
 
 	public void addCondition(PanelCondition pc) {
-		this.panelConditions.add(pc);
+		this.panelsCondition.add(pc);
 	}
 
 	public void addState(PanelState panel) {
@@ -111,6 +109,6 @@ public class PanelEditor extends JPanel {
 	}
 
 	public ArrayList<PanelCondition> getPanelcondition() {
-		return this.panelConditions;
+		return this.panelsCondition;
 	}
 }

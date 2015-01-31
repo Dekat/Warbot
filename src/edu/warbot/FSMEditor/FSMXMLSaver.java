@@ -9,10 +9,10 @@ import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
-import edu.warbot.FSMEditor.Modele.Modele;
-import edu.warbot.FSMEditor.Modele.ModeleBrain;
-import edu.warbot.FSMEditor.Modele.ModeleCondition;
-import edu.warbot.FSMEditor.Modele.ModeleState;
+import edu.warbot.FSMEditor.Modeles.Modele;
+import edu.warbot.FSMEditor.Modeles.ModeleBrain;
+import edu.warbot.FSMEditor.Modeles.ModeleCondition;
+import edu.warbot.FSMEditor.Modeles.ModeleState;
 
 public class FSMXMLSaver {
 	
@@ -95,7 +95,7 @@ public class FSMXMLSaver {
 		elemState.addContent(new Element("Name").setText(state.getNom()));
 		elemState.addContent(new Element("Plan").setText(state.getPlanName()));
 		
-		if(! state.getModeleConditions().isEmpty())
+		if(! state.getConditionsOut().isEmpty())
 			elemState.addContent(getContentConditionsOutNameForState(state));
 		
 		return elemState;
@@ -104,7 +104,7 @@ public class FSMXMLSaver {
 	private Element getContentConditionsOutNameForState(ModeleState state) {
 		Element elemconditions = new Element("ConditionsOutName");
 		
-		for (ModeleCondition currentCond : state.getModeleConditions()) {
+		for (ModeleCondition currentCond : state.getConditionsOut()) {
 			elemconditions.addContent(new Element("ConditionOut").setText(currentCond.getNom()));
 		}
 		
