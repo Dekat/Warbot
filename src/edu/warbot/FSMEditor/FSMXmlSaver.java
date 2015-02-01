@@ -13,7 +13,7 @@ import edu.warbot.FSMEditor.Modeles.ModeleBrain;
 import edu.warbot.FSMEditor.Modeles.ModeleCondition;
 import edu.warbot.FSMEditor.Modeles.ModeleState;
 
-public class FSMXMLSaver {
+public class FSMXmlSaver {
 	
 	Document document;
 	FileWriter file;
@@ -30,8 +30,8 @@ public class FSMXMLSaver {
 		
 		document = new Document(root);
 		
-		for (ModeleBrain currentBrain : modele.getModeleBrains()) {
-			Element brain = new Element(currentBrain.getAgentType());
+		for (ModeleBrain currentBrain : modele.getModelsBrains()) {
+			Element brain = new Element(currentBrain.getAgentTypeName());
 			root.addContent(brain);
 			
 			brain.addContent(getContentStatesForBrain(currentBrain));
@@ -64,7 +64,7 @@ public class FSMXMLSaver {
 
 		elemCond.addContent(new Element("Name").setText(cond.getNom()));
 		elemCond.addContent(new Element("Type").setText(cond.getType()));
-		elemCond.addContent(new Element("StateOutName").setText(cond.getDestination().getNom()));
+		elemCond.addContent(new Element("StateOutName").setText(cond.getDestination().getName()));
 		//elemCond.addContent(new Element("StateInName").setText(cond.getSource().getNom()));
 		
 		//Content pour le type de condition attriutCheck
@@ -92,7 +92,7 @@ public class FSMXMLSaver {
 	private Element getContentForState(ModeleState state) {
 		Element elemState = new Element("State");
 		
-		elemState.addContent(new Element("Name").setText(state.getNom()));
+		elemState.addContent(new Element("Name").setText(state.getName()));
 		elemState.addContent(new Element("Plan").setText(state.getPlanName()));
 		
 		if(! state.getConditionsOut().isEmpty())

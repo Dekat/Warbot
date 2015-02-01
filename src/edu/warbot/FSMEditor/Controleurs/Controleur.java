@@ -4,8 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import edu.warbot.FSMEditor.FSMJarGenerator;
-import edu.warbot.FSMEditor.FSMXMLSaver;
+import edu.warbot.FSM.WarFSM;
+import edu.warbot.FSMEditor.FSMInstancier;
+import edu.warbot.FSMEditor.FSMXmlSaver;
+import edu.warbot.FSMEditor.FSMXmlReader;
 import edu.warbot.FSMEditor.Modeles.Modele;
 import edu.warbot.FSMEditor.Views.View;
 import edu.warbot.FSMEditor.Views.ViewBrain;
@@ -27,7 +29,7 @@ public class Controleur {
 
 	public ControleurBrain getControleurBrain(String agentType) {
 		for (ControleurBrain controleurBrain : controleursBrains) {
-			if(controleurBrain.modeleBrain.getAgentType().equals(agentType))
+			if(controleurBrain.modeleBrain.getAgentTypeName().equals(agentType))
 				return controleurBrain;
 		}
 		System.err.println("Impossible to find controleurBrain for agent type " + agentType);
@@ -62,17 +64,33 @@ public class Controleur {
 	}
 	
 	public void eventMenuBarItemSave() {
-		FSMXMLSaver fsmSaver = new FSMXMLSaver();
+		FSMXmlSaver fsmSaver = new FSMXmlSaver();
 		
 		fsmSaver.saveFSM(modele, "FSM.xml");
 		
 	}
 	
 	public void eventMenuBarItemSaveJar() {
-		FSMJarGenerator fsmSaver = new FSMJarGenerator(this.modele, "FSM.jar");
-		fsmSaver.pushConfigurationInJarFile();
+		FSMXmlSaver saver = new FSMXmlSaver();
+		saver.saveFSM(this.modele, FSMXmlReader.xmlConfigurationFilename);
 		
-		System.out.println("Configuration file exported with success");
+		System.out.println("Configuration file exported successfull");
+
+		FSMXmlReader reader = new FSMXmlReader(FSMXmlReader.xmlConfigurationFilename);
+		Modele modeleRead = reader.getGeneratedFSMModel();
+
+		System.out.println("Configuration file imported successfull");
+		
+		FSMInstancier fsmSaver = new FSMInstancier(modeleRead);
+		ArrayList<WarFSM> allFsm = fsmSaver.getGeneratedFSM();
+		
+		for (WarFSM fsm : allFsm) {
+			fsm.initFSM();
+		}
+			
+		
+		System.out.println("FSM generated successfull");
+		
 	}
 	
 	public void eventMenuBarItemLoad(){

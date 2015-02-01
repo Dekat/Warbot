@@ -14,13 +14,13 @@ public class Modele {
 		modeleBrains.add(modeleBrainExplorer);
 	}
 
-	public ArrayList<ModeleBrain> getModeleBrains() {
+	public ArrayList<ModeleBrain> getModelsBrains() {
 		return modeleBrains;
 	}
 
 	public ModeleBrain getModeleExplorer() {
 		for (ModeleBrain modeleBrain : modeleBrains) {
-			if(modeleBrain.getAgentType().equals(WarAgentType.WarExplorer.name()))
+			if(modeleBrain.getAgentTypeName().equals(WarAgentType.WarExplorer.name()))
 				return modeleBrain;
 		}
 		return null;

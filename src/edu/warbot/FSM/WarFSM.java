@@ -18,17 +18,16 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 
 	public void initFSM() {
 		System.out.println("*** Initialisation de la FSM ***");
-		System.out.println("La FSM contient " + this.listeEtat.size() + " Ã©tats");
-		
+		System.out.println("La FSM contient " + this.listeEtat.size() + " états");
 		
 		if(this.listeEtat.size() < 1){
-			System.err.println("ERREUR La FSM doit contenir au moins 1 Ã©tat !");
+			System.err.println("ERREUR La FSM doit contenir au moins 1 état !");
 			System.exit(0);
 		}
 		
 		if(firstEtat == null){
 			this.firstEtat = listeEtat.get(0);
-			System.out.println("ATTENTION vous devez choisir un Ã©tat de depart : par defaut le premier Ã©tat ajouter est choisit comme Ã©tat de dÃ©part <" + this.firstEtat.getNom() + ">");
+			System.out.println("ATTENTION vous devez choisir un état de depart : par defaut le premier état ajouté est choisit comme état de départ <" + this.firstEtat.getNom() + ">");
 		}
 	
 		this.etatCourant = firstEtat;
@@ -44,8 +43,7 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 		String actionResultat = null;
 		
 		if(this.listeReflexe == null | this.listeEtat == null | this.etatCourant == null){
-			System.err.println("La FSM a des pointeur null etes vous sur de l'avoir ben initialisÃ© ?");
-			System.exit(0);
+			System.err.println("La FSM contient des erreurs, etes vous sur de l'avoir ben initialisé ?");
 		}
 		
 		//On execute les reflexes
@@ -57,7 +55,7 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 		if(actionResultat == null)
 			actionResultat = this.etatCourant.getPlan().executePlan();
 
-		//On change d'Ã©tat si besoin
+		//On change d'état si besoin
 		ArrayList<WarCondition<AgentAdapterType>> conditions = this.etatCourant.getConditions();
 			
 		for (WarCondition<AgentAdapterType> conditionCourante : conditions) {

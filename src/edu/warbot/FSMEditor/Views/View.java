@@ -32,7 +32,7 @@ public class View extends JFrame {
 	}
 
 	private void initiateViewBrains() {
-		for (ModeleBrain modeleBrain : modele.getModeleBrains()) {
+		for (ModeleBrain modeleBrain : modele.getModelsBrains()) {
 			viewBrains.add(new ViewBrain(modeleBrain));
 		}
 	}

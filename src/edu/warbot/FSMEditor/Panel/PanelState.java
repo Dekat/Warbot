@@ -27,7 +27,7 @@ public class PanelState extends AbstractPanel{
 		g.drawRect(position.x, position.y, size.width, size.height);
 		
 		
-		g.drawString(this.modeleState.getNom(), position.x + 1, position.y + 11);
+		g.drawString(this.modeleState.getName(), position.x + 1, position.y + 11);
 		
 		g.drawLine(position.x, position.y + size.height/2
 				, position.x + size.width, position.y + size.height/2);

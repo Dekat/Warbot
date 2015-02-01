@@ -1,43 +1,28 @@
-package edu.warbot;
+package edu.warbot.FSMEditor;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.jar.JarOutputStream;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
+import edu.warbot.FSM.plan.WarPlanSettings;
 import edu.warbot.FSMEditor.Modeles.Modele;
 import edu.warbot.FSMEditor.Modeles.ModeleState;
 
-public class FSMInstancier {
+public class FSMXmlReader {
 
-	JarOutputStream jarStream;
-	JarFile jarFile;
+	public static String xmlConfigurationFilename = "XMLConfiguration.xml";
+	private Modele modeleFSM;
+	
+	//TODO : finir la lecture du XML
+	//Vérifier que la lecture ce fasse bien
+	//Ajouter la lecture des elements qui seront ajouté par la suite à lecriture du XML
 
-	String xmlConfigurationFilename = "XMLConfiguration.xml";
-
-	public FSMInstancier(String jarFilename) {
-
-		// Récupère le fichier de configuration
-		try {
-			jarFile = new JarFile(jarFilename);
-			// jarStream = new JarOutputStream(new
-			// FileOutputStream(jarFilename));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		JarEntry xmlEntry = jarFile.getJarEntry(xmlConfigurationFilename);
+	public FSMXmlReader(String jarFilename) {
 
 		// Ouvre le XML
 		File xmlFile = new File(xmlConfigurationFilename);
@@ -51,7 +36,7 @@ public class FSMInstancier {
 			e.printStackTrace();
 		}
 		
-		Modele modeleFSM = new Modele();
+		modeleFSM = new Modele();
 		
 		Element root = doc.getRootElement();
 		
@@ -84,8 +69,15 @@ public class FSMInstancier {
 		
 		ArrayList<String> condID = getConditionsOutID(state.getChild("ConditionsOutName"));
 		
-		ModeleState modeleState = new ModeleState(name, plan);
+		WarPlanSettings warPlanSetting = getWarPlanSettings(state);
+		
+		ModeleState modeleState = new ModeleState(name, plan, warPlanSetting);
 		modeleState.setConditionsOutID(condID);
+	}
+
+	private WarPlanSettings getWarPlanSettings(Element state) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private ArrayList<String> getConditionsOutID(Element element) {
@@ -94,6 +86,10 @@ public class FSMInstancier {
 			res.add(currentID.getValue());
 		}
 		return null;
+	}
+
+	public Modele getGeneratedFSMModel() {
+		return this.modeleFSM;
 	}
 	
 

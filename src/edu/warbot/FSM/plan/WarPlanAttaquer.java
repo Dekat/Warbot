@@ -5,10 +5,6 @@ import edu.warbot.FSM.action.WarActionAttaquer;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
-/**
- * @author Olivier
- *
- */
 public class WarPlanAttaquer extends WarPlan<WarRocketLauncherAdapter> {
 	
 	WarAgentType agentType;

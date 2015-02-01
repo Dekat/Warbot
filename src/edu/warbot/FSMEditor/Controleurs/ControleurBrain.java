@@ -6,9 +6,10 @@ import java.awt.event.ActionListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import edu.warbot.FSM.plan.WarPlanSettings;
 import edu.warbot.FSMEditor.Configuration;
-import edu.warbot.FSMEditor.FSMJarGenerator;
-import edu.warbot.FSMEditor.FSMXMLSaver;
+import edu.warbot.FSMEditor.FSMInstancier;
+import edu.warbot.FSMEditor.FSMXmlSaver;
 import edu.warbot.FSMEditor.MouseListenerPanelCenter;
 import edu.warbot.FSMEditor.Modeles.Modele;
 import edu.warbot.FSMEditor.Modeles.ModeleBrain;
@@ -46,7 +47,7 @@ public class ControleurBrain {
 		viewBrain.getButtonAddSate().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				eventAddSate();
+				eventAddState();
 			}
 		});
 		
@@ -95,13 +96,16 @@ public class ControleurBrain {
 		this.viewBrain.getPanelCenter().repaint();
 	}
 	
-	private void eventAddSate(){
-		DialogueStateSetting d = new DialogueStateSetting(this.viewBrain); 
+	private void eventAddState(){
+		
+		WarPlanSettings planSetting = new WarPlanSettings();
+		
+		DialogueStateSetting d = new DialogueStateSetting(this.viewBrain, planSetting); 
 
 		if(d.isValideComponent()){
 			
 			//Creation du modele avec la fenetre de dialogue
-			ModeleState s = new ModeleState(d.getNom(), d.getPlanName());
+			ModeleState s = new ModeleState(d.getNom(), d.getPlanName(), planSetting);
 			this.addState(s);
 			
 			viewBrain.getPanelCenter().repaint();

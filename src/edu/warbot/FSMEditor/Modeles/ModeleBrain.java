@@ -3,14 +3,18 @@ package edu.warbot.FSMEditor.Modeles;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import edu.warbot.agents.enums.WarAgentType;
+
 public class ModeleBrain {
 	
-	private String agentType;
+	private String agentTypeName;
+	private WarAgentType agentType;
+	
 	private ArrayList<ModeleState> sates = new ArrayList<>();
 	private ArrayList<ModeleCondition> conditions = new ArrayList<>();
 	
-	public ModeleBrain(String agentType) {
-		this.agentType = agentType;
+	public ModeleBrain(String agentTypeName) {
+		this.agentTypeName = agentTypeName;
 	}
 
 	public void addState(ModeleState d) {
@@ -54,7 +58,11 @@ public class ModeleBrain {
 		return res;
 	}
 
-	public String getAgentType() {
+	public String getAgentTypeName() {
+		return this.agentTypeName;
+	}
+	
+	public WarAgentType getAgentType() {
 		return this.agentType;
 	}
 

@@ -2,6 +2,7 @@ package edu.warbot.FSMEditor.Modeles;
 
 import java.util.ArrayList;
 
+import edu.warbot.FSM.plan.WarPlanSettings;
 import edu.warbot.FSMEditor.Configuration;
 
 public class ModeleState {
@@ -9,15 +10,18 @@ public class ModeleState {
 	private String name;
 	private String planName;
 	
+	private WarPlanSettings planSettings;
+	
 	//TODO ecq il faut laisser ça ici ?
 	private ArrayList<String> conditionsOutID = new ArrayList<String>();
 	
 	private ArrayList<ModeleCondition> conditionsOut = new ArrayList<>();
 	private ArrayList<ModeleCondition> conditionsIn = new ArrayList<>();
 
-	public ModeleState(String name, String planName) {
+	public ModeleState(String name, String planName, WarPlanSettings planSettings) {
 		this.name = name;
 		this.planName = planName;
+		this.planSettings = planSettings;
 	}
 
 	public void addConditionOut(ModeleCondition mc) {
@@ -45,7 +49,7 @@ public class ModeleState {
 		return Configuration.getSimpleName(this.planName);
 	}
 
-	public String getNom() {
+	public String getName() {
 		return this.name;
 	}
 
@@ -53,7 +57,9 @@ public class ModeleState {
 		this.conditionsOutID = condID;		
 	}
 	
-	
+	public WarPlanSettings getWarPlanSettings(){
+		return this.planSettings;
+	}
 	
 	
 

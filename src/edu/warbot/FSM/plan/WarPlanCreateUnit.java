@@ -9,12 +9,9 @@ import edu.warbot.brains.adapters.WarBaseAdapter;
 
 /**
  * Desciption du plan et de ces actions
- * ATTENTION ce plan est basÃ© sur la size bag d'un explorer et la la vie max d'un explorer
- * @author Olivier
- *
+ * ATTENTION ce plan est basé sur la size bag d'un explorer et la vie max d'un explorer
  */
 public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
-	
 	
 	int nombreAgent[];
 	WarAgentType agentType[];
