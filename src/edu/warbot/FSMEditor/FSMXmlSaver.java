@@ -2,12 +2,14 @@ package edu.warbot.FSMEditor;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
+import edu.warbot.FSM.plan.WarPlanSettings;
 import edu.warbot.FSMEditor.Modeles.Modele;
 import edu.warbot.FSMEditor.Modeles.ModeleBrain;
 import edu.warbot.FSMEditor.Modeles.ModeleCondition;
@@ -18,6 +20,15 @@ public class FSMXmlSaver {
 	Document document;
 	FileWriter file;
 	
+	public static final String Brains = "Brains";
+	public static final String States = "States";
+	public static final String State = "State";
+	public static final String PlanSettings = "PlanSettings";
+	public static final String ConditionsOutID = "ConditionsOutID";
+	public static final String ConditionOutID = "ConditionOutID";
+	public static final String Conditions = "Conditions";
+	public static final String Condition = "Condition";
+	
 	public void saveFSM(Modele modele, String fileName) {
 		
 		try {
@@ -26,7 +37,7 @@ public class FSMXmlSaver {
 			e1.printStackTrace();
 		}
 		
-		Element root = new Element("Brains");
+		Element root = new Element(Brains);
 		
 		document = new Document(root);
 		
@@ -51,7 +62,7 @@ public class FSMXmlSaver {
 	}
 
 	private Element getContentConditionForBrain(ModeleBrain brain) {
-		Element elemConditions = new Element("Conditions");
+		Element elemConditions = new Element(Conditions);
 		
 		for (ModeleCondition condition : brain.getConditions()) {
 			elemConditions.addContent(getContentForCondition(condition));
@@ -60,7 +71,7 @@ public class FSMXmlSaver {
 	}
 
 	private Element getContentForCondition(ModeleCondition cond) {
-		Element elemCond = new Element("Condition");
+		Element elemCond = new Element(Condition);
 
 		elemCond.addContent(new Element("Name").setText(cond.getNom()));
 		elemCond.addContent(new Element("Type").setText(cond.getType()));
@@ -81,7 +92,7 @@ public class FSMXmlSaver {
 
 	private Element getContentStatesForBrain(ModeleBrain brain) {
 		
-		Element states = new Element("States");
+		Element states = new Element(States);
 		
 		for (ModeleState currentState : brain.getStates()) {
 			states.addContent(getContentForState(currentState));
@@ -90,22 +101,46 @@ public class FSMXmlSaver {
 	}
 
 	private Element getContentForState(ModeleState state) {
-		Element elemState = new Element("State");
+		Element elemState = new Element(State);
 		
 		elemState.addContent(new Element("Name").setText(state.getName()));
 		elemState.addContent(new Element("Plan").setText(state.getPlanName()));
-		
-		if(! state.getConditionsOut().isEmpty())
-			elemState.addContent(getContentConditionsOutNameForState(state));
+
+		elemState.addContent(getContentPlanSettings(state));
+		elemState.addContent(getContentConditionsOutNameForState(state));
 		
 		return elemState;
 	}
 
+	private Element getContentPlanSettings(ModeleState state) {
+		Element elemPlanSetting = new Element(PlanSettings);
+		
+		WarPlanSettings planSet = state.getWarPlanSettings();
+		Field[] fields = planSet.getClass().getDeclaredFields();
+		
+		for (int i = 0; i < fields.length; i++) {
+			Object fieldValue = null;
+			try {
+				fieldValue = fields[i].get(planSet);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			
+			elemPlanSetting.addContent(
+					new Element(fields[i].getName())
+					.setText(String.valueOf(fieldValue)));
+		}
+		
+		return elemPlanSetting;
+	}
+
 	private Element getContentConditionsOutNameForState(ModeleState state) {
-		Element elemconditions = new Element("ConditionsOutName");
+		Element elemconditions = new Element(ConditionsOutID);
 		
 		for (ModeleCondition currentCond : state.getConditionsOut()) {
-			elemconditions.addContent(new Element("ConditionOut").setText(currentCond.getNom()));
+			elemconditions.addContent(new Element(ConditionOutID).setText(currentCond.getNom()));
 		}
 		
 		return elemconditions;

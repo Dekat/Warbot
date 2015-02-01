@@ -7,14 +7,13 @@ import edu.warbot.agents.enums.WarAgentType;
 
 public class ModeleBrain {
 	
-	private String agentTypeName;
 	private WarAgentType agentType;
 	
 	private ArrayList<ModeleState> sates = new ArrayList<>();
 	private ArrayList<ModeleCondition> conditions = new ArrayList<>();
 	
-	public ModeleBrain(String agentTypeName) {
-		this.agentTypeName = agentTypeName;
+	public ModeleBrain(WarAgentType agentType) {
+		this.agentType = agentType;
 	}
 
 	public void addState(ModeleState d) {
@@ -59,7 +58,7 @@ public class ModeleBrain {
 	}
 
 	public String getAgentTypeName() {
-		return this.agentTypeName;
+		return this.agentType.toString();
 	}
 	
 	public WarAgentType getAgentType() {

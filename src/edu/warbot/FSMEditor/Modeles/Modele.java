@@ -10,7 +10,7 @@ public class Modele {
 	
 	public Modele() {
 		//TODO on ajoute un modele que pour les explorers (pour l'instant)
-		ModeleBrain modeleBrainExplorer = new ModeleBrain(WarAgentType.WarExplorer.name());
+		ModeleBrain modeleBrainExplorer = new ModeleBrain(WarAgentType.WarExplorer);
 		modeleBrains.add(modeleBrainExplorer);
 	}
 

@@ -66,7 +66,8 @@ public class Controleur {
 	public void eventMenuBarItemSave() {
 		FSMXmlSaver fsmSaver = new FSMXmlSaver();
 		
-		fsmSaver.saveFSM(modele, "FSM.xml");
+		fsmSaver.saveFSM(modele, FSMXmlReader.xmlConfigurationFilename);
+		System.out.println("Configuration file exported successfull");
 		
 	}
 	
