@@ -51,11 +51,11 @@ public class FSMXmlReader extends FSMXmlParser{
 		String agentTypeName = brain.getChild(AgentType).getValue();
 		WarAgentType agentType = WarAgentType.valueOf(agentTypeName);
 		
-//		ModeleBrain modeleBrain = modele.getModelBrain(agentType);
-		ModeleBrain modeleBrain = new ModeleBrain(agentType);
+		ModeleBrain modelBrain = new ModeleBrain(agentType);
+		modele.addModelBrain(modelBrain);
 		
-		createStates(brain.getChild(States), modeleBrain);
-		createConditions(brain.getChild(Conditions), modeleBrain);
+		createStates(brain.getChild(States), modelBrain);
+		createConditions(brain.getChild(Conditions), modelBrain);
 	}
 
 	private void createConditions(Element child, ModeleBrain modeleBrain) {
@@ -198,7 +198,7 @@ public class FSMXmlReader extends FSMXmlParser{
 		for (Element currentID : element.getChildren(ConditionOutID)) {
 			res.add(currentID.getValue());
 		}
-		return null;
+		return res;
 	}
 
 	public Modele getGeneratedFSMModel() {

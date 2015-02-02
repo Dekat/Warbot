@@ -38,7 +38,7 @@ public class PanelCondition extends AbstractPanel{
 		g.drawLine(this.positionDep.x, this.positionDep.y, this.positionArr.x,
 				this.positionArr.y);
 
-		g.drawString(this.modele.getNom(), (positionArr.x - positionDep.x)/2 + positionDep.x,
+		g.drawString(this.modele.getName(), (positionArr.x - positionDep.x)/2 + positionDep.x,
 				(positionArr.y - positionDep.y)/2 + positionDep.y - 1);
 
 	}

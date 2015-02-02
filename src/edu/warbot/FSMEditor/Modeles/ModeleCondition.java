@@ -38,7 +38,7 @@ public class ModeleCondition {
 		this.attCPourcentage = d.getAttributCheckPourcentage();
 	}
 
-	public String getNom() {
+	public String getName() {
 		return name;
 	}
 

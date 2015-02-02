@@ -23,6 +23,9 @@ import edu.warbot.brains.adapters.WarExplorerAdapter;
 import edu.warbot.launcher.WarScheduler;
 
 public class FSMInstancier {
+	
+	//Remarque : avant d'instancier la FSM il faut reconstruire complement le modele avec les informations dedans
+	//notament reconstruire les conditions de sorties avec les ID de conditions de sorties (dans modeleState)
 
 	ArrayList<WarFSM> fsm = new ArrayList<WarFSM>();
 	Modele modele;

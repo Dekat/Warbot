@@ -66,7 +66,7 @@ public class FSMXmlSaver extends FSMXmlParser{
 	private Element getContentForCondition(ModeleCondition cond) {
 		Element elemCond = new Element(Condition);
 
-		elemCond.addContent(new Element("Name").setText(cond.getNom()));
+		elemCond.addContent(new Element("Name").setText(cond.getName()));
 		elemCond.addContent(new Element("Type").setText(cond.getType()));
 		elemCond.addContent(new Element("StateOutName").setText(cond.getDestination().getName()));
 		//elemCond.addContent(new Element("StateInName").setText(cond.getSource().getNom()));
@@ -133,7 +133,7 @@ public class FSMXmlSaver extends FSMXmlParser{
 		Element elemconditions = new Element(ConditionsOutID);
 		
 		for (ModeleCondition currentCond : state.getConditionsOut()) {
-			elemconditions.addContent(new Element(ConditionOutID).setText(currentCond.getNom()));
+			elemconditions.addContent(new Element(ConditionOutID).setText(currentCond.getName()));
 		}
 		
 		return elemconditions;

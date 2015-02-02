@@ -57,6 +57,10 @@ public class ModeleState {
 		this.conditionsOutID = condID;		
 	}
 	
+	public ArrayList<String> getConditionsOutID() {
+		return this.conditionsOutID;		
+	}
+	
 	public WarPlanSettings getWarPlanSettings(){
 		return this.planSettings;
 	}

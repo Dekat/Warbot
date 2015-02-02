@@ -52,7 +52,7 @@ public class ModeleBrain {
 	public Vector<String> getConditionsName() {
 		Vector<String> res = new Vector<>();
 		for (ModeleCondition m : this.conditions) {
-			res.add(m.getNom());
+			res.add(m.getName());
 		}
 		return res;
 	}

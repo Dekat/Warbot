@@ -10,6 +10,8 @@ import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
 import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlSaver;
 import edu.warbot.FSMEditor.Modeles.Modele;
 import edu.warbot.FSMEditor.Modeles.ModeleBrain;
+import edu.warbot.FSMEditor.Modeles.ModeleCondition;
+import edu.warbot.FSMEditor.Modeles.ModeleState;
 import edu.warbot.FSMEditor.Views.View;
 import edu.warbot.FSMEditor.Views.ViewBrain;
 import edu.warbot.agents.enums.WarAgentType;
@@ -86,7 +88,24 @@ public class Controleur {
 		Modele modeleRead = reader.getGeneratedFSMModel();
 		
 		//Affichage des informations du modele de la FSM pour vérifier la validité
+		System.out.println("Vérification du modele généré dynamiquement pour la FSM");
+		for (ModeleBrain modBrain : modeleRead.getModelsBrains()) {
+			System.out.println("Traitement du modele pour le type d'agent " + modBrain.getAgentTypeName());
 		
+			System.out.println("Liste des états " + modBrain.getStates().size());
+			for (ModeleState modState : modBrain.getStates()) {
+				System.out.println("\tEtat : Name=" + modState.getName() + " plan=" + modState.getPlanName());
+				System.out.println("\tConditions de sorties ID : " + modState.getConditionsOutID().size());
+				for (String condID : modState.getConditionsOutID()) {
+					System.out.println("\t\t" + condID);
+				}
+				System.out.println("\tConditions de sorties : " + modState.getConditionsOut().size());
+				for (ModeleCondition condMod : modState.getConditionsOut()) {
+					System.out.println("\t\t" + condMod.getName());
+				}
+				
+			}
+		}
 
 		//Fin affiche informations
 		
@@ -98,7 +117,6 @@ public class Controleur {
 		for (WarFSM fsm : allFsm) {
 			fsm.initFSM();
 		}
-			
 		
 		System.out.println("FSM generated successfull");
 		

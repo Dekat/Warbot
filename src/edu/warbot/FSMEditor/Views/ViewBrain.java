@@ -166,7 +166,7 @@ public class ViewBrain extends JPanel{
 		
 		panelEditor.addCondition(pc);
 		
-		this.getListeModeleConditions().addElement(condition.getNom());	
+		this.getListeModeleConditions().addElement(condition.getName());	
 	}
 
 	//TODO pas super propre

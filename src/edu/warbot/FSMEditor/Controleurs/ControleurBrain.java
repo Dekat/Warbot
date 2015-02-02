@@ -32,7 +32,6 @@ public class ControleurBrain {
 
 	}
 	
-	
 	private void placeListeerOnPanel() {
 		MouseListenerPanelCenter mouseListener = new MouseListenerPanelCenter(this);
 		viewBrain.getPanelCenter().addMouseListener(mouseListener);
@@ -164,7 +163,7 @@ public class ControleurBrain {
 			ModeleCondition modeleCond;
 			
 			for (ModeleCondition modeleC : this.modeleBrain.getConditions()) {
-				if(modeleC.getNom().equals(condSelec)){
+				if(modeleC.getName().equals(condSelec)){
 					modeleCond = modeleC;
 					break;
 				}
@@ -180,7 +179,7 @@ public class ControleurBrain {
 	
 	private PanelCondition getPanelConditionWithName(String s){
 		for (PanelCondition p : this.viewBrain.getPanelCenter().getPanelcondition()) {
-			if(p.getModele().getNom().equals(s))
+			if(p.getModele().getName().equals(s))
 				return p;
 		}
 		return null;
