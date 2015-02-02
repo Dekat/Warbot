@@ -6,11 +6,13 @@ import java.util.ArrayList;
 
 import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSMEditor.FSMInstancier;
-import edu.warbot.FSMEditor.FSMXmlSaver;
-import edu.warbot.FSMEditor.FSMXmlReader;
+import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
+import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlSaver;
 import edu.warbot.FSMEditor.Modeles.Modele;
+import edu.warbot.FSMEditor.Modeles.ModeleBrain;
 import edu.warbot.FSMEditor.Views.View;
 import edu.warbot.FSMEditor.Views.ViewBrain;
+import edu.warbot.agents.enums.WarAgentType;
 
 public class Controleur {
 	public Modele modele;
@@ -23,23 +25,26 @@ public class Controleur {
 		this.view = view;
 		
 		placeListenerOnMenuBar();
-		
-		createControleursBrains();
 	}
 
-	public ControleurBrain getControleurBrain(String agentType) {
+	public ControleurBrain getControleurBrain(WarAgentType agentType) {
 		for (ControleurBrain controleurBrain : controleursBrains) {
-			if(controleurBrain.modeleBrain.getAgentTypeName().equals(agentType))
+			if(controleurBrain.modeleBrain.getAgentType().equals(agentType))
 				return controleurBrain;
 		}
 		System.err.println("Impossible to find controleurBrain for agent type " + agentType);
 		return null;
 	}
 
-	private void createControleursBrains() {
-		for (ViewBrain vBrain : this.view.getViewBrains()) {
-			controleursBrains.add(new ControleurBrain(vBrain.getModele(), vBrain));
-		}
+	public void createControleursBrains(WarAgentType agentType) {
+		ModeleBrain mb = new ModeleBrain(agentType);
+		ViewBrain vb = new ViewBrain(mb);
+		ControleurBrain cb = new ControleurBrain(mb, vb);
+		
+		this.modele.addModelBrain(mb);
+		this.view.addViewBrain(vb);
+		
+		this.controleursBrains.add(cb);
 	}
 	
 	private void placeListenerOnMenuBar() {
@@ -79,7 +84,12 @@ public class Controleur {
 
 		FSMXmlReader reader = new FSMXmlReader(FSMXmlReader.xmlConfigurationFilename);
 		Modele modeleRead = reader.getGeneratedFSMModel();
+		
+		//Affichage des informations du modele de la FSM pour vérifier la validité
+		
 
+		//Fin affiche informations
+		
 		System.out.println("Configuration file imported successfull");
 		
 		FSMInstancier fsmSaver = new FSMInstancier(modeleRead);

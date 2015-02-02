@@ -8,10 +8,7 @@ import javax.swing.event.ListSelectionListener;
 
 import edu.warbot.FSM.plan.WarPlanSettings;
 import edu.warbot.FSMEditor.Configuration;
-import edu.warbot.FSMEditor.FSMInstancier;
-import edu.warbot.FSMEditor.FSMXmlSaver;
 import edu.warbot.FSMEditor.MouseListenerPanelCenter;
-import edu.warbot.FSMEditor.Modeles.Modele;
 import edu.warbot.FSMEditor.Modeles.ModeleBrain;
 import edu.warbot.FSMEditor.Modeles.ModeleCondition;
 import edu.warbot.FSMEditor.Modeles.ModeleState;

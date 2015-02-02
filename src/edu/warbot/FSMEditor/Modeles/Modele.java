@@ -6,24 +6,22 @@ import edu.warbot.agents.enums.WarAgentType;
 
 public class Modele {
 
-	ArrayList<ModeleBrain> modeleBrains = new ArrayList<ModeleBrain>();
+	ArrayList<ModeleBrain> modelBrains = new ArrayList<ModeleBrain>();
 	
-	public Modele() {
-		//TODO on ajoute un modele que pour les explorers (pour l'instant)
-		ModeleBrain modeleBrainExplorer = new ModeleBrain(WarAgentType.WarExplorer);
-		modeleBrains.add(modeleBrainExplorer);
-	}
-
 	public ArrayList<ModeleBrain> getModelsBrains() {
-		return modeleBrains;
+		return modelBrains;
 	}
 
-	public ModeleBrain getModeleExplorer() {
-		for (ModeleBrain modeleBrain : modeleBrains) {
-			if(modeleBrain.getAgentTypeName().equals(WarAgentType.WarExplorer.name()))
+	public ModeleBrain getModelBrain(WarAgentType agentType) {
+		for (ModeleBrain modeleBrain : modelBrains) {
+			if(modeleBrain.getAgentType().equals(agentType))
 				return modeleBrain;
 		}
 		return null;
+	}
+
+	public void addModelBrain(ModeleBrain modelBrain) {
+		this.modelBrains.add(modelBrain);
 	}
 
 }

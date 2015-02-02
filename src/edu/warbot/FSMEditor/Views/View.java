@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import edu.warbot.FSMEditor.Modeles.Modele;
 import edu.warbot.FSMEditor.Modeles.ModeleBrain;
@@ -20,6 +21,8 @@ public class View extends JFrame {
 	ArrayList<ViewBrain> viewBrains = new ArrayList<ViewBrain>();
 
 	private Modele modele;
+	
+	private JTabbedPane mainPanel;
 	
 	public View(Modele modele) {
 		this.modele = modele;
@@ -38,12 +41,11 @@ public class View extends JFrame {
 	}
 
 	private void createPanel() {//TODO (si on veut rajouter des nouveaux panel il faut les remetre dans ce panel pricipal
-		CardLayout cardLayout = new CardLayout();
-		JPanel panel = new JPanel(cardLayout);
+		mainPanel = new JTabbedPane();
 		for (ViewBrain viewBrain : viewBrains) {
-			panel.add(viewBrain);
+			mainPanel.add(viewBrain.getModele().getAgentTypeName(), viewBrain);
 		}
-		this.setContentPane(panel);
+		this.setContentPane(mainPanel);
 	}
 
 	private void createFrame() {
@@ -63,7 +65,7 @@ public class View extends JFrame {
 
 		miSave = new MenuItem("Save");
 		miLoad = new MenuItem("Load");
-		miSaveJar = new MenuItem("Export Jar");
+		miSaveJar = new MenuItem("Test validity");
 
 		Menu mSave = new Menu("Save");
 		Menu mLoad = new Menu("Load");
@@ -95,12 +97,19 @@ public class View extends JFrame {
 	public ArrayList<ViewBrain> getViewBrains() {
 		return this.viewBrains;
 	}
+	
+	public void addViewBrain(ViewBrain viewBrain) {
+		this.viewBrains.add(viewBrain);
+		mainPanel.add(viewBrain.getModele().getAgentTypeName(), viewBrain);
+	}
 
 	/*** Attributs ***/
 	
 	private MenuItem miSave;
 	private MenuItem miLoad;
 	private MenuItem miSaveJar;
+
+
 
 
 }

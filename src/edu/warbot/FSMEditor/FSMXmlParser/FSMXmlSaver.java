@@ -1,4 +1,4 @@
-package edu.warbot.FSMEditor;
+package edu.warbot.FSMEditor.FSMXmlParser;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,19 +15,10 @@ import edu.warbot.FSMEditor.Modeles.ModeleBrain;
 import edu.warbot.FSMEditor.Modeles.ModeleCondition;
 import edu.warbot.FSMEditor.Modeles.ModeleState;
 
-public class FSMXmlSaver {
+public class FSMXmlSaver extends FSMXmlParser{
 	
 	Document document;
 	FileWriter file;
-	
-	public static final String Brains = "Brains";
-	public static final String States = "States";
-	public static final String State = "State";
-	public static final String PlanSettings = "PlanSettings";
-	public static final String ConditionsOutID = "ConditionsOutID";
-	public static final String ConditionOutID = "ConditionOutID";
-	public static final String Conditions = "Conditions";
-	public static final String Condition = "Condition";
 	
 	public void saveFSM(Modele modele, String fileName) {
 		
@@ -37,14 +28,16 @@ public class FSMXmlSaver {
 			e1.printStackTrace();
 		}
 		
-		Element root = new Element(Brains);
+		Element rootBrains = new Element(Brains);
 		
-		document = new Document(root);
+		document = new Document(rootBrains);
 		
 		for (ModeleBrain currentBrain : modele.getModelsBrains()) {
-			Element brain = new Element(currentBrain.getAgentTypeName());
-			root.addContent(brain);
+			Element brain = new Element("Brain");
+			rootBrains.addContent(brain);
 			
+			brain.addContent(new Element(AgentType).setText(currentBrain.getAgentTypeName()));
+
 			brain.addContent(getContentStatesForBrain(currentBrain));
 			brain.addContent(getContentConditionForBrain(currentBrain));
 		}
