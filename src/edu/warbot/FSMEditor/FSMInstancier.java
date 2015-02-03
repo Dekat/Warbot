@@ -5,12 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.sun.xml.internal.ws.org.objectweb.asm.ClassAdapter;
-
 import edu.warbot.FSM.WarEtat;
 import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSM.plan.WarPlan;
-import edu.warbot.FSM.plan.WarPlanAttaquer;
 import edu.warbot.FSM.plan.WarPlanSettings;
 import edu.warbot.FSMEditor.Modeles.Modele;
 import edu.warbot.FSMEditor.Modeles.ModeleBrain;
@@ -18,9 +15,7 @@ import edu.warbot.FSMEditor.Modeles.ModeleState;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 import edu.warbot.brains.WarAgentAdapter;
-import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarExplorerAdapter;
-import edu.warbot.launcher.WarScheduler;
 
 public class FSMInstancier {
 	

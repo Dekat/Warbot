@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSM.plan.WarPlanSettings;
 import edu.warbot.FSMEditor.FSMInstancier;
+import edu.warbot.FSMEditor.FSMModelRebuilder;
 import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
 import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlSaver;
 import edu.warbot.FSMEditor.Modeles.Modele;
@@ -89,7 +90,27 @@ public class Controleur {
 		FSMXmlReader reader = new FSMXmlReader(FSMXmlReader.xmlConfigurationFilename);
 		Modele modeleRead = reader.getGeneratedFSMModel();
 		
-		//Affichage des informations du modele de la FSM pour vérifier la validité
+		//Affichage des informations pour vérifier la validité (ici avec des id)
+		printModelInformations(modeleRead);
+		
+		FSMModelRebuilder fsmModRebuilder = new FSMModelRebuilder(modeleRead);
+		fsmModRebuilder.rebuildModel();
+		Modele modelRebuild = fsmModRebuilder.getRebuildModel();
+		
+		System.out.println("Configuration file imported successfull");
+		
+		FSMInstancier fsmSaver = new FSMInstancier(modeleRead);
+		ArrayList<WarFSM> allFsm = fsmSaver.getGeneratedFSM();
+		
+		for (WarFSM fsm : allFsm) {
+			fsm.initFSM();
+		}
+		
+		System.out.println("FSM generated successfull");
+		
+	}
+	
+	private void printModelInformations(Modele modeleRead) {
 		System.out.println("*** Vérification du modele généré dynamiquement pour la FSM ***");
 		for (ModeleBrain modBrain : modeleRead.getModelsBrains()) {
 			System.out.println("* Traitement du modele pour le type d'agent " + modBrain.getAgentTypeName() + " *");
@@ -130,22 +151,8 @@ public class Controleur {
 				//TODO faire la suite de l'affichage
 			}
 		}
-
-		//Fin affichage informations
-		
-		System.out.println("Configuration file imported successfull");
-		
-		FSMInstancier fsmSaver = new FSMInstancier(modeleRead);
-		ArrayList<WarFSM> allFsm = fsmSaver.getGeneratedFSM();
-		
-		for (WarFSM fsm : allFsm) {
-			fsm.initFSM();
-		}
-		
-		System.out.println("FSM generated successfull");
-		
 	}
-	
+
 	public void eventMenuBarItemLoad(){
 		
 	}
