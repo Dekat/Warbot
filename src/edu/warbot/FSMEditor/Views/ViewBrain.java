@@ -159,8 +159,8 @@ public class ViewBrain extends JPanel{
 //		PanelState panelDest = this.getPanelCenter().getSecondeSelectedState();
 
 		//Récupère les panelSource et destination pour avoir leurs positions
-		PanelState panelSource = getPanelStateForModele(condition.getSource());
-		PanelState panelDest = getPanelStateForModele(condition.getDestination());
+		PanelState panelSource = getPanelStateForModele(condition.getStateSource());
+		PanelState panelDest = getPanelStateForModele(condition.getStateDestination());
 		
 		pc.setPanelSourceAndDestination(panelSource, panelDest);
 		

@@ -35,7 +35,7 @@ public class ModeleBrain {
 		//on parcours toutes les condtions pour voir si il yen a qui vont jusqua l'état qui va etre suppr
 		ArrayList<ModeleCondition> toDelet = new ArrayList<>();
 		for (ModeleCondition cond: this.conditions) {
-			if(cond.getDestination().equals(m)){
+			if(cond.getStateDestination().equals(m)){
 				toDelet.add(cond);
 			}
 		}

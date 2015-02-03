@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Brains>
+  <Brain>
+    <WarAgentType>WarExplorer</WarAgentType>
+    <States>
+      <State>
+        <Name>State1</Name>
+        <Plan>edu.warbot.FSM.plan.WarPlanRamasserNouriture</Plan>
+        <PlanSettings>
+          <Agent_type_destination>[WarExplorer]</Agent_type_destination>
+          <Number_agent_destination>[1]</Number_agent_destination>
+          <Value_reference>null</Value_reference>
+          <Value_pourcentage>null</Value_pourcentage>
+          <Offensif>false</Offensif>
+        </PlanSettings>
+        <ConditionsOutID>
+          <ConditionOutID>Condition1</ConditionOutID>
+          <ConditionOutID>Condition2</ConditionOutID>
+        </ConditionsOutID>
+      </State>
+      <State>
+        <Name>State2</Name>
+        <Plan>edu.warbot.FSM.plan.WarPlanBeSecure</Plan>
+        <PlanSettings>
+          <Agent_type_destination>[WarExplorer]</Agent_type_destination>
+          <Number_agent_destination>[1]</Number_agent_destination>
+          <Value_reference>null</Value_reference>
+          <Value_pourcentage>null</Value_pourcentage>
+          <Offensif>false</Offensif>
+        </PlanSettings>
+        <ConditionsOutID />
+      </State>
+      <State>
+        <Name>State3</Name>
+        <Plan>edu.warbot.FSM.plan.WarPlanBeSecure</Plan>
+        <PlanSettings>
+          <Agent_type_destination>[WarExplorer]</Agent_type_destination>
+          <Number_agent_destination>[1]</Number_agent_destination>
+          <Value_reference>null</Value_reference>
+          <Value_pourcentage>null</Value_pourcentage>
+          <Offensif>false</Offensif>
+        </PlanSettings>
+        <ConditionsOutID />
+      </State>
+    </States>
+    <Conditions>
+      <Condition>
+        <Name>Condition1</Name>
+        <Type>edu.warbot.FSM.condition.WarConditionAttributCheck</Type>
+        <StateOutName>State2</StateOutName>
+        <AttributCheck>
+          <Name />
+          <operateur />
+          <Value />
+          <Pourcentage>false</Pourcentage>
+        </AttributCheck>
+      </Condition>
+      <Condition>
+        <Name>Condition2</Name>
+        <Type>edu.warbot.FSM.condition.WarConditionAttributCheck</Type>
+        <StateOutName>State3</StateOutName>
+        <AttributCheck>
+          <Name />
+          <operateur />
+          <Value />
+          <Pourcentage>false</Pourcentage>
+        </AttributCheck>
+      </Condition>
+    </Conditions>
+  </Brain>
+  <Brain>
+    <WarAgentType>WarBase</WarAgentType>
+    <States>
+      <State>
+        <Name>aze</Name>
+        <Plan>edu.warbot.FSM.plan.WarPlanBeSecure</Plan>
+        <PlanSettings>
+          <Agent_type_destination>[WarExplorer]</Agent_type_destination>
+          <Number_agent_destination>[0]</Number_agent_destination>
+          <Value_reference>12</Value_reference>
+          <Value_pourcentage>12</Value_pourcentage>
+          <Offensif>true</Offensif>
+        </PlanSettings>
+        <ConditionsOutID />
+      </State>
+    </States>
+    <Conditions />
+  </Brain>
+  <Brain>
+    <WarAgentType>WarRocketLauncher</WarAgentType>
+    <States />
+    <Conditions />
+  </Brain>
+</Brains>

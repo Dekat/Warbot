@@ -6,10 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -27,6 +29,8 @@ public class DialogueStateSetting extends AbstractDialogue {
 	private static final long serialVersionUID = 1L;
 
 	WarPlanSettings planSettings;
+	Field fields[];
+	HashMap<Field, JComponent> mapFieldComp = new HashMap<>();
 
 	public DialogueStateSetting(ViewBrain f, WarPlanSettings planSettings) {
 		super();
@@ -63,32 +67,36 @@ public class DialogueStateSetting extends AbstractDialogue {
 		JPanel panel = new JPanel(new VerticalLayout());
 		panel.setBorder(new TitledBorder("Settings"));
 		
-		Field[] fields = planSettings.getClass().getDeclaredFields();
+		fields = planSettings.getClass().getDeclaredFields();
 
 		for (int i = 0; i < fields.length; i++) {
-			panel.add(getEntryForField(fields[i]));
+			panel.add(getComponentForField(fields[i]));
 		}
 
 		return panel;
 	}
 
-	private JPanel getEntryForField(Field field) {
+	private JPanel getComponentForField(Field field) {
 		JPanel panel = new JPanel(new GridLayout(1, 2));
 
 		panel.add(getLabelForField(field));
 
+		JComponent component = null;
 		if (field.getType().equals(Boolean.class)) {
-			panel.add(getComponentForBoolean(field));
+			panel.add(component = getComponentForBoolean(field));
 		} else if (field.getType().equals(Integer.class)) {
-			panel.add(getComponentForInteger(field));
+			panel.add(component = getComponentForInteger(field));
 		} else if (field.getType().equals(ArrayList.class)) {
-			panel.add(getComponentForArrayList(field));
+			panel.add(component = getComponentForArrayList(field));
+		}else{
+			System.err.println("The type " + field.getType() + " is not available for de the generated dynamic interface");
 		}
 
+		mapFieldComp.put(field, component);
 		return panel;
 	}
 
-	private JPanel getComponentForArrayList(Field field) {
+	private JComboBox<?> getComponentForArrayList(Field field) {
 		ArrayList<?> b = null;
 		try {
 			b = (ArrayList<?>) field.get(planSettings);
@@ -98,61 +106,37 @@ public class DialogueStateSetting extends AbstractDialogue {
 			e.printStackTrace();
 		}
 
-		if (b != null) {
-
-			if (b.size() > 0) {
-				if (b.get(0).getClass().equals(Integer.class))
-					return getComponentForArrayListOfInteger();
-				else if (b.get(0).getClass().equals(WarAgentType.class))
-					return getComponentForArrayListOfAgentType();
-				else {
-					System.err.println("ERRER ArrayList for name "
-							+ field.getName() + " is unknow generic type");
-
-					return null;
-				}
-			} else {
-				System.err
-						.println("ERRER ArrayList for name "
-								+ field.getName()
-								+ " is empty (impossible to find generic type of the collection, plz add one item in the collection)");
-				return null;
+		if (b != null && b.size() > 0) {
+			if (b.get(0).getClass().equals(Integer.class))
+				return getComponentForArrayListOfInteger();
+			else if (b.get(0).getClass().equals(WarAgentType.class))
+				return getComponentForArrayListOfAgentType();
+			else {
+				System.err.println("Unknown generic type " + b.get(0).getClass() + " of arrayList for attribut in WarPlanSettings");
 			}
 		} else {
-			System.err.println("ERRER ArrayList for name " + field.getName()
-					+ " is not accessible");
-
-			return null;
+			System.err.println("Attribut in class WarPlanSettings must be initiate and containe at least one value");
 		}
+		return null;
 	}
 
-	private JPanel getComponentForArrayListOfAgentType() {
+	private JComboBox<String> getComponentForArrayListOfAgentType() {
 		JComboBox<String> cb = new JComboBox<>();
 
 		for (WarAgentType at : WarAgentType.values()) {
-			JCheckBox cbmi = new JCheckBox(at.name());
+//			JCheckBox cbmi = new JCheckBox(at.name());
 			cb.addItem(at.name());
 		}
-
-		JPanel p = new JPanel();
-		p.add(cb);
-
-		return p;
+		return cb;
 	}
 
-	private JPanel getComponentForArrayListOfInteger() {
-
+	private JComboBox<Integer> getComponentForArrayListOfInteger() {
 		JComboBox<Integer> cb = new JComboBox<>();
-
 		for (int i = 0; i < 11; i++) {
-			JCheckBox cbmi = new JCheckBox(String.valueOf(i));
+//			JCheckBox cbmi = new JCheckBox(String.valueOf(i));
 			cb.addItem(i);
 		}
-
-		JPanel p = new JPanel();
-		p.add(cb);
-
-		return p;
+		return cb;
 	}
 
 	private JTextField getComponentForInteger(Field field) {
@@ -217,18 +201,71 @@ public class DialogueStateSetting extends AbstractDialogue {
 
 	private void eventValider() {
 
-		if (this.fieldNameEtat.getText().isEmpty())
-			console.setText("Entrer un nom pour l'�tat");
-		else {
-			checkValidity();
+		if (checkValidity()){
+			this.saveSettings();
+			super.isValide = true;
 			this.dispose();
+		}else {
+			console.setText("Entrer un nom pour l'état");
 		}
 	}
 
-	private void checkValidity() {
-		if (this.fieldNameEtat.getText().isEmpty() == false
-				&& this.comboxPlan.getSelectedIndex() != -1)
-			super.isValide = true;
+	private void saveSettings() {
+		for (Field field : mapFieldComp.keySet()) {
+			JComponent dynamicComp = mapFieldComp.get(field);
+			try{
+				if(field.getType().equals(Boolean.class)){
+					setFieldForInteger(field, dynamicComp);
+				}else if(field.getType().equals(Integer.class)){
+					Integer b = Integer.valueOf(((JTextField)dynamicComp).getText());
+					field.set(planSettings, b);
+				}else if(field.getType().equals(String.class)){
+					String b = ((JTextField)dynamicComp).getText();
+					field.set(planSettings, b);
+				}else if(field.getType().equals(ArrayList.class)){
+					ArrayList<?> array = (ArrayList<?>) field.get(planSettings);
+					if(array != null && array.size() > 0){
+						if(array.get(0).getClass().equals(Integer.class)){
+							Integer integer = (Integer) ((JComboBox<?>)dynamicComp).getSelectedItem();
+							ArrayList<Integer> arrayRes = new ArrayList<>();
+							arrayRes.add(integer);
+							field.set(planSettings, arrayRes);
+						}else if(array.get(0).getClass().equals(String.class)){
+							String integer = (String) ((JComboBox<?>)dynamicComp).getSelectedItem();
+							ArrayList<String> arrayRes = new ArrayList<>();
+							arrayRes.add(integer);
+							field.set(planSettings, arrayRes);
+						}else if(array.get(0).getClass().equals(WarAgentType.class)){
+							WarAgentType integer = WarAgentType.valueOf((String) ((JComboBox<?>)dynamicComp).getSelectedItem());
+							ArrayList<WarAgentType> arrayRes = new ArrayList<>();
+							arrayRes.add(integer);
+							field.set(planSettings, arrayRes);
+						}
+						
+					}else{
+						System.err.println("Attribut in class WarPlanSettings must be initiate and containe at least one value");
+					}
+				}
+			}catch(IllegalAccessException e){
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+	private void setFieldForInteger(Field field, JComponent comp) {
+		Boolean b = ((JCheckBox)comp).isSelected();
+		try {
+			field.set(planSettings, b);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private boolean checkValidity() {
+		return !this.fieldNameEtat.getText().isEmpty();
 	}
 
 	public String getNom() {

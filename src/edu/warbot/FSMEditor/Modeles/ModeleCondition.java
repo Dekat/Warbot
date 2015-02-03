@@ -8,7 +8,10 @@ public class ModeleCondition {
 	ModeleState modeleDest;
 	ModeleState modeleSource;
 	String type;
+	String stateOutId;
 	
+
+
 	//Attribut propre au type "attributCheck"
 	String attCName;
 	String attCOperateur;
@@ -56,11 +59,11 @@ public class ModeleCondition {
 		this.modeleSource = s;
 	}
 	
-	public ModeleState getDestination(){
+	public ModeleState getStateDestination(){
 		return this.modeleDest;
 	}
 	
-	public ModeleState getSource(){
+	public ModeleState getStateSource(){
 		return this.modeleSource;
 	}
 
@@ -78,6 +81,14 @@ public class ModeleCondition {
 	
 	public boolean getAttributCheckPourcentage() {
 		return attCPourcentage;
+	}
+	
+	public String getStateOutId() {
+		return stateOutId;
+	}
+
+	public void setStateOutId(String stateOutId) {
+		this.stateOutId = stateOutId;
 	}
 
 }

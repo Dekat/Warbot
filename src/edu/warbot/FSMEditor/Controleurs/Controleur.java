@@ -2,9 +2,11 @@ package edu.warbot.FSMEditor.Controleurs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import edu.warbot.FSM.WarFSM;
+import edu.warbot.FSM.plan.WarPlanSettings;
 import edu.warbot.FSMEditor.FSMInstancier;
 import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
 import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlSaver;
@@ -88,9 +90,9 @@ public class Controleur {
 		Modele modeleRead = reader.getGeneratedFSMModel();
 		
 		//Affichage des informations du modele de la FSM pour vérifier la validité
-		System.out.println("Vérification du modele généré dynamiquement pour la FSM");
+		System.out.println("*** Vérification du modele généré dynamiquement pour la FSM ***");
 		for (ModeleBrain modBrain : modeleRead.getModelsBrains()) {
-			System.out.println("Traitement du modele pour le type d'agent " + modBrain.getAgentTypeName());
+			System.out.println("* Traitement du modele pour le type d'agent " + modBrain.getAgentTypeName() + " *");
 		
 			System.out.println("Liste des états " + modBrain.getStates().size());
 			for (ModeleState modState : modBrain.getStates()) {
@@ -104,10 +106,32 @@ public class Controleur {
 					System.out.println("\t\t" + condMod.getName());
 				}
 				
+				//Afichage des parametres du plan
+				WarPlanSettings planSet = modState.getWarPlanSettings();
+				Field field[] = planSet.getClass().getDeclaredFields();
+				System.out.println("\tState settings : " + field.length);
+				for (int i = 0; i < field.length; i++) {
+					try {
+						System.out.println("\t\t" + field[i].getName() + "=" + field[i].get(planSet).toString());
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			
+			System.out.println("Liste des conditions " + modBrain.getConditions().size());
+			for (ModeleCondition modCond : modBrain.getConditions()) {
+				//TODO la ca va plnaté car il y aura l'id de létat destination mais pas le pointeur vers l'objet de l'état
+				System.out.println("\tConditin : Name=" + modCond.getName() + " type=" + modCond.getType() + " stateOutID=" + modCond.getStateOutId() + " stateOut=" + modCond.getStateDestination().getName());
+				
+				//Affichage des informations des parametres de la condition
+				//TODO faire la suite de l'affichage
 			}
 		}
 
-		//Fin affiche informations
+		//Fin affichage informations
 		
 		System.out.println("Configuration file imported successfull");
 		
