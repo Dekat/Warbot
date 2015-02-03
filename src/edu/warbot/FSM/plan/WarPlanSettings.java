@@ -25,6 +25,8 @@ public class WarPlanSettings {
 	public Integer Value_pourcentage;
 
 	public Boolean Offensif = false;
+	
+	public String Debug_String = "debug_sring";
 
 	/**
 	 * IMPORTANT il faut ajouter au moins une valeur dans les colletions pour

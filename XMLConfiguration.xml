@@ -12,6 +12,7 @@
           <Value_reference>null</Value_reference>
           <Value_pourcentage>null</Value_pourcentage>
           <Offensif>false</Offensif>
+          <Debug_String>debug_sring</Debug_String>
         </PlanSettings>
         <ConditionsOutID>
           <ConditionOutID>Condition1</ConditionOutID>
@@ -27,6 +28,7 @@
           <Value_reference>null</Value_reference>
           <Value_pourcentage>null</Value_pourcentage>
           <Offensif>false</Offensif>
+          <Debug_String>debug_sring</Debug_String>
         </PlanSettings>
         <ConditionsOutID />
       </State>
@@ -39,6 +41,20 @@
           <Value_reference>null</Value_reference>
           <Value_pourcentage>null</Value_pourcentage>
           <Offensif>false</Offensif>
+          <Debug_String>debug_sring</Debug_String>
+        </PlanSettings>
+        <ConditionsOutID />
+      </State>
+      <State>
+        <Name>aze</Name>
+        <Plan>edu.warbot.FSM.plan.WarPlanBeSecure</Plan>
+        <PlanSettings>
+          <Agent_type_destination>[WarExplorer]</Agent_type_destination>
+          <Number_agent_destination>[0]</Number_agent_destination>
+          <Value_reference>null</Value_reference>
+          <Value_pourcentage>null</Value_pourcentage>
+          <Offensif>false</Offensif>
+          <Debug_String>debug_sring</Debug_String>
         </PlanSettings>
         <ConditionsOutID />
       </State>
@@ -70,20 +86,7 @@
   </Brain>
   <Brain>
     <WarAgentType>WarBase</WarAgentType>
-    <States>
-      <State>
-        <Name>aze</Name>
-        <Plan>edu.warbot.FSM.plan.WarPlanBeSecure</Plan>
-        <PlanSettings>
-          <Agent_type_destination>[WarExplorer]</Agent_type_destination>
-          <Number_agent_destination>[0]</Number_agent_destination>
-          <Value_reference>12</Value_reference>
-          <Value_pourcentage>12</Value_pourcentage>
-          <Offensif>true</Offensif>
-        </PlanSettings>
-        <ConditionsOutID />
-      </State>
-    </States>
+    <States />
     <Conditions />
   </Brain>
   <Brain>

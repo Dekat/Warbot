@@ -86,6 +86,8 @@ public class DialogueStateSetting extends AbstractDialogue {
 			panel.add(component = getComponentForBoolean(field));
 		} else if (field.getType().equals(Integer.class)) {
 			panel.add(component = getComponentForInteger(field));
+		}else if (field.getType().equals(String.class)) {
+			panel.add(component = getComponentForString(field));
 		} else if (field.getType().equals(ArrayList.class)) {
 			panel.add(component = getComponentForArrayList(field));
 		}else{
@@ -111,6 +113,8 @@ public class DialogueStateSetting extends AbstractDialogue {
 				return getComponentForArrayListOfInteger();
 			else if (b.get(0).getClass().equals(WarAgentType.class))
 				return getComponentForArrayListOfAgentType();
+			else if (b.get(0).getClass().equals(String.class))
+				return getComponentForArrayListOfString();
 			else {
 				System.err.println("Unknown generic type " + b.get(0).getClass() + " of arrayList for attribut in WarPlanSettings");
 			}
@@ -138,6 +142,15 @@ public class DialogueStateSetting extends AbstractDialogue {
 		}
 		return cb;
 	}
+	
+	private JComboBox<String> getComponentForArrayListOfString() {
+		JComboBox<String> cb = new JComboBox<>();
+		for (int i = 0; i < 11; i++) {
+//			JCheckBox cbmi = new JCheckBox(String.valueOf(i));
+			cb.addItem("string_" + i);
+		}
+		return cb;
+	}
 
 	private JTextField getComponentForInteger(Field field) {
 		Integer b = null;
@@ -148,11 +161,29 @@ public class DialogueStateSetting extends AbstractDialogue {
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
+		
+		JTextField cb = new JTextField();
+
+		if (b != null)
+			cb.setText(String.valueOf(b));
+
+		return cb;
+	}
+	
+	private JTextField getComponentForString(Field field) {
+		String b = null;
+		try {
+			b = (String) field.get(planSettings);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
 
 		JTextField cb = new JTextField();
 
 		if (b != null)
-			cb.setText(String.valueOf(b.intValue()));
+			cb.setText(b);
 
 		return cb;
 	}
@@ -215,33 +246,21 @@ public class DialogueStateSetting extends AbstractDialogue {
 			JComponent dynamicComp = mapFieldComp.get(field);
 			try{
 				if(field.getType().equals(Boolean.class)){
-					setFieldForInteger(field, dynamicComp);
+					setFieldForBoolean(field, dynamicComp);
 				}else if(field.getType().equals(Integer.class)){
-					Integer b = Integer.valueOf(((JTextField)dynamicComp).getText());
-					field.set(planSettings, b);
+					setFieldForInteger(field, dynamicComp);
 				}else if(field.getType().equals(String.class)){
-					String b = ((JTextField)dynamicComp).getText();
-					field.set(planSettings, b);
+					setFieldForString(field, dynamicComp);
 				}else if(field.getType().equals(ArrayList.class)){
 					ArrayList<?> array = (ArrayList<?>) field.get(planSettings);
 					if(array != null && array.size() > 0){
 						if(array.get(0).getClass().equals(Integer.class)){
-							Integer integer = (Integer) ((JComboBox<?>)dynamicComp).getSelectedItem();
-							ArrayList<Integer> arrayRes = new ArrayList<>();
-							arrayRes.add(integer);
-							field.set(planSettings, arrayRes);
+							setFieldForArrayOfInteger(field, dynamicComp);
 						}else if(array.get(0).getClass().equals(String.class)){
-							String integer = (String) ((JComboBox<?>)dynamicComp).getSelectedItem();
-							ArrayList<String> arrayRes = new ArrayList<>();
-							arrayRes.add(integer);
-							field.set(planSettings, arrayRes);
+							setFieldForArrayOfString(field, dynamicComp);
 						}else if(array.get(0).getClass().equals(WarAgentType.class)){
-							WarAgentType integer = WarAgentType.valueOf((String) ((JComboBox<?>)dynamicComp).getSelectedItem());
-							ArrayList<WarAgentType> arrayRes = new ArrayList<>();
-							arrayRes.add(integer);
-							field.set(planSettings, arrayRes);
+							setFieldForArrayOfWarAgentType(field, dynamicComp);
 						}
-						
 					}else{
 						System.err.println("Attribut in class WarPlanSettings must be initiate and containe at least one value");
 					}
@@ -253,8 +272,65 @@ public class DialogueStateSetting extends AbstractDialogue {
 		
 	}
 
-	private void setFieldForInteger(Field field, JComponent comp) {
+	private void setFieldForArrayOfWarAgentType(Field field, JComponent comp) {
+		WarAgentType integer = WarAgentType.valueOf((String) ((JComboBox<?>)comp).getSelectedItem());
+		ArrayList<WarAgentType> arrayRes = new ArrayList<>();
+		arrayRes.add(integer);
+		try {
+			field.set(planSettings, arrayRes);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}		
+	}
+
+	private void setFieldForArrayOfString(Field field, JComponent dynamicComp) {
+		String integer = (String) ((JComboBox<?>)dynamicComp).getSelectedItem();
+		ArrayList<String> arrayRes = new ArrayList<>();
+		arrayRes.add(integer);
+		try {
+			field.set(planSettings, arrayRes);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}		
+	}
+
+	private void setFieldForArrayOfInteger(Field field, JComponent comp) {
+		Integer integer = (Integer) ((JComboBox<?>)comp).getSelectedItem();
+		ArrayList<Integer> arrayRes = new ArrayList<>();
+		arrayRes.add(integer);
+		try {
+			field.set(planSettings, arrayRes);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}	
+		
+	}
+
+	private void setFieldForBoolean(Field field, JComponent comp) {
 		Boolean b = ((JCheckBox)comp).isSelected();
+		try {
+			field.set(planSettings, b);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void setFieldForInteger(Field field, JComponent comp) {
+		Integer b;
+		try{
+			b = Integer.valueOf(((JTextField)comp).getText());
+		} catch (NumberFormatException e) {
+			b = null;
+		}
+		try {
+			field.set(planSettings, b);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void setFieldForString(Field field, JComponent comp) {
+		String b = ((JTextField)comp).getText();
 		try {
 			field.set(planSettings, b);
 		} catch (IllegalArgumentException e) {
