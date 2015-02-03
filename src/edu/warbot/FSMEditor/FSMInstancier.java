@@ -19,20 +19,69 @@ import edu.warbot.brains.adapters.WarExplorerAdapter;
 
 public class FSMInstancier {
 	
-	//Remarque : avant d'instancier la FSM il faut reconstruire complement le modele avec les informations dedans
-	//notament reconstruire les conditions de sorties avec les ID de conditions de sorties (dans modeleState)
-
-	ArrayList<WarFSM> fsm = new ArrayList<WarFSM>();
-	Modele modele;
+//	ArrayList<WarFSM> fsm = new ArrayList<WarFSM>();
+	Modele model;
 
 	HashMap<WarAgentType, Class<? extends ControllableWarAgentAdapter>> mapAgentTypeAdapter = new HashMap<>();
 
 	public FSMInstancier(Modele modele) {
-		this.modele = modele;
+		this.model = modele;
 
 		generateHashMap();
 
-		generateAllFSM();
+//		generateAllFSM();
+	}
+
+	//Ici le type generique de FSM est le type de l'adapteur mais comment le mettre comme type generic ???
+	public WarFSM getInstanciateFSM(WarAgentType agentType, ControllableWarAgentAdapter adapter) {
+		
+		WarFSM fsm = new WarFSM<ControllableWarAgentAdapter>();
+		
+		//On recupère le modeleBrain qui correspond à l'agentType 
+		ModeleBrain modelBrain = this.model.getModelBrain(agentType);
+		
+		//On commence par ajouter tous les états à la FSM
+		for (ModeleState modelState : modelBrain.getStates()) {
+			
+			WarEtat<ControllableWarAgentAdapter> warState = getGenerateWarState(modelState, adapter);
+			
+			fsm.addEtat(warState);
+		}
+		
+		return fsm;
+	}
+
+	private WarEtat<ControllableWarAgentAdapter> getGenerateWarState(
+			ModeleState modelState, ControllableWarAgentAdapter adapter) {
+		//Récupère le plan
+		WarPlan<ControllableWarAgentAdapter> warPlan = 
+				getGenerateWarPlan(modelState, adapter);
+		
+		//Crée l'état
+		WarEtat<ControllableWarAgentAdapter> warState = 
+				new WarEtat<ControllableWarAgentAdapter>(modelState.getName(), warPlan);
+				
+		return warState;
+	}
+
+	private WarPlan<ControllableWarAgentAdapter> getGenerateWarPlan(
+			ModeleState modelState, ControllableWarAgentAdapter adapter) {
+		
+		//Instancie le plan
+		WarPlan<ControllableWarAgentAdapter> instanciatePlan = null;
+		try {
+			Constructor<?> constructorPlan = 
+					Class.forName(modelState.getPlanName()).getConstructor(adapter.getClass(), modelState.getWarPlanSettings().getClass());
+			
+			instanciatePlan = (WarPlan<ControllableWarAgentAdapter>) constructorPlan.newInstance(adapter, modelState.getWarPlanSettings());
+		
+		} catch (NoSuchMethodException | SecurityException
+				| ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+			System.err.println("ERRER during instanciate WarPlan with class name " + modelState.getPlanName() + " check name, constructor, classPath, etc...");
+		}
+		
+		return instanciatePlan;
 	}
 
 	private void generateHashMap() {
@@ -40,25 +89,25 @@ public class FSMInstancier {
 				WarExplorerAdapter.class);
 	}
 
-	private void generateAllFSM() {
-		for (ModeleBrain modelBrain : this.modele.getModelsBrains()) {
-			// TODO ici je n'arrive pas à mettre le type générique
-			// Remarque : dans le modele l'agent type est a null pour l'instant
-			// il faut penser à le mettre dans la generation du modele grace au
-			// XML
-			// (le nom du type de l'agent sous formede strign est bien stoqué
-			// dans le XML)
-
-			Class classAdapter = this.mapAgentTypeAdapter.get(modelBrain
-					.getAgentType());
-
-			WarFSM<ControllableWarAgentAdapter> currentFsm = new WarFSM<>();
-			generateFSM(currentFsm, modelBrain);
-
-			fsm.add(currentFsm);
-
-		}
-	}
+//	private void generateAllFSM() {
+//		for (ModeleBrain modelBrain : this.model.getModelsBrains()) {
+//			// TODO ici je n'arrive pas à mettre le type générique
+//			// Remarque : dans le modele l'agent type est a null pour l'instant
+//			// il faut penser à le mettre dans la generation du modele grace au
+//			// XML
+//			// (le nom du type de l'agent sous formede strign est bien stoqué
+//			// dans le XML)
+//
+//			Class classAdapter = this.mapAgentTypeAdapter.get(modelBrain
+//					.getAgentType());
+//
+//			WarFSM<ControllableWarAgentAdapter> currentFsm = new WarFSM<>();
+//			generateFSM(currentFsm, modelBrain);
+//
+//			fsm.add(currentFsm);
+//
+//		}
+//	}
 
 	private void generateFSM(WarFSM<?> fsm, ModeleBrain model) {
 		// Pour chaque état du modele on l'ajoute à la FSM
@@ -121,113 +170,10 @@ public class FSMInstancier {
 		return plan;
 	}
 
-	public ArrayList<WarFSM> getGeneratedFSM() {
-		return fsm;
+	public void instanciateFSM() {
+		// TODO Auto-generated method stub
+		
 	}
 
-	// public void pushConfigurationInJarFile(){
-	//
-	// //Generer les fichiers de configurations
-	// FSMXmlSaver configFile = new FSMXmlSaver();
-	// configFile.saveFSM(this.modele, "FSMconfiguration.xml");
-	//
-	// //Ouvre le fichier Jar
-	// try {
-	//
-	// FileInputStream is = new FileInputStream("FSMconfiguration.xml");
-	// // jarFile = new JarFile(this.fileName);
-	//
-	// jarStream = new JarOutputStream(
-	// new FileOutputStream(this.fileName));
-	//
-	// byte buffer[] = new byte[1000];
-	// is.read(buffer);
-	//
-	// JarEntry entry = new JarEntry("FSMconfiguration.xml");
-	// jarStream.putNextEntry(entry);
-	// jarStream.write(buffer);
-	// jarStream.closeEntry();
-	//
-	// jarStream.close();
-	//
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	//
-	// }
-
-	// public void generateJarFile(){
-	//
-	// // Crée le manifest
-	// manifest = new Manifest();
-	// manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION,
-	// "1.0");
-	//
-	// // Ouvre le fichier jar
-	// try {
-	// jarStream = new JarOutputStream(
-	// new FileOutputStream(this.fileName), manifest);
-	// } catch (FileNotFoundException e) {
-	// e.printStackTrace();
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	//
-	// /**
-	// * récupere la liste des fichiers class necessaire à la FSM (les états,
-	// * plan, conditions...)
-	// */
-	// classForJar = new ArrayList<Class>();
-	//
-	// // Récupère les plans
-	// for (ModeleBrain currentBrain : this.modele.getModeleBrains()) {
-	// for (ModeleState currentState : currentBrain.getStates()) {
-	// try {
-	// Class<?> c = Class.forName(currentState.getPlanName());
-	// // c.get
-	// addClass(c);
-	// addClass(c.getSuperclass());
-	//
-	// } catch (ClassNotFoundException e1) {
-	// e1.printStackTrace();
-	// }
-	// }
-	// }
-	//
-	// // Récupère les condition
-	// for (ModeleBrain currentBrain : this.modele.getModeleBrains()) {
-	// for (ModeleCondition currentCondition : currentBrain
-	// .getConditions()) {
-	// try {
-	// Class<?> c = Class.forName(currentCondition.getType());
-	//
-	// addClass(c);
-	// addClass(c.getSuperclass());
-	//
-	// } catch (ClassNotFoundException e1) {
-	// e1.printStackTrace();
-	// }
-	// }
-	// }
-	//
-	// // Ajoute toutes les classes dans le jar
-	// for (Class<?> c : classForJar) {
-	// try {
-	// JarEntry entry = new JarEntry(c.getName());
-	// jarStream.putNextEntry(new JarEntry(c.getName()));
-	// } catch (IOException e) {
-	// System.err.println("ERRER add " + c.getName()
-	// + " class in jarFile");
-	// e.printStackTrace();
-	// }
-	// }
-	//
-	// // Ferme le fichier jar
-	// try {
-	// jarStream.close();
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	// }
 
 }

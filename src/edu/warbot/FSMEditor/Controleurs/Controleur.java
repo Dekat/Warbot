@@ -17,7 +17,11 @@ import edu.warbot.FSMEditor.Modeles.ModeleCondition;
 import edu.warbot.FSMEditor.Modeles.ModeleState;
 import edu.warbot.FSMEditor.Views.View;
 import edu.warbot.FSMEditor.Views.ViewBrain;
+import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarExplorerAdapter;
+import edu.warbot.game.Team;
 
 public class Controleur {
 	public Modele modele;
@@ -90,21 +94,25 @@ public class Controleur {
 		FSMXmlReader reader = new FSMXmlReader(FSMXmlReader.xmlConfigurationFilename);
 		Modele modeleRead = reader.getGeneratedFSMModel();
 		
-		//Affichage des informations pour vérifier la validité (ici avec des id)
-		printModelInformations(modeleRead);
+//		printModelInformations(modeleRead);
 		
 		FSMModelRebuilder fsmModRebuilder = new FSMModelRebuilder(modeleRead);
 		fsmModRebuilder.rebuildModel();
 		Modele modelRebuild = fsmModRebuilder.getRebuildModel();
 		
+		printModelInformations(modelRebuild);
+		
 		System.out.println("Configuration file imported successfull");
 		
-		FSMInstancier fsmSaver = new FSMInstancier(modeleRead);
-		ArrayList<WarFSM> allFsm = fsmSaver.getGeneratedFSM();
+		FSMInstancier fsmInstancier = new FSMInstancier(modeleRead);
+		fsmInstancier.instanciateFSM();
+		//Crée un agent pour tester
+		WarBrain<WarExplorerAdapter> brain = null;
+		WarExplorerAdapter explorerAdapter = new WarExplorerAdapter(new WarExplorer(new Team("Team_debug_FSM"), brain));
 		
-		for (WarFSM fsm : allFsm) {
-			fsm.initFSM();
-		}
+		WarFSM fsm = fsmInstancier.getInstanciateFSM(WarAgentType.WarExplorer, explorerAdapter);
+		
+		fsm.initFSM();
 		
 		System.out.println("FSM generated successfull");
 		

@@ -14,10 +14,7 @@
           <Offensif>false</Offensif>
           <Debug_String>debug_sring</Debug_String>
         </PlanSettings>
-        <ConditionsOutID>
-          <ConditionOutID>Condition1</ConditionOutID>
-          <ConditionOutID>Condition2</ConditionOutID>
-        </ConditionsOutID>
+        <ConditionsOutID />
       </State>
       <State>
         <Name>State2</Name>
@@ -45,44 +42,8 @@
         </PlanSettings>
         <ConditionsOutID />
       </State>
-      <State>
-        <Name>aze</Name>
-        <Plan>edu.warbot.FSM.plan.WarPlanBeSecure</Plan>
-        <PlanSettings>
-          <Agent_type_destination>[WarExplorer]</Agent_type_destination>
-          <Number_agent_destination>[0]</Number_agent_destination>
-          <Value_reference>null</Value_reference>
-          <Value_pourcentage>null</Value_pourcentage>
-          <Offensif>false</Offensif>
-          <Debug_String>debug_sring</Debug_String>
-        </PlanSettings>
-        <ConditionsOutID />
-      </State>
     </States>
-    <Conditions>
-      <Condition>
-        <Name>Condition1</Name>
-        <Type>edu.warbot.FSM.condition.WarConditionAttributCheck</Type>
-        <StateOutName>State2</StateOutName>
-        <AttributCheck>
-          <Name />
-          <operateur />
-          <Value />
-          <Pourcentage>false</Pourcentage>
-        </AttributCheck>
-      </Condition>
-      <Condition>
-        <Name>Condition2</Name>
-        <Type>edu.warbot.FSM.condition.WarConditionAttributCheck</Type>
-        <StateOutName>State3</StateOutName>
-        <AttributCheck>
-          <Name />
-          <operateur />
-          <Value />
-          <Pourcentage>false</Pourcentage>
-        </AttributCheck>
-      </Condition>
-    </Conditions>
+    <Conditions />
   </Brain>
   <Brain>
     <WarAgentType>WarBase</WarAgentType>

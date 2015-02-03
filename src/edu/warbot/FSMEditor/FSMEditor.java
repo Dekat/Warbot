@@ -29,15 +29,15 @@ public class FSMEditor {
 		ModeleState state2 = new ModeleState("State2", Configuration.PLAN[0], new WarPlanSettings());
 		ModeleState state3 = new ModeleState("State3", Configuration.PLAN[0], new WarPlanSettings());
 		
-		ModeleCondition cond = new ModeleCondition("Condition1", Configuration.CONDITION[1], state1, state2);
-		ModeleCondition cond2 = new ModeleCondition("Condition2", Configuration.CONDITION[1], state1, state3);
+//		ModeleCondition cond = new ModeleCondition("Condition1", Configuration.CONDITION[1], state1, state2);
+//		ModeleCondition cond2 = new ModeleCondition("Condition2", Configuration.CONDITION[1], state1, state3);
 		
 		cb.addState(state1);
 		cb.addState(state2);
 		cb.addState(state3);
 		
-		cb.addCondition(cond);
-		cb.addCondition(cond2);
+//		cb.addCondition(cond);
+//		cb.addCondition(cond2);
 		
 	}
 }
