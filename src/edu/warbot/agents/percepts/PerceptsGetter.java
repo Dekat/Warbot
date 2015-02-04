@@ -6,6 +6,7 @@ import java.util.List;
 
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.game.MotherNatureTeam;
 import edu.warbot.game.WarGame;
 
 public abstract class PerceptsGetter {
@@ -13,15 +14,19 @@ public abstract class PerceptsGetter {
 	private ControllableWarAgent _agent;
 	private WarGame game;
 
-	boolean _arePerceptsAlreadyCatchedThisTick;
-
-	private ArrayList<WarPercept> _enemies;
-	private ArrayList<WarPercept> _allies;
-	private ArrayList<WarPercept> _resources;
+    private boolean perceptsAlreadyGetThisTick;
+    private ArrayList<WarPercept> allPercepts;
+	private ArrayList<WarPercept> alliesPercepts;
+    private ArrayList<WarPercept> enemiesPercepts;
+    private ArrayList<WarPercept> resourcesPercepts;
 
 	public PerceptsGetter(ControllableWarAgent agent, WarGame game) {
 		_agent = agent;
 		this.game = game;
+        allPercepts = new ArrayList<WarPercept>();
+        alliesPercepts = new ArrayList<WarPercept>();
+        enemiesPercepts = new ArrayList<WarPercept>();
+        resourcesPercepts = new ArrayList<WarPercept>();
 	}
 
 	protected ControllableWarAgent getAgent() {
@@ -32,70 +37,73 @@ public abstract class PerceptsGetter {
 		return game;
 	}
 
-	public abstract ArrayList<WarPercept> getPercepts();
+	public ArrayList<WarPercept> getPercepts() {
+        if (! perceptsAlreadyGetThisTick) {
+            allPercepts = getAgentPercepts();
+            for(WarPercept percept : allPercepts) {
+                if(getAgent().isEnemy(percept))
+                    enemiesPercepts.add(percept);
+                else {
+                    if (percept.getTeamName().equals(MotherNatureTeam.NAME))
+                        resourcesPercepts.add(percept);
+                    else
+                        alliesPercepts.add(percept);
+                }
+            }
 
-	public ArrayList<WarPercept> getAgentsPercepts(boolean ally) {
-		if(! _arePerceptsAlreadyCatchedThisTick)
-			this.getAllPerceptsAndSortThem();
+            perceptsAlreadyGetThisTick = true;
+        }
+        Collections.sort(alliesPercepts);
+        Collections.sort(enemiesPercepts);
+        Collections.sort(resourcesPercepts);
+        return allPercepts;
+    }
+
+    protected abstract ArrayList<WarPercept> getAgentPercepts();
+
+	public ArrayList<WarPercept> getWarAgentsPercepts(boolean ally) {
+		if(! perceptsAlreadyGetThisTick)
+			getPercepts();
 
 		if(ally)
-			return this._allies;
+			return alliesPercepts;
 		else
-			return this._enemies;
+			return enemiesPercepts;
 	}
 
 	public ArrayList<WarPercept> getResourcesPercepts() {
-		if(! _arePerceptsAlreadyCatchedThisTick)
-			this.getAllPerceptsAndSortThem();
+        if(! perceptsAlreadyGetThisTick)
+            getPercepts();
 
-		return this._resources;
+		return resourcesPercepts;
 	}
 
 	public ArrayList<WarPercept> getPerceptsByType(WarAgentType agentType, boolean ally){
-		if(!this._arePerceptsAlreadyCatchedThisTick)
-			this.getAllPerceptsAndSortThem();
+        if(! perceptsAlreadyGetThisTick)
+            getPercepts();
 
-		ArrayList<WarPercept> perceptRes = new ArrayList<>();
-		ArrayList<WarPercept> listePerceptToParcours;
+		ArrayList<WarPercept> perceptsToReturn = new ArrayList<>();
+		ArrayList<WarPercept> perceptsToLoop;
 
 		if(ally)
-			listePerceptToParcours = this._allies;
+			perceptsToLoop = alliesPercepts;
 		else
-			listePerceptToParcours = this._enemies;
+			perceptsToLoop = enemiesPercepts;
 
-		for (WarPercept warPercept : listePerceptToParcours) {
+		for (WarPercept warPercept : perceptsToLoop) {
 			if(warPercept.getType().equals(agentType)){
-				perceptRes.add(warPercept);
+				perceptsToReturn.add(warPercept);
 			}
 		}
 
-		return perceptRes;
+		return perceptsToReturn;
 	}
 
-	private void getAllPerceptsAndSortThem() {
-		this._allies = new ArrayList<>();
-		this._enemies = new ArrayList<>();
-		this._resources = new ArrayList<>();
-
-		for (WarPercept perceptCourant : this.getPercepts()) {
-			if(perceptCourant.getTeamName().equals(game.getMotherNatureTeam().getName()))
-				this._resources.add(perceptCourant);
-			else if(perceptCourant.getTeamName().equals(_agent.getTeam().getName()))
-				this._allies.add(perceptCourant);
-			else
-				this._enemies.add(perceptCourant);
-		}
-
-		//Tri les percepts
-		Collections.sort(((List<WarPercept>)this._enemies));
-		Collections.sort(((List<WarPercept>)this._allies));
-		Collections.sort(((List<WarPercept>)this._resources));
-		
-		this._arePerceptsAlreadyCatchedThisTick = true;
-	}
-
-	public void setPerceptsAlreadyInit(boolean b){
-		this._arePerceptsAlreadyCatchedThisTick = b;
-	}
-
+    public void setPerceptsOutdated() {
+        perceptsAlreadyGetThisTick = false;
+        allPercepts.clear();
+        alliesPercepts.clear();
+        enemiesPercepts.clear();
+        resourcesPercepts.clear();
+    }
 }

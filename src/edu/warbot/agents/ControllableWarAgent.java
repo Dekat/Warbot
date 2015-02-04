@@ -64,7 +64,7 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 	@Override
 	protected void doOnEachTick() {
 		super.doOnEachTick();
-		_perceptsGetter.setPerceptsAlreadyInit(false); // On indique au PerceptGetter qu'un nouveau tick est passé
+		_perceptsGetter.setPerceptsOutdated(); // On indique au PerceptGetter qu'un nouveau tick est passé
 	}
 
 	@Override
@@ -250,7 +250,7 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 	}
 
 	public ArrayList<WarPercept> getPercepts(boolean ally) {
-		return _perceptsGetter.getAgentsPercepts(ally);
+		return _perceptsGetter.getWarAgentsPercepts(ally);
 	}
 	
 	@Override
