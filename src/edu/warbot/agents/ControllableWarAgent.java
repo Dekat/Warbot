@@ -36,6 +36,7 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 	private PerceptsGetter _perceptsGetter;
 	private String _debugString;
 	private Color _debugStringColor;
+    private ArrayList<WarMessage> thisTickMessages;
 
 	public ControllableWarAgent(String firstActionToDo, Team team, double hitboxRadius, WarBrain<? extends ControllableWarAgentAdapter> brain, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize) {
 		super(firstActionToDo, team, hitboxRadius);
@@ -64,7 +65,8 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 	@Override
 	protected void doOnEachTick() {
 		super.doOnEachTick();
-		_perceptsGetter.setPerceptsAlreadyInit(false); // On indique au PerceptGetter qu'un nouveau tick est passé
+		_perceptsGetter.setPerceptsOutdated(); // On indique au PerceptGetter qu'un nouveau tick est passé
+        thisTickMessages = null;
 	}
 
 	@Override
@@ -153,17 +155,19 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 
 	@Override
 	public ArrayList<WarMessage> getMessages() {
-		ArrayList<WarMessage> messages = new ArrayList<>();
-		Message msg;
-		while ((msg = nextMessage()) != null) {
-			if (msg instanceof WarKernelMessage) {
-				WarMessage warMsg = new WarMessage((WarKernelMessage) msg, this);
-				logger.log(Level.FINER, this.toString() + " received message from " + warMsg.getSenderID());
-				logger.log(Level.FINEST, "This message is : " + warMsg.toString());
-				messages.add(warMsg);
-			}
-		}
-		return messages;
+        if(thisTickMessages == null) {
+            thisTickMessages = new ArrayList<>();
+            Message msg;
+            while ((msg = nextMessage()) != null) {
+                if (msg instanceof WarKernelMessage) {
+                    WarMessage warMsg = new WarMessage((WarKernelMessage) msg, this);
+                    logger.log(Level.FINER, this.toString() + " received message from " + warMsg.getSenderID());
+                    logger.log(Level.FINEST, "This message is : " + warMsg.toString());
+                    thisTickMessages.add(warMsg);
+                }
+            }
+        }
+		return thisTickMessages;
 	}
 
 	public double getAngleOfView() {
@@ -250,7 +254,7 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 	}
 
 	public ArrayList<WarPercept> getPercepts(boolean ally) {
-		return _perceptsGetter.getAgentsPercepts(ally);
+		return _perceptsGetter.getWarAgentsPercepts(ally);
 	}
 	
 	@Override

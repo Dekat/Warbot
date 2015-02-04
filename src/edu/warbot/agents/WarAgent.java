@@ -18,6 +18,8 @@ import edu.warbot.tools.WarMathTools;
 
 public abstract class WarAgent extends Turtle implements CommonCapacities {
 
+    private static final int MAP_MARGINS = 2;
+
 	private double _hitboxRadius;
 	private Team _team;
 	private int _dyingStep;
@@ -110,8 +112,8 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 			nextPos.add(new CoordPolar(((Movable) this).getSpeed(), getHeading()).toCartesian());
 
 		Dimension mapSize = getTeam().getGame().getMap().getSize();
-		return ((nextPos.getX() - getHitboxRadius()) < 0) || ((nextPos.getX() + getHitboxRadius()) > mapSize.width) ||
-				((nextPos.getY() - getHitboxRadius()) < 0) || ((nextPos.getY() + getHitboxRadius()) > mapSize.height);
+		return ((nextPos.getX() - getHitboxRadius() - MAP_MARGINS) < 0) || ((nextPos.getX() + getHitboxRadius() + MAP_MARGINS) > mapSize.width) ||
+				((nextPos.getY() - getHitboxRadius() - MAP_MARGINS) < 0) || ((nextPos.getY() + getHitboxRadius() + MAP_MARGINS) > mapSize.height);
 	}
 
 	protected boolean isGoingToBeOnAnOtherAgent() {
@@ -153,14 +155,14 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	public void moveOutOfCollisionZone() {
 		// Test of Collision with map
 		Dimension mapSize = getTeam().getGame().getMap().getSize();
-		if ((getX() - getHitboxRadius()) < 0)
-			setPosition(getHitboxRadius() + 1, getY());
-		else if ((getX() + getHitboxRadius()) > mapSize.width)
-			setPosition(mapSize.width - getHitboxRadius() - 1, getY());
-		if ((getY() - getHitboxRadius()) < 0)
-			setPosition(getX(), getHitboxRadius() + 1);
-		else if ((getY() + getHitboxRadius()) > mapSize.height)
-			setPosition(getX(), mapSize.height - getHitboxRadius() - 1);
+		if ((getX() - getHitboxRadius() - MAP_MARGINS) < 0) // Si l'agent est trop à l'ouest de la carte
+			setPosition(getHitboxRadius() + MAP_MARGINS, getY());
+		else if ((getX() + getHitboxRadius() + MAP_MARGINS) > mapSize.width)
+			setPosition(mapSize.width - getHitboxRadius() - MAP_MARGINS, getY());
+		if ((getY() - getHitboxRadius() - MAP_MARGINS) < 0)
+			setPosition(getX(), getHitboxRadius() + MAP_MARGINS);
+		else if ((getY() + getHitboxRadius() + MAP_MARGINS) > mapSize.height)
+			setPosition(getX(), mapSize.height - getHitboxRadius() - MAP_MARGINS);
 		
 		for(WarAgent a : getTeam().getGame().getAllAgentsInRadiusOf(this, getHitboxRadius())) {
 			if (a.getID() != getID() && a instanceof ControllableWarAgent) {

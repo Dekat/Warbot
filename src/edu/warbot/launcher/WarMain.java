@@ -146,8 +146,9 @@ public class WarMain implements Observer {
 						// On a maintenant tous les fichiers dans un tableau et le fichier de configuration a été analysé
 
 						// On récupère le logo
-						JarEntry logoEntry = allJarEntries.get(analXML.getIconeName());
-						ImageIcon teamLogo = new ImageIcon(WarIOTools.toByteArray(jarCurrentFile.getInputStream(logoEntry)));
+                        JarEntry logoEntry = allJarEntries.get(analXML.getIconeName());
+                        ImageIcon teamLogo = new ImageIcon(WarIOTools.toByteArray(jarCurrentFile.getInputStream(logoEntry)));
+                        // TODO set general logo if no image found
 						// On change sa taille
 						Image tmp = teamLogo.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 						teamLogo = new ImageIcon(tmp);
@@ -163,16 +164,16 @@ public class WarMain implements Observer {
 						// On recherche les classes de type BrainController
 						// Pour cela, on utilise un URLClassLoader
 						String urlName = currentFile.getCanonicalPath();
-						URLClassLoader classLoader = new URLClassLoader(new URL [] { new URL("jar:file:/" + urlName + "!/") });
-
+						URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new URL("jar:file:/" + urlName + "!/")});
+                        System.out.println("jar:file:/" + urlName + "!/");
                         // On parcours chaque nom de classe, puis on les charge
 						HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();
 
 						for (String agentName : brainControllersClassesName.keySet()) {
 							JarEntry classEntry = allJarEntries.get(brainControllersClassesName.get(agentName));
-							currentTeam.addBrainControllerClassForAgent(agentName,
-									(Class<? extends WarBrain>) classLoader.loadClass(classEntry.getName().replaceAll(".class", "").replaceAll("/", ".")));
-                        }
+                            currentTeam.addBrainControllerClassForAgent(agentName,
+									(Class<? extends WarBrain>) classLoader.loadClass(classEntry.getName().replace(".class", "").replace("/", ".")));
+						}
 
 						// On ferme le loader
 						classLoader.close();

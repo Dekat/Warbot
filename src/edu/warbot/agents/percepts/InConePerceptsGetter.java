@@ -13,13 +13,11 @@ public class InConePerceptsGetter extends PerceptsGetter {
 	}
 
 	@Override
-	public ArrayList<WarPercept> getPercepts() {
-		ArrayList<WarPercept> toReturn = new ArrayList<>();
-		
+	public ArrayList<WarPercept> getAgentPercepts() {
+        ArrayList<WarPercept> percepts = new ArrayList<WarPercept>();
+
 		for (WarAgent agentToTestVisible : getGame().getAllAgentsInRadiusOf(getAgent(), getAgent().getDistanceOfView())) {
-			
 			if (agentToTestVisible.getID() != getAgent().getID()) {
-				
 				double a, b, c;
 				double halfAngleOfView = (getAgent().getAngleOfView() / 2.) + agentToTestVisible.getHitboxRadius();
 
@@ -37,10 +35,10 @@ public class InConePerceptsGetter extends PerceptsGetter {
 				}
 					
 				if (c >= b && b >= a)
-					toReturn.add(new WarPercept(getAgent(), agentToTestVisible));
+                    percepts.add(new WarPercept(getAgent(), agentToTestVisible));
 			}
 		}
 		
-		return toReturn;
+		return percepts;
 	}
 }

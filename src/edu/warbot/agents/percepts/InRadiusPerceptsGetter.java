@@ -13,13 +13,11 @@ public class InRadiusPerceptsGetter extends PerceptsGetter {
 	}
 	
 	@Override
-	public ArrayList<WarPercept> getPercepts() {
-		ArrayList<WarPercept> percepts = new ArrayList<>();
-
+	public ArrayList<WarPercept> getAgentPercepts() {
+        ArrayList<WarPercept> percepts = new ArrayList<WarPercept>();
 		for (WarAgent a : getGame().getAllAgentsInRadiusOf(getAgent(), getAgent().getDistanceOfView())) {
-			percepts.add(new WarPercept(getAgent(), a));
+            percepts.add(new WarPercept(getAgent(), a));
 		}
-
 		return percepts;
 	}
 
