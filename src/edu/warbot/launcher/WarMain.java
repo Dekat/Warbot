@@ -25,6 +25,7 @@ import edu.warbot.game.WarGame;
 import edu.warbot.gui.launcher.LoadingDialog;
 import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.tools.WarIOTools;
+import javassist.*;
 
 public class WarMain implements Observer {
 	public static final String TEAMS_DIRECTORY_NAME = "teams";
@@ -154,7 +155,7 @@ public class WarMain implements Observer {
 						// On récupère le son
 						// TODO ajouter le son aux équipes
 
-						// On cré l'équipe
+						// On créé l'équipe
 						currentTeam = new Team(analXML.getTeamName());
 						currentTeam.setLogo(teamLogo);
 						currentTeam.setDescription(analXML.getTeamDescription().trim());
@@ -163,15 +164,15 @@ public class WarMain implements Observer {
 						// Pour cela, on utilise un URLClassLoader
 						String urlName = currentFile.getCanonicalPath();
 						URLClassLoader classLoader = new URLClassLoader(new URL [] { new URL("jar:file:/" + urlName + "!/") });
-						// On parcours chaque nom de classe, puis on les charge
+
+                        // On parcours chaque nom de classe, puis on les charge
 						HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();
 
 						for (String agentName : brainControllersClassesName.keySet()) {
 							JarEntry classEntry = allJarEntries.get(brainControllersClassesName.get(agentName));
 							currentTeam.addBrainControllerClassForAgent(agentName,
-									(Class<? extends WarBrain>) Class.forName(classEntry.getName().replaceAll(".class", "").replaceAll("/", "."),
-											true, classLoader));
-						}
+									(Class<? extends WarBrain>) classLoader.loadClass(classEntry.getName().replaceAll(".class", "").replaceAll("/", ".")));
+                        }
 
 						// On ferme le loader
 						classLoader.close();
@@ -198,7 +199,7 @@ public class WarMain implements Observer {
 				System.err.println("Lecture des fichiers JAR : Lecture de fichier");
 				e.printStackTrace();
 			}
-		}
+        }
 		return loadedTeams;
 	}
 	

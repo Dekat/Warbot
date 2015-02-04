@@ -1,5 +1,6 @@
 package edu.warbot.brains;
 
+
 public abstract class WarBrain<Adapter extends ControllableWarAgentAdapter> {
 
 	protected Adapter adapter;

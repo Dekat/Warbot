@@ -1,8 +1,11 @@
 package edu.warbot.game;
 
 import java.awt.Color;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.logging.Level;
@@ -14,11 +17,17 @@ import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
 import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.brains.WarAgentAdapter;
 import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.adapters.WarExplorerAdapter;
 import edu.warbot.brains.capacities.Creator;
 import edu.warbot.communications.WarKernelMessage;
 import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.tools.WarMathTools;
+import javassist.CannotCompileException;
+import javassist.CtClass;
+import javassist.NotFoundException;
+import teams.engineer.WarEngineerBrainController;
 
 public class Team extends Observable {
 	
@@ -29,7 +38,7 @@ public class Team extends Observable {
 	private ImageIcon _teamLogo;
 	private Color _color;
 	private String _description;
-	private HashMap<String, Class<? extends WarBrain>> _brainControllers; 
+	private HashMap<String, Class<? extends WarBrain>> _brainControllers;
 	private ArrayList<ControllableWarAgent> _controllableAgents;
 	private ArrayList<WarProjectile> _projectiles;
 	private HashMap<WarAgentType, Integer> _nbUnitsLeft;
@@ -267,15 +276,15 @@ public class Team extends Observable {
 		this.game = game;
 	}
 	
-	public ControllableWarAgent instantiateNewControllableWarAgent(String agentName) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
+	public ControllableWarAgent instantiateNewControllableWarAgent(String agentName) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException, NotFoundException, CannotCompileException {
 		String agentToCreateClassName = WarBase.class.getPackage().getName() + "." + agentName;
-		Class<? extends WarBrain> brainControllerClass = getBrainControllerOfAgent(agentName);
-		ControllableWarAgent a = (ControllableWarAgent) Class.forName(agentToCreateClassName)
-				.getConstructor(Team.class, Class.forName(brainControllerClass.getSuperclass().getName()))
+        Class<? extends WarBrain> brainControllerClass = getBrainControllerOfAgent(agentName);
+        ControllableWarAgent a = (ControllableWarAgent) Class.forName(agentToCreateClassName)
+				.getConstructor(Team.class, brainControllerClass.getSuperclass())
 				.newInstance(this, brainControllerClass.newInstance());
 		
 		a.setLogLevel(getGame().getSettings().getLogLevel());
-		
+
 		return a;
 	}
 	
