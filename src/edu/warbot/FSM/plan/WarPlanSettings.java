@@ -4,14 +4,12 @@ import edu.warbot.agents.enums.WarAgentType;
 
 /**
  * Les attributs doivent etre public !
- * @author Olivier
  * 
  * ATTENTION : les attributs peuvent etre seulement de types : Boolean, Ineteger, String
  * Integer[], WarAgentType[], String[] (plus à venir)
-
  */
 public class WarPlanSettings {
-
+	
 	public WarAgentType[] Agent_type_destination;
 
 	public Integer[] Number_agent_destination;

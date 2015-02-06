@@ -86,73 +86,21 @@ public class DialogueStateSetting extends AbstractDialogue {
 			panel.add(component = getComponentForBoolean(field));
 		} else if (field.getType().equals(Integer.class)) {
 			panel.add(component = getComponentForInteger(field));
-		}else if (field.getType().equals(Integer[].class)) {
-				panel.add(component = getComponentForIntegerTab(field));
 		}else if (field.getType().equals(String.class)) {
 			panel.add(component = getComponentForString(field));
-		} else if (field.getType().equals(ArrayList.class)) {
-			panel.add(component = getComponentForArrayList(field));
+		}else if (field.getType().equals(Integer[].class)) {
+			panel.add(component = getComponentForIntegerTab(field));
+		}else if (field.getType().equals(String[].class)) {
+			panel.add(component = getComponentForStringTab(field));
+		}else if (field.getType().equals(WarAgentType[].class)) {
+			panel.add(component = getComponentForAgentTypeTab(field));
 		}else{
 			panel.add(component = new JLabel("<unknow type>"));
-			System.err.println("The type " + field.getType() + " is not available for de the generated dynamic interface");
+			System.err.println("The type " + field.getName() + " : " + field.getType() + " is not available for de the generated dynamic interface");
 		}
 
 		mapFieldComp.put(field, component);
 		return panel;
-	}
-
-	private JComboBox<?> getComponentForArrayList(Field field) {
-		ArrayList<?> b = null;
-		try {
-			b = (ArrayList<?>) field.get(planSettings);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-
-		if (b != null && b.size() > 0) {
-			if (b.get(0).getClass().equals(Integer.class))
-				return getComponentForArrayListOfInteger();
-			else if (b.get(0).getClass().equals(WarAgentType.class))
-				return getComponentForArrayListOfAgentType();
-			else if (b.get(0).getClass().equals(String.class))
-				return getComponentForArrayListOfString();
-			else {
-				System.err.println("Unknown generic type " + b.get(0).getClass() + " of arrayList for attribut in WarPlanSettings");
-			}
-		} else {
-			System.err.println("Attribut in class WarPlanSettings must be initiate and containe at least one value");
-		}
-		return null;
-	}
-
-	private JComboBox<String> getComponentForArrayListOfAgentType() {
-		JComboBox<String> cb = new JComboBox<>();
-
-		for (WarAgentType at : WarAgentType.values()) {
-//			JCheckBox cbmi = new JCheckBox(at.name());
-			cb.addItem(at.name());
-		}
-		return cb;
-	}
-
-	private JComboBox<Integer> getComponentForArrayListOfInteger() {
-		JComboBox<Integer> cb = new JComboBox<>();
-		for (int i = 0; i < 11; i++) {
-//			JCheckBox cbmi = new JCheckBox(String.valueOf(i));
-			cb.addItem(i);
-		}
-		return cb;
-	}
-	
-	private JComboBox<String> getComponentForArrayListOfString() {
-		JComboBox<String> cb = new JComboBox<>();
-		for (int i = 0; i < 11; i++) {
-//			JCheckBox cbmi = new JCheckBox(String.valueOf(i));
-			cb.addItem("string_" + i);
-		}
-		return cb;
 	}
 
 	private JTextField getComponentForInteger(Field field) {
@@ -178,6 +126,26 @@ public class DialogueStateSetting extends AbstractDialogue {
 		for (int i = 0; i < 11; i++) {
 //			JCheckBox cbmi = new JCheckBox(String.valueOf(i));
 			cb.addItem(i);
+		}
+		return cb;
+	}
+	
+	//Ce composant pourra peut etre plutot etre simplment 
+	//un textField dans lequel on demande de séparer les valeurs par des virgules
+	private JComboBox<String> getComponentForStringTab(Field field) {
+		JComboBox<String> cb = new JComboBox<>();
+		for (int i = 0; i < 11; i++) {
+//			JCheckBox cbmi = new JCheckBox(String.valueOf(i));
+			cb.addItem(String.valueOf(i));
+		}
+		return cb;
+	}
+	
+	private JComboBox<String> getComponentForAgentTypeTab(Field field) {
+		JComboBox<String> cb = new JComboBox<>();
+		for (WarAgentType at : WarAgentType.values()) {
+//			JCheckBox cbmi = new JCheckBox(at.name());
+			cb.addItem(at.name());
 		}
 		return cb;
 	}
@@ -256,67 +224,21 @@ public class DialogueStateSetting extends AbstractDialogue {
 	private void saveSettings() {
 		for (Field field : mapFieldComp.keySet()) {
 			JComponent dynamicComp = mapFieldComp.get(field);
-			try{
-				if(field.getType().equals(Boolean.class)){
-					setFieldForBoolean(field, dynamicComp);
-				}else if(field.getType().equals(Integer.class)){
-					setFieldForInteger(field, dynamicComp);
-				}else if(field.getType().equals(Integer[].class)){
-					setFieldForIntegerTab(field, dynamicComp);
-				}else if(field.getType().equals(String.class)){
-					setFieldForString(field, dynamicComp);
-				}else if(field.getType().equals(ArrayList.class)){
-					ArrayList<?> array = (ArrayList<?>) field.get(planSettings);
-					if(array != null && array.size() > 0){
-						if(array.get(0).getClass().equals(Integer.class)){
-							setFieldForArrayOfInteger(field, dynamicComp);
-						}else if(array.get(0).getClass().equals(String.class)){
-							setFieldForArrayOfString(field, dynamicComp);
-						}else if(array.get(0).getClass().equals(WarAgentType.class)){
-							setFieldForArrayOfWarAgentType(field, dynamicComp);
-						}
-					}else{
-						System.err.println("Attribut in class WarPlanSettings must be initiate and containe at least one value");
-					}
-				}
-			}catch(IllegalAccessException e){
-				e.printStackTrace();
-			}
+			if(field.getType().equals(Boolean.class)){
+				setFieldForBoolean(field, dynamicComp);
+			}else if(field.getType().equals(Integer.class)){
+				setFieldForInteger(field, dynamicComp);
+			}else if(field.getType().equals(String.class)){
+				setFieldForString(field, dynamicComp);
+			}else if(field.getType().equals(Integer[].class)){
+				setFieldForIntegerTab(field, dynamicComp);
+			}else if(field.getType().equals(String[].class)){
+				setFieldForStringTab(field, dynamicComp);
+			}else if(field.getType().equals(WarAgentType[].class)){
+				setFieldForAgentTypeTab(field, dynamicComp);
+			}else
+				System.err.println("Field " + field.getName() + " : " + field.getType() + " is not availlable for save dynamic interface");
 		}
-		
-	}
-
-	private void setFieldForArrayOfWarAgentType(Field field, JComponent comp) {
-		WarAgentType integer = WarAgentType.valueOf((String) ((JComboBox<?>)comp).getSelectedItem());
-		ArrayList<WarAgentType> arrayRes = new ArrayList<>();
-		arrayRes.add(integer);
-		try {
-			field.set(planSettings, arrayRes);
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-		}		
-	}
-
-	private void setFieldForArrayOfString(Field field, JComponent dynamicComp) {
-		String integer = (String) ((JComboBox<?>)dynamicComp).getSelectedItem();
-		ArrayList<String> arrayRes = new ArrayList<>();
-		arrayRes.add(integer);
-		try {
-			field.set(planSettings, arrayRes);
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-		}		
-	}
-
-	private void setFieldForArrayOfInteger(Field field, JComponent comp) {
-		Integer integer = (Integer) ((JComboBox<?>)comp).getSelectedItem();
-		ArrayList<Integer> arrayRes = new ArrayList<>();
-		arrayRes.add(integer);
-		try {
-			field.set(planSettings, arrayRes);
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-		}	
 		
 	}
 
@@ -348,6 +270,36 @@ public class DialogueStateSetting extends AbstractDialogue {
 		Integer b[] = new Integer[1];
 		try{
 			b[0] = (Integer) ((JComboBox<Integer>)comp).getSelectedItem();
+		} catch (NumberFormatException e) {
+			b = null;
+		}
+		try {
+			field.set(planSettings, b);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void setFieldForStringTab(Field field, JComponent comp) {
+		//TODO à modifié si on veut sauvegarder plusieurs valeurs
+		String b[] = new String[1];
+		try{
+			b[0] = (String) ((JComboBox<Integer>)comp).getSelectedItem();
+		} catch (NumberFormatException e) {
+			b = null;
+		}
+		try {
+			field.set(planSettings, b);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void setFieldForAgentTypeTab(Field field, JComponent comp) {
+		//TODO à modifié si on veut sauvegarder plusieurs valeurs
+		WarAgentType b[] = new WarAgentType[1];
+		try{
+			b[0] = WarAgentType.valueOf(String.valueOf(((JComboBox<Integer>)comp).getSelectedItem()));
 		} catch (NumberFormatException e) {
 			b = null;
 		}

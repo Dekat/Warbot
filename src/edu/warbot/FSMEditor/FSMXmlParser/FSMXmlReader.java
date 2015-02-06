@@ -108,25 +108,6 @@ public class FSMXmlReader extends FSMXmlParser{
 				else if (fields[i].getType().equals(WarAgentType[].class))
 					fields[i].set(planSet,getFieldForAgentTypeTab(fields[i], elemPlanSetting));
 				
-				
-//				//Pour les collections
-//				else if (fields[i].getType().equals(ArrayList.class)){
-//
-//					ArrayList fieldArray = (ArrayList) fields[i].get(planSet);
-//					//On r�cup�re une entr� de la collection pour connaitre son type g�n�rique 
-//					//(impossible sinon a cause de l'effacement de type)
-//					if(fieldArray != null & fieldArray.size() > 0){
-//						if(fieldArray.get(0).getClass().equals(WarAgentType.class))
-//							fields[i].set(planSet,getFieldForArrayOfWarAgentType(fields[i], elemPlanSetting));
-//						else if(fieldArray.get(0).getClass().equals(Integer.class))
-//							fields[i].set(planSet,getFieldForArrayOfInteger(fields[i], elemPlanSetting));
-//						else if(fieldArray.get(0).getClass().equals(String.class))
-//							fields[i].set(planSet,getFieldForArrayOfString(fields[i], elemPlanSetting));
-//					}else{
-//						System.err.println("ERRER : imposible to read field for name " + fields[i].getName() + " are you sur you correctly instenciate it and it container at least one element (please see class WarPlanSetting)");
-//					}
-//				}
-				
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
@@ -136,53 +117,10 @@ public class FSMXmlReader extends FSMXmlParser{
 		return planSet;
 	}
 
-	private ArrayList<Integer> getFieldForArrayOfInteger(Field field,
-			Element elemPlanSetting) {
-		ArrayList<Integer> arrayRes= new ArrayList<>();
-		
-		String fieldValue = elemPlanSetting.getChild(field.getName()).getValue();
-		
-		//Parse le string en tableau
-		String[] stringValues = parseStringTab(fieldValue);
-		
-		for (int i = 0; i < stringValues.length; i++) {
-			arrayRes.add(Integer.valueOf(stringValues[i]));
-		}
-		return arrayRes;
-	}
-
-	private ArrayList<WarAgentType> getFieldForArrayOfWarAgentType(Field field, Element elemPlanSetting) {
-		ArrayList<WarAgentType> arrayRes= new ArrayList<>();
-		
-		String fieldValue = elemPlanSetting.getChild(field.getName()).getValue();
-		
-		//Parse le string en tableau
-		String[] stringValues = parseStringTab(fieldValue);
-		
-		for (int i = 0; i < stringValues.length; i++) {
-			arrayRes.add(WarAgentType.valueOf(stringValues[i]));
-		}
-		return arrayRes;
-	}
-	
 	private String[] parseStringTab(String stringTab) {
 		return stringTab.replaceAll("\\]", "").replaceAll("\\[", "").split(",");
 	}
 
-	private ArrayList<String> getFieldForArrayOfString(Field field, Element elemPlanSetting) {
-		ArrayList<String> arrayRes= new ArrayList<>();
-		
-		String fieldValue = elemPlanSetting.getChild(field.getName()).getValue();
-		
-		//Parse le string en tableau
-		String[] stringValues = parseStringTab(fieldValue);
-		
-		for (int i = 0; i < stringValues.length; i++) {
-			arrayRes.add(stringValues[i]);
-		}
-		return arrayRes;
-	}
-	
 	/**
 	 * Cette méthode est peut etre générique pour d'autre type comme integer (je testerais après)
 	 * @param field
@@ -192,7 +130,6 @@ public class FSMXmlReader extends FSMXmlParser{
 	private Object getFieldForString(Field field, Element elemPlanSetting) {
 		return field.getType().cast(elemPlanSetting.getChild(field.getName()).getValue());
 //		return elemPlanSetting.getChild(field.getName()).getValue();
-		
 	}
 
 	private Integer getFieldForInteger(Field field, Element elemPlanSetting) {
