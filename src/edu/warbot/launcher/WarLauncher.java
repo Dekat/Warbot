@@ -100,10 +100,6 @@ public class WarLauncher extends TKLauncher {
 						} catch (InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
 							System.err.println("Erreur lors de l'instanciation de l'agent. Type non reconnu : " + agentType);
 							e.printStackTrace();
-						} catch (CannotCompileException e) {
-                            e.printStackTrace();
-                        } catch (NotFoundException e) {
-                            e.printStackTrace();
                         }
                         // On créé autant de WarFood que d'agent au départ
 						motherNatureTeam.createAndLaunchNewResource(game.getMap(), this, WarAgentType.WarFood);

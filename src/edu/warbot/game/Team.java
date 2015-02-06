@@ -273,7 +273,7 @@ public class Team extends Observable {
 		this.game = game;
 	}
 	
-	public ControllableWarAgent instantiateNewControllableWarAgent(String agentName) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException, NotFoundException, CannotCompileException {
+	public ControllableWarAgent instantiateNewControllableWarAgent(String agentName) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
 		String agentToCreateClassName = WarBase.class.getPackage().getName() + "." + agentName;
         Class<? extends WarBrain> brainControllerClass = getBrainControllerOfAgent(agentName);
         ControllableWarAgent a = (ControllableWarAgent) Class.forName(agentToCreateClassName)

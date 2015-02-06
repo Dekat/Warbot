@@ -15,8 +15,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import javassist.CannotCompileException;
-import javassist.NotFoundException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -143,10 +141,6 @@ public class SituationLoader {
 					} catch (InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
 						System.err.println("Erreur lors de l'instanciation de l'agent. Type non reconnu : " + agentTypeName);
 						e.printStackTrace();
-					} catch (CannotCompileException e) {
-                        e.printStackTrace();
-                    } catch (NotFoundException e) {
-                        e.printStackTrace();
                     }
                 }
 			}
