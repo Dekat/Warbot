@@ -5,13 +5,13 @@ import edu.warbot.FSM.action.WarActionDefendre;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
 /**
+ * Réalise l'action WarActionDefendre 
  * @author Olivier
- *
  */
 public class WarPlanDefendre extends WarPlan<WarRocketLauncherAdapter> {
 	
-	public WarPlanDefendre(WarRocketLauncherAdapter brain) {
-		super(brain, "Plan Defendre");
+	public WarPlanDefendre(WarRocketLauncherAdapter brain, WarPlanSettings planSettings) {
+		super("Plan Defendre", brain, planSettings);
 	}
 
 	public void buildActionList() {

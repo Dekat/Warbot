@@ -9,8 +9,6 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.logging.Level;
 
-import javassist.CannotCompileException;
-import javassist.NotFoundException;
 import madkit.action.SchedulingAction;
 import madkit.kernel.Madkit;
 import madkit.message.SchedulingMessage;

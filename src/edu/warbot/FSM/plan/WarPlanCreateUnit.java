@@ -1,5 +1,7 @@
 package edu.warbot.FSM.plan;
 
+import java.util.ArrayList;
+
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionCreateUnit;
 import edu.warbot.FSM.condition.WarCondition;
@@ -9,26 +11,33 @@ import edu.warbot.brains.adapters.WarBaseAdapter;
 
 /**
  * Desciption du plan et de ces actions
- * ATTENTION ce plan est basé sur la size bag d'un explorer et la vie max d'un explorer
+ * ATTENTION ce plan est basï¿½ sur la size bag d'un explorer et la vie max d'un explorer
  */
 public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 	
-	int nombreAgent[];
-	WarAgentType agentType[];
+	ArrayList<Integer> nombreAgent;
+	ArrayList<WarAgentType> agentType;
 	
 	WarAction<WarBaseAdapter> actions[];
 	WarCondition<WarBaseAdapter> cond[];
 	
 	int minLife;
+	int reference;
+	int pourcentage;
 	
+	//WarAgentType agentTypes[], int nombreAgent[], int reference, int pourcentage
 	@SuppressWarnings("unchecked")
-	public WarPlanCreateUnit(WarBaseAdapter brain, WarAgentType agentTypes[], int nombreAgent[], int reference, int pourcentage) {
-		super(brain, "Plan healer");	
-		this.nombreAgent = nombreAgent;
-		this.agentType = agentTypes;
+	public WarPlanCreateUnit(WarBaseAdapter brain, WarPlanSettings planSettings ) {
+		super("Plan healer", brain, planSettings);
 		
-		actions = new WarAction[nombreAgent.length];
-		cond = new WarCondition[nombreAgent.length];
+		this.agentType = getPlanSettings().Agent_type_destination;
+		this.nombreAgent = getPlanSettings().Number_agent_destination;
+		
+		this.reference = getPlanSettings().Value_reference;
+		this.pourcentage = getPlanSettings().Value_pourcentage;
+		
+		actions = new WarAction[nombreAgent.size()];
+		cond = new WarCondition[nombreAgent.size()];
 		
 		this.minLife = reference*pourcentage/100;
 	}
@@ -37,11 +46,11 @@ public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 		
 		setPrintTrace(true);
 		
-		int nbA = nombreAgent.length;
+		int nbA = nombreAgent.size();
 		
 		//cree les actions
 		for(int i = 0; i < nbA; i++){
-			this.actions[i] = new WarActionCreateUnit(getBrain(), agentType[i], nombreAgent[i], minLife);
+			this.actions[i] = new WarActionCreateUnit(getBrain(), agentType.get(i), nombreAgent.get(i), minLife);
 			addAction(actions[i]);
 		}
 		

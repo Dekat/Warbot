@@ -10,7 +10,7 @@ import edu.warbot.brains.MovableWarAgentAdapter;
 /**
  * Desciption du plan et de ces actions
  * action cercher nouriture
- * Si j'ai finit => raporter la nouriture	(ajouter si le sac est plaein comme condition)
+ * Si j'ai finit => raporter la nouriture (ajouter si le sac est plein comme condition)
  * action raporter de la nouriture
  * si j'ai finit => action chercher de la nouriture	(ajouter si le sac est vide comme condition)
  * @author Olivier
@@ -18,8 +18,8 @@ import edu.warbot.brains.MovableWarAgentAdapter;
  */
 public class WarPlanRamasserNouriture<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
 	
-	public WarPlanRamasserNouriture(AgentAdapterType brain) {
-		super(brain, "PlanRammaserNouriture");
+	public WarPlanRamasserNouriture(AgentAdapterType brain, WarPlanSettings planSettings) {
+		super("Plan Rammaser Nouriture", brain, planSettings);
 	}
 
 	public void buildActionList() {

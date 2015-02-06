@@ -37,10 +37,10 @@ public class FSMInstancier {
 		
 		WarFSM fsm = new WarFSM<ControllableWarAgentAdapter>();
 		
-		//On recupère le modeleBrain qui correspond à l'agentType 
+		//On recupÃ¨re le modeleBrain qui correspond Ã  l'agentType 
 		ModeleBrain modelBrain = this.model.getModelBrain(agentType);
 		
-		//On commence par ajouter tous les états à la FSM
+		//On commence par ajouter tous les Ã©tats Ã  la FSM
 		for (ModeleState modelState : modelBrain.getStates()) {
 			
 			WarEtat<ControllableWarAgentAdapter> warState = getGenerateWarState(modelState, adapter);
@@ -53,11 +53,11 @@ public class FSMInstancier {
 
 	private WarEtat<ControllableWarAgentAdapter> getGenerateWarState(
 			ModeleState modelState, ControllableWarAgentAdapter adapter) {
-		//Récupère le plan
+		//Rï¿½cupï¿½re le plan
 		WarPlan<ControllableWarAgentAdapter> warPlan = 
 				getGenerateWarPlan(modelState, adapter);
 		
-		//Crée l'état
+		//Crï¿½e l'ï¿½tat
 		WarEtat<ControllableWarAgentAdapter> warState = 
 				new WarEtat<ControllableWarAgentAdapter>(modelState.getName(), warPlan);
 				
@@ -91,11 +91,11 @@ public class FSMInstancier {
 
 //	private void generateAllFSM() {
 //		for (ModeleBrain modelBrain : this.model.getModelsBrains()) {
-//			// TODO ici je n'arrive pas à mettre le type générique
+//			// TODO ici je n'arrive pas ï¿½ mettre le type gï¿½nï¿½rique
 //			// Remarque : dans le modele l'agent type est a null pour l'instant
-//			// il faut penser à le mettre dans la generation du modele grace au
+//			// il faut penser ï¿½ le mettre dans la generation du modele grace au
 //			// XML
-//			// (le nom du type de l'agent sous formede strign est bien stoqué
+//			// (le nom du type de l'agent sous formede strign est bien stoquï¿½
 //			// dans le XML)
 //
 //			Class classAdapter = this.mapAgentTypeAdapter.get(modelBrain
@@ -110,15 +110,15 @@ public class FSMInstancier {
 //	}
 
 	private void generateFSM(WarFSM<?> fsm, ModeleBrain model) {
-		// Pour chaque état du modele on l'ajoute à la FSM
+		// Pour chaque ï¿½tat du modele on l'ajoute ï¿½ la FSM
 		for (ModeleState state : model.getStates()) {
 			generateState(fsm, state);
 		}
 		// Pour chaque conditions du modele on l'ajoute a la FSM
 
-		// Pour conditions on lui place son état de sortie
+		// Pour conditions on lui place son ï¿½tat de sortie
 
-		// Pour chaque état on lui place ses conditions de sorties
+		// Pour chaque ï¿½tat on lui place ses conditions de sorties
 	}
 
 	private void generateState(WarFSM<?> fsm, ModeleState modelState) {

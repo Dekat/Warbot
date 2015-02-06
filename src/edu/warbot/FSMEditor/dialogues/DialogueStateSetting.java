@@ -37,7 +37,7 @@ public class DialogueStateSetting extends AbstractDialogue {
 
 		this.planSettings = planSettings;
 
-		this.setTitle("State settings");
+		this.setTitle("General settings");
 		this.setSize(new Dimension(400, 350));
 
 		JPanel panel = new JPanel(new VerticalLayout());
@@ -65,7 +65,7 @@ public class DialogueStateSetting extends AbstractDialogue {
 
 	private JPanel getPanelPlanSettring() {
 		JPanel panel = new JPanel(new VerticalLayout());
-		panel.setBorder(new TitledBorder("Settings"));
+		panel.setBorder(new TitledBorder("Specific settings"));
 		
 		fields = planSettings.getClass().getDeclaredFields();
 
@@ -86,11 +86,14 @@ public class DialogueStateSetting extends AbstractDialogue {
 			panel.add(component = getComponentForBoolean(field));
 		} else if (field.getType().equals(Integer.class)) {
 			panel.add(component = getComponentForInteger(field));
+		}else if (field.getType().equals(Integer[].class)) {
+				panel.add(component = getComponentForIntegerTab(field));
 		}else if (field.getType().equals(String.class)) {
 			panel.add(component = getComponentForString(field));
 		} else if (field.getType().equals(ArrayList.class)) {
 			panel.add(component = getComponentForArrayList(field));
 		}else{
+			panel.add(component = new JLabel("<unknow type>"));
 			System.err.println("The type " + field.getType() + " is not available for de the generated dynamic interface");
 		}
 
@@ -167,6 +170,15 @@ public class DialogueStateSetting extends AbstractDialogue {
 		if (b != null)
 			cb.setText(String.valueOf(b));
 
+		return cb;
+	}
+	
+	private JComboBox<Integer> getComponentForIntegerTab(Field field) {
+		JComboBox<Integer> cb = new JComboBox<>();
+		for (int i = 0; i < 11; i++) {
+//			JCheckBox cbmi = new JCheckBox(String.valueOf(i));
+			cb.addItem(i);
+		}
 		return cb;
 	}
 	
@@ -249,6 +261,8 @@ public class DialogueStateSetting extends AbstractDialogue {
 					setFieldForBoolean(field, dynamicComp);
 				}else if(field.getType().equals(Integer.class)){
 					setFieldForInteger(field, dynamicComp);
+				}else if(field.getType().equals(Integer[].class)){
+					setFieldForIntegerTab(field, dynamicComp);
 				}else if(field.getType().equals(String.class)){
 					setFieldForString(field, dynamicComp);
 				}else if(field.getType().equals(ArrayList.class)){
@@ -319,6 +333,21 @@ public class DialogueStateSetting extends AbstractDialogue {
 		Integer b;
 		try{
 			b = Integer.valueOf(((JTextField)comp).getText());
+		} catch (NumberFormatException e) {
+			b = null;
+		}
+		try {
+			field.set(planSettings, b);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void setFieldForIntegerTab(Field field, JComponent comp) {
+		//TODO à modifié si on veut sauvegarder plusieurs valeurs
+		Integer b[] = new Integer[1];
+		try{
+			b[0] = (Integer) ((JComboBox<Integer>)comp).getSelectedItem();
 		} catch (NumberFormatException e) {
 			b = null;
 		}

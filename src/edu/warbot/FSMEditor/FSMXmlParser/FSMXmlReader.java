@@ -47,7 +47,7 @@ public class FSMXmlReader extends FSMXmlParser{
 	}
 
 	private void createBrain(Element brain, Modele modele) {
-		//Pour chaque conditions et chaque états
+		//Pour chaque conditions et chaque ï¿½tats
 		String agentTypeName = brain.getChild(AgentType).getValue();
 		WarAgentType agentType = WarAgentType.valueOf(agentTypeName);
 		
@@ -103,7 +103,7 @@ public class FSMXmlReader extends FSMXmlParser{
 				else if (fields[i].getType().equals(ArrayList.class)){
 
 					ArrayList fieldArray = (ArrayList) fields[i].get(planSet);
-					//On récupère une entré de la collection pour connaitre son type générique 
+					//On rï¿½cupï¿½re une entrï¿½ de la collection pour connaitre son type gï¿½nï¿½rique 
 					//(impossible sinon a cause de l'effacement de type)
 					if(fieldArray != null & fieldArray.size() > 0){
 						if(fieldArray.get(0).getClass().equals(WarAgentType.class))
@@ -173,8 +173,18 @@ public class FSMXmlReader extends FSMXmlParser{
 		return arrayRes;
 	}
 	
-	private String getFieldForString(Field field, Element elemPlanSetting) {
-		return elemPlanSetting.getChild(field.getName()).getValue();
+	private Object getFieldForString(Field field, Element elemPlanSetting) {
+		return field.getType().cast(elemPlanSetting.getChild(field.getName()).getValue());
+//		return elemPlanSetting.getChild(field.getName()).getValue();
+		
+	}
+
+	private Integer getFieldForInteger(Field field, Element elemPlanSetting) {
+		try{
+			return Integer.valueOf(elemPlanSetting.getChild(field.getName()).getValue());
+		}catch(NumberFormatException e){
+			return null;
+		}
 	}
 
 	private Boolean getFieldForBoolean(Field field, Element elemPlanSetting) {
@@ -182,14 +192,6 @@ public class FSMXmlReader extends FSMXmlParser{
 			return Boolean.valueOf(elemPlanSetting.getChild(field.getName()).getValue());
 		}catch(NumberFormatException e){
 			return false;
-		}
-	}
-
-	private Integer getFieldForInteger(Field field, Element elemPlanSetting) {
-		try{
-			return Integer.valueOf(elemPlanSetting.getChild(field.getName()).getValue());
-		}catch(NumberFormatException e){
-			return -1;
 		}
 	}
 

@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSM.plan.WarPlanSettings;
@@ -106,9 +107,10 @@ public class Controleur {
 		
 		FSMInstancier fsmInstancier = new FSMInstancier(modeleRead);
 		fsmInstancier.instanciateFSM();
-		//Crée un agent pour tester
-		WarBrain<WarExplorerAdapter> brain = null;
-		WarExplorerAdapter explorerAdapter = new WarExplorerAdapter(new WarExplorer(new Team("Team_debug_FSM"), brain));
+		//CrÃ©e un agent pour tester
+//		WarBrain<WarExplorerAdapter> brain = null;
+		WarExplorerAdapter explorerAdapter = null;
+			//new WarExplorerAdapter(new WarExplorer(new Team("Team_debug_FSM"), brain));
 		
 		WarFSM fsm = fsmInstancier.getInstanciateFSM(WarAgentType.WarExplorer, explorerAdapter);
 		
@@ -119,11 +121,11 @@ public class Controleur {
 	}
 	
 	private void printModelInformations(Modele modeleRead) {
-		System.out.println("*** Vérification du modele généré dynamiquement pour la FSM ***");
+		System.out.println("*** VÃ©rification du modele gnÃ©Ã©rÃ© dynamiquement pour la FSM ***");
 		for (ModeleBrain modBrain : modeleRead.getModelsBrains()) {
 			System.out.println("* Traitement du modele pour le type d'agent " + modBrain.getAgentTypeName() + " *");
 		
-			System.out.println("Liste des états " + modBrain.getStates().size());
+			System.out.println("Liste des Ã©tats " + modBrain.getStates().size());
 			for (ModeleState modState : modBrain.getStates()) {
 				System.out.println("\tEtat : Name=" + modState.getName() + " plan=" + modState.getPlanName());
 				System.out.println("\tConditions de sorties ID : " + modState.getConditionsOutID().size());
@@ -141,7 +143,15 @@ public class Controleur {
 				System.out.println("\tState settings : " + field.length);
 				for (int i = 0; i < field.length; i++) {
 					try {
-						System.out.println("\t\t" + field[i].getName() + "=" + field[i].get(planSet).toString());
+						String fieldValue = null;
+//						if(field[i].getType().isArray()){
+//							Object[] arrayO = (Object[]) field[i].get(planSet);
+//							fieldValue = Arrays.toString(arrayO);
+//						}else
+							fieldValue = String.valueOf(field[i].get(planSet));
+						
+						System.out.println("\t\t" + field[i].getName() + "=" + fieldValue);
+						
 					} catch (IllegalArgumentException e) {
 						e.printStackTrace();
 					} catch (IllegalAccessException e) {
@@ -152,7 +162,7 @@ public class Controleur {
 			
 			System.out.println("Liste des conditions " + modBrain.getConditions().size());
 			for (ModeleCondition modCond : modBrain.getConditions()) {
-				//TODO la ca va plnaté car il y aura l'id de létat destination mais pas le pointeur vers l'objet de l'état
+				//TODO la ca va plnatï¿½ car il y aura l'id de lï¿½tat destination mais pas le pointeur vers l'objet de l'ï¿½tat
 				System.out.println("\tConditin : Name=" + modCond.getName() + " type=" + modCond.getType() + " stateOutID=" + modCond.getStateOutId() + " stateOut=" + modCond.getStateDestination().getName());
 				
 				//Affichage des informations des parametres de la condition

@@ -3,6 +3,7 @@ package edu.warbot.FSMEditor.FSMXmlParser;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -111,20 +112,27 @@ public class FSMXmlSaver extends FSMXmlParser{
 		WarPlanSettings planSet = state.getWarPlanSettings();
 		Field[] fields = planSet.getClass().getDeclaredFields();
 		
+		String fieldValueString = null;
 		for (int i = 0; i < fields.length; i++) {
-			Object fieldValue = null;
 			try {
-				fieldValue = fields[i].get(planSet);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+				if(fields[i].getType().isArray()){
+					Object[] fieldValues = (Object[]) fields[i].get(planSet);
+					fieldValueString = Arrays.toString(fieldValues);
+					
+				}else{
+					fieldValueString = String.valueOf(fields[i].get(planSet));
+				}
+					
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
 			
-			elemPlanSetting.addContent(
-					new Element(fields[i].getName())
-					.setText(String.valueOf(fieldValue)));
-		}
+				elemPlanSetting.addContent(
+					new Element(fields[i].getName()).setText(fieldValueString));
+			
+			}
 		
 		return elemPlanSetting;
 	}

@@ -11,13 +11,13 @@ import edu.warbot.brains.MovableWarAgentAdapter;
  * Condition de sortie si j'ai perdu la moitié de ma vie.
  * condition de sortie si l'action est terminé alors je la recommence (debug)
  * retourne dans pas bouger si j'ai plus de la moitié de ma vie
- *
+ * PAS TERMINE
  */
 
 public class WarPlanBeSecure<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
 	
-	public WarPlanBeSecure(AgentAdapterType brain) {
-		super(brain, "PlanBeSecure");
+	public WarPlanBeSecure(AgentAdapterType brain, WarPlanSettings planSettings) {
+		super("PlanBeSecure", brain, planSettings);
 	}
 
 	public void buildActionList() {

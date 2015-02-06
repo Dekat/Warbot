@@ -8,29 +8,34 @@ import edu.warbot.agents.enums.WarAgentType;
  * Les attributs doivent etre public !
  * @author Olivier
  * 
- * ATTENTION : les attributs peuvent etre seulement de types : Boolean, Ineteger, 
- * ArrayList<WarAgentType>, ArrayList<Integer>, String, ArrayList<String> (plus à venir)
- * ATTENTION : les collections doivent obligatoirment etre initialisé et contenir au moins un élément
- * (afin de pouvoir connaitre son type générique lors de l'introspection, sinon ça serait imposible à cause de l'effacement de type)
+ * ATTENTION : les attributs peuvent etre seulement de types : Boolean, Ineteger, String
+ * Integer[]
+ * ArrayList<WarAgentType>, ArrayList<Integer>, ArrayList<String> (plus Ã  venir)
+ * ATTENTION : les collections doivent obligatoirment Ãªtre initialisÃ© et contenir au moins un Ã©lÃ©ment
+ * (afin de pouvoir connaitre son type gÃ©nÃ©rique lors de l'introspection, sinon ï¿½a serait imposible ï¿½ cause de l'effacement de type Java)
  * 
  */
 public class WarPlanSettings {
 
 	public ArrayList<WarAgentType> Agent_type_destination = new ArrayList<WarAgentType>();
 
+	public Integer[] Number_agent_destination_Tab;
+
 	public ArrayList<Integer> Number_agent_destination = new ArrayList<Integer>();
 
 	public Integer Value_reference;
 
 	public Integer Value_pourcentage;
+	//Notament utilisÃ© pour le poucentage de vie d'un alliÃ© pour le soigner
+	public Integer Value_pourcentage_destination;
 
-	public Boolean Offensif = false;
+	public Boolean Offensif = true;
 	
 	public String Debug_String = "debug_sring";
 
 	/**
 	 * IMPORTANT il faut ajouter au moins une valeur dans les colletions pour
-	 * pouvoir connaitre le type générique de la collection !
+	 * pouvoir connaitre le type gÃ©nÃ©rique de la collection !
 	 */
 	public WarPlanSettings() {
 		Number_agent_destination.add(new Integer(1));

@@ -25,7 +25,6 @@ import edu.warbot.game.WarGame;
 import edu.warbot.gui.launcher.LoadingDialog;
 import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.tools.WarIOTools;
-import javassist.*;
 
 public class WarMain implements Observer {
 	public static final String TEAMS_DIRECTORY_NAME = "teams";

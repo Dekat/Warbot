@@ -12,13 +12,14 @@ public abstract class WarPlan<AgentAdapterType extends ControllableWarAgentAdapt
 	private WarAction<AgentAdapterType> firstAction;
 	private ArrayList<WarAction<AgentAdapterType>> actions = new ArrayList<>();
 	
-	private AgentAdapterType brain;
-	
 	private String nom;
+	private AgentAdapterType brain;
+	private WarPlanSettings planSettings;
 	
-	public WarPlan(AgentAdapterType brain, String nomPlan){
-		this.brain = brain;
+	public WarPlan(String nomPlan, AgentAdapterType brain, WarPlanSettings planSettings){
 		this.nom = nomPlan;
+		this.brain = brain;
+		this.planSettings = planSettings;
 	}
 	
 	/**
@@ -122,6 +123,10 @@ public abstract class WarPlan<AgentAdapterType extends ControllableWarAgentAdapt
 	
 	public ArrayList<WarAction<AgentAdapterType>> getListAction(){
 		return this.actions;
+	}
+	
+	public WarPlanSettings getPlanSettings(){
+		return planSettings;
 	}
 	
 	private boolean printTrace = false;

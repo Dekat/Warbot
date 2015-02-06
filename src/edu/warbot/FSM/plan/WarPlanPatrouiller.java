@@ -9,6 +9,10 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
 /**
+ * Pattrouiller de manière deffensive va chercher la base enemie
+ * Pattrouiller de manière offensive va chercher la base enemie et attaquer les enemies
+ * que l'agent croise en chemin si il est en position de force
+ * (Etre en position de force siginifie que le nombre d'allié/enemie aux allentour est avantageux
  * @author Olivier
  */
 public class WarPlanPatrouiller extends WarPlan<WarRocketLauncherAdapter> {
@@ -19,9 +23,10 @@ public class WarPlanPatrouiller extends WarPlan<WarRocketLauncherAdapter> {
 	 * @param brain
 	 * @param offensif = true, defensif = false
 	 */
-	public WarPlanPatrouiller(WarRocketLauncherAdapter brain, boolean offensif) {
-		super(brain, "Plan Patrouiller");
-		this.offensif = offensif;
+	//boolean offensif
+	public WarPlanPatrouiller(WarRocketLauncherAdapter brain, WarPlanSettings planSettings) {
+		super("Plan Patrouiller", brain, planSettings);
+		this.offensif = getPlanSettings().Offensif;
 	}
 
 	public void buildActionList() {

@@ -23,17 +23,12 @@ public class WarPlanHealer<AgentAdapterType extends MovableWarAgentAdapter> exte
 	
 	int pourcentageLifeAlly;
 
-	public WarPlanHealer(AgentAdapterType brain, int  pourcentageLife) {
-		this(brain, pourcentageLife, -1);
-		this.healAlly = false;
-	}
-	
-	public WarPlanHealer(AgentAdapterType brain, int  lifePourcentage,
-			int lifePourcentageAlly) {
-		super(brain, "Plan healer");
+	//  lifePourcentage, int lifePourcentageAlly
+	public WarPlanHealer(AgentAdapterType brain, WarPlanSettings planSettings) {
+		super("Plan healer", brain, planSettings);
 		
-		this.pourcentageLife = lifePourcentage;
-		this.pourcentageLifeAlly = lifePourcentageAlly;
+		this.pourcentageLife = getPlanSettings().Value_pourcentage;
+		this.pourcentageLifeAlly = getPlanSettings().Value_pourcentage_destination;
 		
 	}
 

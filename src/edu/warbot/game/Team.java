@@ -24,9 +24,6 @@ import edu.warbot.brains.capacities.Creator;
 import edu.warbot.communications.WarKernelMessage;
 import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.tools.WarMathTools;
-import javassist.CannotCompileException;
-import javassist.CtClass;
-import javassist.NotFoundException;
 import teams.engineer.WarEngineerBrainController;
 
 public class Team extends Observable {
