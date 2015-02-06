@@ -144,10 +144,10 @@ public class Controleur {
 				for (int i = 0; i < field.length; i++) {
 					try {
 						String fieldValue = null;
-//						if(field[i].getType().isArray()){
-//							Object[] arrayO = (Object[]) field[i].get(planSet);
-//							fieldValue = Arrays.toString(arrayO);
-//						}else
+						if(field[i].getType().isArray()){
+							Object[] arrayO = (Object[]) field[i].get(planSet);
+							fieldValue = Arrays.toString(arrayO);
+						}else
 							fieldValue = String.valueOf(field[i].get(planSet));
 						
 						System.out.println("\t\t" + field[i].getName() + "=" + fieldValue);

@@ -41,6 +41,7 @@ public class WarPlanSettings {
 		Number_agent_destination.add(new Integer(1));
 
 		Agent_type_destination.add(WarAgentType.WarExplorer);
+		
 	}
 
 }

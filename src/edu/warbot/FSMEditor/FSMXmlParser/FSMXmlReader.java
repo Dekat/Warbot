@@ -98,6 +98,8 @@ public class FSMXmlReader extends FSMXmlParser{
 					fields[i].set(planSet,getFieldForBoolean(fields[i], elemPlanSetting));
 				else if (fields[i].getType().equals(String.class))
 					fields[i].set(planSet,getFieldForString(fields[i], elemPlanSetting));
+				else if (fields[i].getType().equals(Integer[].class))
+					fields[i].set(planSet,getFieldForIntegerTab(fields[i], elemPlanSetting));
 				
 				//Pour les collections
 				else if (fields[i].getType().equals(ArrayList.class)){
