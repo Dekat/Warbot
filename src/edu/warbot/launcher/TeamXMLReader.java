@@ -28,7 +28,7 @@ public class TeamXMLReader {
 	/**
 	 * Méthode permettant d'ouvrir le fichier XML et d'obtenir l'élément racine.
 	 */
-	public void Ouverture(InputStream input) {
+	public void ouverture(InputStream input) {
 		try {
 			_document = WarXmlReader.getDocumentFromInputStream(input);
 		} catch (ParserConfigurationException e) {
@@ -86,5 +86,10 @@ public class TeamXMLReader {
 	 */
 	public HashMap<String, String> getBrainControllersClassesNameOfEachAgentType() {
 		return WarXmlReader.getNodesFromXPath(_document, "//AgentsBrainControllers");
+	}
+
+	public boolean isFSMTeam() {
+		// TODO 
+		return false;
 	}
 }

@@ -10,12 +10,13 @@ public class Configuration {
 	public static final String FSM_CLASS_PATH_REFELEXE = FSM_CLASS_PATH + ".reflexe";
 
 	public static final String[] PLAN = {
-			FSM_CLASS_PATH_PLAN + ".WarPlanBeSecure",
-			FSM_CLASS_PATH_PLAN + ".WarPlanRamasserNouriture",
 			FSM_CLASS_PATH_PLAN + ".WarPlanAttaquer",
+			FSM_CLASS_PATH_PLAN + ".WarPlanBeSecure",
 			FSM_CLASS_PATH_PLAN + ".WarPlanCreateUnit",
 			FSM_CLASS_PATH_PLAN + ".WarPlanDefendre",
 			FSM_CLASS_PATH_PLAN + ".WarPlanHealer",
+			FSM_CLASS_PATH_PLAN + ".WarPlanRamasserNouriture",
+			FSM_CLASS_PATH_PLAN + ".WarPlanWiggle",
 			FSM_CLASS_PATH_PLAN + ".WarPlanPatrouiller" };
 
 	public static final String[] CONDITION = { 

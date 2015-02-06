@@ -132,7 +132,7 @@ public class WarMain implements Observer {
 						if (currentEntry.getName().endsWith("config.xml")) {
 							// On le lit et on l'analyse grâce à la classe TeamXmlReader
 							BufferedInputStream input = new BufferedInputStream(jarCurrentFile.getInputStream(currentEntry));
-							analXML.Ouverture(input);
+							analXML.ouverture(input);
 							input.close();
 							configFileFound = true;
 						}
@@ -142,49 +142,55 @@ public class WarMain implements Observer {
 						}
 					}
 					if (configFileFound) {
-						// On a maintenant tous les fichiers dans un tableau et le fichier de configuration a été analysé
-
-						// On récupère le logo
-                        JarEntry logoEntry = allJarEntries.get(analXML.getIconeName());
-                        ImageIcon teamLogo = new ImageIcon(WarIOTools.toByteArray(jarCurrentFile.getInputStream(logoEntry)));
-                        // TODO set general logo if no image found
-						// On change sa taille
-						Image tmp = teamLogo.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-						teamLogo = new ImageIcon(tmp);
-
-						// On récupère le son
-						// TODO ajouter le son aux équipes
-
-						// On créé l'équipe
-						currentTeam = new Team(analXML.getTeamName());
-						currentTeam.setLogo(teamLogo);
-						currentTeam.setDescription(analXML.getTeamDescription().trim());
-
-						// On recherche les classes de type BrainController
-						// Pour cela, on utilise un URLClassLoader
-						String urlName = currentFile.getCanonicalPath();
-						URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new URL("jar:file:/" + urlName + "!/")});
-                        System.out.println("jar:file:/" + urlName + "!/");
-                        // On parcours chaque nom de classe, puis on les charge
-						HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();
-
-						for (String agentName : brainControllersClassesName.keySet()) {
-							JarEntry classEntry = allJarEntries.get(brainControllersClassesName.get(agentName));
-                            currentTeam.addBrainControllerClassForAgent(agentName,
-									(Class<? extends WarBrain>) classLoader.loadClass(classEntry.getName().replace(".class", "").replace("/", ".")));
-						}
-
-						// On ferme le loader
-						classLoader.close();
-
-						// Puis on ferme le fichier JAR
-						jarCurrentFile.close();
-
-						// Si il y a déjà une équipe du même nom on ne l'ajoute pas
-						if (loadedTeams.containsKey(currentTeam.getName()))
-							System.err.println("Erreur lors de la lecture d'une équipe : le nom " + currentTeam.getName() + " est déjà utilisé.");
-						else
-							loadedTeams.put(currentTeam.getName(), currentTeam);
+						//TODO j'ajoute ça ici comme un porc mais il faudrait mettre tous ca dans des méthodes
+//						if(analXML.isFSMTeam()){
+							
+//						}else
+						
+							// On a maintenant tous les fichiers dans un tableau et le fichier de configuration a été analysé
+	
+							// On récupère le logo
+	                        JarEntry logoEntry = allJarEntries.get(analXML.getIconeName());
+	                        ImageIcon teamLogo = new ImageIcon(WarIOTools.toByteArray(jarCurrentFile.getInputStream(logoEntry)));
+	                        // TODO set general logo if no image found
+							// On change sa taille
+							Image tmp = teamLogo.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+							teamLogo = new ImageIcon(tmp);
+	
+							// On récupère le son
+							// TODO ajouter le son aux équipes
+	
+							// On créé l'équipe
+							currentTeam = new Team(analXML.getTeamName());
+							currentTeam.setLogo(teamLogo);
+							currentTeam.setDescription(analXML.getTeamDescription().trim());
+	
+							// On recherche les classes de type BrainController
+							// Pour cela, on utilise un URLClassLoader
+							String urlName = currentFile.getCanonicalPath();
+							URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new URL("jar:file:/" + urlName + "!/")});
+	                        System.out.println("jar:file:/" + urlName + "!/");
+	                        // On parcours chaque nom de classe, puis on les charge
+							HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();
+	
+							for (String agentName : brainControllersClassesName.keySet()) {
+								JarEntry classEntry = allJarEntries.get(brainControllersClassesName.get(agentName));
+	                            currentTeam.addBrainControllerClassForAgent(agentName,
+										(Class<? extends WarBrain>) classLoader.loadClass(classEntry.getName().replace(".class", "").replace("/", ".")));
+							}
+	
+							// On ferme le loader
+							classLoader.close();
+	
+							// Puis on ferme le fichier JAR
+							jarCurrentFile.close();
+	
+							// Si il y a déjà une équipe du même nom on ne l'ajoute pas
+							if (loadedTeams.containsKey(currentTeam.getName()))
+								System.err.println("Erreur lors de la lecture d'une équipe : le nom " + currentTeam.getName() + " est déjà utilisé.");
+							else
+								loadedTeams.put(currentTeam.getName(), currentTeam);
+//						}
 					} else { // Si le fichier de configuration n'a pas été trouvé
 						System.err.println("Le fichier de configuration est introuvable dans le fichier JAR " + currentFile.getCanonicalPath());
 					}

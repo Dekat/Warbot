@@ -78,7 +78,7 @@ public class Team extends Observable {
     }
     
     public Class<? extends WarBrain> getBrainControllerOfAgent(String agentName) {
-    	return _brainControllers.get(agentName);
+    	return this._brainControllers.get(agentName);
     }
     
     public HashMap<String, Class<? extends WarBrain>> getAllBrainControllers() {

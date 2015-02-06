@@ -78,7 +78,7 @@ public class FSMInstancier {
 		} catch (NoSuchMethodException | SecurityException
 				| ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
-			System.err.println("ERRER during instanciate WarPlan with class name " + modelState.getPlanName() + " check name, constructor, classPath, etc...");
+			System.err.println("ERROR during instanciate WarPlan with class name " + modelState.getPlanName() + " check name, constructor, classPath, etc...");
 		}
 		
 		return instanciatePlan;

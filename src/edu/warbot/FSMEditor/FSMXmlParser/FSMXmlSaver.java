@@ -110,6 +110,9 @@ public class FSMXmlSaver extends FSMXmlParser{
 		Element elemPlanSetting = new Element(PlanSettings);
 		
 		WarPlanSettings planSet = state.getWarPlanSettings();
+		if(planSet == null)
+			planSet = new WarPlanSettings();
+		
 		Field[] fields = planSet.getClass().getDeclaredFields();
 		
 		String fieldValueString = null;
