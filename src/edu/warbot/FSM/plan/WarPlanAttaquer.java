@@ -21,8 +21,8 @@ public class WarPlanAttaquer extends WarPlan<WarRocketLauncherAdapter> {
 		
 		WarAgentType agentType = null;
 		
-		if(getPlanSettings().Agent_type_destination != null && getPlanSettings().Agent_type_destination.size() > 0)
-			agentType = getPlanSettings().Agent_type_destination.get(0);
+		if(getPlanSettings().Agent_type_destination != null && getPlanSettings().Agent_type_destination.length > 0)
+			agentType = getPlanSettings().Agent_type_destination[0];
 		else
 			System.err.println("getPlanSettings().Agent_type_destination is null or does not containe value in " + this.getClass().getSimpleName());
 			

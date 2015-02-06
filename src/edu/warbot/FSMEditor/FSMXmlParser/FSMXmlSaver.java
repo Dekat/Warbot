@@ -115,25 +115,24 @@ public class FSMXmlSaver extends FSMXmlParser{
 		String fieldValueString = null;
 		for (int i = 0; i < fields.length; i++) {
 			try {
+				//Pour les tableaux
 				if(fields[i].getType().isArray()){
 					Object[] fieldValues = (Object[]) fields[i].get(planSet);
 					fieldValueString = Arrays.toString(fieldValues);
 					
-				}else{
+				}else{ //Pour les valeurs simples
 					fieldValueString = String.valueOf(fields[i].get(planSet));
 				}
 					
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
-			
-				elemPlanSetting.addContent(
-					new Element(fields[i].getName()).setText(fieldValueString));
-			
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
 			}
-		
+			
+			elemPlanSetting.addContent(
+				new Element(fields[i].getName()).setText(fieldValueString));
+		}
 		return elemPlanSetting;
 	}
 

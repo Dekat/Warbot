@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+
+import com.sun.org.apache.regexp.internal.recompile;
 
 import edu.warbot.FSM.plan.WarPlanSettings;
 import edu.warbot.FSMEditor.Modeles.Modele;
@@ -100,24 +103,29 @@ public class FSMXmlReader extends FSMXmlParser{
 					fields[i].set(planSet,getFieldForString(fields[i], elemPlanSetting));
 				else if (fields[i].getType().equals(Integer[].class))
 					fields[i].set(planSet,getFieldForIntegerTab(fields[i], elemPlanSetting));
+				else if (fields[i].getType().equals(String[].class))
+					fields[i].set(planSet,getFieldForStringTab(fields[i], elemPlanSetting));
+				else if (fields[i].getType().equals(WarAgentType[].class))
+					fields[i].set(planSet,getFieldForAgentTypeTab(fields[i], elemPlanSetting));
 				
-				//Pour les collections
-				else if (fields[i].getType().equals(ArrayList.class)){
-
-					ArrayList fieldArray = (ArrayList) fields[i].get(planSet);
-					//On r�cup�re une entr� de la collection pour connaitre son type g�n�rique 
-					//(impossible sinon a cause de l'effacement de type)
-					if(fieldArray != null & fieldArray.size() > 0){
-						if(fieldArray.get(0).getClass().equals(WarAgentType.class))
-							fields[i].set(planSet,getFieldForArrayOfWarAgentType(fields[i], elemPlanSetting));
-						else if(fieldArray.get(0).getClass().equals(Integer.class))
-							fields[i].set(planSet,getFieldForArrayOfInteger(fields[i], elemPlanSetting));
-						else if(fieldArray.get(0).getClass().equals(String.class))
-							fields[i].set(planSet,getFieldForArrayOfString(fields[i], elemPlanSetting));
-					}else{
-						System.err.println("ERRER : imposible to read field for name " + fields[i].getName() + " are you sur you correctly instenciate it and it container at least one element (please see class WarPlanSetting)");
-					}
-				}
+				
+//				//Pour les collections
+//				else if (fields[i].getType().equals(ArrayList.class)){
+//
+//					ArrayList fieldArray = (ArrayList) fields[i].get(planSet);
+//					//On r�cup�re une entr� de la collection pour connaitre son type g�n�rique 
+//					//(impossible sinon a cause de l'effacement de type)
+//					if(fieldArray != null & fieldArray.size() > 0){
+//						if(fieldArray.get(0).getClass().equals(WarAgentType.class))
+//							fields[i].set(planSet,getFieldForArrayOfWarAgentType(fields[i], elemPlanSetting));
+//						else if(fieldArray.get(0).getClass().equals(Integer.class))
+//							fields[i].set(planSet,getFieldForArrayOfInteger(fields[i], elemPlanSetting));
+//						else if(fieldArray.get(0).getClass().equals(String.class))
+//							fields[i].set(planSet,getFieldForArrayOfString(fields[i], elemPlanSetting));
+//					}else{
+//						System.err.println("ERRER : imposible to read field for name " + fields[i].getName() + " are you sur you correctly instenciate it and it container at least one element (please see class WarPlanSetting)");
+//					}
+//				}
 				
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
@@ -175,6 +183,12 @@ public class FSMXmlReader extends FSMXmlParser{
 		return arrayRes;
 	}
 	
+	/**
+	 * Cette méthode est peut etre générique pour d'autre type comme integer (je testerais après)
+	 * @param field
+	 * @param elemPlanSetting
+	 * @return
+	 */
 	private Object getFieldForString(Field field, Element elemPlanSetting) {
 		return field.getType().cast(elemPlanSetting.getChild(field.getName()).getValue());
 //		return elemPlanSetting.getChild(field.getName()).getValue();
@@ -187,6 +201,47 @@ public class FSMXmlReader extends FSMXmlParser{
 		}catch(NumberFormatException e){
 			return null;
 		}
+	}
+	
+	private Integer[] getFieldForIntegerTab(Field field, Element elemPlanSetting) {
+		String fieldValue = elemPlanSetting.getChild(field.getName()).getValue();
+		
+		String[] stringValues = parseStringTab(fieldValue);
+		
+		Integer valuesInteger[] = new Integer[stringValues.length];
+		
+		for (int i = 0; i < stringValues.length; i++) {
+			valuesInteger[i] = Integer.valueOf(stringValues[i]);
+		}
+		return valuesInteger;
+	}
+	
+	private String[] getFieldForStringTab(Field field, Element elemPlanSetting) {
+		String fieldValue = elemPlanSetting.getChild(field.getName()).getValue();
+		
+		String[] stringValues = parseStringTab(fieldValue);
+		
+		//Je fais des opération inutiles mais quand je fusionnerais cette méthode avec d'autre pour plus de généricité ça sera plus facile comme ça
+		String valuesInteger[] = new String[stringValues.length];
+		
+		for (int i = 0; i < stringValues.length; i++) {
+			valuesInteger[i] = String.valueOf(stringValues[i]);
+		}
+		return valuesInteger;
+	}
+	
+	private WarAgentType[] getFieldForAgentTypeTab(Field field, Element elemPlanSetting) {
+		String fieldValue = elemPlanSetting.getChild(field.getName()).getValue();
+		
+		String[] stringValues = parseStringTab(fieldValue);
+		
+		//Je fais des opération inutiles mais quand je fusionnerais cette méthode avec d'autre pour plus de généricité ça sera plus facile comme ça
+		WarAgentType valuesInteger[] = new WarAgentType [stringValues.length];
+		
+		for (int i = 0; i < stringValues.length; i++) {
+			valuesInteger[i] = WarAgentType.valueOf(stringValues[i]);
+		}
+		return valuesInteger;
 	}
 
 	private Boolean getFieldForBoolean(Field field, Element elemPlanSetting) {

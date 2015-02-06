@@ -15,8 +15,8 @@ import edu.warbot.brains.adapters.WarBaseAdapter;
  */
 public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 	
-	ArrayList<Integer> nombreAgent;
-	ArrayList<WarAgentType> agentType;
+	Integer nombreAgent[];
+	WarAgentType[] agentType;
 	
 	WarAction<WarBaseAdapter> actions[];
 	WarCondition<WarBaseAdapter> cond[];
@@ -36,8 +36,8 @@ public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 		this.reference = getPlanSettings().Value_reference;
 		this.pourcentage = getPlanSettings().Value_pourcentage;
 		
-		actions = new WarAction[nombreAgent.size()];
-		cond = new WarCondition[nombreAgent.size()];
+		actions = new WarAction[nombreAgent.length];
+		cond = new WarCondition[nombreAgent.length];
 		
 		this.minLife = reference*pourcentage/100;
 	}
@@ -46,11 +46,11 @@ public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 		
 		setPrintTrace(true);
 		
-		int nbA = nombreAgent.size();
+		int nbA = nombreAgent.length;
 		
 		//cree les actions
 		for(int i = 0; i < nbA; i++){
-			this.actions[i] = new WarActionCreateUnit(getBrain(), agentType.get(i), nombreAgent.get(i), minLife);
+			this.actions[i] = new WarActionCreateUnit(getBrain(), agentType[i], nombreAgent[i], minLife);
 			addAction(actions[i]);
 		}
 		
