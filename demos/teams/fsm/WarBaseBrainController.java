@@ -6,6 +6,7 @@ import edu.warbot.FSM.WarFSMMessage;
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.condition.WarConditionPerceptCounter;
 import edu.warbot.FSM.plan.WarPlanCreateUnit;
+import edu.warbot.FSM.plan.WarPlanSettings;
 import edu.warbot.FSM.reflexe.WarReflexeAnswerMessage;
 import edu.warbot.FSM.reflexe.WarReflexeWarnWithCondition;
 import edu.warbot.agents.agents.WarBase;
@@ -41,9 +42,20 @@ public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
 		fsm.addReflexe(new WarReflexeWarnWithCondition<WarBaseAdapter>(getAgent(), condReflex, WarAgentType.WarRocketLauncher, WarFSMMessage.baseIsAttack));
 
 		/*** Etats ***/
-		WarAgentType agentType[] = {WarAgentType.WarExplorer, WarAgentType.WarRocketLauncher};
-		int nombre[] = {1, 1};
-		WarEtat<WarBaseAdapter> etatCreerUnite = new WarEtat<WarBaseAdapter>("Etat creer unité", new WarPlanCreateUnit(getAgent(), agentType, nombre, WarBase.MAX_HEALTH, 50));
+		//Création et remplissage du plan settings
+		//Pas super beau après un montra un system d'accesseur jolie
+		WarPlanSettings set1 = new WarPlanSettings();
+		set1.Agent_type_destination = new WarAgentType[2];
+		set1.Agent_type_destination[0] = WarAgentType.WarExplorer;
+		set1.Agent_type_destination[1] = WarAgentType.WarRocketLauncher;
+		set1.Number_agent_destination = new Integer[2];
+		set1.Number_agent_destination[0] = 1;
+		set1.Number_agent_destination[1] = 1;
+		set1.Value_reference = WarBase.MAX_HEALTH;
+		set1.Value_pourcentage = 50;
+		
+		WarEtat<WarBaseAdapter> etatCreerUnite = new WarEtat<WarBaseAdapter>("Etat creer unité",
+				new WarPlanCreateUnit(getAgent(), set1));
 		fsm.addEtat(etatCreerUnite);
 
 		fsm.setFirstEtat(etatCreerUnite);

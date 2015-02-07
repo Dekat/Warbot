@@ -10,6 +10,7 @@ import edu.warbot.FSM.condition.WarConditionPerceptCounter;
 import edu.warbot.FSM.plan.WarPlanBeSecure;
 import edu.warbot.FSM.plan.WarPlanHealer;
 import edu.warbot.FSM.plan.WarPlanRamasserNouriture;
+import edu.warbot.FSM.plan.WarPlanSettings;
 import edu.warbot.FSM.reflexe.WarReflexeWarnWithCondition;
 import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.enums.WarAgentType;
@@ -42,13 +43,17 @@ public class WarExplorerBrainController extends WarBrain<WarExplorerAdapter> {
 		fsm.addReflexe(new WarReflexeWarnWithCondition<WarExplorerAdapter>(getAgent(), condReflex, WarAgentType.WarRocketLauncher, WarFSMMessage.enemyBaseHere));
 
 		/*** Etats ***/
-		WarEtat<WarExplorerAdapter> etatGetFood = new WarEtat<WarExplorerAdapter>("Etat get Food", new WarPlanRamasserNouriture<WarExplorerAdapter>(getAgent()));
+		WarEtat<WarExplorerAdapter> etatGetFood = new WarEtat<WarExplorerAdapter>("Etat get Food", new WarPlanRamasserNouriture<WarExplorerAdapter>(getAgent(), null));
 		fsm.addEtat(etatGetFood);
 
-		WarEtat<WarExplorerAdapter> etatHeal = new WarEtat<WarExplorerAdapter>("Etat heal", new WarPlanHealer<WarExplorerAdapter>(getAgent(), 50, 50));
+		WarPlanSettings set1 = new WarPlanSettings();
+		set1.Value_pourcentage = 50;
+		set1.Value_pourcentage_destination = 50;
+		WarEtat<WarExplorerAdapter> etatHeal = new WarEtat<WarExplorerAdapter>("Etat heal", 
+				new WarPlanHealer<WarExplorerAdapter>(getAgent(), set1));
 		fsm.addEtat(etatHeal);
 
-		WarEtat<WarExplorerAdapter> etatSecure = new WarEtat<WarExplorerAdapter>("Etat be secure", new WarPlanBeSecure<WarExplorerAdapter>(getAgent()));
+		WarEtat<WarExplorerAdapter> etatSecure = new WarEtat<WarExplorerAdapter>("Etat be secure", new WarPlanBeSecure<WarExplorerAdapter>(getAgent(), null));
 		fsm.addEtat(etatSecure);
 
 		/*** Conditions ***/

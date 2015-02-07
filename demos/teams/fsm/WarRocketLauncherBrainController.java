@@ -9,6 +9,7 @@ import edu.warbot.FSM.condition.WarConditionPerceptCounter;
 import edu.warbot.FSM.plan.WarPlanAttaquer;
 import edu.warbot.FSM.plan.WarPlanDefendre;
 import edu.warbot.FSM.plan.WarPlanPatrouiller;
+import edu.warbot.FSM.plan.WarPlanSettings;
 import edu.warbot.FSM.reflexe.WarReflexeWarnWithCondition;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
@@ -40,13 +41,21 @@ public class WarRocketLauncherBrainController extends WarBrain<WarRocketLauncher
 		fsm.addReflexe(new WarReflexeWarnWithCondition<WarRocketLauncherAdapter>(getAgent(), condReflex, WarAgentType.WarRocketLauncher, WarFSMMessage.enemyBaseHere));
 
 		/*** Etats ***/
-		WarEtat<WarRocketLauncherAdapter> etatPatrouille = new WarEtat<WarRocketLauncherAdapter>("Etat patrouiler", new WarPlanPatrouiller(getAgent(), true));
+		WarPlanSettings set1 = new WarPlanSettings();
+		set1.Offensif = true;
+		WarEtat<WarRocketLauncherAdapter> etatPatrouille = new WarEtat<WarRocketLauncherAdapter>("Etat patrouiler", 
+				new WarPlanPatrouiller(getAgent(), set1));
 		fsm.addEtat(etatPatrouille);
 
-		WarEtat<WarRocketLauncherAdapter> etatAtt = new WarEtat<WarRocketLauncherAdapter>("Etat Attaquer", new WarPlanAttaquer(getAgent(), WarAgentType.WarBase));
+		WarPlanSettings set2 = new WarPlanSettings();
+		set2.Agent_type_destination = new WarAgentType[1];
+		set2.Agent_type_destination[0] = WarAgentType.WarBase;
+		WarEtat<WarRocketLauncherAdapter> etatAtt = new WarEtat<WarRocketLauncherAdapter>("Etat Attaquer", 
+				new WarPlanAttaquer(getAgent(), set2));
 		fsm.addEtat(etatAtt);
 
-		WarEtat<WarRocketLauncherAdapter> etatDef = new WarEtat<WarRocketLauncherAdapter>("Etat Defendre", new WarPlanDefendre(getAgent()));
+		WarEtat<WarRocketLauncherAdapter> etatDef = new WarEtat<WarRocketLauncherAdapter>("Etat Defendre", 
+				new WarPlanDefendre(getAgent(), null));
 		fsm.addEtat(etatDef);
 
 		/*** Conditions ***/
