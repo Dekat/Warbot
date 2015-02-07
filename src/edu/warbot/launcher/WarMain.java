@@ -172,22 +172,23 @@ public class WarMain implements Observer {
 						URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new URL("jar:file:/" + urlName + "!/")});
                         System.out.println("jar:file:/" + urlName + "!/");
                         
+                        //Vérifie si l'équipe est une FSM (regard dans le fichier de configuration)
                         if(analXML.isFSMTeam()){
-                        	//Avec me fichier de configuratio on recupere toutes le infos
+                        	//Classe qui permet de lire de fichier de configuration de la FSM (par défault "XMLConfiguration.xml")
+                        	// la méthode analXML.getFSMConfigurationFileName() renvoi normalement le nom du fichier de configuration de la FSM trouvé dans le jar
                         	FSMXmlReader xmlReader = new FSMXmlReader(analXML.getFSMConfigurationFileName());
-                    		Modele model = xmlReader.getGeneratedFSMModel();
-                    		FSMModelRebuilder fsmRebuilder = new FSMModelRebuilder(model);
-                    		Modele modelRebuild = fsmRebuilder.getRebuildModel();
+                    		//Récupère le modele de FSM gégéné grace au fichier de configuration
+                        	Modele model = xmlReader.getGeneratedFSMModel();
                     		
-                    		//On a le fsm instancier ui va permettre de recupérer les brains
-                    		FSMInstancier fsmInstancier = new FSMInstancier(modelRebuild);
+                    		//Permettre de recupérer les brains, prend en parametre le modele de la FSM
+                    		FSMInstancier fsmInstancier = new FSMInstancier(model);
+                    		//Cette méthode va permettre de récupérer un BrainControleur pour UN agent 
+//                    		WarFSMBrainController : fsmInstancier.getInstanciateFSM(agentType, agentAdapter)
                     		
                     		HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();
                     		
 							for (String agentName : brainControllersClassesName.keySet()) {
-								// TODO TODO TODO TODO ici l'adapter c'est quoi ?
-								//Ensuite il faut créer une classe abstraite warBrain et lui mettre en sous classes WarBrain actuel et WarFSM (ou une classe adateur WarBrainFSM par exemple)
-//                    			//Remarque : la classe WarFSM (renvoyé par getInstanciateFSM) est l'instance du brain sur lequel il faut appeler execute (executeFSM pour l'instant c'est pour ça qu'un adapteur serait propre mais c'est pas l'urgent) à chaque tik.
+								// TODO ici l'adapter c'est quoi ?
 //								currentTeam.addBrainControllerClassForAgent(fsmInstancier.getInstanciateFSM(WarAgentType.valueOf(agentName), null));
 							}
 					

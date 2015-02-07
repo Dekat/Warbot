@@ -98,7 +98,6 @@ public class Controleur {
 //		printModelInformations(modeleRead);
 		
 		FSMModelRebuilder fsmModRebuilder = new FSMModelRebuilder(modeleRead);
-		fsmModRebuilder.rebuildModel();
 		Modele modelRebuild = fsmModRebuilder.getRebuildModel();
 		
 		printModelInformations(modelRebuild);
@@ -112,7 +111,7 @@ public class Controleur {
 		WarExplorerAdapter explorerAdapter = null;
 			//new WarExplorerAdapter(new WarExplorer(new Team("Team_debug_FSM"), brain));
 		
-		WarFSM fsm = fsmInstancier.getInstanciateFSM(WarAgentType.WarExplorer, explorerAdapter);
+		WarFSM fsm = fsmInstancier.getBrainControleurForAgent(WarAgentType.WarExplorer, explorerAdapter);
 		
 		fsm.initFSM();
 		

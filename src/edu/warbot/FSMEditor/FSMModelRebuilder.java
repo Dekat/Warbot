@@ -8,30 +8,28 @@ import edu.warbot.FSMEditor.Modeles.ModeleCondition;
 import edu.warbot.FSMEditor.Modeles.ModeleState;
 /**
  * Cette classe permet de prendre un Model du FSMEditor qui n'est pas complet
- * Le model contient des ID pour les �tats destinations des condtions et les conditions des �tats
+ * Le model contient des ID pour les états destinations des conditions et les conditions des états
  * Cette classe va permettre de reconstuire le modele avec les vrais pointeurs en remplacant les ID 
- * par les conditions ou �tats auquels ils correspondent (encore une description de classe incompr�henssible)
+ * par les conditions ou états auquels ils correspondent
+ * Passer en parametre du constucteur un modele issue du fichier de configuration
+ * Récupérer le modele reconstuit avec getRebuildModel
  * @author Olivier
  */
 public class FSMModelRebuilder {
 
 	private Modele model;
-	private boolean isModelRebuilded = false;
 
 	public FSMModelRebuilder(Modele model) {
 		this.model = model;
+		rebuildModel();
+		this.model.setIsRebuild(true);
 	}
 
-	/**
-	 * Cette méthode est appelé automatiquement quand le modele est récupéré 
-	 * si le modele na pas encore été reconstruit
-	 */
-	public void rebuildModel() {
+	private void rebuildModel() {
 		//Rebuild chaque brains
 		for (ModeleBrain brain : model.getModelsBrains()) {
 			rebuildBrain(brain);
 		}
-		isModelRebuilded = true;
 	}
 
 	private void rebuildBrain(ModeleBrain brain) {
@@ -80,10 +78,10 @@ public class FSMModelRebuilder {
 		}
 	}
 
+	/**
+	 * @return Le modèle de la FSM reconstuit (correspond au modèle utilisable pour instiancier des FSMBrains)
+	 */
 	public Modele getRebuildModel() {
-		if(!isModelRebuilded)
-			this.rebuildModel();
-		
 		return this.model;
 	}
 

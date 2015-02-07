@@ -2,11 +2,11 @@ package edu.warbot.FSMEditor;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.warbot.FSM.WarEtat;
 import edu.warbot.FSM.WarFSM;
+import edu.warbot.FSM.WarFSMBrainController;
 import edu.warbot.FSM.plan.WarPlan;
 import edu.warbot.FSM.plan.WarPlanSettings;
 import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
@@ -18,6 +18,13 @@ import edu.warbot.brains.ControllableWarAgentAdapter;
 import edu.warbot.brains.WarAgentAdapter;
 import edu.warbot.brains.adapters.WarExplorerAdapter;
 
+/**
+ * Permet de générer et d'instanicer un objet de type FSM grâce à un modele de FSM
+ * Prend en parametre un modele de FSM
+ * Appeler la méthode getBrainControleurForAgent pour récupérer l'instance du brain d'un agent (instance d'une sous classe de warBrain) (le controleur renvoyé peut etre assimilé à un controleur issue d'une équipe classique)
+ * @author Olivier
+ *
+ */
 public class FSMInstancier {
 	
 //	ArrayList<WarFSM> fsm = new ArrayList<WarFSM>();
@@ -28,17 +35,22 @@ public class FSMInstancier {
 	public FSMInstancier(Modele modele) {
 		this.model = modele;
 
+		if(!modele.isRebuild()){
+			FSMModelRebuilder fsmModeleRebuilder = new FSMModelRebuilder(modele);
+			this.model = fsmModeleRebuilder.getRebuildModel();
+		}
+			
 		generateHashMap();
 
 //		generateAllFSM();
 	}
 	
-	public FSMInstancier(String xmlConfigurationFileName) {
-		this(getModel(xmlConfigurationFileName));
-		FSMXmlReader xmlReader = new FSMXmlReader(xmlConfigurationFileName);
-		Modele model = xmlReader.getGeneratedFSMModel();
-		FSMModelRebuilder fsmRebuilder = new FSMModelRebuilder(model);
-	}
+//	public FSMInstancier(String xmlConfigurationFileName) {
+//		this(getModel(xmlConfigurationFileName));
+//		FSMXmlReader xmlReader = new FSMXmlReader(xmlConfigurationFileName);
+//		Modele model = xmlReader.getGeneratedFSMModel();
+//		FSMModelRebuilder fsmRebuilder = new FSMModelRebuilder(model);
+//	}
 
 	private static Modele getModel(String xmlConfigurationFileName) {
 		FSMXmlReader xmlReader = new FSMXmlReader(xmlConfigurationFileName);
@@ -47,11 +59,16 @@ public class FSMInstancier {
 		return fsmRebuilder.getRebuildModel();
 	}
 
-	//Ici le type generique de FSM est le type de l'adapteur mais comment le mettre comme type generic ???
-	public WarFSM getInstanciateFSM(WarAgentType agentType, ControllableWarAgentAdapter adapter) {
-		
+	//Ici le type generique de FSM est le type de l'adapteur mais comment le mettre comme type generique ?
+	/**
+	 * 
+	 * @param agentType le type de l'agent que l'on souhaite récupére le brain
+	 * @param adapter l'adapteur de l'agent dont on souhaite récupérer le BrainContoleur
+	 * @return une instance de BrainControleur pour une fsm (semble à un brainController du équipe classique) (sous classe de WarBrain)
+	 */
+	public WarFSM getBrainControleurForAgent(WarAgentType agentType, ControllableWarAgentAdapter adapter) {
 		WarFSM fsm = new WarFSM<ControllableWarAgentAdapter>();
-		
+
 		//On recupère le modeleBrain qui correspond à l'agentType 
 		ModeleBrain modelBrain = this.model.getModelBrain(agentType);
 		
@@ -68,11 +85,11 @@ public class FSMInstancier {
 
 	private WarEtat<ControllableWarAgentAdapter> getGenerateWarState(
 			ModeleState modelState, ControllableWarAgentAdapter adapter) {
-		//R�cup�re le plan
+		//Récupère le plan
 		WarPlan<ControllableWarAgentAdapter> warPlan = 
 				getGenerateWarPlan(modelState, adapter);
 		
-		//Cr�e l'�tat
+		//Crée l'état
 		WarEtat<ControllableWarAgentAdapter> warState = 
 				new WarEtat<ControllableWarAgentAdapter>(modelState.getName(), warPlan);
 				

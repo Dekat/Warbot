@@ -120,11 +120,18 @@ public class FSMXmlSaver extends FSMXmlParser{
 			try {
 				//Pour les tableaux
 				if(fields[i].getType().isArray()){
-					Object[] fieldValues = (Object[]) fields[i].get(planSet);
-					fieldValueString = Arrays.toString(fieldValues);
+					if(fields[i].get(planSet) == null)
+						fieldValueString = "";
+					else{
+						Object[] fieldValues = (Object[]) fields[i].get(planSet);
+						fieldValueString = Arrays.toString(fieldValues);
+					}
 					
 				}else{ //Pour les valeurs simples
-					fieldValueString = String.valueOf(fields[i].get(planSet));
+					if(fields[i].get(planSet) == null)
+						fieldValueString = "";
+					else
+						fieldValueString = String.valueOf(fields[i].get(planSet));
 				}
 					
 			} catch (IllegalArgumentException e) {
