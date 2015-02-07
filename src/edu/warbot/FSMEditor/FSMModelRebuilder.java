@@ -8,28 +8,35 @@ import edu.warbot.FSMEditor.Modeles.ModeleCondition;
 import edu.warbot.FSMEditor.Modeles.ModeleState;
 /**
  * Cette classe permet de prendre un Model du FSMEditor qui n'est pas complet
- * Le model contient des ID pour les états destinations des condtions et les conditions des états
+ * Le model contient des ID pour les ï¿½tats destinations des condtions et les conditions des ï¿½tats
  * Cette classe va permettre de reconstuire le modele avec les vrais pointeurs en remplacant les ID 
- * par les conditions ou états auquels ils correspondent (encore une description de classe incompréhenssible)
+ * par les conditions ou ï¿½tats auquels ils correspondent (encore une description de classe incomprï¿½henssible)
  * @author Olivier
  */
 public class FSMModelRebuilder {
 
 	private Modele model;
+	private boolean isModelRebuilded = false;
 
 	public FSMModelRebuilder(Modele model) {
 		this.model = model;
 	}
 
+	/**
+	 * Cette mÃ©thode est appelÃ© automatiquement quand le modele est rÃ©cupÃ©rÃ© 
+	 * si le modele na pas encore Ã©tÃ© reconstruit
+	 */
 	public void rebuildModel() {
+		//Rebuild chaque brains
 		for (ModeleBrain brain : model.getModelsBrains()) {
 			rebuildBrain(brain);
 		}
+		isModelRebuilded = true;
 	}
 
 	private void rebuildBrain(ModeleBrain brain) {
 		/**
-		 * Construit une liste d'assotion pour les id (states et conditions) et les objets réels (pointeurs state et conditions)
+		 * Construit une liste d'assotion pour les id (states et conditions) et les objets rï¿½els (pointeurs state et conditions)
 		 */
 		//Construit une liste d'association conditionID - condition pointeur
 		//Construit une liste d'association stateID - state pointeur
@@ -37,7 +44,7 @@ public class FSMModelRebuilder {
 		HashMap<String, ModeleCondition> mapConditionsID = new HashMap<>();
 		HashMap<String, ModeleState> mapStatesID = new HashMap<>();
 		
-		//construit liste états
+		//construit liste Ã©tats
 		for (ModeleState state : brain.getStates()) {
 			mapStatesID.put(state.getName(), state);
 		}
@@ -47,12 +54,12 @@ public class FSMModelRebuilder {
 			mapConditionsID.put(condition.getName(), condition);
 		}
 		
-		//Pour chaque état
+		//Pour chaque ï¿½tat
 		for (ModeleState state : brain.getStates()) {
 			rebuildState(state, mapConditionsID);
 		}
 		
-		//Pour chaque état
+		//Pour chaque ï¿½tat
 		for (ModeleCondition cond : brain.getConditions()) {
 			rebuildCondition(cond, mapStatesID);
 		}
@@ -66,14 +73,17 @@ public class FSMModelRebuilder {
 	private void rebuildState(ModeleState state,
 			HashMap<String, ModeleCondition> mapConditionsID) {
 		
-		//Pour chaque ID conditions de sortie de l'état
+		//Pour chaque ID conditions de sortie de l'Ã©tat
 		for (String currentConditionID : state.getConditionsOutID()) {
-			//On récupère la conditions dan la liste d'association et on l'ajoute au modele
+			//On rÃ©cupÃ¨re la conditions dan la liste d'association et on l'ajoute au modele
 			state.addConditionOut(mapConditionsID.get(currentConditionID));
 		}
 	}
 
 	public Modele getRebuildModel() {
+		if(!isModelRebuilded)
+			this.rebuildModel();
+		
 		return this.model;
 	}
 

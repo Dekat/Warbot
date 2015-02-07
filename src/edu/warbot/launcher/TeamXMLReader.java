@@ -10,6 +10,8 @@ import javax.xml.xpath.XPathExpressionException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlParser;
+import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
 import edu.warbot.tools.WarXmlReader;
 
 /**
@@ -91,5 +93,10 @@ public class TeamXMLReader {
 	public boolean isFSMTeam() {
 		// TODO 
 		return false;
+	}
+
+	public String getFSMConfigurationFileName() {
+		//TODO
+		return FSMXmlReader.xmlConfigurationFilename;
 	}
 }

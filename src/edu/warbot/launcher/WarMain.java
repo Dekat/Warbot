@@ -19,6 +19,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import edu.warbot.FSMEditor.FSMInstancier;
+import edu.warbot.FSMEditor.FSMModelRebuilder;
+import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
+import edu.warbot.FSMEditor.Modeles.Modele;
+import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
@@ -142,34 +147,52 @@ public class WarMain implements Observer {
 						}
 					}
 					if (configFileFound) {
-						//TODO j'ajoute ça ici comme un porc mais il faudrait mettre tous ca dans des méthodes
-//						if(analXML.isFSMTeam()){
-							
-//						}else
 						
-							// On a maintenant tous les fichiers dans un tableau et le fichier de configuration a été analysé
-	
-							// On récupère le logo
-	                        JarEntry logoEntry = allJarEntries.get(analXML.getIconeName());
-	                        ImageIcon teamLogo = new ImageIcon(WarIOTools.toByteArray(jarCurrentFile.getInputStream(logoEntry)));
-	                        // TODO set general logo if no image found
-							// On change sa taille
-							Image tmp = teamLogo.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-							teamLogo = new ImageIcon(tmp);
-	
-							// On récupère le son
-							// TODO ajouter le son aux équipes
-	
-							// On créé l'équipe
-							currentTeam = new Team(analXML.getTeamName());
-							currentTeam.setLogo(teamLogo);
-							currentTeam.setDescription(analXML.getTeamDescription().trim());
-	
-							// On recherche les classes de type BrainController
-							// Pour cela, on utilise un URLClassLoader
-							String urlName = currentFile.getCanonicalPath();
-							URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new URL("jar:file:/" + urlName + "!/")});
-	                        System.out.println("jar:file:/" + urlName + "!/");
+						// On a maintenant tous les fichiers dans un tableau et le fichier de configuration a été analysé
+
+						// On récupère le logo
+                        JarEntry logoEntry = allJarEntries.get(analXML.getIconeName());
+                        ImageIcon teamLogo = new ImageIcon(WarIOTools.toByteArray(jarCurrentFile.getInputStream(logoEntry)));
+                        // TODO set general logo if no image found
+						// On change sa taille
+						Image tmp = teamLogo.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+						teamLogo = new ImageIcon(tmp);
+
+						// On récupère le son
+						// TODO ajouter le son aux équipes
+
+						// On créé l'équipe
+						currentTeam = new Team(analXML.getTeamName());
+						currentTeam.setLogo(teamLogo);
+						currentTeam.setDescription(analXML.getTeamDescription().trim());
+
+						// On recherche les classes de type BrainController
+						// Pour cela, on utilise un URLClassLoader
+						String urlName = currentFile.getCanonicalPath();
+						URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new URL("jar:file:/" + urlName + "!/")});
+                        System.out.println("jar:file:/" + urlName + "!/");
+                        
+                        if(analXML.isFSMTeam()){
+                        	//Avec me fichier de configuratio on recupere toutes le infos
+                        	FSMXmlReader xmlReader = new FSMXmlReader(analXML.getFSMConfigurationFileName());
+                    		Modele model = xmlReader.getGeneratedFSMModel();
+                    		FSMModelRebuilder fsmRebuilder = new FSMModelRebuilder(model);
+                    		Modele modelRebuild = fsmRebuilder.getRebuildModel();
+                    		
+                    		//On a le fsm instancier ui va permettre de recupérer les brains
+                    		FSMInstancier fsmInstancier = new FSMInstancier(modelRebuild);
+                    		
+                    		HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();
+                    		
+							for (String agentName : brainControllersClassesName.keySet()) {
+								// TODO TODO TODO TODO ici l'adapter c'est quoi ?
+								//Ensuite il faut créer une classe abstraite warBrain et lui mettre en sous classes WarBrain actuel et WarFSM (ou une classe adateur WarBrainFSM par exemple)
+//                    			//Remarque : la classe WarFSM (renvoyé par getInstanciateFSM) est l'instance du brain sur lequel il faut appeler execute (executeFSM pour l'instant c'est pour ça qu'un adapteur serait propre mais c'est pas l'urgent) à chaque tik.
+//								currentTeam.addBrainControllerClassForAgent(fsmInstancier.getInstanciateFSM(WarAgentType.valueOf(agentName), null));
+							}
+					
+                    		
+                        }else{
 	                        // On parcours chaque nom de classe, puis on les charge
 							HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();
 	
@@ -178,19 +201,20 @@ public class WarMain implements Observer {
 	                            currentTeam.addBrainControllerClassForAgent(agentName,
 										(Class<? extends WarBrain>) classLoader.loadClass(classEntry.getName().replace(".class", "").replace("/", ".")));
 							}
-	
-							// On ferme le loader
-							classLoader.close();
-	
-							// Puis on ferme le fichier JAR
-							jarCurrentFile.close();
-	
-							// Si il y a déjà une équipe du même nom on ne l'ajoute pas
-							if (loadedTeams.containsKey(currentTeam.getName()))
-								System.err.println("Erreur lors de la lecture d'une équipe : le nom " + currentTeam.getName() + " est déjà utilisé.");
-							else
-								loadedTeams.put(currentTeam.getName(), currentTeam);
-//						}
+                        }
+
+						// On ferme le loader
+						classLoader.close();
+
+						// Puis on ferme le fichier JAR
+						jarCurrentFile.close();
+
+						// Si il y a déjà une équipe du même nom on ne l'ajoute pas
+						if (loadedTeams.containsKey(currentTeam.getName()))
+							System.err.println("Erreur lors de la lecture d'une équipe : le nom " + currentTeam.getName() + " est déjà utilisé.");
+						else
+							loadedTeams.put(currentTeam.getName(), currentTeam);
+						
 					} else { // Si le fichier de configuration n'a pas été trouvé
 						System.err.println("Le fichier de configuration est introuvable dans le fichier JAR " + currentFile.getCanonicalPath());
 					}

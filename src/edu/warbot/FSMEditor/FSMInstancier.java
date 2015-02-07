@@ -9,6 +9,7 @@ import edu.warbot.FSM.WarEtat;
 import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSM.plan.WarPlan;
 import edu.warbot.FSM.plan.WarPlanSettings;
+import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
 import edu.warbot.FSMEditor.Modeles.Modele;
 import edu.warbot.FSMEditor.Modeles.ModeleBrain;
 import edu.warbot.FSMEditor.Modeles.ModeleState;
@@ -30,6 +31,20 @@ public class FSMInstancier {
 		generateHashMap();
 
 //		generateAllFSM();
+	}
+	
+	public FSMInstancier(String xmlConfigurationFileName) {
+		this(getModel(xmlConfigurationFileName));
+		FSMXmlReader xmlReader = new FSMXmlReader(xmlConfigurationFileName);
+		Modele model = xmlReader.getGeneratedFSMModel();
+		FSMModelRebuilder fsmRebuilder = new FSMModelRebuilder(model);
+	}
+
+	private static Modele getModel(String xmlConfigurationFileName) {
+		FSMXmlReader xmlReader = new FSMXmlReader(xmlConfigurationFileName);
+		Modele model = xmlReader.getGeneratedFSMModel();
+		FSMModelRebuilder fsmRebuilder = new FSMModelRebuilder(model);
+		return fsmRebuilder.getRebuildModel();
 	}
 
 	//Ici le type generique de FSM est le type de l'adapteur mais comment le mettre comme type generic ???
