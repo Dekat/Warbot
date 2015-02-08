@@ -6,6 +6,7 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
+import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.tools.GeometryTools;
 import madkit.kernel.AbstractAgent;
 import turtlekit.kernel.Turtle;
@@ -128,25 +129,12 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	}
 
 	protected boolean isGoingToBeOutOfMap() {
-		// Si c'est un monde ouvert, l'agent ne sera jamais en dehors de la carte
-		if (getTeam().getGame().getSettings().isOpenWorld())
-			return false;
-		
+
 		CoordCartesian nextPos = new CoordCartesian(getX(), getY());
 		if (this instanceof MovableActions)
 			nextPos.add(new CoordPolar(((Movable) this).getSpeed(), getHeading()).toCartesian());
 
-//        Area areaAgent = new Area(getActualFormAtPosition(nextPos.getX(), nextPos.getY()));
-//        Area areaMap = new Area(getTeam().getGame().getMap().getMapLimits());
-//        areaMap.intersect(areaAgent);
-//        areaMap.subtract(areaAgent);
-//        return ! areaMap.isEmpty();
-
         return ! getTeam().getGame().getMap().getMapLimits().contains(nextPos.getX(), nextPos.getY());
-
-//        Dimension mapSize = getTeam().getGame().getMap().getBounds();
-//		return ((nextPos.getX() - getHitbox() - MAP_MARGINS) < 0) || ((nextPos.getX() + getHitbox() + MAP_MARGINS) > mapSize.width) ||
-//				((nextPos.getY() - getHitbox() - MAP_MARGINS) < 0) || ((nextPos.getY() + getHitbox() + MAP_MARGINS) > mapSize.height);
 	}
 
 	protected boolean isGoingToBeOverAnOtherAgent() {
@@ -168,7 +156,6 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	}
 
 	protected boolean isInCollisionWith(WarAgent agent) {
-//		return getDistanceFrom(agent) < 0;
         Area currentAgentArea = new Area(getActualForm());
         Area agentArea = new Area(agent.getActualForm());
         agentArea.intersect(currentAgentArea);
@@ -180,17 +167,9 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
         Area agentArea = new Area(agent.getActualForm());
         agentArea.intersect(currentAgentArea);
         return ! agentArea.isEmpty();
-//        return WarMathTools.getDistanceBetweenTwoPoints(pos.getX(), pos.getY(), agent.getX(), agent.getY()) < (getHitbox() + agent.getHitbox());
 	}
 	
 	public void setPositionAroundOtherAgent(WarAgent agent) {
-//		CoordCartesian newPos;
-//		CoordCartesian agentPos = new CoordCartesian(agent.getX(), agent.getY());
-//        double radiusWhereCreateAgent = getHitboxMaxRadius() + agent.getHitboxMaxRadius();
-//		do {
-//			newPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(radiusWhereCreateAgent, new Random().nextDouble() * 360));
-//			setPosition(newPos);
-//		} while(isGoingToBeOverAnOtherAgent() || isGoingToBeOutOfMap());
         setPosition(agent.getPosition());
         moveOutOfCollision();
 	}
@@ -221,12 +200,12 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 
         // Test si l'agent est hors carte
         CoordCartesian agentPosition = getPosition();
-        if (! getTeam().getGame().getMap().getMapLimits().contains(agentPosition.getX(), agentPosition.getY())) {
-            Rectangle2D mapBounds = getTeam().getGame().getMap().getBounds();
-            CoordPolar moveToMapCenter = new CoordPolar(1, agentPosition.getAngleToPoint(new CoordCartesian(mapBounds.getCenterX(), mapBounds.getCenterY())));
+        AbstractWarMap map = getTeam().getGame().getMap();
+        if (! map.getMapLimits().contains(agentPosition.getX(), agentPosition.getY())) {
+            CoordPolar moveToMapCenter = new CoordPolar(1, agentPosition.getAngleToPoint(new CoordCartesian(map.getCenterX(), map.getCenterY())));
             do {
                 agentPosition.add(moveToMapCenter.toCartesian());
-            } while(! getTeam().getGame().getMap().getMapLimits().contains(agentPosition.getX(), agentPosition.getY()));
+            } while(! map.getMapLimits().contains(agentPosition.getX(), agentPosition.getY()));
             setPosition(agentPosition);
             isPositionChanged = true;
         }

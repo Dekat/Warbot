@@ -101,7 +101,7 @@ public class MotherNatureTeam extends Team {
 				CoordCartesian newPos = WarMathTools.addTwoPoints(
 						foodPositions.get(new Random().nextInt(foodPositions.size())).getCenterPosition(),
 						CoordPolar.getRandomInBounds(WarConfig.getRadiusResourcesAreas()).toCartesian());
-				newPos.normalize(0, map.getBoundsWidth(), 0, map.getBoundsHeight());
+				newPos.normalize(0, map.getWidth(), 0, map.getHeight());
 				resource.setPosition(newPos);
                 resource.moveOutOfCollision();
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
