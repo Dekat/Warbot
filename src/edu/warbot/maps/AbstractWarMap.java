@@ -16,7 +16,7 @@ public abstract class AbstractWarMap {
 	protected static final float FOOD_POSITION_RADIUS = 200;
 	
 
-	private Shape mapLimits;
+	protected Shape mapLimits;
 	private ArrayList<ArrayList<WarCircle>> _teamsPositions;
 	private ArrayList<WarCircle> _foodPositions;
 	

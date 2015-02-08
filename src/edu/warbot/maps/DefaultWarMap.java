@@ -10,7 +10,6 @@ public class DefaultWarMap extends AbstractWarMap {
 	public DefaultWarMap() {
 		super(new Rectangle2D.Float(0, 0, 1000, 600));
 		
-		// left side
 		addTeamPositions(
 				new CoordCartesian(TEAM_POSITION_RADIUS, TEAM_POSITION_RADIUS),
 				new CoordCartesian(TEAM_POSITION_RADIUS, getBoundsHeight() / 2),
