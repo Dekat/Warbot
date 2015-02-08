@@ -81,18 +81,18 @@ public class Controleur {
 	public void eventMenuBarItemSave() {
 		FSMXmlSaver fsmSaver = new FSMXmlSaver();
 		
-		fsmSaver.saveFSM(modele, FSMXmlReader.xmlConfigurationFilename);
+		fsmSaver.saveFSM(modele, FSMXmlReader.xmlConfigurationDefaultFilename);
 		System.out.println("Configuration file exported successfull");
 		
 	}
 	
 	public void eventMenuBarItemSaveJar() {
 		FSMXmlSaver saver = new FSMXmlSaver();
-		saver.saveFSM(this.modele, FSMXmlReader.xmlConfigurationFilename);
+		saver.saveFSM(this.modele, FSMXmlReader.xmlConfigurationDefaultFilename);
 		
 		System.out.println("Configuration file exported successfull");
 
-		FSMXmlReader reader = new FSMXmlReader(FSMXmlReader.xmlConfigurationFilename);
+		FSMXmlReader reader = new FSMXmlReader(FSMXmlReader.xmlConfigurationDefaultFilename);
 		Modele modeleRead = reader.getGeneratedFSMModel();
 		
 //		printModelInformations(modeleRead);

@@ -103,7 +103,6 @@ public class TeamXMLReader {
 	}
 
 	public String getFSMConfigurationFileName() {
-		//TODO
-		return FSMXmlReader.xmlConfigurationFilename;
+		return FSMXmlReader.xmlConfigurationDefaultFilename;
 	}
 }

@@ -1,4 +1,4 @@
-package teams.fsm;
+package teams.fsmedit;
 
 import java.util.ArrayList;
 

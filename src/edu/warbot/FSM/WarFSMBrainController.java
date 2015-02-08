@@ -4,6 +4,7 @@ import edu.warbot.brains.ControllableWarAgentAdapter;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarExplorerAdapter;
 
+//Ici plutot mettre ControllableWarAgentAdapter ?
 public class WarFSMBrainController extends WarBrain<WarExplorerAdapter>{
 	
 	private WarFSM<ControllableWarAgentAdapter> fsm;

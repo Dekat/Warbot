@@ -12,11 +12,17 @@ import java.util.logging.Level;
 
 import javax.swing.ImageIcon;
 
+import edu.warbot.FSM.WarFSM;
+import edu.warbot.FSM.WarFSMBrainController;
+import edu.warbot.FSMEditor.FSMInstancier;
+import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
+import edu.warbot.FSMEditor.Modeles.Modele;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
 import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.brains.ControllableWarAgentAdapter;
 import edu.warbot.brains.WarAgentAdapter;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarExplorerAdapter;
@@ -41,6 +47,7 @@ public class Team extends Observable {
 	private HashMap<WarAgentType, Integer> _nbUnitsLeft;
 	private ArrayList<WarAgent> _dyingAgents;
 	private WarGame game;
+	private Modele fsmModel;
 	
 	public Team(String nom) {
 		_name = nom;
@@ -276,15 +283,42 @@ public class Team extends Observable {
 	public ControllableWarAgent instantiateNewControllableWarAgent(String agentName) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
 		String agentToCreateClassName = WarBase.class.getPackage().getName() + "." + agentName;
         Class<? extends WarBrain> brainControllerClass = getBrainControllerOfAgent(agentName);
+        
         ControllableWarAgent a = (ControllableWarAgent) Class.forName(agentToCreateClassName)
 				.getConstructor(Team.class, brainControllerClass.getSuperclass())
 				.newInstance(this, brainControllerClass.newInstance());
 		
 		a.setLogLevel(getGame().getSettings().getLogLevel());
 
+		if(a.getBrain() instanceof WarFSMBrainController){
+			System.out.println("Instance of FSM brain found");
+			System.out.println("Generating fsm instance for " + agentName + "...");
+			//Intancie la fsm et la donne comme brain à l'agent
+			FSMInstancier fsmInstancier = new FSMInstancier(getFSMModel());
+			ControllableWarAgentAdapter adapter = a.getBrain().getAgent();
+			WarFSM warFsm = fsmInstancier.getBrainControleurForAgent(WarAgentType.valueOf(agentName), adapter);
+			System.out.println("Generation succesfull");
+			
+			if(a.getBrain() instanceof WarFSMBrainController){
+				WarFSMBrainController fsmBrainController = (WarFSMBrainController)a.getBrain();
+				fsmBrainController.setFSM(warFsm);
+				
+			}else{
+				System.err.println("Erreur un brain de fsm n'est pas une instance de WarFSMBrainController");
+			}
+		}
+		
 		return a;
 	}
 	
+	private Modele getFSMModel() {
+		return this.fsmModel;
+	}
+	
+	public void setFSMModel(Modele fsmModel) {
+		this.fsmModel = fsmModel;
+	}
+
 	public void createUnit(Creator creatorAgent, WarAgentType agentTypeToCreate) {
 		if (creatorAgent instanceof WarAgent) {
 			// TODO ajout des conditions de création

@@ -25,13 +25,12 @@ import edu.warbot.agents.enums.WarAgentType;
  */
 public class FSMXmlReader extends FSMXmlParser{
 
-	public static String xmlConfigurationFilename = "XMLConfiguration.xml";
 	private Modele modeleFSM;
 	
 	public FSMXmlReader(String fileName) {
 
 		if(fileName == null)
-			fileName = xmlConfigurationFilename;
+			fileName = xmlConfigurationDefaultFilename;
 			
 		// Ouvre le XML
 		File xmlFile = new File(fileName);

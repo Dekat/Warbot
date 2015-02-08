@@ -1,4 +1,4 @@
-package teams.fsm;
+package teams.fsmedit;
 
 import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.brains.WarBrain;

@@ -1,4 +1,4 @@
-package teams.fsm;
+package teams.fsmedit;
 
 import edu.warbot.FSM.WarEtat;
 import edu.warbot.FSM.WarFSM;

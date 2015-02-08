@@ -22,7 +22,9 @@ import javax.swing.SwingUtilities;
 import edu.warbot.FSM.WarFSMBrainController;
 import edu.warbot.FSMEditor.FSMInstancier;
 import edu.warbot.FSMEditor.FSMModelRebuilder;
+import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlParser;
 import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
+import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlSaver;
 import edu.warbot.FSMEditor.Modeles.Modele;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
@@ -127,27 +129,16 @@ public class WarMain implements Observer {
 					JarFile jarCurrentFile = new JarFile(currentFile);
 
 					// On parcours les entrées du fichier JAR à la recherche des fichiers souhaités
-					JarEntry currentEntry;
-					Enumeration<JarEntry> entries = jarCurrentFile.entries();
-					HashMap<String, JarEntry> allJarEntries = new HashMap<>();
-					boolean configFileFound = false;
-					while (entries.hasMoreElements()) {
-						currentEntry = entries.nextElement();
-
-						// Si c'est le fichier config.xml
-						if (currentEntry.getName().endsWith("config.xml")) {
-							// On le lit et on l'analyse grâce à la classe TeamXmlReader
-							BufferedInputStream input = new BufferedInputStream(jarCurrentFile.getInputStream(currentEntry));
-							analXML.ouverture(input);
-							input.close();
-							configFileFound = true;
-						}
-						else { // Sinon, on ne peut pas encore identifier le fichier donc nous allons le conserver (il faut d'abord analyser le fichier de configuration)
-							String currentEntryName = currentEntry.getName();
-							allJarEntries.put(currentEntryName.substring(currentEntryName.lastIndexOf("/") + 1, currentEntryName.length()), currentEntry);
-						}
-					}
-					if (configFileFound) {
+					HashMap<String, JarEntry> allJarEntries = getAllJarEntry(jarCurrentFile);
+					
+					boolean configFileFound = allJarEntries.containsKey("config.xml");
+					
+					if(configFileFound){
+						
+						//On analyse le fichier XML
+						BufferedInputStream input = new BufferedInputStream(jarCurrentFile.getInputStream(allJarEntries.get("config.xml")));
+						analXML.ouverture(input);
+						input.close();
 						
 						// On a maintenant tous les fichiers dans un tableau et le fichier de configuration a été analysé
 
@@ -176,23 +167,17 @@ public class WarMain implements Observer {
                         //Vérifie si l'équipe est une FSM (regard dans le fichier de configuration)
                         if(analXML.isFSMTeam()){
                         	System.out.println("FSM Team found");
-                        	/*
-                        	//Classe qui permet de lire de fichier de configuration de la FSM (par défault "XMLConfiguration.xml")
-                        	// la méthode analXML.getFSMConfigurationFileName() renvoi normalement le nom du fichier de configuration de la FSM trouvé dans le jar
-                        	FSMXmlReader xmlReader = new FSMXmlReader(analXML.getFSMConfigurationFileName());
-                    		//Récupère le modele de FSM gégéné grace au fichier de configuration
-                        	Modele model = xmlReader.getGeneratedFSMModel();
-                    		
-                    		//Permettre de recupérer les brains, prend en parametre le modele de la FSM
-                    		FSMInstancier fsmInstancier = new FSMInstancier(model);
-                    		//Cette méthode va permettre de récupérer un BrainControleur pour UN agent 
-//                    		WarFSMBrainController : fsmInstancier.getInstanciateFSM(agentType, agentAdapter)
-                    		*/
-                    		HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();
+                        	
+                        	JarEntry entryFSMConfiguration = allJarEntries.get(FSMXmlParser.xmlConfigurationDefaultFilename);
+//                        	
+//                        	allJarEntries.
+//                        	File fileFSMConfig = new File(entryFSMConfiguration.get);
+                        	//                        	Modele mod = 
+//                        	currentTeam.setFSMModel();
+                        	
+                        	HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();
                     		
 							for (String agentName : brainControllersClassesName.keySet()) {
-								// TODO ici l'adapter c'est quoi ?
-//								currentTeam.addBrainControllerClassForAgent(fsmInstancier.getInstanciateFSM(WarAgentType.valueOf(agentName), null));
 								currentTeam.addBrainControllerClassForAgent(agentName, WarFSMBrainController.class);
 							}
 					
@@ -238,6 +223,27 @@ public class WarMain implements Observer {
 		return loadedTeams;
 	}
 	
+	private HashMap<String, JarEntry> getAllJarEntry(JarFile jarFile) throws IOException {
+		HashMap<String, JarEntry> allJarEntries = new HashMap<>();
+
+		Enumeration<JarEntry> entries = jarFile.entries();
+		
+		JarEntry currentEntry;
+		while (entries.hasMoreElements()) {
+			currentEntry = entries.nextElement();
+
+			String currentEntryName = currentEntry.getName();
+			allJarEntries.put(currentEntryName.substring(currentEntryName.lastIndexOf("/") + 1, currentEntryName.length()), currentEntry);
+
+			// Si c'est le fichier config.xml
+			if (currentEntry.getName().endsWith("config.xml")) {
+				// On le lit et on l'analyse grâce à la classe TeamXmlReader
+				
+			}
+		}
+		return allJarEntries;
+	}
+
 	public Map<String, Team> getAvailableTeams() {
 		return new HashMap<String, Team>(availableTeams);
 	}
