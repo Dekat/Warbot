@@ -1,10 +1,8 @@
 package edu.warbot.FSMEditor;
 
-import edu.warbot.FSM.plan.WarPlanSettings;
 import edu.warbot.FSMEditor.Controleurs.Controleur;
 import edu.warbot.FSMEditor.Controleurs.ControleurBrain;
 import edu.warbot.FSMEditor.Modeles.Modele;
-import edu.warbot.FSMEditor.Modeles.ModeleCondition;
 import edu.warbot.FSMEditor.Modeles.ModeleState;
 import edu.warbot.FSMEditor.Views.View;
 import edu.warbot.agents.enums.WarAgentType;
@@ -18,7 +16,7 @@ public class FSMEditor {
 		
 		Controleur controleur = new Controleur(modele, view);
 
-		//Pour tester on ajoute directement des elements � la FSM
+		//Pour tester on ajoute directement des elements à la FSM
 		controleur.createControleursBrains(WarAgentType.WarBase);
 		controleur.createControleursBrains(WarAgentType.WarExplorer);
 		controleur.createControleursBrains(WarAgentType.WarRocketLauncher);
@@ -27,15 +25,15 @@ public class FSMEditor {
 		controleur.createControleursBrains(WarAgentType.WarKamikaze);
 		
 		controleur.getControleurBrain(WarAgentType.WarBase).addState(
-				new ModeleState("State Idle", Configuration.PLAN[6], null));
+				new ModeleState("State Idle", Configuration.PLAN[5], null));
 		controleur.getControleurBrain(WarAgentType.WarRocketLauncher).addState(
-				new ModeleState("State Idle", Configuration.PLAN[6], null));
+				new ModeleState("State Idle", Configuration.PLAN[5], null));
 		controleur.getControleurBrain(WarAgentType.WarEngineer).addState(
-				new ModeleState("State Idle", Configuration.PLAN[6], null));
+				new ModeleState("State Idle", Configuration.PLAN[5], null));
 		controleur.getControleurBrain(WarAgentType.WarTurret).addState(
-				new ModeleState("State Idle", Configuration.PLAN[6], null));
+				new ModeleState("State Idle", Configuration.PLAN[5], null));
 		controleur.getControleurBrain(WarAgentType.WarKamikaze).addState(
-				new ModeleState("State Idle", Configuration.PLAN[6], null));
+				new ModeleState("State Idle", Configuration.PLAN[5], null));
 		controleur.getControleurBrain(WarAgentType.WarExplorer).addState(
 				new ModeleState("State Idle", Configuration.PLAN[5], null));
 		

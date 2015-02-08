@@ -105,7 +105,7 @@ public class Controleur {
 		System.out.println("Configuration file imported successfull");
 		
 		FSMInstancier fsmInstancier = new FSMInstancier(modeleRead);
-		fsmInstancier.instanciateFSM();
+//		fsmInstancier.instanciateFSM();
 		//Crée un agent pour tester
 //		WarBrain<WarExplorerAdapter> brain = null;
 		WarExplorerAdapter explorerAdapter = null;

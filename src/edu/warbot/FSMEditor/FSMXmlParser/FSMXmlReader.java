@@ -1,7 +1,9 @@
 package edu.warbot.FSMEditor.FSMXmlParser;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -45,16 +47,33 @@ public class FSMXmlReader extends FSMXmlParser{
 			e.printStackTrace();
 		}
 		
+		readConfigDocument(doc);
+	}
+	
+	public FSMXmlReader(InputStream inputStream) {
+		Document doc = null;
+		try {
+			doc = new SAXBuilder().build(inputStream);
+		} catch (JDOMException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("InputStream error " + inputStream);
+			e.printStackTrace();
+		}
+		
+		readConfigDocument(doc);
+	}
+	
+	private void readConfigDocument(Document document){
 		modeleFSM = new Modele();
 		modeleFSM.setIsRebuild(false);
 		
-		Element root = doc.getRootElement();
+		Element root = document.getRootElement();
 		
 		//Pour chaque brains
 		for (Element currentBrain : root.getChildren()) {
 			createBrain(currentBrain, modeleFSM);
 		}
-
 	}
 
 	private void createBrain(Element brain, Modele modele) {

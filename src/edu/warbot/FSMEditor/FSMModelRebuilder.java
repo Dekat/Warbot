@@ -19,8 +19,13 @@ public class FSMModelRebuilder {
 
 	private Modele model;
 
+	/**
+	 * Appeler le constructeur lancer directement la reconstruction du modele
+	 * @param model
+	 */
 	public FSMModelRebuilder(Modele model) {
 		this.model = model;
+		System.out.println("FSMRebuilder : begining construction...");
 		rebuildModel();
 		this.model.setIsRebuild(true);
 	}
