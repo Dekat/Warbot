@@ -2,7 +2,6 @@ package edu.warbot.launcher;
 
 import static turtlekit.kernel.TurtleKit.Option.launcher;
 
-import java.awt.Dimension;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,8 +42,8 @@ public class WarLauncher extends TKLauncher {
 		
 		initProperties();
 		setMadkitProperty(TurtleKit.Option.startSimu, "false");
-		setMadkitProperty(TurtleKit.Option.envWidth, String.valueOf(((Float) Shared.getGame().getMap().getBoundsWidth()).intValue() + AbstractWarMap.MAP_MARGIN));
-		setMadkitProperty(TurtleKit.Option.envHeight, String.valueOf(((Float) Shared.getGame().getMap().getBoundsHeight()).intValue() + AbstractWarMap.MAP_MARGIN));
+		setMadkitProperty(TurtleKit.Option.envWidth, String.valueOf(((Float) Shared.getGame().getMap().getWidth()).intValue() + AbstractWarMap.MAP_MARGIN));
+		setMadkitProperty(TurtleKit.Option.envHeight, String.valueOf(((Float) Shared.getGame().getMap().getHeight()).intValue() + AbstractWarMap.MAP_MARGIN));
 
 		setMadkitProperty(TurtleKit.Option.viewers, WarViewer.class.getName());
 		setMadkitProperty(TurtleKit.Option.scheduler, WarScheduler.class.getName());

@@ -3,7 +3,6 @@ package edu.warbot.maps;
 import edu.warbot.tools.CoordCartesian;
 
 import java.awt.geom.Path2D;
-import java.awt.geom.Rectangle2D;
 
 public class OneWayWarMap extends AbstractWarMap {
 
@@ -30,19 +29,19 @@ public class OneWayWarMap extends AbstractWarMap {
 
         addTeamPositions(
                 new CoordCartesian(TEAM_POSITION_RADIUS, TEAM_POSITION_RADIUS),
-                new CoordCartesian(TEAM_POSITION_RADIUS, getBoundsHeight() / 2),
-                new CoordCartesian(TEAM_POSITION_RADIUS, getBoundsHeight() - TEAM_POSITION_RADIUS)
+                new CoordCartesian(TEAM_POSITION_RADIUS, getHeight() / 2),
+                new CoordCartesian(TEAM_POSITION_RADIUS, getHeight() - TEAM_POSITION_RADIUS)
 				);
 		addTeamPositions(
-				new CoordCartesian(getBoundsWidth() - TEAM_POSITION_RADIUS, TEAM_POSITION_RADIUS),
-				new CoordCartesian(getBoundsWidth() - TEAM_POSITION_RADIUS, getBoundsHeight() / 2),
-				new CoordCartesian(getBoundsWidth() - TEAM_POSITION_RADIUS, getBoundsHeight() - TEAM_POSITION_RADIUS)
+				new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, TEAM_POSITION_RADIUS),
+				new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, getHeight() / 2),
+				new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, getHeight() - TEAM_POSITION_RADIUS)
 				);
 		
-		addFoodPosition(getBoundsWidth() - FOOD_POSITION_RADIUS, FOOD_POSITION_RADIUS);
-		addFoodPosition(FOOD_POSITION_RADIUS, getBoundsHeight() - FOOD_POSITION_RADIUS);
-		addFoodPosition(getBoundsWidth() / 2, getBoundsHeight() / 2);
-		addFoodPosition(getBoundsWidth() / 2, getBoundsHeight() / 2);
+		addFoodPosition(getWidth() - FOOD_POSITION_RADIUS, FOOD_POSITION_RADIUS);
+		addFoodPosition(FOOD_POSITION_RADIUS, getHeight() - FOOD_POSITION_RADIUS);
+		addFoodPosition(getWidth() / 2, getHeight() / 2);
+		addFoodPosition(getWidth() / 2, getHeight() / 2);
 	}
 
 }

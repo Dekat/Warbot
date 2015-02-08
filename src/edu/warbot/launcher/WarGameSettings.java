@@ -21,7 +21,6 @@ public class WarGameSettings {
 	private WarGameMode _gameMode;
 	private Level _defaultLogLevel;
 	private int _foodAppearanceRate;
-	private boolean _isOpenWorld;
 	private Class<? extends PerceptsGetter> _perceptsGetter;
 	private boolean _isEnabledEnhancedGraphism;
 	private List<Team> selectedTeams;
@@ -42,7 +41,6 @@ public class WarGameSettings {
 		_defaultLogLevel = WarConfig.getLoggerLevel();
 		_foodAppearanceRate = WarConfig.getFoodAppearanceRate();
 		_perceptsGetter = WarConfig.getDefaultPerception();
-		_isOpenWorld = WarConfig.isOpenWorld();
 		_isEnabledEnhancedGraphism = false; // TODO add it to config file
 	}
 	
@@ -94,14 +92,6 @@ public class WarGameSettings {
 			e.printStackTrace();
 			return new InRadiusPerceptsGetter(agent, game);
 		}
-	}
-	
-	public boolean isOpenWorld() {
-		return _isOpenWorld;
-	}
-	
-	public void setOpenWorld(boolean bool) {
-		_isOpenWorld = bool;
 	}
 	
 	public boolean isEnabledEnhancedGraphism() {
