@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import edu.warbot.FSM.WarFSMBrainController;
 import edu.warbot.FSMEditor.FSMInstancier;
 import edu.warbot.FSMEditor.FSMModelRebuilder;
 import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
@@ -174,6 +175,8 @@ public class WarMain implements Observer {
                         
                         //Vérifie si l'équipe est une FSM (regard dans le fichier de configuration)
                         if(analXML.isFSMTeam()){
+                        	System.out.println("FSM Team found");
+                        	/*
                         	//Classe qui permet de lire de fichier de configuration de la FSM (par défault "XMLConfiguration.xml")
                         	// la méthode analXML.getFSMConfigurationFileName() renvoi normalement le nom du fichier de configuration de la FSM trouvé dans le jar
                         	FSMXmlReader xmlReader = new FSMXmlReader(analXML.getFSMConfigurationFileName());
@@ -184,12 +187,13 @@ public class WarMain implements Observer {
                     		FSMInstancier fsmInstancier = new FSMInstancier(model);
                     		//Cette méthode va permettre de récupérer un BrainControleur pour UN agent 
 //                    		WarFSMBrainController : fsmInstancier.getInstanciateFSM(agentType, agentAdapter)
-                    		
+                    		*/
                     		HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();
                     		
 							for (String agentName : brainControllersClassesName.keySet()) {
 								// TODO ici l'adapter c'est quoi ?
 //								currentTeam.addBrainControllerClassForAgent(fsmInstancier.getInstanciateFSM(WarAgentType.valueOf(agentName), null));
+								currentTeam.addBrainControllerClassForAgent(agentName, WarFSMBrainController.class);
 							}
 					
                     		

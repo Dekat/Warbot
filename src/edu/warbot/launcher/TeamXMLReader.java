@@ -24,6 +24,7 @@ public class TeamXMLReader {
 	private static final String teamDescriptionNodePath = mainNodPath + "/Description";
 	private static final String iconPathNodePath = mainNodPath + "/IconPath";
 	private static final String soundPathNodePath = mainNodPath + "/SoundPath";
+	private static final String isFSMNodePath = mainNodPath + "/FSMImplementtion";
 	
 	private Document _document = null;
 
@@ -98,8 +99,7 @@ public class TeamXMLReader {
 	 * @return
 	 */
 	public boolean isFSMTeam() {
-		// TODO 
-		return false;
+		return Boolean.valueOf(WarXmlReader.getFirstStringResultOfXPath(_document, isFSMNodePath));
 	}
 
 	public String getFSMConfigurationFileName() {
