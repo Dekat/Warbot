@@ -20,7 +20,7 @@ public class WarPlanSettings {
 	//Notament utilisé pour le poucentage de vie d'un allié pour le soigner
 	public Integer Value_pourcentage_destination;
 
-	public Boolean Offensif = true;
+	public Boolean Offensif;
 	
 	public String Debug_String = "debug_sring";
 

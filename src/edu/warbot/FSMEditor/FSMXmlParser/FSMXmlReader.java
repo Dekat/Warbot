@@ -4,30 +4,36 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
-import com.sun.org.apache.regexp.internal.recompile;
-
 import edu.warbot.FSM.plan.WarPlanSettings;
 import edu.warbot.FSMEditor.Modeles.Modele;
 import edu.warbot.FSMEditor.Modeles.ModeleBrain;
 import edu.warbot.FSMEditor.Modeles.ModeleState;
 import edu.warbot.agents.enums.WarAgentType;
-
+/**
+ * Permet de lire un fichier de configuration au format de XML et de type FSM
+ * Prend en parametre du constructeur le nom du fichier de confuguration de la FSM (par default "XMLConfiguration.xml")
+ * Permet de créer un modele de FSM à partir du fichier de configuration
+ * Utiliser la méthode getGeneratedFSMModel() pour récupérer le modèle crée
+ * @author Olivier
+ *
+ */
 public class FSMXmlReader extends FSMXmlParser{
 
-	public static String xmlConfigurationFilename = "XMLConfiguration.xml";
 	private Modele modeleFSM;
 	
-	public FSMXmlReader(String jarFilename) {
+	public FSMXmlReader(String fileName) {
 
+		if(fileName == null)
+			fileName = xmlConfigurationDefaultFilename;
+			
 		// Ouvre le XML
-		File xmlFile = new File(xmlConfigurationFilename);
+		File xmlFile = new File(fileName);
 
 		Document doc = null;
 		try {
@@ -35,10 +41,12 @@ public class FSMXmlReader extends FSMXmlParser{
 		} catch (JDOMException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			System.err.println("File not found " + fileName);
 			e.printStackTrace();
 		}
 		
 		modeleFSM = new Modele();
+		modeleFSM.setIsRebuild(false);
 		
 		Element root = doc.getRootElement();
 		
@@ -50,7 +58,7 @@ public class FSMXmlReader extends FSMXmlParser{
 	}
 
 	private void createBrain(Element brain, Modele modele) {
-		//Pour chaque conditions et chaque �tats
+		//Pour chaque conditions et chaque états
 		String agentTypeName = brain.getChild(AgentType).getValue();
 		WarAgentType agentType = WarAgentType.valueOf(agentTypeName);
 		
@@ -143,6 +151,9 @@ public class FSMXmlReader extends FSMXmlParser{
 	private Integer[] getFieldForIntegerTab(Field field, Element elemPlanSetting) {
 		String fieldValue = elemPlanSetting.getChild(field.getName()).getValue();
 		
+		if(fieldValue.isEmpty())
+			return null;
+		
 		String[] stringValues = parseStringTab(fieldValue);
 		
 		Integer valuesInteger[] = new Integer[stringValues.length];
@@ -155,6 +166,9 @@ public class FSMXmlReader extends FSMXmlParser{
 	
 	private String[] getFieldForStringTab(Field field, Element elemPlanSetting) {
 		String fieldValue = elemPlanSetting.getChild(field.getName()).getValue();
+		
+		if(fieldValue.isEmpty())
+			return null;
 		
 		String[] stringValues = parseStringTab(fieldValue);
 		
@@ -169,6 +183,9 @@ public class FSMXmlReader extends FSMXmlParser{
 	
 	private WarAgentType[] getFieldForAgentTypeTab(Field field, Element elemPlanSetting) {
 		String fieldValue = elemPlanSetting.getChild(field.getName()).getValue();
+
+		if(fieldValue.isEmpty())
+			return null;
 		
 		String[] stringValues = parseStringTab(fieldValue);
 		
@@ -197,6 +214,9 @@ public class FSMXmlReader extends FSMXmlParser{
 		return res;
 	}
 
+	/**
+	 * @return Renvoi le modele de FSM générer grace au fichier de configuration
+	 */
 	public Modele getGeneratedFSMModel() {
 		return this.modeleFSM;
 	}

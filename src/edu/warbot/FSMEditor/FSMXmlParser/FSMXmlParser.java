@@ -2,6 +2,8 @@ package edu.warbot.FSMEditor.FSMXmlParser;
 
 public class FSMXmlParser {
 	
+	public static String xmlConfigurationDefaultFilename = "XMLConfiguration.xml";
+	
 	public static final String Brains = "Brains";
 	public static final String Brain = "Brain";
 	public static final String AgentType = "WarAgentType";

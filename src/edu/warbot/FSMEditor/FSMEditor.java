@@ -51,7 +51,7 @@ public class FSMEditor {
 //		cb.addState(state1);
 //		cb.addState(state2);
 //		cb.addState(state3);
-		
+//		
 //		cb.addCondition(cond);
 //		cb.addCondition(cond2);
 		
