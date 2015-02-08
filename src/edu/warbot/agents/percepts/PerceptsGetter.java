@@ -1,10 +1,13 @@
 package edu.warbot.agents.percepts;
 
+import java.awt.*;
+import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import edu.warbot.agents.ControllableWarAgent;
+import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.MotherNatureTeam;
 import edu.warbot.game.WarGame;
@@ -59,7 +62,23 @@ public abstract class PerceptsGetter {
         return allPercepts;
     }
 
-    protected abstract ArrayList<WarPercept> getAgentPercepts();
+    private ArrayList<WarPercept> getAgentPercepts() {
+        ArrayList<WarPercept> percepts = new ArrayList<WarPercept>();
+
+        Area visibleArea = new Area(getPerceptionAreaShape());
+        for (WarAgent agentToTestVisible : getGame().getAllAgentsInRadiusOf(getAgent(), getAgent().getDistanceOfView())) {
+            if (agentToTestVisible.getID() != getAgent().getID()) {
+                Area agentArea = new Area(agentToTestVisible.getActualForm());
+                agentArea.intersect(visibleArea);
+                if (! agentArea.isEmpty())
+                    percepts.add(new WarPercept(getAgent(), agentToTestVisible));
+            }
+        }
+
+        return percepts;
+    }
+
+    public abstract Shape getPerceptionAreaShape();
 
 	public ArrayList<WarPercept> getWarAgentsPercepts(boolean ally) {
 		if(! perceptsAlreadyGetThisTick)
@@ -106,4 +125,5 @@ public abstract class PerceptsGetter {
         enemiesPercepts.clear();
         resourcesPercepts.clear();
     }
+
 }

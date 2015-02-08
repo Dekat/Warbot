@@ -43,9 +43,8 @@ public class WarLauncher extends TKLauncher {
 		
 		initProperties();
 		setMadkitProperty(TurtleKit.Option.startSimu, "false");
-		Dimension mapSize = Shared.getGame().getMap().getSize();
-		setMadkitProperty(TurtleKit.Option.envWidth, String.valueOf(mapSize.width));
-		setMadkitProperty(TurtleKit.Option.envHeight, String.valueOf(mapSize.height));
+		setMadkitProperty(TurtleKit.Option.envWidth, String.valueOf(((Float) Shared.getGame().getMap().getBoundsWidth()).intValue() + AbstractWarMap.MAP_MARGIN));
+		setMadkitProperty(TurtleKit.Option.envHeight, String.valueOf(((Float) Shared.getGame().getMap().getBoundsHeight()).intValue() + AbstractWarMap.MAP_MARGIN));
 
 		setMadkitProperty(TurtleKit.Option.viewers, WarViewer.class.getName());
 		setMadkitProperty(TurtleKit.Option.scheduler, WarScheduler.class.getName());
@@ -92,7 +91,7 @@ public class WarLauncher extends TKLauncher {
 				// On sélectionne aléatoirement la position de l'équipe depuis les différentes possibilités
 				WarCircle selectedPosition = teamsPositions.get(teamCount).get(new Random().nextInt(teamsPositions.get(teamCount).size()));
 				for (WarAgentType agentType : WarAgentType.values()) {
-					for (compteur = 0; compteur < game.getSettings().getNbAgentOfType(agentType); compteur++) {
+                    for (compteur = 0; compteur < game.getSettings().getNbAgentOfType(agentType); compteur++) {
 						try {
 							WarAgent agent = t.instantiateNewControllableWarAgent(agentType.toString());
 							launchAgent(agent);

@@ -5,6 +5,7 @@ import java.util.logging.Level;
 
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.actions.AgressiveActions;
+import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.projectiles.WarDeathRocket;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarTurretAdapter;
@@ -15,7 +16,6 @@ import edu.warbot.launcher.WarConfig;
 public class WarTurret extends ControllableWarAgent implements AgressiveActions, Agressive {
 
 	public static final double ANGLE_OF_VIEW;
-	public static final double HITBOX_RADIUS;
 	public static final double DISTANCE_OF_VIEW;
 	public static final int COST;
 	public static final int MAX_HEALTH;
@@ -27,9 +27,8 @@ public class WarTurret extends ControllableWarAgent implements AgressiveActions,
 	private int _tickLeftBeforeReloaded;
 	
 	static {
-		HashMap<String, String> data = WarConfig.getConfigOfControllableWarAgent("WarTurret");
+		HashMap<String, String> data = WarConfig.getConfigOfWarAgent(WarAgentType.WarTurret);
 		ANGLE_OF_VIEW = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_ANGLE_OF_VIEW));
-		HITBOX_RADIUS = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_HITBOX_RADIUS));
 		DISTANCE_OF_VIEW = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_DISTANCE_OF_VIEW));
 		COST = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_COST));
 		MAX_HEALTH = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_MAX_HEALTH));
@@ -38,7 +37,7 @@ public class WarTurret extends ControllableWarAgent implements AgressiveActions,
 	}
 	
 	public WarTurret(Team team, WarBrain<WarTurretAdapter> brain) {
-		super(ACTION_IDLE, team, HITBOX_RADIUS, brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE);
+		super(ACTION_IDLE, team, WarConfig.getHitboxOfWarAgent(WarAgentType.WarTurret), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE);
 		
 		brain.setAgentAdapter(new WarTurretAdapter(this));
 		_tickLeftBeforeReloaded = TICKS_TO_RELOAD;

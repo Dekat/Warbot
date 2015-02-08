@@ -12,8 +12,8 @@ public class WarViewerGdx extends com.badlogic.gdx.Game {
 
 	public static final int WIDTH = 1024;
 	public static final int HEIGHT = 768;/*(int) ((Toolkit.getDefaultToolkit()
-			.getScreenSize().getHeight() / Toolkit.getDefaultToolkit()
-			.getScreenSize().getWidth()) * WIDTH);*/
+			.getScreenSize().getBoundsHeight() / Toolkit.getDefaultToolkit()
+			.getScreenSize().getBoundsWidth()) * WIDTH);*/
 	
 	private WarViewerScreen screen;
 	private WarViewerPauseScreen pauseScreen;

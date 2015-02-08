@@ -19,7 +19,6 @@ public class WarAgentInformationsPnl extends JPanel implements IWarAgentInformat
 	private InfoLabel _type;
 	private InfoLabel _position;
 	private InfoLabel _team;
-	private InfoLabel _hitboxRadius;
 	private InfoLabel _heading;
 
 	private ControllableWarAgentInformationsPnl _controllableAgent;
@@ -44,8 +43,6 @@ public class WarAgentInformationsPnl extends JPanel implements IWarAgentInformat
 		add(_position);
 		_team = new InfoLabel("Equipe");
 		add(_team);
-		_hitboxRadius = new InfoLabel("Rayon de la hitbox");
-		add(_hitboxRadius);
 		_heading = new InfoLabel("Heading");
 		add(_heading);
 
@@ -71,7 +68,6 @@ public class WarAgentInformationsPnl extends JPanel implements IWarAgentInformat
 			_type.setValue(a.getClass().getSimpleName());
 			_position.setValue("(" + doubleFormatter.format(a.getX()) + "; " + doubleFormatter.format(a.getY()) + ")");
 			_team.setValue(a.getTeam().getName());
-			_hitboxRadius.setValue(doubleFormatter.format(a.getHitboxRadius()));
 			_heading.setValue(doubleFormatter.format(a.getHeading()));
 
 			_controllableAgent.update();
@@ -87,7 +83,6 @@ public class WarAgentInformationsPnl extends JPanel implements IWarAgentInformat
 		_type.setValue("");
 		_position.setValue("");
 		_team.setValue("");
-		_hitboxRadius.setValue("");
 		_heading.setValue("");
 	}
 

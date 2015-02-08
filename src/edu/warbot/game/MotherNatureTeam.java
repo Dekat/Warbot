@@ -32,7 +32,7 @@ public class MotherNatureTeam extends Team {
 	}
 
 //	public void init() {
-//		Dimension mapSize = Game.getInstance().getMap().getSize();
+//		Dimension mapSize = Game.getInstance().getMap().getBounds();
 //		ArrayList<CoordCartesian> teamsPositions = Game.getInstance().getMap().getTeamsPositions(Game.getInstance().getPlayerTeams().size());
 //		for (CoordCartesian pos : teamsPositions) {
 //			for (int i = 0; i < WarConfig.getNbResourcesAreasPerTeam(); i++) {
@@ -101,8 +101,9 @@ public class MotherNatureTeam extends Team {
 				CoordCartesian newPos = WarMathTools.addTwoPoints(
 						foodPositions.get(new Random().nextInt(foodPositions.size())).getCenterPosition(),
 						CoordPolar.getRandomInBounds(WarConfig.getRadiusResourcesAreas()).toCartesian());
-				newPos.normalize(0, map.getWidth(), 0, map.getHeight());
+				newPos.normalize(0, map.getBoundsWidth(), 0, map.getBoundsHeight());
 				resource.setPosition(newPos);
+                resource.moveOutOfCollision();
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				System.err.println("Erreur lors de la création d'une nouvelle ressource : " + resourceType);
 				e.printStackTrace();

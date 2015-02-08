@@ -7,12 +7,14 @@ import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Creator;
 import edu.warbot.game.Team;
 
+import java.awt.*;
+
 public abstract class CreatorWarAgent extends ControllableWarAgent implements CreatorActions, Creator {
 
 	private WarAgentType _nextAgentToCreate;
 
-	public CreatorWarAgent(String firstActionToDo, Team team, double hitboxRadius, WarBrain<? extends CreatorWarAgentAdapter> brainController, double distanceOfView, double angleOfView, int cost,	int maxHealth, int bagSize) {
-		super(firstActionToDo, team, hitboxRadius, brainController, distanceOfView, angleOfView, cost, maxHealth, bagSize);
+	public CreatorWarAgent(String firstActionToDo, Team team, Shape hitbox, WarBrain<? extends CreatorWarAgentAdapter> brainController, double distanceOfView, double angleOfView, int cost,	int maxHealth, int bagSize) {
+		super(firstActionToDo, team, hitbox, brainController, distanceOfView, angleOfView, cost, maxHealth, bagSize);
 
 		_nextAgentToCreate = WarAgentType.WarExplorer;
 	}

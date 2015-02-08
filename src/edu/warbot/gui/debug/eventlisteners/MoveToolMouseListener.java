@@ -56,8 +56,9 @@ public class MoveToolMouseListener implements MouseListener {
 			CoordCartesian newPos = new CoordCartesian(
 					e.getX() / _debugToolBar.getViewer().getCellSize(),
 					e.getY() / _debugToolBar.getViewer().getCellSize());
-			newPos.normalize(0, game.getMap().getWidth() - 1, 0, game.getMap().getHeight() - 1);
+			newPos.normalize(0, game.getMap().getBoundsWidth() - 1, 0, game.getMap().getBoundsHeight() - 1);
 			_currentSelectedAgent.setPosition(newPos);
+            _currentSelectedAgent.moveOutOfCollision();
 			
 			// TODO à remplacer par une simple actualisation de l'affichage
 			_debugToolBar.getViewer().sendMessage(_debugToolBar.getViewer().getCommunity(), TKOrganization.ENGINE_GROUP,

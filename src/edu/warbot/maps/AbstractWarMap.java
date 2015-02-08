@@ -1,27 +1,29 @@
 package edu.warbot.maps;
 
-import java.awt.Dimension;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import edu.warbot.launcher.WarConfig;
 import edu.warbot.tools.CoordCartesian;
+import edu.warbot.tools.GeometryTools;
 import edu.warbot.tools.WarCircle;
 
 public abstract class AbstractWarMap {
-	
+
+    public static final int MAP_MARGIN = 10;
 	protected static final float TEAM_POSITION_RADIUS = 100;
 	protected static final float FOOD_POSITION_RADIUS = 200;
 	
-//	public static final String MAP_DIRECTORY = "maps" + File.separatorChar; 
-//	public static final String MAP_EXTENSION = ".warmap"; 
-	
-	private Dimension _size;
+
+	private Shape mapLimits;
 	private ArrayList<ArrayList<WarCircle>> _teamsPositions;
 	private ArrayList<WarCircle> _foodPositions;
 	
-	public AbstractWarMap(Dimension size) {
+	public AbstractWarMap(Shape mapLimits) {
 		_teamsPositions = new ArrayList<>();
 		_foodPositions = new ArrayList<>();
-		_size = size;
+		this.mapLimits = mapLimits;
 	}
 	
 	public ArrayList<ArrayList<WarCircle>> getTeamsPositions() {
@@ -57,16 +59,20 @@ public abstract class AbstractWarMap {
 	public int getMaxTeams() {
 		return _teamsPositions.size();
 	}
-	
-	public Dimension getSize() {
-		return _size;
+
+    public Shape getMapLimits() {
+        return GeometryTools.translateShape(mapLimits, MAP_MARGIN / 2, MAP_MARGIN / 2);
+    }
+
+	public Rectangle2D getBounds() {
+		return getMapLimits().getBounds2D();
 	}
 	
-	public int getWidth() {
-		return _size.width;
+	public float getBoundsWidth() {
+		return (float) getBounds().getWidth();
 	}
 	
-	public int getHeight() {
-		return _size.height;
+	public float getBoundsHeight() {
+		return (float) getBounds().getHeight();
 	}
 }

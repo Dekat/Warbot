@@ -12,16 +12,14 @@ import edu.warbot.launcher.WarConfig;
 public class WarBase extends CreatorWarAgent {
 
 	public static final double ANGLE_OF_VIEW;
-	public static final double HITBOX_RADIUS;
 	public static final double DISTANCE_OF_VIEW;
 	public static final int COST;
 	public static final int MAX_HEALTH;
 	public static final int BAG_SIZE;
 	
 	static {
-		HashMap<String, String> data = WarConfig.getConfigOfControllableWarAgent("WarBase");
+		HashMap<String, String> data = WarConfig.getConfigOfWarAgent(WarAgentType.WarBase);
 		ANGLE_OF_VIEW = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_ANGLE_OF_VIEW));
-		HITBOX_RADIUS = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_HITBOX_RADIUS));
 		DISTANCE_OF_VIEW = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_DISTANCE_OF_VIEW));
 		COST = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_COST));
 		MAX_HEALTH = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_MAX_HEALTH));
@@ -29,7 +27,7 @@ public class WarBase extends CreatorWarAgent {
 	}
 	
 	public WarBase(Team team, WarBrain<WarBaseAdapter> brain) {
-		super(ACTION_IDLE, team, HITBOX_RADIUS, brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE);
+		super(ACTION_IDLE, team, WarConfig.getHitboxOfWarAgent(WarAgentType.WarBase), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE);
 		
 		brain.setAgentAdapter(new WarBaseAdapter(this));
 	}

@@ -1,5 +1,6 @@
 package edu.warbot.agents;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -15,8 +16,8 @@ public abstract class MovableWarAgent extends ControllableWarAgent implements Pi
 
 	private double _speed;
 
-	public MovableWarAgent(String firstActionToDo, Team team, double hitboxRadius, WarBrain<? extends MovableWarAgentAdapter> brainController, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize, double speed) {
-		super(firstActionToDo, team, hitboxRadius, brainController, distanceOfView, angleOfView, cost, maxHealth, bagSize);
+	public MovableWarAgent(String firstActionToDo, Team team, Shape hitbox, WarBrain<? extends MovableWarAgentAdapter> brainController, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize, double speed) {
+		super(firstActionToDo, team, hitbox, brainController, distanceOfView, angleOfView, cost, maxHealth, bagSize);
 
 		this._speed = speed;
 	}
@@ -51,6 +52,6 @@ public abstract class MovableWarAgent extends ControllableWarAgent implements Pi
 
 	@Override
 	public boolean isBlocked() {
-		return isGoingToBeOutOfMap() || isGoingToBeOnAnOtherAgent();
+		return isGoingToBeOutOfMap() || isGoingToBeOverAnOtherAgent();
 	}
 }

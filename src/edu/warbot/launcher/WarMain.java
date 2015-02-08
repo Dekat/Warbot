@@ -190,8 +190,7 @@ public class WarMain implements Observer {
 //                    			//Remarque : la classe WarFSM (renvoyé par getInstanciateFSM) est l'instance du brain sur lequel il faut appeler execute (executeFSM pour l'instant c'est pour ça qu'un adapteur serait propre mais c'est pas l'urgent) à chaque tik.
 //								currentTeam.addBrainControllerClassForAgent(fsmInstancier.getInstanciateFSM(WarAgentType.valueOf(agentName), null));
 							}
-					
-                    		
+
                         }else{
 	                        // On parcours chaque nom de classe, puis on les charge
 							HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();

@@ -3,6 +3,7 @@ package edu.warbot.agents.agents;
 import java.util.HashMap;
 
 import edu.warbot.agents.MovableWarAgent;
+import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarExplorerAdapter;
 import edu.warbot.game.Team;
@@ -11,7 +12,6 @@ import edu.warbot.launcher.WarConfig;
 public class WarExplorer extends MovableWarAgent {
 
 	public static final double ANGLE_OF_VIEW;
-	public static final double HITBOX_RADIUS;
 	public static final double DISTANCE_OF_VIEW;
 	public static final int COST;
 	public static final int MAX_HEALTH;
@@ -19,9 +19,8 @@ public class WarExplorer extends MovableWarAgent {
 	public static final double SPEED;
 	
 	static {
-		HashMap<String, String> data = WarConfig.getConfigOfControllableWarAgent("WarExplorer");
+		HashMap<String, String> data = WarConfig.getConfigOfWarAgent(WarAgentType.WarExplorer);
 		ANGLE_OF_VIEW = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_ANGLE_OF_VIEW));
-		HITBOX_RADIUS = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_HITBOX_RADIUS));
 		DISTANCE_OF_VIEW = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_DISTANCE_OF_VIEW));
 		COST = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_COST));
 		MAX_HEALTH = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_MAX_HEALTH));
@@ -30,7 +29,7 @@ public class WarExplorer extends MovableWarAgent {
 	}
 	
 	public WarExplorer(Team team, WarBrain<WarExplorerAdapter> brain) {
-		super(ACTION_IDLE, team, HITBOX_RADIUS, brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
+		super(ACTION_IDLE, team, WarConfig.getHitboxOfWarAgent(WarAgentType.WarExplorer), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
 		
 		brain.setAgentAdapter(new WarExplorerAdapter(this));
 	}

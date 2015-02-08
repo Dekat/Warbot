@@ -1,5 +1,10 @@
 package edu.warbot.launcher;
 
+import java.awt.*;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,6 +15,10 @@ import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 
+import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.tools.CoordCartesian;
+import edu.warbot.tools.CoordPolar;
+import edu.warbot.tools.WarMathTools;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -20,7 +29,6 @@ import edu.warbot.tools.WarXmlReader;
 
 public class WarConfig {
 
-	public static final String AGENT_CONFIG_HITBOX_RADIUS = "HitboxRadius";
 	public static final String AGENT_CONFIG_ANGLE_OF_VIEW = "AngleOfView";
 	public static final String AGENT_CONFIG_DISTANCE_OF_VIEW = "DistanceOfView";
 	public static final String AGENT_CONFIG_COST = "Cost";
@@ -34,8 +42,7 @@ public class WarConfig {
 	public static final String PROJECTILE_CONFIG_AUTONOMY = "Autonomy";
 	
 	public static final String RESOURCE_WARFOOD_CONFIG_HEALTH_GIVEN = "HealthGived";
-	public static final String GROUND_CONFIG_COLOR = "Color";
-	
+
 	private static final String FILE_NAME = "DefaultGame.xml";
 
 	static private String _filePath = "config" + File.separatorChar + FILE_NAME;
@@ -56,26 +63,70 @@ public class WarConfig {
 			System.err.println("Error when trying to open \"" + _filePath + "\", default values will be used.");
 		}
 	}
-	
-	public static HashMap<String, String> getConfigOfControllableWarAgent(String agent) {
-		return WarXmlReader.getNodesFromXPath(_document, "/Warbot/WarControllableAgents/" + agent);
-	}
-	
-	public static HashMap<String, String> getConfigOfWarProjectile(String agent) {
-		return WarXmlReader.getNodesFromXPath(_document, "/Warbot/WarProjectiles/" + agent);
-	}
 
-	public static HashMap<String, String> getConfigOfWarResource(String agent) {
-		return WarXmlReader.getNodesFromXPath(_document, "/Warbot/WarResources/" + agent);
-	}
+    public static HashMap<String, String> getConfigOfWarAgent(WarAgentType agentType) {
+        return WarXmlReader.getNodesFromXPath(_document, "/Warbot/WarAgents/" + agentType.getCategory().name() + "/" + agentType.name());
+    }
 
-//	public static HashMap<String, String> getConfigOfWarGround(String agent) {
-//		return WarXmlReader.getNodesFromXPath(_document, "/Warbot/WarGrounds/" + agent);
-//	}
-
-	public static HashMap<String, String> getConfigOfWarBuildings(String agent) {
-		return WarXmlReader.getNodesFromXPath(_document, "/Warbot/WarBuildings/" + agent);
-	}
+    public static Shape getHitboxOfWarAgent(WarAgentType agentType) {
+        HashMap<String, String> shapeData = WarXmlReader.getNodesFromXPath(_document, "/Warbot/WarAgents/" + agentType.getCategory().name() + "/" + agentType.name() + "/Hitbox");
+        Shape hitbox = null;
+        double radius;
+        CoordCartesian position, firstPosition, centerPosition;
+        switch (shapeData.get("Shape")) {
+            case "Square":
+                double sideLength = Double.valueOf(shapeData.get("SideLength"));
+                hitbox = new Rectangle2D.Double(0, 0, sideLength, sideLength);
+                break;
+            case "Circle":
+                radius = Double.valueOf(shapeData.get("Radius"));
+                hitbox = new Ellipse2D.Double(0, 0, radius, radius);
+                break;
+            case "Triangle":
+                radius = Double.valueOf(shapeData.get("Radius"));
+                Path2D.Double triangle = new Path2D.Double();
+                centerPosition = new CoordCartesian(radius, radius);
+                firstPosition = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 0));
+                triangle.moveTo(firstPosition.getX(), firstPosition.getY());
+                position = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 220));
+                triangle.lineTo(position.getX(), position.getY());
+                position = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 140));
+                triangle.lineTo(position.getX(), position.getY());
+                triangle.lineTo(firstPosition.getX(), firstPosition.getY());
+                hitbox = triangle;
+                break;
+            case "Diamond":
+                radius = Double.valueOf(shapeData.get("Radius"));
+                Path2D.Double diamond = new Path2D.Double();
+                centerPosition = new CoordCartesian(radius, radius);
+                firstPosition = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 270));
+                diamond.moveTo(firstPosition.getX(), firstPosition.getY());
+                position = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 0));
+                diamond.lineTo(position.getX(), position.getY());
+                position = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 90));
+                diamond.lineTo(position.getX(), position.getY());
+                position = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 180));
+                diamond.lineTo(position.getX(), position.getY());
+                diamond.lineTo(firstPosition.getX(), firstPosition.getY());
+                hitbox = diamond;
+                break;
+            case "Arrow":
+                radius = Double.valueOf(shapeData.get("Radius"));
+                Path2D.Double arrow = new Path2D.Double();
+                centerPosition = new CoordCartesian(radius, radius);
+                firstPosition = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 0));
+                arrow.moveTo(firstPosition.getX(), firstPosition.getY());
+                position = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 220));
+                arrow.lineTo(position.getX(), position.getY());
+                arrow.lineTo(centerPosition.getX(), centerPosition.getY());
+                position = WarMathTools.addTwoPoints(centerPosition, new CoordPolar(radius, 140));
+                arrow.lineTo(position.getX(), position.getY());
+                arrow.lineTo(firstPosition.getX(), firstPosition.getY());
+                hitbox = arrow;
+                break;
+        }
+        return hitbox;
+    }
 
 	public static Level getLoggerLevel() {
 		String strLevel = WarXmlReader.getFirstStringResultOfXPath(_document, "/Warbot/Simulation/DefaultStartParameters/DefaultLoggerLevel");
@@ -88,11 +139,11 @@ public class WarConfig {
 	}
 	
 	public static int getMaxDistanceTake() {
-		return Integer.valueOf(WarXmlReader.getFirstStringResultOfXPath(_document, "/Warbot/WarResources/MaxDistanceTake"));
+		return Integer.valueOf(WarXmlReader.getFirstStringResultOfXPath(_document, "/Warbot/Game/MaxDistanceTake"));
 	}
 
 	public static int getMaxDistanceGive() {
-		return Integer.valueOf(WarXmlReader.getFirstStringResultOfXPath(_document, "/Warbot/WarControllableAgents/MaxDistanceGive"));
+		return Integer.valueOf(WarXmlReader.getFirstStringResultOfXPath(_document, "/Warbot/Game/MaxDistanceGive"));
 	}
 	
 	public static int getFoodAppearanceRate() {
@@ -133,18 +184,5 @@ public class WarConfig {
 			System.err.println("Nom de classe invalide pour \"" + className + "\". InRadiusPerceptsGetter pris par défaut.");
 			return InRadiusPerceptsGetter.class;
 		}
-	}
-
-	public static double getMaxHitBoxRadius() {
-		double toReturn = 0;
-		
-		ArrayList<String> values = WarXmlReader.getAllStringResultOfXPath(_document, "//HitboxRadius");
-		for (String s : values) {
-			double v = Double.valueOf(s);
-			if (v > toReturn)
-				toReturn = v;
-		}
-		
-		return toReturn;
 	}
 }

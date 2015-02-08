@@ -13,13 +13,13 @@ public class WarKernelMessage extends Message {
 	
 	private double _xSender;
 	private double _ySender;
+    private WarAgent sender;
 	private int	_idSender;
 	private Team _senderTeam;
 	private WarAgentType _senderType;
 	private String _message;
 	private String[] _content;
-	private double _senderHitboxRadius;
-	
+
 	public WarKernelMessage(WarAgent sender, String message, String[] content) {
 		super();
 		_message = message;
@@ -29,7 +29,7 @@ public class WarKernelMessage extends Message {
 		_idSender = sender.getID();
 		_senderTeam = sender.getTeam();
 		_senderType = WarAgentType.valueOf(sender.getClass().getSimpleName());
-		_senderHitboxRadius = sender.getHitboxRadius();
+        this.sender = sender;
 	}
 		
 	/**
@@ -95,8 +95,8 @@ public class WarKernelMessage extends Message {
 	public WarMessage getAdapter(WarAgent receiver) {
 		return new WarMessage(this, receiver);
 	}
-	
-	public double getSenderHitboxRadius() {
-		return _senderHitboxRadius;
-	}
+
+    public WarAgent getMessageSender() {
+        return sender;
+    }
 }

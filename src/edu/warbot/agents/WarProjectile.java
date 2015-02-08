@@ -1,5 +1,6 @@
 package edu.warbot.agents;
 
+import java.awt.*;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -19,8 +20,8 @@ public abstract class WarProjectile extends WarAgent implements MovableActions, 
 	private WarAgent _sender;
 	private int _currentAutonomy;
 
-	public WarProjectile(String firstActionToDo, Team team, double hitboxRadius, WarAgent sender, double speed, double explosionRadius, int damage, int autonomy) {
-		super(firstActionToDo, team, hitboxRadius);
+	public WarProjectile(String firstActionToDo, Team team, Shape hitbox, WarAgent sender, double speed, double explosionRadius, int damage, int autonomy) {
+		super(firstActionToDo, team, hitbox);
 
 		this._speed = speed;
 		this._explosionRadius = explosionRadius;
@@ -71,7 +72,7 @@ public abstract class WarProjectile extends WarAgent implements MovableActions, 
 	}
 
 	protected boolean isGoingToCrossAnOtherAgent() {
-		for(WarAgent a : getTeam().getGame().getAllAgentsInRadiusOf(this, getHitboxRadius() + getSpeed())) {
+		for(WarAgent a : getTeam().getGame().getAllAgentsInRadiusOf(this, getHitboxMaxRadius() + getSpeed())) {
 			if (a.getID() != _sender.getID() && a.getID() != getID()) {
 				double currentStep = 0;
 				while(currentStep < getSpeed()) {

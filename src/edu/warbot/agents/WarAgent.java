@@ -1,7 +1,12 @@
 package edu.warbot.agents;
 
-import java.awt.Dimension;
+import java.awt.Shape;
+import java.awt.geom.Area;
+import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
+import java.util.Random;
 
+import edu.warbot.tools.GeometryTools;
 import madkit.kernel.AbstractAgent;
 import turtlekit.kernel.Turtle;
 
@@ -20,14 +25,14 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 
     private static final int MAP_MARGINS = 2;
 
-	private double _hitboxRadius;
+	private Shape hitbox;
 	private Team _team;
 	private int _dyingStep;
 
-	public WarAgent(String firstActionToDo, Team team, double hitboxRadius) {
+	public WarAgent(String firstActionToDo, Team team, Shape hitbox) {
 		super(firstActionToDo);
 		this._team = team;
-		this._hitboxRadius = hitboxRadius;
+        this.hitbox = hitbox;
 		_dyingStep = 0;
 	}
 
@@ -84,11 +89,31 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 		return ! percept.getTeamName().equals(getTeamName());
 	}
 
-	public double getHitboxRadius() {
-		return _hitboxRadius;
+	public Shape getHitbox() {
+		return hitbox;
 	}
 
-	public String toString() {
+    public Path2D getActualForm() {
+        Rectangle2D hitboxBounds = getHitbox().getBounds2D();
+        return GeometryTools.moveToAndRotateShape(getHitbox(), getX() - (hitboxBounds.getWidth()/2.), getY() - (hitboxBounds.getHeight()/2.), getHeading());
+    }
+
+    public Path2D getActualFormAtPosition(double x, double y) {
+        Rectangle2D hitboxBounds = getHitbox().getBounds2D();
+        return GeometryTools.moveToAndRotateShape(getHitbox(), x, y, getHeading());
+    }
+
+    public double getHitboxMinRadius() {
+        Rectangle2D hitboxBounds = getHitbox().getBounds2D();
+        return (Math.min(hitboxBounds.getHeight(), hitboxBounds.getWidth()) / 2.);
+    }
+
+    public double getHitboxMaxRadius() {
+        Rectangle2D hitboxBounds = getHitbox().getBounds2D();
+        return (Math.max(hitboxBounds.getHeight(), hitboxBounds.getWidth()) / 2.);
+    }
+
+    public String toString() {
 		return "[" + getID() + "] " + getClass().getSimpleName() + " (" + getTeam().getName() + ")";
 	}
 	
@@ -111,21 +136,29 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 		if (this instanceof MovableActions)
 			nextPos.add(new CoordPolar(((Movable) this).getSpeed(), getHeading()).toCartesian());
 
-		Dimension mapSize = getTeam().getGame().getMap().getSize();
-		return ((nextPos.getX() - getHitboxRadius() - MAP_MARGINS) < 0) || ((nextPos.getX() + getHitboxRadius() + MAP_MARGINS) > mapSize.width) ||
-				((nextPos.getY() - getHitboxRadius() - MAP_MARGINS) < 0) || ((nextPos.getY() + getHitboxRadius() + MAP_MARGINS) > mapSize.height);
+//        Area areaAgent = new Area(getActualFormAtPosition(nextPos.getX(), nextPos.getY()));
+//        Area areaMap = new Area(getTeam().getGame().getMap().getMapLimits());
+//        areaMap.intersect(areaAgent);
+//        areaMap.subtract(areaAgent);
+//        return ! areaMap.isEmpty();
+
+        return ! getTeam().getGame().getMap().getMapLimits().contains(nextPos.getX(), nextPos.getY());
+
+//        Dimension mapSize = getTeam().getGame().getMap().getBounds();
+//		return ((nextPos.getX() - getHitbox() - MAP_MARGINS) < 0) || ((nextPos.getX() + getHitbox() + MAP_MARGINS) > mapSize.width) ||
+//				((nextPos.getY() - getHitbox() - MAP_MARGINS) < 0) || ((nextPos.getY() + getHitbox() + MAP_MARGINS) > mapSize.height);
 	}
 
-	protected boolean isGoingToBeOnAnOtherAgent() {
+	protected boolean isGoingToBeOverAnOtherAgent() {
 		CoordCartesian futurePosition = getPosition();
-		double radius = getHitboxRadius();
+		double searchAreaRadius = getHitboxMaxRadius() * 2.;
 		if (this instanceof MovableActions) {
-			radius += ((Movable) this).getSpeed();
+			searchAreaRadius += ((Movable) this).getSpeed();
 			futurePosition = WarMathTools.addTwoPoints(new CoordCartesian(getX(), getY()), new CoordPolar(((Movable) this).getSpeed(), getHeading()));
 		}
-		for(WarAgent a : getTeam().getGame().getAllAgentsInRadius(futurePosition.getX(), futurePosition.getY(), radius)) {
+		for(WarAgent a : getTeam().getGame().getAllAgentsInRadius(futurePosition.getX(), futurePosition.getY(), searchAreaRadius)) {
 			if (a.getID() != getID() && a instanceof ControllableWarAgent) {
-				if (this instanceof MovableActions) {
+				if (this instanceof Movable) {
 					return isInCollisionWithAtPosition(futurePosition, a);
 				} else
 					return isInCollisionWith(a);
@@ -135,50 +168,36 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	}
 
 	protected boolean isInCollisionWith(WarAgent agent) {
-		return getDistanceFrom(agent) < 0;
+//		return getDistanceFrom(agent) < 0;
+        Area currentAgentArea = new Area(getActualForm());
+        Area agentArea = new Area(agent.getActualForm());
+        agentArea.intersect(currentAgentArea);
+        return ! agentArea.isEmpty();
 	}
 
 	protected boolean isInCollisionWithAtPosition(CoordCartesian pos, WarAgent agent) {
-		return WarMathTools.getDistanceBetweenTwoPoints(pos.getX(), pos.getY(), agent.getX(), agent.getY()) < (getHitboxRadius() + agent.getHitboxRadius());
+        Area currentAgentArea = new Area(getActualFormAtPosition(pos.getX(), pos.getY()));
+        Area agentArea = new Area(agent.getActualForm());
+        agentArea.intersect(currentAgentArea);
+        return ! agentArea.isEmpty();
+//        return WarMathTools.getDistanceBetweenTwoPoints(pos.getX(), pos.getY(), agent.getX(), agent.getY()) < (getHitbox() + agent.getHitbox());
 	}
 	
 	public void setPositionAroundOtherAgent(WarAgent agent) {
-		CoordCartesian newPos;
-		CoordCartesian agentPos = new CoordCartesian(agent.getX(), agent.getY());
-		do {
-			randomHeading();
-			newPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(getHitboxRadius() + agent.getHitboxRadius(), getHeading()).toCartesian());
-			setPosition(newPos);
-		} while(isGoingToBeOnAnOtherAgent() || isGoingToBeOutOfMap());
+//		CoordCartesian newPos;
+//		CoordCartesian agentPos = new CoordCartesian(agent.getX(), agent.getY());
+//        double radiusWhereCreateAgent = getHitboxMaxRadius() + agent.getHitboxMaxRadius();
+//		do {
+//			newPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(radiusWhereCreateAgent, new Random().nextDouble() * 360));
+//			setPosition(newPos);
+//		} while(isGoingToBeOverAnOtherAgent() || isGoingToBeOutOfMap());
+        setPosition(agent.getPosition());
+        moveOutOfCollision();
 	}
-	
-	public void moveOutOfCollisionZone() {
-		// Test of Collision with map
-		Dimension mapSize = getTeam().getGame().getMap().getSize();
-		if ((getX() - getHitboxRadius() - MAP_MARGINS) < 0) // Si l'agent est trop à l'ouest de la carte
-			setPosition(getHitboxRadius() + MAP_MARGINS, getY());
-		else if ((getX() + getHitboxRadius() + MAP_MARGINS) > mapSize.width)
-			setPosition(mapSize.width - getHitboxRadius() - MAP_MARGINS, getY());
-		if ((getY() - getHitboxRadius() - MAP_MARGINS) < 0)
-			setPosition(getX(), getHitboxRadius() + MAP_MARGINS);
-		else if ((getY() + getHitboxRadius() + MAP_MARGINS) > mapSize.height)
-			setPosition(getX(), mapSize.height - getHitboxRadius() - MAP_MARGINS);
-		
-		for(WarAgent a : getTeam().getGame().getAllAgentsInRadiusOf(this, getHitboxRadius())) {
-			if (a.getID() != getID() && a instanceof ControllableWarAgent) {
-				if (isInCollisionWith(a)) {
-					double angle = getPosition().getAngleToPoint(a.getPosition());
-					angle = (angle + 180.) % 360.;
-					CoordCartesian newPos = WarMathTools.addTwoPoints(new CoordCartesian(getX(), getY()), 
-							new CoordPolar(getHitboxRadius() + a.getHitboxRadius(), angle));
-					setPosition(newPos);
-				}
-			}
-		}
-	}
-	
+
 	public void setRandomPositionInCircle(CoordCartesian centerPoint, double radius) {
 		setPosition(WarMathTools.addTwoPoints(centerPoint, CoordPolar.getRandomInBounds(radius).toCartesian()));
+        moveOutOfCollision();
 	}
 	
 	public void setRandomPositionInCircle(Circle circle) {
@@ -191,13 +210,50 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	
 	public void setPosition(double a, double b) {
 		super.setXY(a, b);
-		moveOutOfCollisionZone();
 	}
 	
 	public void setPosition(CoordCartesian pos) {
 		setPosition(pos.getX(), pos.getY());
 	}
-	
+
+    public void moveOutOfCollision() {
+        boolean isPositionChanged = false;
+
+        // Test si l'agent est hors carte
+        CoordCartesian agentPosition = getPosition();
+        if (! getTeam().getGame().getMap().getMapLimits().contains(agentPosition.getX(), agentPosition.getY())) {
+            Rectangle2D mapBounds = getTeam().getGame().getMap().getBounds();
+            CoordPolar moveToMapCenter = new CoordPolar(1, agentPosition.getAngleToPoint(new CoordCartesian(mapBounds.getCenterX(), mapBounds.getCenterY())));
+            do {
+                agentPosition.add(moveToMapCenter.toCartesian());
+            } while(! getTeam().getGame().getMap().getMapLimits().contains(agentPosition.getX(), agentPosition.getY()));
+            setPosition(agentPosition);
+            isPositionChanged = true;
+        }
+
+        // Test de collision avec un autre agent
+        Rectangle2D hitboxBounds = getHitbox().getBounds2D();
+        double searchAreaRadius = Math.max(hitboxBounds.getHeight(), hitboxBounds.getWidth());
+        for(WarAgent a : getTeam().getGame().getAllAgentsInRadius(getX(), getY(), searchAreaRadius)) {
+            if (a.getID() != getID() && a instanceof ControllableWarAgent) {
+                if (isInCollisionWith(a)) {
+                    agentPosition = getPosition();
+                    CoordPolar moveAwayFromAgent = new CoordPolar(1, new Random().nextDouble() * 359);
+                    do {
+                        agentPosition.add(moveAwayFromAgent.toCartesian());
+                    } while (isInCollisionWithAtPosition(agentPosition, a)); // On boucle tant que l'agent est en collision avec l'autre agent
+                    // Une fois que l'agent hors collision, on lui assigne sa nouvelle position
+                    setPosition(agentPosition);
+                    isPositionChanged = true;
+                }
+            }
+        }
+
+        // Pour finir, s'il y a eu une correction de la position, on rappelle la fonction pour être bien sûr qu'il n'y a plus de collision
+        if (isPositionChanged)
+            moveOutOfCollision();
+    }
+
 	/**
 	 * @return Le nombre de tick passés depuis la mort de l'agent
 	 */
@@ -211,6 +267,6 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	
 	public double getDistanceFrom(WarAgent a) {
 		return WarMathTools.getDistanceBetweenTwoPoints(getX(), getY(), a.getX(), a.getY())
-				- getHitboxRadius() - a.getHitboxRadius();
+				- ((getHitboxMaxRadius() - getHitboxMinRadius()) / 2.) - ((a.getHitboxMaxRadius() - a.getHitboxMinRadius()) / 2.);
 	}
 }

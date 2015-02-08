@@ -1,6 +1,6 @@
 package edu.warbot.agents;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
@@ -38,8 +38,8 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 	private Color _debugStringColor;
     private ArrayList<WarMessage> thisTickMessages;
 
-	public ControllableWarAgent(String firstActionToDo, Team team, double hitboxRadius, WarBrain<? extends ControllableWarAgentAdapter> brain, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize) {
-		super(firstActionToDo, team, hitboxRadius);
+	public ControllableWarAgent(String firstActionToDo, Team team, Shape hitbox, WarBrain<? extends ControllableWarAgentAdapter> brain, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize) {
+		super(firstActionToDo, team, hitbox);
 
 		_distanceOfView = distanceOfView;
 		_angleOfView = angleOfView;
@@ -286,6 +286,9 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 		return getPerceptsByAgentType(agentType, false);
 	}
 
+    public Shape getPerceptionAreaShape() {
+        return _perceptsGetter.getPerceptionAreaShape();
+    }
 
 	/**
 	 * Renvoi la position d'un agent qui n'est pas dans le percept mais qui est

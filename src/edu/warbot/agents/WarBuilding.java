@@ -3,10 +3,12 @@ package edu.warbot.agents;
 import edu.warbot.agents.actions.ControllableActions;
 import edu.warbot.game.Team;
 
+import java.awt.*;
+
 public class WarBuilding extends WarAgent implements ControllableActions {
 
-	public WarBuilding(Team team, double hitboxRadius) {
-		super(ACTION_IDLE, team, hitboxRadius);
+	public WarBuilding(Team team, Shape hitbox) {
+		super(ACTION_IDLE, team, hitbox);
 	}
 
 	@Override

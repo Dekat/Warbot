@@ -21,7 +21,6 @@ public class WarGameSettings {
 	private WarGameMode _gameMode;
 	private Level _defaultLogLevel;
 	private int _foodAppearanceRate;
-	private double _maxHitboxRadius;
 	private boolean _isOpenWorld;
 	private Class<? extends PerceptsGetter> _perceptsGetter;
 	private boolean _isEnabledEnhancedGraphism;
@@ -42,7 +41,6 @@ public class WarGameSettings {
 		_gameMode = WarGameMode.Duel;
 		_defaultLogLevel = WarConfig.getLoggerLevel();
 		_foodAppearanceRate = WarConfig.getFoodAppearanceRate();
-		_maxHitboxRadius = WarConfig.getMaxHitBoxRadius();
 		_perceptsGetter = WarConfig.getDefaultPerception();
 		_isOpenWorld = WarConfig.isOpenWorld();
 		_isEnabledEnhancedGraphism = false; // TODO add it to config file
@@ -78,10 +76,6 @@ public class WarGameSettings {
 	
 	public Level getLogLevel() {
 		return _defaultLogLevel;
-	}
-	
-	public double getMaxHitboxRadius() {
-		return _maxHitboxRadius;
 	}
 	
 	public Class<? extends PerceptsGetter> getPerceptsGetterClass() {

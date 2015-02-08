@@ -95,7 +95,7 @@ public class WarXmlReader {
 		try {
 			NodeList nodes = (NodeList) xPath.compile(expressionXPath).evaluate(document, XPathConstants.NODESET);
 			for (int i = 0; i < nodes.getLength(); i++)
-				toReturn.add(nodes.item(i).getFirstChild().getNodeValue());
+                toReturn.add(nodes.item(i).getFirstChild().getNodeValue());
 		} catch (XPathExpressionException e) {
 			System.err.println("Wrong XPath : " + expressionXPath);
 			e.printStackTrace();
@@ -114,7 +114,7 @@ public class WarXmlReader {
 			for (int i = 0; i < ln.getLength(); i++) {
 				if (ln.item(i).getNodeType() == Node.ELEMENT_NODE) {
 					node = ln.item(i);
-					toReturn.put(node.getNodeName(), node.getFirstChild().getNodeValue());
+                    toReturn.put(node.getNodeName(), node.getFirstChild().getNodeValue());
 				}
 			}
 		} catch (XPathExpressionException e) {
@@ -132,7 +132,7 @@ public class WarXmlReader {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			if (nodeList.item(i).getNodeType() == Node.ELEMENT_NODE) {
 				node = nodeList.item(i);
-				toReturn.put(node.getNodeName(), node.getFirstChild().getNodeValue());
+                toReturn.put(node.getNodeName(), node.getFirstChild().getNodeValue());
 			}
 		}
 		return toReturn;

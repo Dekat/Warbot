@@ -1,11 +1,8 @@
 package edu.warbot.game;
 
 import java.awt.Color;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.logging.Level;
@@ -17,14 +14,11 @@ import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
 import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.WarAgentAdapter;
 import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.adapters.WarExplorerAdapter;
 import edu.warbot.brains.capacities.Creator;
 import edu.warbot.communications.WarKernelMessage;
 import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.tools.WarMathTools;
-import teams.engineer.WarEngineerBrainController;
 
 public class Team extends Observable {
 	
@@ -203,7 +197,7 @@ public class Team extends Observable {
 	public ArrayList<WarAgent> getAllAgentsInRadius(double posX, double posY, double radius) {
 		ArrayList<WarAgent> toReturn = new ArrayList<>();
 		for (WarAgent a : getAllAgents()) {
-			if ((WarMathTools.getDistanceBetweenTwoPoints(posX, posY, a.getX(), a.getY()) - a.getHitboxRadius()) <= radius) {
+			if ((WarMathTools.getDistanceBetweenTwoPoints(posX, posY, a.getX(), a.getY()) - a.getHitboxMaxRadius()) <= radius) {
 				toReturn.add(a);
 			}
 		}

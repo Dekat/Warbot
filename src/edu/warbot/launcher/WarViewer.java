@@ -21,7 +21,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.lang.reflect.InvocationTargetException;
@@ -34,6 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
+import edu.warbot.tools.GeometryTools;
 import turtlekit.viewer.TKDefaultViewer;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
@@ -45,8 +45,6 @@ import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.agents.WarKamikaze;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.agents.WarTurret;
-import edu.warbot.agents.percepts.InConePerceptsGetter;
-import edu.warbot.agents.percepts.InRadiusPerceptsGetter;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.agents.projectiles.WarRocket;
 import edu.warbot.agents.resources.WarFood;
@@ -211,6 +209,8 @@ public class WarViewer extends TKDefaultViewer {
 	}
 	
 	private void paintTeam(Graphics g, Team team) {
+        Graphics2D g2d = (Graphics2D) g;
+
 		Color backgroundColor = team.getColor();
 		Color borderColor = backgroundColor.darker();
 		Color perceptsColor = new Color(backgroundColor.getRed(), backgroundColor.getGreen(),
@@ -246,40 +246,46 @@ public class WarViewer extends TKDefaultViewer {
 
 			if (agent instanceof ControllableWarAgent) {
 				if (wtb.isShowHealthBars())
-					paintHealthBar(g, (ControllableWarAgent) agent);
+					paintHealthBar(g2d, (ControllableWarAgent) agent);
 				if (wtb.isShowInfos())
-					paintInfos(g, (ControllableWarAgent) agent, backgroundColor);
+					paintInfos(g2d, (ControllableWarAgent) agent, backgroundColor);
 				if(wtb.isShowPercepts())
-					paintPerceptionArea(g, (ControllableWarAgent) agent, perceptsColor);
+					paintPerceptionArea(g2d, (ControllableWarAgent) agent, perceptsColor);
 				if (wtb.isShowDebugMessages() && !isCurrentAgentTheSelectedOne)
-					paintDebugMessage(g, (ControllableWarAgent) agent);
+					paintDebugMessage(g2d, (ControllableWarAgent) agent);
 			}
 			
-			if (agent instanceof WarBase)
-				paintWarBase(g, (WarBase) agent, borderColor, backgroundColor);
-			else if (agent instanceof WarExplorer)
-				paintWarExplorer(g, (WarExplorer) agent, borderColor, backgroundColor);
-			else if (agent instanceof WarRocket)
-				paintWarRocket(g, (WarRocket) agent, borderColor, backgroundColor);
-			else if (agent instanceof WarRocketLauncher)
-				paintWarRocketLauncher(g, (WarRocketLauncher) agent, borderColor, backgroundColor);
-			else if (agent instanceof WarFood)
-				paintWarFood(g, (WarFood) agent, borderColor, backgroundColor);
-			else if (agent instanceof WarKamikaze)
-				paintWarKamikaze(g, (WarKamikaze) agent, borderColor, backgroundColor);
-			else if (agent instanceof WarEngineer)
-				paintWarEngineer(g, (WarEngineer) agent, borderColor, backgroundColor);
-			else if (agent instanceof WarTurret)
-				paintWarTurret(g, (WarTurret) agent, borderColor, backgroundColor);
+//			if (agent instanceof WarBase)
+//				paintWarBase(g, (WarBase) agent, borderColor, backgroundColor);
+//			else if (agent instanceof WarExplorer)
+//				paintWarExplorer(g, (WarExplorer) agent, borderColor, backgroundColor);
+//			else if (agent instanceof WarRocket)
+//				paintWarRocket(g, (WarRocket) agent, borderColor, backgroundColor);
+//			else if (agent instanceof WarRocketLauncher)
+//				paintWarRocketLauncher(g, (WarRocketLauncher) agent, borderColor, backgroundColor);
+//			else if (agent instanceof WarFood)
+//				paintWarFood(g, (WarFood) agent, borderColor, backgroundColor);
+//			else if (agent instanceof WarKamikaze)
+//				paintWarKamikaze(g, (WarKamikaze) agent, borderColor, backgroundColor);
+//			else if (agent instanceof WarEngineer)
+//				paintWarEngineer(g, (WarEngineer) agent, borderColor, backgroundColor);
+//			else if (agent instanceof WarTurret)
+//				paintWarTurret(g, (WarTurret) agent, borderColor, backgroundColor);
 
-			if (agent instanceof MovableActions) {
-				paintHeading(g, agent, borderColor);
+            Shape agentShape = GeometryTools.resize(agent.getActualForm(), cellSize);
+            g2d.setColor(backgroundColor);
+            g2d.fill(agentShape);
+            g2d.setColor(borderColor);
+            g2d.draw(agentShape);
+
+            if (agent instanceof MovableActions) {
+				paintHeading(g2d, agent, borderColor);
 			}
 		}
 		
 		if (_autorModeToolBar.getSelectedAgent() != null) {
 			if (_autorModeToolBar.getSelectedAgent() instanceof ControllableWarAgent)
-				paintDebugMessage(g, (ControllableWarAgent) _autorModeToolBar.getSelectedAgent());
+				paintDebugMessage(g2d, (ControllableWarAgent) _autorModeToolBar.getSelectedAgent());
 		}
 		
 		// Affichage des agents mourants
@@ -287,7 +293,7 @@ public class WarViewer extends TKDefaultViewer {
 			if (a instanceof WarProjectile)
 				_explosions.add(createExplosionShape(a.getPosition(), (int) (((WarProjectile)a).getExplosionRadius() - Team.MAX_DYING_STEP + a.getDyingStep())));				
 			else
-				_explosions.add(createExplosionShape(a.getPosition(), (int) ((a.getDyingStep() + a.getHitboxRadius()) * 2)));
+				_explosions.add(createExplosionShape(a.getPosition(), (int) ((a.getDyingStep() + a.getHitboxMinRadius()) * 2)));
 		}
 	}
 
@@ -310,15 +316,15 @@ public class WarViewer extends TKDefaultViewer {
 	private void paintWarRocket(Graphics g, WarRocket agent, Color borderColor, Color backgroundColor) {
 		paintSquareOfAgent(g, agent, borderColor, backgroundColor);
 	}
-	
+
 	private void paintWarKamikaze(Graphics g, WarKamikaze agent, Color borderColor, Color backgroundColor) {
 		paintOrientedDiamondOfAgent(g, agent, borderColor, backgroundColor);
 	}
-	
+
 	private void paintWarEngineer(Graphics g, WarEngineer agent, Color borderColor, Color backgroundColor) {
 		paintOrientedTriangleOfAgent(g, agent, borderColor, backgroundColor);
 	}
-	
+
 	private void paintWarTurret(Graphics g, WarTurret agent, Color borderColor, Color backgroundColor) {
 		paintOrientedCustomTriangleOfAgent(g, agent, borderColor, backgroundColor);
 	}
@@ -327,7 +333,7 @@ public class WarViewer extends TKDefaultViewer {
 		g.setColor(color);
 		double xPos = agent.getX() * cellSize;
 		double yPos = agent.getY() * cellSize;
-		double hitboxRadius = agent.getHitboxRadius() * cellSize;
+		double hitboxRadius = agent.getHitboxMinRadius() * cellSize;
 		g.drawLine((int) xPos, (int) yPos,
 				(int) (xPos + hitboxRadius * Math.cos(Math.toRadians(agent.getHeading()))),
 				(int) (yPos + hitboxRadius * Math.sin(Math.toRadians(agent.getHeading()))));
@@ -337,7 +343,7 @@ public class WarViewer extends TKDefaultViewer {
 		Color previousColor = g.getColor();
 		double xPos = agent.getX() * cellSize;
 		double yPos = agent.getY() * cellSize;
-		double hitboxRadius = agent.getHitboxRadius() * cellSize;
+		double hitboxRadius = agent.getHitboxMinRadius() * cellSize;
 		int healthBarHeight = 3 * cellSize;
 		double healthBarWidth = _healthBarDefaultSize * cellSize;
 		int healthWidth = (int) (healthBarWidth * (Double.valueOf(agent.getHealth()) / Double.valueOf(agent.getMaxHealth())));
@@ -398,24 +404,24 @@ public class WarViewer extends TKDefaultViewer {
 
 	private void paintOrientedSquareOfAgent(Graphics g, WarAgent agent, Color borderColor, Color backgroundColor) {
 		CoordCartesian agentPos = new CoordCartesian(agent.getX() * cellSize, agent.getY() * cellSize);
-		double hitboxRadius = agent.getHitboxRadius() * cellSize;
+		double hitboxRadius = agent.getHitboxMaxRadius() * cellSize;
 		Polygon square = new Polygon();
-		
+
 		double squaredHitboxRadius = Math.pow(hitboxRadius, 2);
 		double halfDiagonaleSize = Math.sqrt(squaredHitboxRadius * 2);
-		
+
 		CoordCartesian frontLeftPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(halfDiagonaleSize, agent.getHeading() + 45));
 		square.addPoint((int) frontLeftPos.getX(), (int) frontLeftPos.getY());
-		
+
 		CoordCartesian frontRightPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(halfDiagonaleSize, agent.getHeading() - 45));
 		square.addPoint((int) frontRightPos.getX(), (int) frontRightPos.getY());
-		
+
 		CoordCartesian backRightPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(halfDiagonaleSize, agent.getHeading() - 135));
 		square.addPoint((int) backRightPos.getX(), (int) backRightPos.getY());
-		
+
 		CoordCartesian backtLeftPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(halfDiagonaleSize, agent.getHeading() + 135));
 		square.addPoint((int) backtLeftPos.getX(), (int) backtLeftPos.getY());
-		
+
 		g.setColor(backgroundColor);
 		g.fillPolygon(square);
 		g.setColor(borderColor);
@@ -425,7 +431,7 @@ public class WarViewer extends TKDefaultViewer {
 	private void paintSquareOfAgent(Graphics g, WarAgent agent, Color borderColor, Color backgroundColor) {
 		double xPos = agent.getX() * cellSize;
 		double yPos = agent.getY() * cellSize;
-		double hitboxRadius = agent.getHitboxRadius() * cellSize;
+		double hitboxRadius = agent.getHitboxMaxRadius() * cellSize;
 		Polygon square = new Polygon();
 		square.addPoint((int) (xPos - hitboxRadius),
 				(int) (yPos - hitboxRadius));
@@ -435,7 +441,7 @@ public class WarViewer extends TKDefaultViewer {
 				(int) (yPos + hitboxRadius));
 		square.addPoint((int) (xPos + hitboxRadius),
 				(int) (yPos - hitboxRadius));
-		
+
 		g.setColor(backgroundColor);
 		g.fillPolygon(square);
 		g.setColor(borderColor);
@@ -445,12 +451,12 @@ public class WarViewer extends TKDefaultViewer {
 	private void paintCircleOfAgent(Graphics g, WarAgent agent, Color borderColor, Color backgroundColor) {
 		double xPos = agent.getX() * cellSize;
 		double yPos = agent.getY() * cellSize;
-		double hitboxRadius = agent.getHitboxRadius() * cellSize;
-		
+		double hitboxRadius = agent.getHitboxMaxRadius() * cellSize;
+
 		int xCenter = (int) (xPos - hitboxRadius);
 		int yCenter = (int) (yPos - hitboxRadius);
 		int hitboxDiameter = (int) (hitboxRadius * 2);
-		
+
 		g.setColor(backgroundColor);
 		g.fillOval(xCenter, yCenter, hitboxDiameter, hitboxDiameter);
 		g.setColor(borderColor);
@@ -459,13 +465,13 @@ public class WarViewer extends TKDefaultViewer {
 
 	private void paintOrientedDiamondOfAgent(Graphics g, WarAgent agent, Color borderColor, Color backgroundColor) {
 		CoordCartesian agentPos = new CoordCartesian(agent.getX() * cellSize, agent.getY() * cellSize);
-		double hitboxRadius = agent.getHitboxRadius() * cellSize;
+		double hitboxRadius = agent.getHitboxMaxRadius() * cellSize;
 
 		Polygon diamond = new Polygon();
-		
+
 		CoordCartesian frontPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading()));
 		diamond.addPoint((int) frontPos.getX(), (int) frontPos.getY());
-		
+
 		CoordCartesian leftPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading() + 90));
 		diamond.addPoint((int) leftPos.getX(), (int) leftPos.getY());
 
@@ -483,15 +489,15 @@ public class WarViewer extends TKDefaultViewer {
 
 	private void paintOrientedTriangleOfAgent(Graphics g, WarAgent agent, Color borderColor, Color backgroundColor) {
 		CoordCartesian agentPos = new CoordCartesian(agent.getX() * cellSize, agent.getY() * cellSize);
-		double hitboxRadius = agent.getHitboxRadius() * cellSize;
+		double hitboxRadius = agent.getHitboxMaxRadius() * cellSize;
 		Polygon triangle = new Polygon();
 
 		CoordCartesian frontPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading()));
 		triangle.addPoint((int) frontPos.getX(), (int) frontPos.getY());
-		
+
 		CoordCartesian backLeftPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading() + 130));
 		triangle.addPoint((int) backLeftPos.getX(), (int) backLeftPos.getY());
-		
+
 		CoordCartesian backRightPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading() - 130));
 		triangle.addPoint((int) backRightPos.getX(), (int) backRightPos.getY());
 
@@ -500,20 +506,20 @@ public class WarViewer extends TKDefaultViewer {
 		g.setColor(borderColor);
 		g.drawPolygon(triangle);
 	}
-	
+
 	private void paintOrientedCustomTriangleOfAgent(Graphics g, WarAgent agent, Color borderColor, Color backgroundColor) {
 		CoordCartesian agentPos = new CoordCartesian(agent.getX() * cellSize, agent.getY() * cellSize);
-		double hitboxRadius = agent.getHitboxRadius() * cellSize;
+		double hitboxRadius = agent.getHitboxMaxRadius() * cellSize;
 		Polygon triangle = new Polygon();
 
 		CoordCartesian frontPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading()));
 		triangle.addPoint((int) frontPos.getX(), (int) frontPos.getY());
-		
+
 		CoordCartesian backLeftPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading() + 130));
 		triangle.addPoint((int) backLeftPos.getX(), (int) backLeftPos.getY());
-		
+
 		triangle.addPoint((int) agentPos.getX(), (int) agentPos.getY());
-		
+
 		CoordCartesian backRightPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading() - 130));
 		triangle.addPoint((int) backRightPos.getX(), (int) backRightPos.getY());
 
@@ -521,7 +527,7 @@ public class WarViewer extends TKDefaultViewer {
 		g.fillPolygon(triangle);
 		g.setColor(borderColor);
 		g.drawPolygon(triangle);
-	}	
+	}
 
 	private void paintInfos(Graphics g, ControllableWarAgent agent, Color color) {
 		g.setColor(color);
@@ -530,28 +536,29 @@ public class WarViewer extends TKDefaultViewer {
 		g.drawString(agent.getClass().getSimpleName() + " " + agent.getID()
 				+ ": " + agent.getTeam().getName() + ", " + agent.getHealth()
 				+ " HP, heading: " + (int) agent.getHeading(),
-				(int) (xPos + (agent.getHitboxRadius() * cellSize)),
+				(int) (xPos + (agent.getHitboxMinRadius() * cellSize)),
 				(int) yPos);
 	}
 
-	private void paintPerceptionArea(Graphics g, ControllableWarAgent agent, Color color) {
+	private void paintPerceptionArea(Graphics2D g, ControllableWarAgent agent, Color color) {
 		g.setColor(color);
-		double radius = agent.getDistanceOfView() * cellSize;
-		double xPos = agent.getX() * cellSize;
-		double yPos = agent.getY() * cellSize;
-		if (game.getSettings().getPerceptsGetterClass().equals(InRadiusPerceptsGetter.class)) {
-			g.drawOval((int) (xPos - radius),
-					(int) (yPos - radius),
-					(int) (2 * radius),
-					(int) (2 * radius));
-		} else if (game.getSettings().getPerceptsGetterClass().equals(InConePerceptsGetter.class)) {
-			((Graphics2D) g).draw(new Arc2D.Double(
-					xPos - radius, yPos - radius,
-					2. * radius, 2. * radius,
-					360. - agent.getHeading() - (agent.getAngleOfView() / 2.),
-					agent.getAngleOfView(),
-					Arc2D.PIE));
-		}
+//		double radius = agent.getDistanceOfView() * cellSize;
+//		double xPos = agent.getX() * cellSize;
+//		double yPos = agent.getY() * cellSize;
+//		if (game.getSettings().getPerceptsGetterClass().equals(InRadiusPerceptsGetter.class)) {
+//			g.drawOval((int) (xPos - radius),
+//					(int) (yPos - radius),
+//					(int) (2 * radius),
+//					(int) (2 * radius));
+//		} else if (game.getSettings().getPerceptsGetterClass().equals(InConePerceptsGetter.class)) {
+//			((Graphics2D) g).draw(new Arc2D.Double(
+//					xPos - radius, yPos - radius,
+//					2. * radius, 2. * radius,
+//					360. - agent.getHeading() - (agent.getAngleOfView() / 2.),
+//					agent.getAngleOfView(),
+//					Arc2D.PIE));
+//		}
+        g.draw(GeometryTools.resize(agent.getPerceptionAreaShape(), cellSize));
 	}
 
 	private Shape createExplosionShape(CoordCartesian pos, int radius) {
@@ -612,12 +619,13 @@ public class WarViewer extends TKDefaultViewer {
 		@Override
 		 public void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			
-			 ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                     RenderingHints.VALUE_ANTIALIAS_ON);
+
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
 			
 			//affichage du nombre de FPS
-			g.drawString("TPS : " + game.getFPS().toString(), 1, 11);
+            g2d.drawString("TPS : " + game.getFPS().toString(), 1, 11);
 			
 			if (_autorModeToolBar.getSelectedAgent() != null) {
 				// Update de l'affichage des infos sur l'unité sélectionnée
@@ -629,23 +637,25 @@ public class WarViewer extends TKDefaultViewer {
 						_agentsIDsSeenBySelectedAgent.add(p.getID());
 				}
 			}
+
+            g2d.setColor(Color.RED);
+            g2d.draw(GeometryTools.resize(game.getMap().getMapLimits(), cellSize));
 			
 			// Affichage de Mère Nature (resources)
-			paintTeam(g, game.getMotherNatureTeam());
+			paintTeam(g2d, game.getMotherNatureTeam());
 
 			// Affichage des équipes
 			for (Team t : game.getPlayerTeams()) {
-				paintTeam(g, t);
+				paintTeam(g2d, t);
 			}
 
 			// Affichage des explosions
-			Graphics2D g2d = (Graphics2D) g;
 			for (Shape s : _explosions)
 				paintExplosionShape(g2d, s);
 			_explosions.clear();
 			
-			g.setColor(Color.RED);
-			g.drawRect(0, 0, width * cellSize, height * cellSize);
+			g2d.setColor(Color.RED);
+			g2d.drawRect(0, 0, width * cellSize, height * cellSize);
 			
 			_agentsIDsSeenBySelectedAgent.clear();
 		 }

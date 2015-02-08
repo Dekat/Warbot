@@ -66,6 +66,7 @@ public class AddToolMouseListener implements MouseListener {
 					WarAgent a = game.getMotherNatureTeam().instantiateNewWarResource(_toolsPnl.getSelectedWarAgentTypeToCreate().toString());
 					_debugToolBar.getViewer().launchAgent(a);
 					a.setPosition(_clickedPos);
+                    a.moveOutOfCollision();
 				} else {
 					CoordCartesian mouseClickPosition = new CoordCartesian(e.getX() / _debugToolBar.getViewer().getCellSize(),
 							e.getY() / _debugToolBar.getViewer().getCellSize());
@@ -80,6 +81,7 @@ public class AddToolMouseListener implements MouseListener {
 					_debugToolBar.getViewer().launchAgent(a);
 					a.setHeading(movement.getAngle());
 					a.setPosition(_clickedPos);
+                    a.moveOutOfCollision();
 				}
 
 				// TODO à remplacer par une simple actualisation de l'affichage
