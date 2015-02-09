@@ -224,7 +224,7 @@ public class WarMain implements Observer {
 		try {
 			teamLogo = new ImageIcon(WarIOTools.toByteArray(jarCurrentFile.getInputStream(logoEntry)));
 		} catch (IOException e) {
-			System.err.println("ERROR loading file " + logoEntry.getLastModifiedTime() + " inside jar file " + jarCurrentFile.getName());
+			System.err.println("ERROR loading file " + logoEntry.getName() + " inside jar file " + jarCurrentFile.getName());
 			e.printStackTrace();
 		}
         // TODO set general logo if no image found
