@@ -156,9 +156,8 @@ public class WarMain implements Observer {
 						// On recherche les classes de type BrainController
 						// Pour cela, on utilise un URLClassLoader
 						String urlName = currentFile.getCanonicalPath();
-						URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new URL("jar:file:/" + urlName + "!/")});
-                        System.out.println("jar:file:/" + urlName + "!/");
-                        
+						URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new URL("jar:file:" + urlName + "!/")});
+
                         //Vérifie si l'équipe est une FSM (regard dans le fichier de configuration)
                         if(analXML.isFSMTeam()){
                         	System.out.println("WarMain : FSM Team found");
@@ -185,7 +184,7 @@ public class WarMain implements Observer {
 							for (String agentName : brainControllersClassesName.keySet()) {
 								JarEntry classEntry = allJarEntries.get(brainControllersClassesName.get(agentName));
 	                            currentTeam.addBrainControllerClassForAgent(agentName,
-										(Class<? extends WarBrain>) classLoader.loadClass(classEntry.getName().replace(".class", "").replace("/", ".")));
+										classLoader.loadClass(classEntry.getName().replace(".class", "").replace("/", ".")).asSubclass(WarBrain.class));
 							}
                         }
 
