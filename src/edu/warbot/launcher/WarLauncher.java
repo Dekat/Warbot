@@ -47,7 +47,7 @@ public class WarLauncher extends TKLauncher {
 
 		setMadkitProperty(TurtleKit.Option.viewers, WarViewer.class.getName());
 		setMadkitProperty(TurtleKit.Option.scheduler, WarScheduler.class.getName());
-		setMadkitProperty(TurtleKit.Option.environment, TKEnvironment.class.getName());
+		setMadkitProperty(TurtleKit.Option.environment, WarEnvironment.class.getName());
 
 		super.createSimulationInstance();
 
