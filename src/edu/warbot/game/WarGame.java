@@ -54,7 +54,7 @@ public class WarGame extends Observable implements Observer {
 		}
 		
 		// Map creation
-		_map = new DefaultWarMap();
+		_map = settings.getSelectedMap();
 	}
 	
 	public void setLogLevel(Level l) {

@@ -28,9 +28,12 @@ import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameMode;
 import edu.warbot.gui.GuiIconsLoader;
+import edu.warbot.gui.launcher.mapSelection.MapMiniature;
+import edu.warbot.gui.launcher.mapSelection.MapSelectionListener;
 import edu.warbot.launcher.WarConfig;
 import edu.warbot.launcher.WarGameSettings;
 import edu.warbot.launcher.WarMain;
+import edu.warbot.maps.DefaultWarMap;
 
 @SuppressWarnings("serial")
 public class WarLauncherInterface extends JFrame {
@@ -43,6 +46,8 @@ public class WarLauncherInterface extends JFrame {
 
 	private PnlTeamSelection pnlSelectionTeam1;
 	private PnlTeamSelection pnlSelectionTeam2;
+
+    private MapMiniature currentDisplayedMapMiniature;
 
 	private JButton boutonQuitter;
 	private JButton boutonValider;
@@ -60,7 +65,7 @@ public class WarLauncherInterface extends JFrame {
 		this.warMain = warMain;
 
 		/* *** Fenêtre *** */
-		setSize(1000, 600);
+		setSize(1000, 700);
 		setMinimumSize(new Dimension(600, 400));
 		setLocationRelativeTo(null);
 		setIconImage(GuiIconsLoader.getLogo("iconLauncher.png").getImage());
@@ -121,6 +126,17 @@ public class WarLauncherInterface extends JFrame {
 		panelAdvanced.add(cbEnhancedGraphismEnabled, BorderLayout.SOUTH);
 
 		panelOption.add(panelAdvanced, BorderLayout.SOUTH);
+
+        JPanel panelMap = new JPanel();
+        panelMap.setLayout(new BorderLayout());
+        panelMap.setBorder(new TitledBorder("Carte"));
+        this.settings.setSelectedMap(new DefaultWarMap());
+        currentDisplayedMapMiniature = new MapMiniature(this.settings.getSelectedMap(), MapMiniature.SIZE_SMALL);
+        panelMap.add(currentDisplayedMapMiniature, BorderLayout.CENTER);
+        JButton btnChooseMap = new JButton("Choisir une autre carte");
+        btnChooseMap.addActionListener(new MapSelectionListener(this));
+        panelMap.add(btnChooseMap, BorderLayout.EAST);
+        panelOption.add(panelMap, BorderLayout.NORTH);
 
 		mainPanel.add(panelOption, BorderLayout.EAST);
 
@@ -247,4 +263,8 @@ public class WarLauncherInterface extends JFrame {
 	public WarGameSettings getGameSettings() {
 		return settings;
 	}
+
+    public void notifySelectedMapChanged() {
+        currentDisplayedMapMiniature.setMap(settings.getSelectedMap());
+    }
 }

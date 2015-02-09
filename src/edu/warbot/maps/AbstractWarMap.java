@@ -9,6 +9,7 @@ import edu.warbot.launcher.WarConfig;
 import edu.warbot.tools.CoordCartesian;
 import edu.warbot.tools.GeometryTools;
 import edu.warbot.tools.WarCircle;
+import org.w3c.dom.css.Rect;
 
 public abstract class AbstractWarMap {
 
@@ -21,10 +22,6 @@ public abstract class AbstractWarMap {
 	private ArrayList<WarCircle> _foodPositions;
     private float mapWidth;
     private float mapHeight;
-
-	public AbstractWarMap(Shape mapLimits) {
-		this(mapLimits, ((Double) mapLimits.getBounds2D().getWidth()).floatValue(), ((Double) mapLimits.getBounds2D().getHeight()).floatValue());
-	}
 
     public AbstractWarMap(Shape mapLimits, float mapWidth, float mapHeight) {
         _teamsPositions = new ArrayList<>();

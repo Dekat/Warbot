@@ -14,6 +14,7 @@ import edu.warbot.agents.percepts.PerceptsGetter;
 import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameMode;
+import edu.warbot.maps.AbstractWarMap;
 
 public class WarGameSettings {
 	
@@ -25,6 +26,7 @@ public class WarGameSettings {
 	private boolean _isEnabledEnhancedGraphism;
 	private List<Team> selectedTeams;
 	private SituationLoader situationLoader;
+    private AbstractWarMap selectedMap;
 
 	public WarGameSettings() {
 		this._nbAgentOfEachType = new HashMap<WarAgentType, Integer>();
@@ -124,5 +126,12 @@ public class WarGameSettings {
 	public void setSituationLoader(SituationLoader situationLoader) {
 		this.situationLoader = situationLoader;
 	}
-	
+
+    public AbstractWarMap getSelectedMap() {
+        return selectedMap;
+    }
+
+    public void setSelectedMap(AbstractWarMap selectedMap) {
+        this.selectedMap = selectedMap;
+    }
 }

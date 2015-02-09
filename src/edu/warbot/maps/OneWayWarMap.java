@@ -6,25 +6,26 @@ import java.awt.geom.Path2D;
 
 public class OneWayWarMap extends AbstractWarMap {
 
-	public OneWayWarMap() {
-        super(new Path2D.Double());
+    private static final int WIDTH = 1000;
+    private static final int HEIGHT = 600;
+    private static final int MIDDLE_WALL_WIDTH = 20;
+    private static final int MIDDLE_WALL_DOOR_HEIGHT = 60;
 
-        int width = 1000;
-        int height = 600;
-        int middleWallWidth = 20;
-        int middleWallDoorHeight = 60;
+    public OneWayWarMap() {
+        super(new Path2D.Double(), WIDTH, HEIGHT);
+
         ((Path2D.Double) mapLimits).moveTo(0, 0);
-        ((Path2D.Double) mapLimits).lineTo((width - middleWallWidth) / 2, 0);
-        ((Path2D.Double) mapLimits).lineTo((width - middleWallWidth) / 2, (height - middleWallDoorHeight) / 2);
-        ((Path2D.Double) mapLimits).lineTo((width + middleWallWidth) / 2, (height - middleWallDoorHeight) / 2);
-        ((Path2D.Double) mapLimits).lineTo((width + middleWallWidth) / 2, 0);
-        ((Path2D.Double) mapLimits).lineTo(width, 0);
-        ((Path2D.Double) mapLimits).lineTo(width, height);
-        ((Path2D.Double) mapLimits).lineTo((width + middleWallWidth) / 2, height);
-        ((Path2D.Double) mapLimits).lineTo((width + middleWallWidth) / 2, (height + middleWallDoorHeight) / 2);
-        ((Path2D.Double) mapLimits).lineTo((width - middleWallWidth) / 2, (height + middleWallDoorHeight) / 2);
-        ((Path2D.Double) mapLimits).lineTo((width - middleWallWidth) / 2, height);
-        ((Path2D.Double) mapLimits).lineTo(0, height);
+        ((Path2D.Double) mapLimits).lineTo((WIDTH - MIDDLE_WALL_WIDTH) / 2, 0);
+        ((Path2D.Double) mapLimits).lineTo((WIDTH - MIDDLE_WALL_WIDTH) / 2, (HEIGHT - MIDDLE_WALL_DOOR_HEIGHT) / 2);
+        ((Path2D.Double) mapLimits).lineTo((WIDTH + MIDDLE_WALL_WIDTH) / 2, (HEIGHT - MIDDLE_WALL_DOOR_HEIGHT) / 2);
+        ((Path2D.Double) mapLimits).lineTo((WIDTH + MIDDLE_WALL_WIDTH) / 2, 0);
+        ((Path2D.Double) mapLimits).lineTo(WIDTH, 0);
+        ((Path2D.Double) mapLimits).lineTo(WIDTH, HEIGHT);
+        ((Path2D.Double) mapLimits).lineTo((WIDTH + MIDDLE_WALL_WIDTH) / 2, HEIGHT);
+        ((Path2D.Double) mapLimits).lineTo((WIDTH + MIDDLE_WALL_WIDTH) / 2, (HEIGHT + MIDDLE_WALL_DOOR_HEIGHT) / 2);
+        ((Path2D.Double) mapLimits).lineTo((WIDTH - MIDDLE_WALL_WIDTH) / 2, (HEIGHT + MIDDLE_WALL_DOOR_HEIGHT) / 2);
+        ((Path2D.Double) mapLimits).lineTo((WIDTH - MIDDLE_WALL_WIDTH) / 2, HEIGHT);
+        ((Path2D.Double) mapLimits).lineTo(0, HEIGHT);
         ((Path2D.Double) mapLimits).lineTo(0, 0);
 
         addTeamPositions(
