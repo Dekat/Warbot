@@ -59,11 +59,8 @@ public class MoveToolMouseListener implements MouseListener {
 			newPos.normalize(0, game.getMap().getWidth() - 1, 0, game.getMap().getHeight() - 1);
 			_currentSelectedAgent.setPosition(newPos);
             _currentSelectedAgent.moveOutOfCollision();
-			
-			// TODO à remplacer par une simple actualisation de l'affichage
-			_debugToolBar.getViewer().sendMessage(_debugToolBar.getViewer().getCommunity(), TKOrganization.ENGINE_GROUP,
-					TKOrganization.SCHEDULER_ROLE,
-					new SchedulingMessage(SchedulingAction.STEP));
+
+            _debugToolBar.getViewer().getFrame().repaint();
 		}
 		_currentSelectedAgent = null;
 		

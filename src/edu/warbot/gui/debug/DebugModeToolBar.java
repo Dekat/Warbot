@@ -88,9 +88,7 @@ public class DebugModeToolBar extends JToolBar {
 			_selectedAgent = agent;
 			_agentInfosPnl.update();
 
-			// TODO à remplacer par une simple actualisation de l'affichage
-			_viewer.sendMessage(_viewer.getCommunity(), TKOrganization.ENGINE_GROUP, TKOrganization.SCHEDULER_ROLE,
-					new SchedulingMessage(SchedulingAction.STEP));
+            getViewer().getFrame().repaint();
 		}
 	}
 

@@ -36,10 +36,7 @@ public class DeleteToolMouseListener implements MouseListener {
 			if (response == JOptionPane.YES_OPTION) {
 				agentToDelete.killAgent(agentToDelete);
 
-				// TODO à remplacer par une simple actualisation de l'affichage
-				_debugToolBar.getViewer().sendMessage(_debugToolBar.getViewer().getCommunity(), TKOrganization.ENGINE_GROUP,
-						TKOrganization.SCHEDULER_ROLE,
-						new SchedulingMessage(SchedulingAction.STEP));
+                _debugToolBar.getViewer().getFrame().repaint();
 			}
 		}
 	}
