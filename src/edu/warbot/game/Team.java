@@ -12,7 +12,6 @@ import javax.swing.ImageIcon;
 import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSM.WarFSMBrainController;
 import edu.warbot.FSMEditor.FSMInstancier;
-import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
 import edu.warbot.FSMEditor.Modeles.Modele;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
@@ -285,21 +284,18 @@ public class Team extends Observable {
 		a.setLogLevel(getGame().getSettings().getLogLevel());
 
 		if(a.getBrain() instanceof WarFSMBrainController){
-			System.out.println("Instance of FSM brain found");
-			System.out.println("Generating fsm instance for " + agentName + "...");
+			System.out.println("Team : Instance of FSM brain found");
+			System.out.println("Team : Generating fsm instance for " + agentName + "...");
 			//Intancie la fsm et la donne comme brain à l'agent
 			FSMInstancier fsmInstancier = new FSMInstancier(getFSMModel());
 			ControllableWarAgentAdapter adapter = a.getBrain().getAgent();
 			WarFSM warFsm = fsmInstancier.getBrainControleurForAgent(WarAgentType.valueOf(agentName), adapter);
 			System.out.println("Generation succesfull");
 			
-			if(a.getBrain() instanceof WarFSMBrainController){
-				WarFSMBrainController fsmBrainController = (WarFSMBrainController)a.getBrain();
-				fsmBrainController.setFSM(warFsm);
+			WarFSMBrainController fsmBrainController = (WarFSMBrainController)a.getBrain();
+			System.out.println("Team : adding fsm to FSMBrainController...");
+			fsmBrainController.setFSM(warFsm);
 				
-			}else{
-				System.err.println("Erreur un brain de fsm n'est pas une instance de WarFSMBrainController");
-			}
 		}
 		
 		return a;

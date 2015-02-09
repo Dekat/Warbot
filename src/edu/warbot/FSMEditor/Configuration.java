@@ -15,6 +15,7 @@ public class Configuration {
 			FSM_CLASS_PATH_PLAN + ".WarPlanCreateUnit",
 			FSM_CLASS_PATH_PLAN + ".WarPlanDefendre",
 			FSM_CLASS_PATH_PLAN + ".WarPlanHealer",
+			FSM_CLASS_PATH_PLAN + ".WarPlanIdle",
 			FSM_CLASS_PATH_PLAN + ".WarPlanRamasserNouriture",
 			FSM_CLASS_PATH_PLAN + ".WarPlanWiggle",
 			FSM_CLASS_PATH_PLAN + ".WarPlanPatrouiller" };

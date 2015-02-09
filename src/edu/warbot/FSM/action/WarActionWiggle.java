@@ -10,7 +10,7 @@ import edu.warbot.brains.MovableWarAgentAdapter;
  * @author Olivier
  *
  */
-public class WarActionWiggle<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType>{
+public class WarActionWiggle<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType> {
 
 	private final int nbPasMax;	
 	int nbPas = 0;

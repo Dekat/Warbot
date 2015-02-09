@@ -8,7 +8,6 @@ import edu.warbot.brains.ControllableWarAgentAdapter;
 
 public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 	
-	
 	private WarEtat<AgentAdapterType> firstEtat;
 	private WarEtat<AgentAdapterType> etatCourant;
 
@@ -18,16 +17,16 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 
 	public void initFSM() {
 		System.out.println("*** Initialisation de la FSM ***");
-		System.out.println("La FSM contient " + this.listeEtat.size() + " Ètats");
+		System.out.println("La FSM contient " + this.listeEtat.size() + " √©tats");
 		
 		if(this.listeEtat.size() < 1){
-			System.err.println("ERREUR La FSM doit contenir au moins 1 Ètat !");
+			System.err.println("ERREUR La FSM doit contenir au moins 1 √©tat !");
 			System.exit(0);
 		}
 		
 		if(firstEtat == null){
 			this.firstEtat = listeEtat.get(0);
-			System.out.println("ATTENTION vous devez choisir un Ètat de depart : par defaut le premier Ètat ajoutÈ est choisit comme Ètat de dÈpart <" + this.firstEtat.getNom() + ">");
+			System.out.println("ATTENTION vous devez choisir un √©tat de depart : par defaut le premier √©tat ajout√© est choisit comme √©tat de d√©part <" + this.firstEtat.getNom() + ">");
 		}
 	
 		this.etatCourant = firstEtat;
@@ -43,7 +42,7 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 		String actionResultat = null;
 		
 		if(this.listeReflexe == null | this.listeEtat == null | this.etatCourant == null){
-			System.err.println("La FSM contient des erreurs, etes vous sur de l'avoir ben initialisÈ ?");
+			System.err.println("La FSM contient des erreurs, etes vous sur de l'avoir ben initialis√© ?");
 		}
 		
 		//On execute les reflexes
@@ -55,7 +54,7 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 		if(actionResultat == null)
 			actionResultat = this.etatCourant.getPlan().executePlan();
 
-		//On change d'Ètat si besoin
+		//On change d'√©tat si besoin
 		ArrayList<WarCondition<AgentAdapterType>> conditions = this.etatCourant.getConditions();
 			
 		for (WarCondition<AgentAdapterType> conditionCourante : conditions) {

@@ -8,6 +8,7 @@ import edu.warbot.FSM.WarEtat;
 import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSM.WarFSMBrainController;
 import edu.warbot.FSM.plan.WarPlan;
+import edu.warbot.FSM.plan.WarPlanRamasserNouriture;
 import edu.warbot.FSM.plan.WarPlanSettings;
 import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
 import edu.warbot.FSMEditor.Modeles.Modele;
@@ -15,6 +16,7 @@ import edu.warbot.FSMEditor.Modeles.ModeleBrain;
 import edu.warbot.FSMEditor.Modeles.ModeleState;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.MovableWarAgentAdapter;
 import edu.warbot.brains.WarAgentAdapter;
 import edu.warbot.brains.adapters.WarExplorerAdapter;
 
@@ -36,13 +38,13 @@ public class FSMInstancier {
 		this.model = modele;
 
 		if(!modele.isRebuild()){
+			System.out.println("FSMInstancier : model is not rebuild, asking for rebuilding model...");
 			FSMModelRebuilder fsmModeleRebuilder = new FSMModelRebuilder(modele);
 			this.model = fsmModeleRebuilder.getRebuildModel();
 		}
 			
 		generateHashMap();
 
-//		generateAllFSM();
 	}
 	
 //	public FSMInstancier(String xmlConfigurationFileName) {
@@ -52,12 +54,12 @@ public class FSMInstancier {
 //		FSMModelRebuilder fsmRebuilder = new FSMModelRebuilder(model);
 //	}
 
-	private static Modele getModel(String xmlConfigurationFileName) {
-		FSMXmlReader xmlReader = new FSMXmlReader(xmlConfigurationFileName);
-		Modele model = xmlReader.getGeneratedFSMModel();
-		FSMModelRebuilder fsmRebuilder = new FSMModelRebuilder(model);
-		return fsmRebuilder.getRebuildModel();
-	}
+//	private static Modele getModel(String xmlConfigurationFileName) {
+//		FSMXmlReader xmlReader = new FSMXmlReader(xmlConfigurationFileName);
+//		Modele model = xmlReader.getGeneratedFSMModel();
+//		FSMModelRebuilder fsmRebuilder = new FSMModelRebuilder(model);
+//		return fsmRebuilder.getRebuildModel();
+//	}
 
 	//Ici le type generique de FSM est le type de l'adapteur mais comment le mettre comme type generique ?
 	/**
@@ -67,6 +69,8 @@ public class FSMInstancier {
 	 * @return une instance de BrainControleur pour une fsm (semble à un brainController du équipe classique) (sous classe de WarBrain)
 	 */
 	public WarFSM getBrainControleurForAgent(WarAgentType agentType, ControllableWarAgentAdapter adapter) {
+		System.out.println("FSMInstancier begining instanciation for " + agentType + "...");
+		
 		WarFSM fsm = new WarFSM<ControllableWarAgentAdapter>();
 
 		//On recupère le modeleBrain qui correspond à l'agentType 
@@ -74,43 +78,80 @@ public class FSMInstancier {
 		
 		//On commence par ajouter tous les états à la FSM
 		for (ModeleState modelState : modelBrain.getStates()) {
-			
-			WarEtat<ControllableWarAgentAdapter> warState = getGenerateWarState(modelState, adapter);
+			WarEtat<?> warState = getGenerateWarState(modelState, adapter);
 			
 			fsm.addEtat(warState);
 		}
 		
+		System.out.println("FSMInstancier : lancement de l'initialisation de la FSM");
+		fsm.initFSM();
+		System.out.println("FSMInstancier : initialisation terminé avec succes");
+		
 		return fsm;
 	}
 
-	private WarEtat<ControllableWarAgentAdapter> getGenerateWarState(
+	private WarEtat<? extends ControllableWarAgentAdapter> getGenerateWarState(
 			ModeleState modelState, ControllableWarAgentAdapter adapter) {
 		//Récupère le plan
-		WarPlan<ControllableWarAgentAdapter> warPlan = 
+		WarPlan<? extends ControllableWarAgentAdapter> warPlan = 
 				getGenerateWarPlan(modelState, adapter);
 		
 		//Crée l'état
-		WarEtat<ControllableWarAgentAdapter> warState = 
+		WarEtat<? extends ControllableWarAgentAdapter> warState = 
 				new WarEtat<ControllableWarAgentAdapter>(modelState.getName(), warPlan);
 				
 		return warState;
 	}
 
-	private WarPlan<ControllableWarAgentAdapter> getGenerateWarPlan(
+	private WarPlan<? extends ControllableWarAgentAdapter> getGenerateWarPlan(
 			ModeleState modelState, ControllableWarAgentAdapter adapter) {
 		
 		//Instancie le plan
-		WarPlan<ControllableWarAgentAdapter> instanciatePlan = null;
+		WarPlan<? extends ControllableWarAgentAdapter> instanciatePlan = null;
 		try {
-			Constructor<?> constructorPlan = 
-					Class.forName(modelState.getPlanName()).getConstructor(adapter.getClass(), modelState.getWarPlanSettings().getClass());
 			
-			instanciatePlan = (WarPlan<ControllableWarAgentAdapter>) constructorPlan.newInstance(adapter, modelState.getWarPlanSettings());
-		
+			Class c = Class.forName(modelState.getPlanName());
+
+			//Récupère le constructeur
+			Class typeOfAdapter = null;
+			Constructor<?>[] constructors = c.getConstructors();
+			if(constructors.length > 0){
+				Constructor<?> constructor = constructors[0];
+				Class<?>[] parameterTypes = constructor.getParameterTypes();
+				if(parameterTypes.length > 0) {
+					typeOfAdapter = parameterTypes[0];
+				}else{
+					System.err.println("ERREUR la class " + modelState.getPlanName() + "  ne possède pas de constructeur correct");
+				}
+			}else{
+				System.err.println("ERREUR la class " + modelState.getPlanName() + "  ne possède pas de constructeur");
+			}
+			
+			Class adapterClass = adapter.getClass();
+//			typeOfAdapter.cast(adapterClass.);
+			
+			instanciatePlan = (WarPlan<MovableWarAgentAdapter>) c
+					.getConstructor(typeOfAdapter, modelState.getWarPlanSettings().getClass())
+					.newInstance(adapter, modelState.getWarPlanSettings());
+			
+//			instanciatePlan = new WarPlanRamasserNouriture<MovableWarAgentAdapter>((MovableWarAgentAdapter) adapter, modelState.getWarPlanSettings());
+
+//			Constructor<?> constructorPlan = 
+//					Class.forName(modelState.getPlanName())
+//					.getConstructor(adapter.getClass(), modelState.getWarPlanSettings().getClass());
+//			
+//			instanciatePlan = (WarPlan<ControllableWarAgentAdapter>) constructorPlan.newInstance(adapter, modelState.getWarPlanSettings());
+//		
 		} catch (NoSuchMethodException | SecurityException
 				| ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 			System.err.println("ERROR during instanciate WarPlan with class name " + modelState.getPlanName() + " check name, constructor, classPath, etc...");
+			System.err.println("Objects send : Adapter : " + adapter.getClass() + " , WarPlanSettings : " + modelState.getWarPlanSettings().getClass());
+			try {
+				System.err.println("Objects expected : Adapter : " + Class.forName(modelState.getPlanName()).getConstructors()[0].getParameterTypes()[0] + " , WarPlanSettings : " + Class.forName(modelState.getPlanName()).getConstructors()[0].getParameterTypes()[1]);
+			} catch (SecurityException | ClassNotFoundException e1) {
+				e1.printStackTrace();
+			}
 		}
 		
 		return instanciatePlan;
@@ -120,92 +161,5 @@ public class FSMInstancier {
 		mapAgentTypeAdapter.put(WarAgentType.WarExplorer,
 				WarExplorerAdapter.class);
 	}
-
-//	private void generateAllFSM() {
-//		for (ModeleBrain modelBrain : this.model.getModelsBrains()) {
-//			// TODO ici je n'arrive pas � mettre le type g�n�rique
-//			// Remarque : dans le modele l'agent type est a null pour l'instant
-//			// il faut penser � le mettre dans la generation du modele grace au
-//			// XML
-//			// (le nom du type de l'agent sous formede strign est bien stoqu�
-//			// dans le XML)
-//
-//			Class classAdapter = this.mapAgentTypeAdapter.get(modelBrain
-//					.getAgentType());
-//
-//			WarFSM<ControllableWarAgentAdapter> currentFsm = new WarFSM<>();
-//			generateFSM(currentFsm, modelBrain);
-//
-//			fsm.add(currentFsm);
-//
-//		}
-//	}
-
-	private void generateFSM(WarFSM<?> fsm, ModeleBrain model) {
-		// Pour chaque �tat du modele on l'ajoute � la FSM
-		for (ModeleState state : model.getStates()) {
-			generateState(fsm, state);
-		}
-		// Pour chaque conditions du modele on l'ajoute a la FSM
-
-		// Pour conditions on lui place son �tat de sortie
-
-		// Pour chaque �tat on lui place ses conditions de sorties
-	}
-
-	private void generateState(WarFSM<?> fsm, ModeleState modelState) {
-		String name = modelState.getName();
-
-		WarPlan<ControllableWarAgentAdapter> plan = getGeneratedPlan(modelState
-				.getPlanName());
-
-		WarEtat<ControllableWarAgentAdapter> warState = new WarEtat<ControllableWarAgentAdapter>(
-				name, plan);
-	}
-
-	private WarPlan<ControllableWarAgentAdapter> getGeneratedPlan(
-			String planName) {
-		WarPlan<ControllableWarAgentAdapter> plan = null;
-
-		WarAgentAdapter adapterForConstructor = null;
-		WarPlanSettings settingForConstructor = null;
-
-		try {
-			Constructor<?> constructor = Class.forName(planName)
-					.getConstructor(WarAgentAdapter.class,
-							WarPlanSettings.class);
-			plan = (WarPlan<ControllableWarAgentAdapter>) constructor
-					.newInstance(adapterForConstructor, settingForConstructor);
-
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			System.err.println("Impossible to instanciate class for name"
-					+ planName + " because class does not existe");
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-
-		// plan = (WarPlan<ControllableWarAgentAdapter>)
-		// Class.forName(planName).newInstance();
-
-		
-		return plan;
-	}
-
-	public void instanciateFSM() {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 }

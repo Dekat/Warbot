@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -143,15 +144,9 @@ public class WarMain implements Observer {
 						// On a maintenant tous les fichiers dans un tableau et le fichier de configuration a été analysé
 
 						// On récupère le logo
-                        JarEntry logoEntry = allJarEntries.get(analXML.getIconeName());
-                        ImageIcon teamLogo = new ImageIcon(WarIOTools.toByteArray(jarCurrentFile.getInputStream(logoEntry)));
-                        // TODO set general logo if no image found
-						// On change sa taille
-						Image tmp = teamLogo.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-						teamLogo = new ImageIcon(tmp);
+						ImageIcon teamLogo = getTeamLogo(allJarEntries.get(analXML.getIconeName()), jarCurrentFile);
 
 						// On récupère le son
-						// TODO ajouter le son aux équipes
 
 						// On créé l'équipe
 						currentTeam = new Team(analXML.getTeamName());
@@ -166,14 +161,16 @@ public class WarMain implements Observer {
                         
                         //Vérifie si l'équipe est une FSM (regard dans le fichier de configuration)
                         if(analXML.isFSMTeam()){
-                        	System.out.println("FSM Team found");
+                        	System.out.println("WarMain : FSM Team found");
                         	
                         	JarEntry entryFSMConfiguration = allJarEntries.get(FSMXmlParser.xmlConfigurationDefaultFilename);
-//                        	
-//                        	allJarEntries.
-//                        	File fileFSMConfig = new File(entryFSMConfiguration.get);
-                        	//                        	Modele mod = 
-//                        	currentTeam.setFSMModel();
+                        	System.out.println("WarMain : jarEntry for FSMXmlConfiguration found");
+                        	
+                        	InputStream fileFSMConfig = jarCurrentFile.getInputStream(entryFSMConfiguration);
+                        	FSMXmlReader fsmXmlReader = new FSMXmlReader(fileFSMConfig);
+                        	FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
+                        	currentTeam.setFSMModel(fsmModelRebuilder.getRebuildModel());
+                        	System.out.println("WarMain : FSMXmlReader successfull read fsmConfigFile");
                         	
                         	HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();
                     		
@@ -222,7 +219,22 @@ public class WarMain implements Observer {
 		return loadedTeams;
 	}
 	
-	private HashMap<String, JarEntry> getAllJarEntry(JarFile jarFile) throws IOException {
+	private ImageIcon getTeamLogo(JarEntry logoEntry, JarFile jarCurrentFile) {
+        ImageIcon teamLogo = null;
+		try {
+			teamLogo = new ImageIcon(WarIOTools.toByteArray(jarCurrentFile.getInputStream(logoEntry)));
+		} catch (IOException e) {
+			System.err.println("ERROR loading file " + logoEntry.getLastModifiedTime() + " inside jar file " + jarCurrentFile.getName());
+			e.printStackTrace();
+		}
+        // TODO set general logo if no image found
+		// On change sa taille
+		Image tmp = teamLogo.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		teamLogo = new ImageIcon(tmp);
+		return teamLogo;
+	}
+
+	private HashMap<String, JarEntry> getAllJarEntry(JarFile jarFile) {
 		HashMap<String, JarEntry> allJarEntries = new HashMap<>();
 
 		Enumeration<JarEntry> entries = jarFile.entries();

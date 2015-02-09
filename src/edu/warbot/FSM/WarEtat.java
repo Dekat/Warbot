@@ -8,12 +8,12 @@ import edu.warbot.brains.ControllableWarAgentAdapter;
 
 public class WarEtat<AgentAdapterType extends ControllableWarAgentAdapter> {
 	
-	private WarPlan<AgentAdapterType> plan;
+	private WarPlan<? extends AgentAdapterType> plan;
 	private ArrayList<WarCondition<AgentAdapterType>> conditions = new ArrayList<>();
 	
 	private String nom;
 	
-	public WarEtat(String nom, WarPlan<AgentAdapterType> plan){
+	public WarEtat(String nom, WarPlan<? extends AgentAdapterType> plan){
 		this.nom = nom;
 		this.plan = plan;
 	}
@@ -22,7 +22,7 @@ public class WarEtat<AgentAdapterType extends ControllableWarAgentAdapter> {
 		this.conditions.add(cond1);
 	}
 
-	public WarPlan<AgentAdapterType> getPlan() {
+	public WarPlan<? extends AgentAdapterType> getPlan() {
 		return this.plan;
 	}
 	
@@ -33,7 +33,7 @@ public class WarEtat<AgentAdapterType extends ControllableWarAgentAdapter> {
 	public void initEtat() {
 		
 		if(this.plan == null){
-			System.err.println("ERREUR : un etat doit obligatoirement contenir un plan <" + this.nom + ">");
+			System.err.println("WarEtat : ERREUR : un état doit obligatoirement contenir un plan <" + this.nom + ">");
 			System.exit(0);
 		}
 		
