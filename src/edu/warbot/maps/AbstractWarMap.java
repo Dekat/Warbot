@@ -14,7 +14,8 @@ import org.w3c.dom.css.Rect;
 
 public abstract class AbstractWarMap {
 
-    private static final double BORDER_THICKNESS = 5;
+    private static final double MAP_ACCESSIBLE_AREA_PADDING = 5.;
+    private static final double BORDER_THICKNESS = 5.;
 
 	protected static final float TEAM_POSITION_RADIUS = 100;
 	protected static final float FOOD_POSITION_RADIUS = 200;
@@ -28,7 +29,7 @@ public abstract class AbstractWarMap {
     public AbstractWarMap(double mapWidth, double mapHeight) {
         _teamsPositions = new ArrayList<>();
         _foodPositions = new ArrayList<>();
-        mapAccessibleArea = new Area(new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
+        mapAccessibleArea = new Area(new Rectangle2D.Double(-MAP_ACCESSIBLE_AREA_PADDING, -MAP_ACCESSIBLE_AREA_PADDING, mapWidth + (MAP_ACCESSIBLE_AREA_PADDING*2.), mapHeight + (MAP_ACCESSIBLE_AREA_PADDING*2.)));
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
     }
@@ -69,6 +70,12 @@ public abstract class AbstractWarMap {
 
     public Shape getMapAccessibleArea() {
         return mapAccessibleArea;
+    }
+
+    public Shape getMapForbidArea() {
+        Area forbidArea = new Area(new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
+        forbidArea.subtract(mapAccessibleArea);
+        return forbidArea;
     }
 
 	public double getWidth() {

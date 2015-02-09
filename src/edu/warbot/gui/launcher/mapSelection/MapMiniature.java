@@ -5,15 +5,18 @@ import edu.warbot.tools.GeometryTools;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 public class MapMiniature extends JPanel {
 
-    public static final double SIZE_SMALL = 1.;
+    public static final double SIZE_SMALL = 0.5;
+    public static final double SIZE_MEDIUM = 1.;
     public static final double SIZE_LARGE = 2.;
+    public static final double SIZE_VERY_LARGE = 3.;
 
     private static final double MAP_MARGIN = 5.;
-    private static final double DEFAULT_WIDTH = 100.;
-    private static final double DEFAULT_HEIGHT = 60.;
+    private static final double DEFAULT_WIDTH = 200.;
+    private static final double DEFAULT_HEIGHT = 120.;
 
     private AbstractWarMap map;
     private double width;
@@ -37,10 +40,18 @@ public class MapMiniature extends JPanel {
         super.paintComponent(g);
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.RED);
+
         double resizeMultiplier = Math.min((height -(MAP_MARGIN*2.)) / map.getHeight(), (width -(MAP_MARGIN*2.)) / map.getWidth());
-        Shape resizedShape = GeometryTools.resize(map.getMapAccessibleArea(), resizeMultiplier);
-        g2d.draw(GeometryTools.translateShape(resizedShape, (width - resizedShape.getBounds2D().getWidth()) / 2., (height - resizedShape.getBounds2D().getHeight()) / 2.));
+
+        // Map forbid area
+        g2d.setColor(Color.GRAY);
+        Shape resizedShape = GeometryTools.resize(map.getMapForbidArea(), resizeMultiplier);
+        g2d.fill(GeometryTools.translateShape(resizedShape, (width - resizedShape.getBounds2D().getWidth()) / 2., (height - resizedShape.getBounds2D().getHeight()) / 2.));
+
+        // Map borders
+        g2d.setColor(Color.RED);
+        Shape mapBorders = GeometryTools.resize(new Rectangle2D.Double(0, 0, map.getWidth(), map.getHeight()), resizeMultiplier);
+        g2d.draw(GeometryTools.translateShape(mapBorders, (width - mapBorders.getBounds2D().getWidth()) / 2., (height - mapBorders.getBounds2D().getHeight()) / 2.));
     }
 
     public AbstractWarMap getMap() {

@@ -6,6 +6,8 @@ import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.tools.ClassFinder;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,10 +15,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Vector;
 
-public class MapSelectionDialog extends JFrame implements ActionListener {
+public class MapSelectionDialog extends JFrame implements ActionListener, ListSelectionListener {
 
     private WarLauncherInterface warLauncherInterface;
     private Vector<MapMiniature> mapMiniaturesList;
+    private MapMiniature selectedMapMiniature;
     private JList mapMiniaturesJList;
 
     public MapSelectionDialog(WarLauncherInterface warLauncherInterface) {
@@ -26,8 +29,8 @@ public class MapSelectionDialog extends JFrame implements ActionListener {
         this.warLauncherInterface = warLauncherInterface;
 
         /* *** Fenêtre *** */
-        setSize(500, 350);
-        setMinimumSize(new Dimension(200, 200));
+        setSize(800, 500);
+        setMinimumSize(new Dimension(400, 300));
         setLocationRelativeTo(null);
         setIconImage(GuiIconsLoader.getLogo("iconLauncher.png").getImage());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -36,7 +39,7 @@ public class MapSelectionDialog extends JFrame implements ActionListener {
         for(Class mapClass : ClassFinder.find(AbstractWarMap.class.getPackage().getName())) {
             if (mapClass.getSuperclass().equals(AbstractWarMap.class)) {
                 try {
-                    mapMiniaturesList.add(new MapMiniature((AbstractWarMap) mapClass.newInstance(), MapMiniature.SIZE_LARGE));
+                    mapMiniaturesList.add(new MapMiniature((AbstractWarMap) mapClass.newInstance(), MapMiniature.SIZE_SMALL));
                 } catch (InstantiationException | IllegalAccessException e) {
                     e.printStackTrace();
                 }
@@ -44,10 +47,13 @@ public class MapSelectionDialog extends JFrame implements ActionListener {
         }
         mapMiniaturesJList = new JList(mapMiniaturesList);
         mapMiniaturesJList.setSelectedIndex(0);
-        mapMiniaturesJList.setLayoutOrientation(JList.VERTICAL_WRAP);
         mapMiniaturesJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         mapMiniaturesJList.setCellRenderer(new MapMiniatureCellRenderer());
-        add(mapMiniaturesJList, BorderLayout.CENTER);
+        mapMiniaturesJList.addListSelectionListener(this);
+        add(new JScrollPane(mapMiniaturesJList), BorderLayout.CENTER);
+
+        selectedMapMiniature = new MapMiniature(((MapMiniature) mapMiniaturesJList.getSelectedValue()).getMap(), MapMiniature.SIZE_VERY_LARGE);
+        add(selectedMapMiniature, BorderLayout.EAST);
 
         JButton btnValid = new JButton("Valider");
         btnValid.addActionListener(this);
@@ -63,5 +69,11 @@ public class MapSelectionDialog extends JFrame implements ActionListener {
         warLauncherInterface.getGameSettings().setSelectedMap(getSelectedItem().getMap());
         warLauncherInterface.notifySelectedMapChanged();
         this.dispose();
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        selectedMapMiniature.setMap(((MapMiniature) mapMiniaturesJList.getSelectedValue()).getMap());
+        selectedMapMiniature.repaint();
     }
 }
