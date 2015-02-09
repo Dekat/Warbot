@@ -3,30 +3,22 @@ package edu.warbot.maps;
 import edu.warbot.tools.CoordCartesian;
 
 import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
 
 public class OneWayWarMap extends AbstractWarMap {
 
-    private static final int WIDTH = 1000;
-    private static final int HEIGHT = 600;
-    private static final int MIDDLE_WALL_WIDTH = 20;
-    private static final int MIDDLE_WALL_DOOR_HEIGHT = 60;
+    private static final double WIDTH = 1000;
+    private static final double HEIGHT = 600;
+    private static final double MIDDLE_WALL_WIDTH = 20;
+    private static final double MIDDLE_WALL_DOOR_HEIGHT = 60;
 
     public OneWayWarMap() {
-        super(new Path2D.Double(), WIDTH, HEIGHT);
+        super(WIDTH, HEIGHT);
 
-        ((Path2D.Double) mapLimits).moveTo(0, 0);
-        ((Path2D.Double) mapLimits).lineTo((WIDTH - MIDDLE_WALL_WIDTH) / 2, 0);
-        ((Path2D.Double) mapLimits).lineTo((WIDTH - MIDDLE_WALL_WIDTH) / 2, (HEIGHT - MIDDLE_WALL_DOOR_HEIGHT) / 2);
-        ((Path2D.Double) mapLimits).lineTo((WIDTH + MIDDLE_WALL_WIDTH) / 2, (HEIGHT - MIDDLE_WALL_DOOR_HEIGHT) / 2);
-        ((Path2D.Double) mapLimits).lineTo((WIDTH + MIDDLE_WALL_WIDTH) / 2, 0);
-        ((Path2D.Double) mapLimits).lineTo(WIDTH, 0);
-        ((Path2D.Double) mapLimits).lineTo(WIDTH, HEIGHT);
-        ((Path2D.Double) mapLimits).lineTo((WIDTH + MIDDLE_WALL_WIDTH) / 2, HEIGHT);
-        ((Path2D.Double) mapLimits).lineTo((WIDTH + MIDDLE_WALL_WIDTH) / 2, (HEIGHT + MIDDLE_WALL_DOOR_HEIGHT) / 2);
-        ((Path2D.Double) mapLimits).lineTo((WIDTH - MIDDLE_WALL_WIDTH) / 2, (HEIGHT + MIDDLE_WALL_DOOR_HEIGHT) / 2);
-        ((Path2D.Double) mapLimits).lineTo((WIDTH - MIDDLE_WALL_WIDTH) / 2, HEIGHT);
-        ((Path2D.Double) mapLimits).lineTo(0, HEIGHT);
-        ((Path2D.Double) mapLimits).lineTo(0, 0);
+        forbidAllBorders();
+
+        forbidArea(new Rectangle2D.Double((WIDTH - MIDDLE_WALL_WIDTH) / 2., 0, MIDDLE_WALL_WIDTH, (HEIGHT - MIDDLE_WALL_DOOR_HEIGHT) / 2.));
+        forbidArea(new Rectangle2D.Double((WIDTH - MIDDLE_WALL_WIDTH) / 2., ((HEIGHT - MIDDLE_WALL_DOOR_HEIGHT) / 2.) + MIDDLE_WALL_DOOR_HEIGHT, MIDDLE_WALL_WIDTH, (HEIGHT - MIDDLE_WALL_DOOR_HEIGHT) / 2.));
 
         addTeamPositions(
                 new CoordCartesian(TEAM_POSITION_RADIUS, TEAM_POSITION_RADIUS),

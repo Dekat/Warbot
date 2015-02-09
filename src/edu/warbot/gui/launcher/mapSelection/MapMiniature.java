@@ -39,7 +39,7 @@ public class MapMiniature extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.RED);
         double resizeMultiplier = Math.min((height -(MAP_MARGIN*2.)) / map.getHeight(), (width -(MAP_MARGIN*2.)) / map.getWidth());
-        Shape resizedShape = GeometryTools.resize(map.getMapLimits(), resizeMultiplier);
+        Shape resizedShape = GeometryTools.resize(map.getMapAccessibleArea(), resizeMultiplier);
         g2d.draw(GeometryTools.translateShape(resizedShape, (width - resizedShape.getBounds2D().getWidth()) / 2., (height - resizedShape.getBounds2D().getHeight()) / 2.));
     }
 

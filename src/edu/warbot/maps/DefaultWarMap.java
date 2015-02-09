@@ -6,12 +6,14 @@ import edu.warbot.tools.CoordCartesian;
 
 public class DefaultWarMap extends AbstractWarMap {
 
-    private static final int WIDTH = 1000;
-    private static final int HEIGHT = 600;
+    private static final double WIDTH = 1000;
+    private static final double HEIGHT = 600;
 
     public DefaultWarMap() {
-		super(new Rectangle2D.Float(0, 0, WIDTH, HEIGHT), WIDTH, HEIGHT);
-		
+		super(WIDTH, HEIGHT);
+
+        forbidAllBorders();
+
 		addTeamPositions(
 				new CoordCartesian(TEAM_POSITION_RADIUS, TEAM_POSITION_RADIUS),
 				new CoordCartesian(TEAM_POSITION_RADIUS, getHeight() / 2),

@@ -639,7 +639,7 @@ public class WarViewer extends TKDefaultViewer {
 			}
 
             g2d.setColor(Color.RED);
-            g2d.draw(GeometryTools.resize(game.getMap().getMapLimits(), cellSize));
+            g2d.draw(GeometryTools.resize(game.getMap().getMapAccessibleArea(), cellSize));
 			
 			// Affichage de Mère Nature (resources)
 			paintTeam(g2d, game.getMotherNatureTeam());
