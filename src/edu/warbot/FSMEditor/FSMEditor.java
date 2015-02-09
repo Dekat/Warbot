@@ -2,6 +2,8 @@ package edu.warbot.FSMEditor;
 
 import edu.warbot.FSMEditor.Controleurs.Controleur;
 import edu.warbot.FSMEditor.Controleurs.ControleurBrain;
+import edu.warbot.FSMEditor.FSMSettings.Settings;
+import edu.warbot.FSMEditor.FSMSettings.PlanEnum;
 import edu.warbot.FSMEditor.Modeles.Modele;
 import edu.warbot.FSMEditor.Modeles.ModeleState;
 import edu.warbot.FSMEditor.Views.View;
@@ -25,19 +27,19 @@ public class FSMEditor {
 		controleur.createControleursBrains(WarAgentType.WarKamikaze);
 		
 		controleur.getControleurBrain(WarAgentType.WarBase).addState(
-				new ModeleState("State Idle", Configuration.PLAN[5], null));
+				new ModeleState("State Idle", PlanEnum.WarPlanIdle, null));
 		controleur.getControleurBrain(WarAgentType.WarRocketLauncher).addState(
-				new ModeleState("State Idle", Configuration.PLAN[5], null));
+				new ModeleState("State Idle", PlanEnum.WarPlanWiggle, null));
 		controleur.getControleurBrain(WarAgentType.WarEngineer).addState(
-				new ModeleState("State Idle", Configuration.PLAN[5], null));
+				new ModeleState("State Idle", PlanEnum.WarPlanWiggle, null));
 		controleur.getControleurBrain(WarAgentType.WarTurret).addState(
-				new ModeleState("State Idle", Configuration.PLAN[5], null));
+				new ModeleState("State Idle", PlanEnum.WarPlanIdle, null));
 		controleur.getControleurBrain(WarAgentType.WarKamikaze).addState(
-				new ModeleState("State Idle", Configuration.PLAN[5], null));
+				new ModeleState("State Idle", PlanEnum.WarPlanWiggle, null));
 		controleur.getControleurBrain(WarAgentType.WarExplorer).addState(
-				new ModeleState("State Idle", Configuration.PLAN[5], null));
+				new ModeleState("State Idle", PlanEnum.WarPlanWiggle, null));
 		
-		ControleurBrain cb = controleur.getControleurBrain(WarAgentType.WarExplorer);
+//		ControleurBrain cb = controleur.getControleurBrain(WarAgentType.WarExplorer);
 
 //		ModeleState state1 = new ModeleState("State1", Configuration.PLAN[1], new WarPlanSettings());
 //		ModeleState state2 = new ModeleState("State2", Configuration.PLAN[0], new WarPlanSettings());

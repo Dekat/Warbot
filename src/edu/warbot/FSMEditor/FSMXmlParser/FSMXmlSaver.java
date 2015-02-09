@@ -98,7 +98,7 @@ public class FSMXmlSaver extends FSMXmlParser{
 		Element elemState = new Element(State);
 		
 		elemState.addContent(new Element("Name").setText(state.getName()));
-		elemState.addContent(new Element("Plan").setText(state.getPlanName()));
+		elemState.addContent(new Element("Plan").setText(state.getPlanName().toString()));
 
 		elemState.addContent(getContentPlanSettings(state));
 		elemState.addContent(getContentConditionsOutNameForState(state));
@@ -109,7 +109,7 @@ public class FSMXmlSaver extends FSMXmlParser{
 	private Element getContentPlanSettings(ModeleState state) {
 		Element elemPlanSetting = new Element(PlanSettings);
 		
-		WarPlanSettings planSet = state.getWarPlanSettings();
+		WarPlanSettings planSet = state.getPlanSettings();
 		if(planSet == null)
 			planSet = new WarPlanSettings();
 		

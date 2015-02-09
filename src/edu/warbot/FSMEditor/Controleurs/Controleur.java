@@ -18,11 +18,8 @@ import edu.warbot.FSMEditor.Modeles.ModeleCondition;
 import edu.warbot.FSMEditor.Modeles.ModeleState;
 import edu.warbot.FSMEditor.Views.View;
 import edu.warbot.FSMEditor.Views.ViewBrain;
-import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarExplorerAdapter;
-import edu.warbot.game.Team;
 
 public class Controleur {
 	public Modele modele;
@@ -126,7 +123,7 @@ public class Controleur {
 		
 			System.out.println("Liste des états " + modBrain.getStates().size());
 			for (ModeleState modState : modBrain.getStates()) {
-				System.out.println("\tEtat : Name=" + modState.getName() + " plan=" + modState.getPlanName());
+				System.out.println("\tEtat : Name=" + modState.getName() + " plan=" + modState.getPlanLoaderName());
 				System.out.println("\tConditions de sorties ID : " + modState.getConditionsOutID().size());
 				for (String condID : modState.getConditionsOutID()) {
 					System.out.println("\t\t" + condID);
@@ -137,7 +134,7 @@ public class Controleur {
 				}
 				
 				//Afichage des parametres du plan
-				WarPlanSettings planSet = modState.getWarPlanSettings();
+				WarPlanSettings planSet = modState.getPlanSettings();
 				Field field[] = planSet.getClass().getDeclaredFields();
 				System.out.println("\tState settings : " + field.length);
 				for (int i = 0; i < field.length; i++) {

@@ -6,18 +6,13 @@ import java.util.HashMap;
 
 import edu.warbot.FSM.WarEtat;
 import edu.warbot.FSM.WarFSM;
-import edu.warbot.FSM.WarFSMBrainController;
 import edu.warbot.FSM.plan.WarPlan;
-import edu.warbot.FSM.plan.WarPlanRamasserNouriture;
-import edu.warbot.FSM.plan.WarPlanSettings;
-import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
 import edu.warbot.FSMEditor.Modeles.Modele;
 import edu.warbot.FSMEditor.Modeles.ModeleBrain;
 import edu.warbot.FSMEditor.Modeles.ModeleState;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 import edu.warbot.brains.MovableWarAgentAdapter;
-import edu.warbot.brains.WarAgentAdapter;
 import edu.warbot.brains.adapters.WarExplorerAdapter;
 
 /**
@@ -110,7 +105,7 @@ public class FSMInstancier {
 		WarPlan<? extends ControllableWarAgentAdapter> instanciatePlan = null;
 		try {
 			
-			Class c = Class.forName(modelState.getPlanName());
+			Class c = Class.forName(modelState.getPlanLoaderName());
 
 			//Récupère le constructeur
 			Class typeOfAdapter = null;
@@ -121,34 +116,23 @@ public class FSMInstancier {
 				if(parameterTypes.length > 0) {
 					typeOfAdapter = parameterTypes[0];
 				}else{
-					System.err.println("ERREUR la class " + modelState.getPlanName() + "  ne possède pas de constructeur correct");
+					System.err.println("ERREUR la class " + modelState.getPlanLoaderName() + "  ne possède pas de constructeur correct");
 				}
 			}else{
-				System.err.println("ERREUR la class " + modelState.getPlanName() + "  ne possède pas de constructeur");
+				System.err.println("ERREUR la class " + modelState.getPlanLoaderName() + "  ne possède pas de constructeur");
 			}
 			
-			Class adapterClass = adapter.getClass();
-//			typeOfAdapter.cast(adapterClass.);
-			
 			instanciatePlan = (WarPlan<MovableWarAgentAdapter>) c
-					.getConstructor(typeOfAdapter, modelState.getWarPlanSettings().getClass())
-					.newInstance(adapter, modelState.getWarPlanSettings());
+					.getConstructor(typeOfAdapter, modelState.getPlanSettings().getClass())
+					.newInstance(adapter, modelState.getPlanSettings());
 			
-//			instanciatePlan = new WarPlanRamasserNouriture<MovableWarAgentAdapter>((MovableWarAgentAdapter) adapter, modelState.getWarPlanSettings());
-
-//			Constructor<?> constructorPlan = 
-//					Class.forName(modelState.getPlanName())
-//					.getConstructor(adapter.getClass(), modelState.getWarPlanSettings().getClass());
-//			
-//			instanciatePlan = (WarPlan<ControllableWarAgentAdapter>) constructorPlan.newInstance(adapter, modelState.getWarPlanSettings());
-//		
 		} catch (NoSuchMethodException | SecurityException
 				| ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
-			System.err.println("ERROR during instanciate WarPlan with class name " + modelState.getPlanName() + " check name, constructor, classPath, etc...");
-			System.err.println("Objects send : Adapter : " + adapter.getClass() + " , WarPlanSettings : " + modelState.getWarPlanSettings().getClass());
+			System.err.println("ERROR during instanciate WarPlan with class name " + modelState.getPlanLoaderName() + " check name, constructor, classPath, etc...");
+			System.err.println("Objects send : Adapter : " + adapter.getClass() + " , WarPlanSettings : " + modelState.getPlanSettings().getClass());
 			try {
-				System.err.println("Objects expected : Adapter : " + Class.forName(modelState.getPlanName()).getConstructors()[0].getParameterTypes()[0] + " , WarPlanSettings : " + Class.forName(modelState.getPlanName()).getConstructors()[0].getParameterTypes()[1]);
+				System.err.println("Objects expected : Adapter : " + Class.forName(modelState.getPlanLoaderName()).getConstructors()[0].getParameterTypes()[0] + " , WarPlanSettings : " + Class.forName(modelState.getPlanLoaderName()).getConstructors()[0].getParameterTypes()[1]);
 			} catch (SecurityException | ClassNotFoundException e1) {
 				e1.printStackTrace();
 			}

@@ -14,7 +14,7 @@ public class WarPlanIdle<AgentAdapterType extends ControllableWarAgentAdapter> e
 	
 	
 	public WarPlanIdle(AgentAdapterType brain, WarPlanSettings planSettings) {
-		super("Plan Wiggle", brain, planSettings);
+		super("Plan Idle", brain, planSettings);
 	}
 
 	public void buildActionList() {

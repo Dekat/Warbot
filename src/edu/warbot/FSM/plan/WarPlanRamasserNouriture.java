@@ -13,7 +13,6 @@ import edu.warbot.brains.MovableWarAgentAdapter;
  * Si j'ai finit => raporter la nouriture (ajouter si le sac est plein comme condition)
  * action raporter de la nouriture
  * si j'ai finit => action chercher de la nouriture	(ajouter si le sac est vide comme condition)
- * @author Olivier
  *
  */
 public class WarPlanRamasserNouriture<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {

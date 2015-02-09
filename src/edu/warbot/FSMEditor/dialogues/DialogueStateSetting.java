@@ -5,7 +5,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JButton;
@@ -20,7 +19,8 @@ import javax.swing.border.TitledBorder;
 import org.jfree.ui.tabbedui.VerticalLayout;
 
 import edu.warbot.FSM.plan.WarPlanSettings;
-import edu.warbot.FSMEditor.Configuration;
+import edu.warbot.FSMEditor.FSMSettings.PlanEnum;
+import edu.warbot.FSMEditor.Modeles.ModeleState;
 import edu.warbot.FSMEditor.Views.ViewBrain;
 import edu.warbot.agents.enums.WarAgentType;
 
@@ -32,11 +32,22 @@ public class DialogueStateSetting extends AbstractDialogue {
 	Field fields[];
 	HashMap<Field, JComponent> mapFieldComp = new HashMap<>();
 
-	public DialogueStateSetting(ViewBrain f, WarPlanSettings planSettings) {
+	private ModeleState modelState;
+
+	public DialogueStateSetting(ViewBrain viewBrain, ModeleState modelState) {
 		super();
-
-		this.planSettings = planSettings;
-
+		this.modelState = modelState;
+		
+		//Pas très beau de mettre ça ici mais on pourrait supposer que ce n'est jamais à null
+		if(this.modelState.getPlanSettings() == null)
+			this.planSettings = new WarPlanSettings();
+		else
+			this.planSettings = this.modelState.getPlanSettings();
+		
+		createDialog();
+	}
+	
+	private void createDialog(){
 		this.setTitle("General settings");
 		this.setSize(new Dimension(400, 350));
 
@@ -122,11 +133,25 @@ public class DialogueStateSetting extends AbstractDialogue {
 	}
 	
 	private JComboBox<Integer> getComponentForIntegerTab(Field field) {
+		Integer[] integers = null;
+		try {
+			integers = Integer[].class.cast(field.get(this.planSettings));
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
 		JComboBox<Integer> cb = new JComboBox<>();
-		for (int i = 0; i < 11; i++) {
+		for (Integer i = 0; i < 11; i++) {
 //			JCheckBox cbmi = new JCheckBox(String.valueOf(i));
 			cb.addItem(i);
 		}
+		
+		if(integers != null && integers.length > 0){
+			System.out.println("save ici");
+			cb.setSelectedItem(integers[0]);
+		}
+		
 		return cb;
 	}
 	
@@ -194,8 +219,9 @@ public class DialogueStateSetting extends AbstractDialogue {
 		JPanel panelName = new JPanel(new GridLayout(2, 2));
 		panelName.setBorder(new TitledBorder("State settings"));
 
-		fieldNameEtat = new JTextField();
-		comboxPlan = new JComboBox<>(planSimpleName);
+		fieldNameEtat = new JTextField(this.modelState.getName());
+		comboxPlan = new JComboBox<>(PlanEnum.values());
+		comboxPlan.setSelectedItem(this.modelState.getPlanName());
 
 		console = new JLabel();
 		buttonOk = new JButton("Ok");
@@ -222,6 +248,10 @@ public class DialogueStateSetting extends AbstractDialogue {
 	}
 
 	private void saveSettings() {
+		//Sauvegard les configues général
+		this.modelState.setName(this.fieldNameEtat.getText());
+		this.modelState.setPlanName((PlanEnum) this.comboxPlan.getSelectedItem());
+		
 		for (Field field : mapFieldComp.keySet()) {
 			JComponent dynamicComp = mapFieldComp.get(field);
 			if(field.getType().equals(Boolean.class)){
@@ -329,14 +359,14 @@ public class DialogueStateSetting extends AbstractDialogue {
 		return this.fieldNameEtat.getText();
 	}
 
-	public String getPlanName() {// TODO warning
-		return (String) planName[comboxPlan.getSelectedIndex()];
+	public PlanEnum getPlanName() {
+		return (PlanEnum) comboxPlan.getSelectedItem();
 	}
 
-	String[] planName = Configuration.PLAN;
-	String[] planSimpleName = Configuration.getSimpleName(planName);
+//	String[] planName = Settings.PLAN;
+//	String[] planSimpleName = Settings.getSimpleName(planName);
 
-	JComboBox<String> comboxPlan;
+	JComboBox<PlanEnum> comboxPlan;
 	JTextField fieldNameEtat;
 
 	JLabel console;

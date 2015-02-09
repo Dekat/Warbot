@@ -2,25 +2,28 @@ package edu.warbot.FSMEditor.Modeles;
 
 import java.util.ArrayList;
 
+import javax.swing.JTextField;
+
 import edu.warbot.FSM.plan.WarPlanSettings;
-import edu.warbot.FSMEditor.Configuration;
+import edu.warbot.FSMEditor.FSMSettings.Settings;
+import edu.warbot.FSMEditor.FSMSettings.PlanEnum;
 
 public class ModeleState {
 	
 	private String name;
-	private String planName;
+	private PlanEnum warPlanName;
 	
 	private WarPlanSettings planSettings;
 	
-	//TODO ecq il faut laisser ça ici ?
+	//TODO ecq il faut laisser Ã§a ici ?
 	private ArrayList<String> conditionsOutID = new ArrayList<String>();
 	
 	private ArrayList<ModeleCondition> conditionsOut = new ArrayList<>();
 	private ArrayList<ModeleCondition> conditionsIn = new ArrayList<>();
 
-	public ModeleState(String name, String planName, WarPlanSettings planSettings) {
+	public ModeleState(String name, PlanEnum planName, WarPlanSettings planSettings) {
 		this.name = name;
-		this.planName = planName;
+		this.warPlanName = planName;
 		this.planSettings = planSettings;
 	}
 
@@ -41,14 +44,14 @@ public class ModeleState {
 		return this.conditionsIn;
 	}
 
-	public String getPlanName(){
-		return this.planName;
+	public String getPlanLoaderName(){
+		return Settings.getFullNameOf(this.warPlanName);
 	}
 	
-	public String getSimplePlanName(){
-		return Configuration.getSimpleName(this.planName);
+	public PlanEnum getPlanName(){
+		return warPlanName;
 	}
-
+	
 	public String getName() {
 		return this.name;
 	}
@@ -61,8 +64,16 @@ public class ModeleState {
 		return this.conditionsOutID;		
 	}
 	
-	public WarPlanSettings getWarPlanSettings(){
+	public WarPlanSettings getPlanSettings(){
 		return this.planSettings;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPlanName(PlanEnum planName) {
+		this.warPlanName = planName;
 	}
 	
 	

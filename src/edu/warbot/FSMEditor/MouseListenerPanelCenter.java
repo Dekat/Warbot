@@ -29,10 +29,10 @@ public class MouseListenerPanelCenter implements MouseListener, MouseMotionListe
 			unselectAllItems();
 		else{
 			this.selectedState = selectedState;
-			this.controleur.viewBrain.getPanelCenter().clickOnState(selectedState);
+			this.controleur.viewBrain.getViewEditor().clickOnState(selectedState);
 		}
 		
-		this.controleur.viewBrain.getPanelCenter().repaint();
+		this.controleur.viewBrain.getViewEditor().repaint();
 	}
 
 	@Override
@@ -59,12 +59,12 @@ public class MouseListenerPanelCenter implements MouseListener, MouseMotionListe
 				this.selectedState = dragingState;
 			}
 			
-			this.controleur.viewBrain.getPanelCenter().repaint();
+			this.controleur.viewBrain.getViewEditor().repaint();
 		}
 	}
 
 	private PanelState getSelectedItem(MouseEvent e) {
-		for (PanelState ps : this.controleur.viewBrain.getPanelCenter().getPanelState()) {
+		for (PanelState ps : this.controleur.viewBrain.getViewEditor().getPanelState()) {
 			
 			if(e.getX() > ps.getPosition().x && e.getX() < ps.getPosition().x + ps.getSize().width
 					&& e.getY() > ps.getPosition().y && e.getY() < ps.getPosition().y + ps.getSize().height){
@@ -80,7 +80,7 @@ public class MouseListenerPanelCenter implements MouseListener, MouseMotionListe
 
 
 	private void unselectAllItems() {
-		this.controleur.viewBrain.getPanelCenter().setNoItemSelected();		
+		this.controleur.viewBrain.getViewEditor().setNoItemSelected();		
 	}
 
 
@@ -103,7 +103,7 @@ public class MouseListenerPanelCenter implements MouseListener, MouseMotionListe
 	public void mouseDragged(MouseEvent e) {
 		if(this.isDragging){
 			this.dragSlectedItem(e);
-			this.controleur.viewBrain.getPanelCenter().repaint();
+			this.controleur.viewBrain.getViewEditor().repaint();
 		}
 	}
 
