@@ -7,7 +7,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 import edu.warbot.maps.AbstractWarMap;
-import edu.warbot.tools.GeometryTools;
+import edu.warbot.tools.*;
 import madkit.kernel.AbstractAgent;
 import turtlekit.kernel.Turtle;
 
@@ -18,9 +18,6 @@ import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.capacities.CommonCapacities;
 import edu.warbot.brains.capacities.Movable;
 import edu.warbot.game.Team;
-import edu.warbot.tools.CoordCartesian;
-import edu.warbot.tools.CoordPolar;
-import edu.warbot.tools.WarMathTools;
 
 public abstract class WarAgent extends Turtle implements CommonCapacities {
 
@@ -134,7 +131,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 		if (this instanceof MovableActions)
 			nextPos.add(new CoordPolar(((Movable) this).getSpeed(), getHeading()).toCartesian());
 
-        return ! getTeam().getGame().getMap().getMapLimits().contains(nextPos.getX(), nextPos.getY());
+        return ! getTeam().getGame().getMap().getMapAccessibleArea().contains(nextPos.getX(), nextPos.getY());
 	}
 
 	protected boolean isGoingToBeOverAnOtherAgent() {
@@ -179,8 +176,8 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
         moveOutOfCollision();
 	}
 	
-	public void setRandomPositionInCircle(Circle circle) {
-		setRandomPositionInCircle(new CoordCartesian(circle.x, circle.y), circle.radius);
+	public void setRandomPositionInCircle(WarCircle circle) {
+		setRandomPositionInCircle(new CoordCartesian(circle.getX(), circle.getY()), circle.getRadius());
 	}
 	
 	public CoordCartesian getPosition() {
@@ -201,11 +198,11 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
         // Test si l'agent est hors carte
         CoordCartesian agentPosition = getPosition();
         AbstractWarMap map = getTeam().getGame().getMap();
-        if (! map.getMapLimits().contains(agentPosition.getX(), agentPosition.getY())) {
+        if (! map.getMapAccessibleArea().contains(agentPosition.getX(), agentPosition.getY())) {
             CoordPolar moveToMapCenter = new CoordPolar(1, agentPosition.getAngleToPoint(new CoordCartesian(map.getCenterX(), map.getCenterY())));
             do {
                 agentPosition.add(moveToMapCenter.toCartesian());
-            } while(! map.getMapLimits().contains(agentPosition.getX(), agentPosition.getY()));
+            } while(! map.getMapAccessibleArea().contains(agentPosition.getX(), agentPosition.getY()));
             setPosition(agentPosition);
             isPositionChanged = true;
         }

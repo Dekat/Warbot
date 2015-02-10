@@ -98,28 +98,14 @@ public class ViewBrain extends JPanel{
 		return panel;
 	}
 
-	/*** Accesseurs ***/
-	
-	public JButton getButtonAddSate() {
-		return this.buttonAddSate;
-	}
-
-	public PanelEditor getPanelCenter() {
+	public PanelEditor getViewEditor() {
 		return (PanelEditor) this.panelEditor;
 	}
 
-	public JButton getButtonAddCond() {
-		return this.buttonAddCond;
-	}
-	
 	public ModeleBrain getModele(){
 		return this.modeleBrain;
 	}	
 
-	public AbstractButton getButtonDelState() {
-		return this.buttonDelSate;
-	}
-	
 	public JList<String> getListeConditions(){
 		return this.listCond;
 	}
@@ -132,11 +118,27 @@ public class ViewBrain extends JPanel{
 		return this.listModeleCond;
 	}
 
+	/*** Accesseurs ***/
+	
+	public JButton getButtonAddState() {
+		return this.buttonAddSate;
+	}
+
+	public AbstractButton getButtonDelState() {
+		return this.buttonDelSate;
+	}
+
+	public JButton getButtonEditState() {
+		return this.buttonEditState;
+	}
+
+	public JButton getButtonAddCond() {
+		return this.buttonAddCond;
+	}
+
 	public JButton getButtonEditCond() {
 		return this.buttonEditCond;
 	}
-
-	
 
 	/**** Attributs ***/
 	private JList<String> listCond;
@@ -172,7 +174,7 @@ public class ViewBrain extends JPanel{
 	//TODO pas super propre
 	private PanelState getPanelStateForModele(ModeleState modele) {
 		for (PanelState panel: panelEditor.getPanelState()) {
-			if(panel.getModele().equals(modele))
+			if(panel.getModelState().equals(modele))
 				return panel;
 		}
 		return null;

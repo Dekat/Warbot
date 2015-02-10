@@ -32,7 +32,7 @@ public class PanelState extends AbstractPanel{
 		g.drawLine(position.x, position.y + size.height/2
 				, position.x + size.width, position.y + size.height/2);
 		
-		g.drawString(this.modeleState.getSimplePlanName(), position.x + 1, position.y + size.height/2 + 11);
+		g.drawString(this.modeleState.getPlanName().name(), position.x + 1, position.y + size.height/2 + 11);
 		
 		
 	}
@@ -49,7 +49,7 @@ public class PanelState extends AbstractPanel{
 		return this.position;
 	}
 
-	public ModeleState getModele() {
+	public ModeleState getModelState() {
 		return this.modeleState;
 	}
 

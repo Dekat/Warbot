@@ -42,12 +42,12 @@ public class WarLauncher extends TKLauncher {
 		
 		initProperties();
 		setMadkitProperty(TurtleKit.Option.startSimu, "false");
-		setMadkitProperty(TurtleKit.Option.envWidth, String.valueOf(((Float) Shared.getGame().getMap().getWidth()).intValue() + AbstractWarMap.MAP_MARGIN));
-		setMadkitProperty(TurtleKit.Option.envHeight, String.valueOf(((Float) Shared.getGame().getMap().getHeight()).intValue() + AbstractWarMap.MAP_MARGIN));
+		setMadkitProperty(TurtleKit.Option.envWidth, String.valueOf(((Double) Shared.getGame().getMap().getWidth()).intValue()));
+		setMadkitProperty(TurtleKit.Option.envHeight, String.valueOf(((Double) Shared.getGame().getMap().getHeight()).intValue()));
 
 		setMadkitProperty(TurtleKit.Option.viewers, WarViewer.class.getName());
 		setMadkitProperty(TurtleKit.Option.scheduler, WarScheduler.class.getName());
-		setMadkitProperty(TurtleKit.Option.environment, TKEnvironment.class.getName());
+		setMadkitProperty(TurtleKit.Option.environment, WarEnvironment.class.getName());
 
 		super.createSimulationInstance();
 

@@ -13,6 +13,7 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 import edu.warbot.FSM.plan.WarPlanSettings;
+import edu.warbot.FSMEditor.FSMSettings.PlanEnum;
 import edu.warbot.FSMEditor.Modeles.Modele;
 import edu.warbot.FSMEditor.Modeles.ModeleBrain;
 import edu.warbot.FSMEditor.Modeles.ModeleState;
@@ -107,7 +108,7 @@ public class FSMXmlReader extends FSMXmlParser{
 		
 		WarPlanSettings warPlanSetting = getWarPlanSettings(state.getChild(PlanSettings));
 		
-		ModeleState modeleState = new ModeleState(name, plan, warPlanSetting);
+		ModeleState modeleState = new ModeleState(name, PlanEnum.valueOf(plan), warPlanSetting);
 		modeleState.setConditionsOutID(condID);
 		
 		modeleBrain.addState(modeleState);

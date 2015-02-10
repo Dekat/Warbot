@@ -84,12 +84,9 @@ public class AddToolMouseListener implements MouseListener {
                     a.moveOutOfCollision();
 				}
 
-				// TODO à remplacer par une simple actualisation de l'affichage
-				_debugToolBar.getViewer().sendMessage(_debugToolBar.getViewer().getCommunity(), TKOrganization.ENGINE_GROUP,
-						TKOrganization.SCHEDULER_ROLE,
-						new SchedulingMessage(SchedulingAction.STEP));
+                _debugToolBar.getViewer().getFrame().repaint();
 			}
-		} catch (Exception ex) {
+		} catch (Exception ex) { // TODO exception la plus précise possible
 			System.err.println("Erreur lors de l'instanciation de l'agent " + _toolsPnl.getSelectedWarAgentTypeToCreate().toString());
 			ex.printStackTrace();
 		}

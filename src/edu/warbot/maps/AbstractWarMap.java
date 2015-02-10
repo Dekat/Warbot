@@ -1,6 +1,7 @@
 package edu.warbot.maps;
 
 import java.awt.*;
+import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -9,27 +10,26 @@ import edu.warbot.launcher.WarConfig;
 import edu.warbot.tools.CoordCartesian;
 import edu.warbot.tools.GeometryTools;
 import edu.warbot.tools.WarCircle;
+import org.w3c.dom.css.Rect;
 
 public abstract class AbstractWarMap {
 
-    public static final int MAP_MARGIN = 10;
+    private static final double MAP_ACCESSIBLE_AREA_PADDING = 5.;
+    private static final double BORDER_THICKNESS = 5.;
+
 	protected static final float TEAM_POSITION_RADIUS = 100;
 	protected static final float FOOD_POSITION_RADIUS = 200;
-	
-	protected Shape mapLimits;
+
+    protected Area mapAccessibleArea;
 	private ArrayList<ArrayList<WarCircle>> _teamsPositions;
 	private ArrayList<WarCircle> _foodPositions;
-    private float mapWidth;
-    private float mapHeight;
+    private double mapWidth;
+    private double mapHeight;
 
-	public AbstractWarMap(Shape mapLimits) {
-		this(mapLimits, ((Double) mapLimits.getBounds2D().getWidth()).floatValue(), ((Double) mapLimits.getBounds2D().getHeight()).floatValue());
-	}
-
-    public AbstractWarMap(Shape mapLimits, float mapWidth, float mapHeight) {
+    public AbstractWarMap(double mapWidth, double mapHeight) {
         _teamsPositions = new ArrayList<>();
         _foodPositions = new ArrayList<>();
-        this.mapLimits = mapLimits;
+        mapAccessibleArea = new Area(new Rectangle2D.Double(-MAP_ACCESSIBLE_AREA_PADDING, -MAP_ACCESSIBLE_AREA_PADDING, mapWidth + (MAP_ACCESSIBLE_AREA_PADDING*2.), mapHeight + (MAP_ACCESSIBLE_AREA_PADDING*2.)));
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
     }
@@ -53,7 +53,7 @@ public abstract class AbstractWarMap {
 		return new ArrayList<>(_foodPositions);
 	}
 	
-	public void addFoodPosition(float x, float y) {
+	public void addFoodPosition(double x, double y) {
 		_foodPositions.add(new WarCircle(x, y, FOOD_POSITION_RADIUS));
 	}
 	
@@ -68,15 +68,21 @@ public abstract class AbstractWarMap {
 		return _teamsPositions.size();
 	}
 
-    public Shape getMapLimits() {
-        return GeometryTools.translateShape(mapLimits, MAP_MARGIN / 2, MAP_MARGIN / 2);
+    public Shape getMapAccessibleArea() {
+        return mapAccessibleArea;
     }
 
-	public float getWidth() {
+    public Shape getMapForbidArea() {
+        Area forbidArea = new Area(new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
+        forbidArea.subtract(mapAccessibleArea);
+        return forbidArea;
+    }
+
+	public double getWidth() {
 		return mapWidth;
 	}
 	
-	public float getHeight() {
+	public double getHeight() {
 		return mapHeight;
 	}
 
@@ -86,5 +92,16 @@ public abstract class AbstractWarMap {
 
     public double getCenterY() {
         return mapHeight / 2.;
+    }
+
+    protected void forbidArea(Shape forbidArea) {
+        mapAccessibleArea.subtract(new Area(forbidArea));
+    }
+
+    protected void forbidAllBorders() {
+        forbidArea(new Rectangle2D.Double(0, 0, getWidth(), BORDER_THICKNESS));
+        forbidArea(new Rectangle2D.Double(getWidth() - BORDER_THICKNESS, 0, BORDER_THICKNESS, getHeight()));
+        forbidArea(new Rectangle2D.Double(0, getHeight() - BORDER_THICKNESS, getWidth(), BORDER_THICKNESS));
+        forbidArea(new Rectangle2D.Double(0, 0, BORDER_THICKNESS, getHeight()));
     }
 }

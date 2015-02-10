@@ -19,7 +19,8 @@ import javax.swing.border.TitledBorder;
 
 import org.jfree.ui.tabbedui.VerticalLayout;
 
-import edu.warbot.FSMEditor.Configuration;
+import edu.warbot.FSMEditor.FSMSettings.ConditionEnum;
+import edu.warbot.FSMEditor.FSMSettings.Settings;
 import edu.warbot.FSMEditor.Views.ViewBrain;
 
 public class DialogueCondSetting extends AbstractDialogue{
@@ -78,7 +79,7 @@ public class DialogueCondSetting extends AbstractDialogue{
 		panel.setBorder(new TitledBorder("Général"));
 		
 		fieldNameCond = new JTextField();
-		comboTypeCond = new JComboBox<String>(Configuration.CONDITION);
+		comboTypeCond = new JComboBox<>(ConditionEnum.values());
 		
 		panel.add(new JLabel("Name "));
 		panel.add(fieldNameCond);
@@ -99,7 +100,7 @@ public class DialogueCondSetting extends AbstractDialogue{
 		JPanel panel = new JPanel(new GridLayout(4, 2));
 		panel.setBorder(new TitledBorder("Action terminate"));
 		
-		comboListAttribut = new JComboBox<String>(Configuration.ATTRIBUTES);
+		comboListAttribut = new JComboBox<String>(Settings.ATTRIBUTES);
 		fieldOperateur = new JTextField();
 		fieldValeurAttribut = new JTextField();
 		checkBoxPourcentage = new JCheckBox();
@@ -148,7 +149,7 @@ public class DialogueCondSetting extends AbstractDialogue{
 		return checkBoxPourcentage.isSelected();
 	}
 	
-	JComboBox<String> comboTypeCond;
+	JComboBox<ConditionEnum> comboTypeCond;
 	JTextField fieldNameCond;
 	
 	//Attribut Check

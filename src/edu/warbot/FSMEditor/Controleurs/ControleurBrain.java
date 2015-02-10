@@ -2,13 +2,14 @@ package edu.warbot.FSMEditor.Controleurs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import edu.warbot.FSM.plan.WarPlanSettings;
-import edu.warbot.FSMEditor.Configuration;
 import edu.warbot.FSMEditor.MouseListenerPanelCenter;
+import edu.warbot.FSMEditor.FSMSettings.PlanEnum;
 import edu.warbot.FSMEditor.Modeles.ModeleBrain;
 import edu.warbot.FSMEditor.Modeles.ModeleCondition;
 import edu.warbot.FSMEditor.Modeles.ModeleState;
@@ -34,16 +35,23 @@ public class ControleurBrain {
 	
 	private void placeListeerOnPanel() {
 		MouseListenerPanelCenter mouseListener = new MouseListenerPanelCenter(this);
-		viewBrain.getPanelCenter().addMouseListener(mouseListener);
-		viewBrain.getPanelCenter().addMouseMotionListener(mouseListener);		
+		viewBrain.getViewEditor().addMouseListener(mouseListener);
+		viewBrain.getViewEditor().addMouseMotionListener(mouseListener);		
 	}
 
 	private void placeListenerOnView(){
 		
-		viewBrain.getButtonAddSate().addActionListener(new ActionListener() {
+		viewBrain.getButtonAddState().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				eventAddState();
+			}
+		});
+		
+		viewBrain.getButtonEditState().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				eventEditState();
 			}
 		});
 		
@@ -78,7 +86,7 @@ public class ControleurBrain {
 	
 	private void eventListeConditionEdition(ListSelectionEvent e){
 		//Deselctionne tous les elements
-		for (PanelCondition p : this.viewBrain.getPanelCenter().getPanelcondition()) {
+		for (PanelCondition p : this.viewBrain.getViewEditor().getPanelcondition()) {
 			p.isSelected = false;
 		}
 		
@@ -89,29 +97,39 @@ public class ControleurBrain {
 			panelCond.isSelected = true;
 		}
 		
-		this.viewBrain.getPanelCenter().repaint();
+		this.viewBrain.getViewEditor().repaint();
 	}
 	
 	private void eventAddState(){
-		
 		WarPlanSettings planSetting = new WarPlanSettings();
 		
-		DialogueStateSetting d = new DialogueStateSetting(this.viewBrain, planSetting); 
+		ModeleState s = new ModeleState("State_", PlanEnum.WarPlanWiggle, planSetting);
+		
+		DialogueStateSetting d = new DialogueStateSetting(this.viewBrain, s); 
 
 		if(d.isValideComponent()){
 			
-			//Creation du modele avec la fenetre de dialogue
-			ModeleState s = new ModeleState(d.getNom(), d.getPlanName(), planSetting);
 			this.addState(s);
 			
-			viewBrain.getPanelCenter().repaint();
+			viewBrain.getViewEditor().repaint();
 		}
+	}
+	
+	private void eventEditState(){
+		ModeleState modelState = 
+				this.viewBrain.getViewEditor().getFirstSelectedState().getModelState();
 		
+		DialogueStateSetting d = new DialogueStateSetting(this.viewBrain, modelState); 
+
+		if(d.isValideComponent()){
+			
+			viewBrain.getViewEditor().repaint();
+		}
 	}
 	
 	private void eventAddCond(){
 		
-		if(this.viewBrain.getPanelCenter().isTwoStatesSelected()){
+		if(this.viewBrain.getViewEditor().isTwoStatesSelected()){
 			
 			DialogueCondSetting d = new DialogueCondSetting(this.viewBrain);
 			
@@ -120,12 +138,12 @@ public class ControleurBrain {
 			ModeleState modeleStateSource;
 			ModeleState modeleStateDest;
 			
-			panelSource = this.viewBrain.getPanelCenter().getFirstSelectedState();
-			panelDest = this.viewBrain.getPanelCenter().getSecondeSelectedState();
-			modeleStateSource = panelSource.getModele();
-			modeleStateDest = panelDest.getModele();
+			panelSource = this.viewBrain.getViewEditor().getFirstSelectedState();
+			panelDest = this.viewBrain.getViewEditor().getSecondeSelectedState();
+			modeleStateSource = panelSource.getModelState();
+			modeleStateDest = panelDest.getModelState();
 			
-			//Cr�e le nouveau modele condition
+			//Crée le nouveau modele condition
 			ModeleCondition mc = new ModeleCondition(d.getName(), d.getConditionType(), 
 					modeleStateSource, modeleStateDest);
 			
@@ -136,21 +154,21 @@ public class ControleurBrain {
 			System.out.println("Pour ajouter une condition deux etats doivent �tre selectionn�s");
 		}
 		
-		viewBrain.getPanelCenter().repaint();
+		viewBrain.getViewEditor().repaint();
 	}
 	
 	private void eventDelState(){
-		if(this.viewBrain.getPanelCenter().isOneStateSelected()){
+		if(this.viewBrain.getViewEditor().isOneStateSelected()){
 			
-			PanelState panelToDelet = this.viewBrain.getPanelCenter().getFirstSelectedState();
+			PanelState panelToDelet = this.viewBrain.getViewEditor().getFirstSelectedState();
 			
 			//ATTENTION : supprimer le modele avant le panel puisque on utilise le panel pour acceder au modele
-			this.modeleBrain.removeState(panelToDelet.getModele());
-			this.viewBrain.getPanelCenter().removePanelState(panelToDelet);
+			this.modeleBrain.removeState(panelToDelet.getModelState());
+			this.viewBrain.getViewEditor().removePanelState(panelToDelet);
 			
-			this.viewBrain.getPanelCenter().setNoItemSelected();
+			this.viewBrain.getViewEditor().setNoItemSelected();
 			
-			viewBrain.getPanelCenter().repaint();
+			viewBrain.getViewEditor().repaint();
 		}
 		
 	}
@@ -169,16 +187,16 @@ public class ControleurBrain {
 				}
 			}
 			
-			if(condSelec.equals(Configuration.WarConditionActionTerminate)){
-				
-				
-				
-			}
+//			if(condSelec.equals(Settings.WarConditionActionTerminate)){
+//				
+//				
+//				
+//			}
 		}
 	}
 	
 	private PanelCondition getPanelConditionWithName(String s){
-		for (PanelCondition p : this.viewBrain.getPanelCenter().getPanelcondition()) {
+		for (PanelCondition p : this.viewBrain.getViewEditor().getPanelcondition()) {
 			if(p.getModele().getName().equals(s))
 				return p;
 		}
@@ -192,7 +210,7 @@ public class ControleurBrain {
 		//Cr�ation du panel
 		PanelState panel = new PanelState(state);
 		//Ajoute le panel 
-		this.viewBrain.getPanelCenter().addState(panel);		
+		this.viewBrain.getViewEditor().addState(panel);		
 	}
 
 

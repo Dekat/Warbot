@@ -23,7 +23,7 @@ public class InterfaceLauncherMenuBar extends JMenuBar {
 		
 		JMenuItem itemOpen = new JMenuItem("Ouvrir", GuiIconsLoader.getIcon("open.png"));
         itemOpen.setMnemonic(KeyEvent.VK_O);
-        itemOpen.setToolTipText("Charge une situation sauvegardée");
+        itemOpen.setToolTipText("Charge une situation sauvegardï¿½e");
         itemOpen.addActionListener(new LoadSituationActionListener(launcherInterface));
         menuFile.add(itemOpen);
         
@@ -33,9 +33,9 @@ public class InterfaceLauncherMenuBar extends JMenuBar {
 		JMenu menuFSM = new JMenu("FSM");
 		menuFSM.setMnemonic(KeyEvent.VK_F);
 		
-		JMenuItem itemCreateFSM = new JMenuItem("Créer une FSM");
+		JMenuItem itemCreateFSM = new JMenuItem("CrÃ©er une FSM");
 		itemCreateFSM.setMnemonic(KeyEvent.VK_C);
-		itemCreateFSM.setToolTipText("Lance l'outil de création d'architecture FSM pour Warbot");
+		itemCreateFSM.setToolTipText("Lance l'outil de crï¿½ation d'architecture FSM pour Warbot");
 		itemCreateFSM.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
