@@ -70,7 +70,7 @@ public class FSMXmlSaver extends FSMXmlParser{
 
 		elemCond.addContent(new Element(Name).setText(cond.getName()));
 		elemCond.addContent(new Element(Type).setText(cond.getType().toString()));
-		elemCond.addContent(new Element(StateOutID).setText(cond.getStateOutId()));
+		elemCond.addContent(new Element(StateOutID).setText(cond.getStateDestination().getName()));
 		
 		elemCond.addContent(getContentConditionSettings(cond));
 		

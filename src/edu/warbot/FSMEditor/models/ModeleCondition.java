@@ -39,14 +39,14 @@ public class ModeleCondition {
 		return Settings.getFullNameOf(typeName);
 	}
 	
-	
-	
 	public void setDestination(ModeleState d) {
 		this.modeleDest = d;
+//		this.stateOutId = d.getName();
 	}
 	
-	public void setSource(ModeleState s) {
-		this.modeleSource = s;
+	public void setSource(ModeleState modelState) {
+		this.modeleSource = modelState;
+		modelState.addConditionOut(this);
 	}
 	
 	public ModeleState getStateDestination(){
@@ -61,7 +61,7 @@ public class ModeleCondition {
 		return stateOutId;
 	}
 
-	public void String(String stateOutId) {
+	public void setStateOutId(String stateOutId) {
 		this.stateOutId = stateOutId;
 	}
 

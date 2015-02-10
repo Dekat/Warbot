@@ -1,10 +1,12 @@
 package edu.warbot.FSMEditor;
 
+import edu.warbot.FSMEditor.FSMSettings.ConditionEnum;
 import edu.warbot.FSMEditor.FSMSettings.Settings;
 import edu.warbot.FSMEditor.FSMSettings.PlanEnum;
 import edu.warbot.FSMEditor.controleurs.Controleur;
 import edu.warbot.FSMEditor.controleurs.ControleurBrain;
 import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.ModeleCondition;
 import edu.warbot.FSMEditor.models.ModeleState;
 import edu.warbot.FSMEditor.views.View;
 import edu.warbot.agents.enums.WarAgentType;
@@ -26,10 +28,17 @@ public class FSMEditor {
 		controleur.createControleursBrains(WarAgentType.WarTurret);
 		controleur.createControleursBrains(WarAgentType.WarKamikaze);
 		
-		controleur.getControleurBrain(WarAgentType.WarBase).addState(
-				new ModeleState("State Idle", PlanEnum.WarPlanIdle, null));
-		controleur.getControleurBrain(WarAgentType.WarBase).addState(
-				new ModeleState("State Idle", PlanEnum.WarPlanIdle, null));
+		ModeleState s1 = new ModeleState("State Source", PlanEnum.WarPlanIdle, null);
+		ModeleState s2 = new ModeleState("State Dest", PlanEnum.WarPlanIdle, null);
+		
+		ModeleCondition c1 = new ModeleCondition("Cond1", ConditionEnum.WarConditionActionTerminate, null);
+		c1.setSource(s1);
+		c1.setDestination(s2);
+
+		controleur.getControleurBrain(WarAgentType.WarBase).addState(s1);
+		controleur.getControleurBrain(WarAgentType.WarBase).addState(s2);
+		
+		controleur.getControleurBrain(WarAgentType.WarBase).addCondition(c1);
 		
 		controleur.getControleurBrain(WarAgentType.WarRocketLauncher).addState(
 				new ModeleState("State Idle", PlanEnum.WarPlanWiggle, null));

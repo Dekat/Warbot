@@ -217,12 +217,11 @@ public class ControleurBrain {
 
 
 	public void addState(ModeleState state) {
+		//Dit au model le nouvel état
 		this.modeleBrain.addState(state);
 		
-		//Cr�ation du panel
-		PanelState panel = new PanelState(state);
-		//Ajoute le panel 
-		this.viewBrain.getViewEditor().addState(panel);		
+		//Dit à la vu le nouvel état
+		this.viewBrain.addState(state);
 	}
 
 

@@ -98,6 +98,25 @@ public class ViewBrain extends JPanel{
 		return panel;
 	}
 
+	public void addState(ModeleState state) {
+		this.panelEditor.addState(new PanelState(state));
+	}
+
+	public void addCondition(ModeleCondition condition) {
+		//Crée le nouveau panel condition
+		PanelCondition pc = new PanelCondition(condition);	
+	
+		//Récupère les panelSource et destination pour avoir leurs positions
+		PanelState panelSource = getPanelStateForModele(condition.getStateSource());
+		PanelState panelDest = getPanelStateForModele(condition.getStateDestination());
+		
+		pc.setPanelSourceAndDestination(panelSource, panelDest);
+		
+		panelEditor.addCondition(pc);
+		
+		this.getListeModeleConditions().addElement(condition.getName());	
+	}
+
 	public PanelEditor getViewEditor() {
 		return (PanelEditor) this.panelEditor;
 	}
@@ -152,24 +171,6 @@ public class ViewBrain extends JPanel{
 	private JButton buttonAddCond;
 	private JButton buttonEditCond;
 	private JButton buttonDelCond;
-
-	public void addCondition(ModeleCondition condition) {
-		//Crée le nouveau panel condition
-		PanelCondition pc = new PanelCondition(condition);	
-
-//		PanelState panelSource = this.getPanelCenter().getFirstSelectedState();
-//		PanelState panelDest = this.getPanelCenter().getSecondeSelectedState();
-
-		//Récupère les panelSource et destination pour avoir leurs positions
-		PanelState panelSource = getPanelStateForModele(condition.getStateSource());
-		PanelState panelDest = getPanelStateForModele(condition.getStateDestination());
-		
-		pc.setPanelSourceAndDestination(panelSource, panelDest);
-		
-		panelEditor.addCondition(pc);
-		
-		this.getListeModeleConditions().addElement(condition.getName());	
-	}
 
 	//TODO pas super propre
 	private PanelState getPanelStateForModele(ModeleState modele) {
