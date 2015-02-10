@@ -1,4 +1,4 @@
-package edu.warbot.FSMEditor.Panel;
+package edu.warbot.FSMEditor.panels;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-import edu.warbot.FSMEditor.Modeles.ModeleCondition;
+import edu.warbot.FSMEditor.models.ModeleCondition;
 
 public class PanelCondition extends AbstractPanel{
 
@@ -34,9 +34,15 @@ public class PanelCondition extends AbstractPanel{
 		
 		this.positionDep = panelSource.position;
 		this.positionArr = panelDest.position;
+		
+		int Depx = (int) (positionDep.x + panelSource.size.getWidth()/2);
+		int Depy = (int) (positionDep.y + panelSource.size.getHeight()/2);
 
-		g.drawLine(this.positionDep.x, this.positionDep.y, this.positionArr.x,
-				this.positionArr.y);
+		int Arrx = (int) (positionArr.x + panelDest.size.getWidth()/2);
+		int Arry = (int) (positionArr.y + panelDest.size.getHeight()/2);
+
+		g.drawLine(Depx, Depy, Arrx,
+				Arry);
 
 		g.drawString(this.modele.getName(), (positionArr.x - positionDep.x)/2 + positionDep.x,
 				(positionArr.y - positionDep.y)/2 + positionDep.y - 1);

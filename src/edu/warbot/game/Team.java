@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSM.WarFSMBrainController;
 import edu.warbot.FSMEditor.FSMInstancier;
-import edu.warbot.FSMEditor.Modeles.Modele;
+import edu.warbot.FSMEditor.models.Modele;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;

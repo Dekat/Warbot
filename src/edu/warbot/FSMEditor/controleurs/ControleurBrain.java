@@ -1,4 +1,4 @@
-package edu.warbot.FSMEditor.Controleurs;
+package edu.warbot.FSMEditor.controleurs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,17 +7,19 @@ import java.util.HashMap;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import edu.warbot.FSM.plan.WarPlanSettings;
-import edu.warbot.FSMEditor.MouseListenerPanelCenter;
+import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
+import edu.warbot.FSM.condition.WarCondition;
+import edu.warbot.FSMEditor.FSMSettings.ConditionEnum;
 import edu.warbot.FSMEditor.FSMSettings.PlanEnum;
-import edu.warbot.FSMEditor.Modeles.ModeleBrain;
-import edu.warbot.FSMEditor.Modeles.ModeleCondition;
-import edu.warbot.FSMEditor.Modeles.ModeleState;
-import edu.warbot.FSMEditor.Panel.PanelCondition;
-import edu.warbot.FSMEditor.Panel.PanelState;
-import edu.warbot.FSMEditor.Views.ViewBrain;
 import edu.warbot.FSMEditor.dialogues.DialogueCondSetting;
 import edu.warbot.FSMEditor.dialogues.DialogueStateSetting;
+import edu.warbot.FSMEditor.models.ModeleBrain;
+import edu.warbot.FSMEditor.models.ModeleCondition;
+import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.panels.PanelCondition;
+import edu.warbot.FSMEditor.panels.PanelState;
+import edu.warbot.FSMEditor.views.ViewBrain;
 
 public class ControleurBrain {
 
@@ -103,12 +105,13 @@ public class ControleurBrain {
 	private void eventAddState(){
 		WarPlanSettings planSetting = new WarPlanSettings();
 		
-		ModeleState s = new ModeleState("State_", PlanEnum.WarPlanWiggle, planSetting);
-		
-		DialogueStateSetting d = new DialogueStateSetting(this.viewBrain, s); 
+		DialogueStateSetting d = new DialogueStateSetting(this.viewBrain, planSetting);
+		d.createDialog();
 
 		if(d.isValideComponent()){
 			
+			ModeleState s = new ModeleState(d.getStateName(), d.getPlanName(), planSetting);
+
 			this.addState(s);
 			
 			viewBrain.getViewEditor().repaint();
@@ -119,7 +122,8 @@ public class ControleurBrain {
 		ModeleState modelState = 
 				this.viewBrain.getViewEditor().getFirstSelectedState().getModelState();
 		
-		DialogueStateSetting d = new DialogueStateSetting(this.viewBrain, modelState); 
+		DialogueStateSetting d = new DialogueStateSetting(this.viewBrain, modelState);
+		d.createDialog();
 
 		if(d.isValideComponent()){
 			
@@ -131,23 +135,31 @@ public class ControleurBrain {
 		
 		if(this.viewBrain.getViewEditor().isTwoStatesSelected()){
 			
-			DialogueCondSetting d = new DialogueCondSetting(this.viewBrain);
+			WarConditionSettings condSett = new WarConditionSettings();
+
+			DialogueCondSetting d = new DialogueCondSetting(this.viewBrain, condSett);
+			d.createDialog();
 			
-			PanelState panelSource;
-			PanelState panelDest;
-			ModeleState modeleStateSource;
-			ModeleState modeleStateDest;
+			if(d.isValideComponent()){
 			
-			panelSource = this.viewBrain.getViewEditor().getFirstSelectedState();
-			panelDest = this.viewBrain.getViewEditor().getSecondeSelectedState();
-			modeleStateSource = panelSource.getModelState();
-			modeleStateDest = panelDest.getModelState();
-			
-			//Crée le nouveau modele condition
-			ModeleCondition mc = new ModeleCondition(d.getName(), d.getConditionType(), 
-					modeleStateSource, modeleStateDest);
-			
-			addCondition(mc);
+				PanelState panelSource;
+				PanelState panelDest;
+				ModeleState modeleStateSource;
+				ModeleState modeleStateDest;
+				
+				panelSource = this.viewBrain.getViewEditor().getFirstSelectedState();
+				panelDest = this.viewBrain.getViewEditor().getSecondeSelectedState();
+				modeleStateSource = panelSource.getModelState();
+				modeleStateDest = panelDest.getModelState();
+				
+				//Crée le nouveau modele condition
+				ModeleCondition mc = new ModeleCondition(d.getConditionName(), d.getConditionType(), condSett);
+//						modeleStateSource, modeleStateDest);
+				mc.setSource(modeleStateSource);
+				mc.setDestination(modeleStateDest);
+				
+				addCondition(mc);
+			}
 			
 			
 		}else{
@@ -219,7 +231,7 @@ public class ControleurBrain {
 		//Dit au modele d'ajouter la nouvelle condition
 		this.modeleBrain.addCondition(condition);
 		
-		//Dit � la vu d'ajouter la nouvelle condition
+		//Dit à la vu d'ajouter la nouvelle condition
 		this.viewBrain.addCondition(condition);
 		
 	}

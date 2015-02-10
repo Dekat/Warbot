@@ -1,4 +1,4 @@
-package edu.warbot.FSMEditor.Modeles;
+package edu.warbot.FSMEditor.models;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -29,10 +29,10 @@ public class ModeleBrain {
 	}
 
 	public void removeState(ModeleState m) {
-		//On supprime toutes les conditions de l'état source
+		//On supprime toutes les conditions de l'ï¿½tat source
 		this.conditions.removeAll(m.getConditionsOut());
 		
-		//on parcours toutes les condtions pour voir si il yen a qui vont jusqua l'état qui va etre suppr
+		//on parcours toutes les condtions pour voir si il yen a qui vont jusqua l'ï¿½tat qui va etre suppr
 		ArrayList<ModeleCondition> toDelet = new ArrayList<>();
 		for (ModeleCondition cond: this.conditions) {
 			if(cond.getStateDestination().equals(m)){

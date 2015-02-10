@@ -1,11 +1,11 @@
-package edu.warbot.FSMEditor.Panel;
+package edu.warbot.FSMEditor.panels;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import edu.warbot.FSMEditor.Modeles.ModeleBrain;
+import edu.warbot.FSMEditor.models.ModeleBrain;
 
 public class PanelEditor extends JPanel {
 
@@ -28,8 +28,8 @@ public class PanelEditor extends JPanel {
 
 		g.drawRect(0, 0, this.getSize().width, this.getSize().height);
 
-		paintState(g);
 		paintConditions(g);
+		paintState(g);
 
 	}
 	

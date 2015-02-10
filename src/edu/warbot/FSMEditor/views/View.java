@@ -1,4 +1,4 @@
-package edu.warbot.FSMEditor.Views;
+package edu.warbot.FSMEditor.views;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;
@@ -11,8 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import edu.warbot.FSMEditor.Modeles.Modele;
-import edu.warbot.FSMEditor.Modeles.ModeleBrain;
+import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.ModeleBrain;
 
 public class View extends JFrame {
 	

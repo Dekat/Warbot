@@ -1,12 +1,12 @@
 package edu.warbot.FSMEditor;
 
-import edu.warbot.FSMEditor.Controleurs.Controleur;
-import edu.warbot.FSMEditor.Controleurs.ControleurBrain;
 import edu.warbot.FSMEditor.FSMSettings.Settings;
 import edu.warbot.FSMEditor.FSMSettings.PlanEnum;
-import edu.warbot.FSMEditor.Modeles.Modele;
-import edu.warbot.FSMEditor.Modeles.ModeleState;
-import edu.warbot.FSMEditor.Views.View;
+import edu.warbot.FSMEditor.controleurs.Controleur;
+import edu.warbot.FSMEditor.controleurs.ControleurBrain;
+import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.views.View;
 import edu.warbot.agents.enums.WarAgentType;
 
 public class FSMEditor {
@@ -28,6 +28,9 @@ public class FSMEditor {
 		
 		controleur.getControleurBrain(WarAgentType.WarBase).addState(
 				new ModeleState("State Idle", PlanEnum.WarPlanIdle, null));
+		controleur.getControleurBrain(WarAgentType.WarBase).addState(
+				new ModeleState("State Idle", PlanEnum.WarPlanIdle, null));
+		
 		controleur.getControleurBrain(WarAgentType.WarRocketLauncher).addState(
 				new ModeleState("State Idle", PlanEnum.WarPlanWiggle, null));
 		controleur.getControleurBrain(WarAgentType.WarEngineer).addState(

@@ -1,4 +1,4 @@
-package edu.warbot.FSMEditor.Views;
+package edu.warbot.FSMEditor.views;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -14,12 +14,12 @@ import javax.swing.border.TitledBorder;
 
 import org.jfree.ui.tabbedui.VerticalLayout;
 
-import edu.warbot.FSMEditor.Modeles.ModeleBrain;
-import edu.warbot.FSMEditor.Modeles.ModeleCondition;
-import edu.warbot.FSMEditor.Modeles.ModeleState;
-import edu.warbot.FSMEditor.Panel.PanelCondition;
-import edu.warbot.FSMEditor.Panel.PanelEditor;
-import edu.warbot.FSMEditor.Panel.PanelState;
+import edu.warbot.FSMEditor.models.ModeleBrain;
+import edu.warbot.FSMEditor.models.ModeleCondition;
+import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.panels.PanelCondition;
+import edu.warbot.FSMEditor.panels.PanelEditor;
+import edu.warbot.FSMEditor.panels.PanelState;
 
 public class ViewBrain extends JPanel{
 

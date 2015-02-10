@@ -26,7 +26,7 @@ import edu.warbot.FSMEditor.FSMModelRebuilder;
 import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlParser;
 import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
 import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlSaver;
-import edu.warbot.FSMEditor.Modeles.Modele;
+import edu.warbot.FSMEditor.models.Modele;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.game.Team;

@@ -1,4 +1,4 @@
-package edu.warbot.FSMEditor.Controleurs;
+package edu.warbot.FSMEditor.controleurs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import edu.warbot.FSM.WarFSM;
-import edu.warbot.FSM.plan.WarPlanSettings;
+import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSMEditor.FSMInstancier;
 import edu.warbot.FSMEditor.FSMModelRebuilder;
 import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
 import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlSaver;
-import edu.warbot.FSMEditor.Modeles.Modele;
-import edu.warbot.FSMEditor.Modeles.ModeleBrain;
-import edu.warbot.FSMEditor.Modeles.ModeleCondition;
-import edu.warbot.FSMEditor.Modeles.ModeleState;
-import edu.warbot.FSMEditor.Views.View;
-import edu.warbot.FSMEditor.Views.ViewBrain;
+import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.ModeleBrain;
+import edu.warbot.FSMEditor.models.ModeleCondition;
+import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.views.View;
+import edu.warbot.FSMEditor.views.ViewBrain;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.adapters.WarExplorerAdapter;
 

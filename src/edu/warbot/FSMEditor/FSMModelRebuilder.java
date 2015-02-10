@@ -2,10 +2,10 @@ package edu.warbot.FSMEditor;
 
 import java.util.HashMap;
 
-import edu.warbot.FSMEditor.Modeles.Modele;
-import edu.warbot.FSMEditor.Modeles.ModeleBrain;
-import edu.warbot.FSMEditor.Modeles.ModeleCondition;
-import edu.warbot.FSMEditor.Modeles.ModeleState;
+import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.ModeleBrain;
+import edu.warbot.FSMEditor.models.ModeleCondition;
+import edu.warbot.FSMEditor.models.ModeleState;
 /**
  * Cette classe permet de prendre un Model du FSMEditor qui n'est pas complet
  * Le model contient des ID pour les états destinations des conditions et les conditions des états

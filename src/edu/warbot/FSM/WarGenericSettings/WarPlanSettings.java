@@ -1,4 +1,4 @@
-package edu.warbot.FSM.plan;
+package edu.warbot.FSM.WarGenericSettings;
 
 import edu.warbot.agents.enums.WarAgentType;
 
@@ -8,7 +8,7 @@ import edu.warbot.agents.enums.WarAgentType;
  * ATTENTION : les attributs peuvent etre seulement de types : Boolean, Ineteger, String
  * Integer[], WarAgentType[], String[] (plus à venir)
  */
-public class WarPlanSettings {
+public class WarPlanSettings extends AbstractGenericAttributSettings{
 	
 	public WarAgentType[] Agent_type_destination;
 
