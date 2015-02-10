@@ -24,7 +24,7 @@ public class Settings {
 		FSM_CLASS_PATH_ACTION + ".WarActionWiggle"
 	};
 
-	//Je sais pas encore si il faut faire unen enum et comment !
+	//Je sais pas encore si il faut faire un enum et comment !
 	public static final String[] ATTRIBUTES = {
 			edu.warbot.FSM.condition.WarConditionAttributCheck.HEALTH,
 			edu.warbot.FSM.condition.WarConditionAttributCheck.NB_ELEMEN_IN_BAG };

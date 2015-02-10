@@ -1,11 +1,12 @@
-package edu.warbot.FSMEditor.Panel;
+package edu.warbot.FSMEditor.panels;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.Random;
 
-import edu.warbot.FSMEditor.Modeles.ModeleState;
+import edu.warbot.FSMEditor.models.ModeleState;
 
 public class PanelState extends AbstractPanel{
 
@@ -15,6 +16,7 @@ public class PanelState extends AbstractPanel{
 	
 	public PanelState(ModeleState m) {
 		this.modeleState = m;
+		position = new Point(new Random().nextInt(800), new Random().nextInt(600));
 	}
 
 	public void paint(Graphics g){
@@ -30,7 +32,7 @@ public class PanelState extends AbstractPanel{
 		g.drawString(this.modeleState.getName(), position.x + 1, position.y + 11);
 		
 		g.drawLine(position.x, position.y + size.height/2
-				, position.x + size.width, position.y + size.height/2);
+				, position.x + size.width - 1, position.y + size.height/2);
 		
 		g.drawString(this.modeleState.getPlanName().name(), position.x + 1, position.y + size.height/2 + 11);
 		

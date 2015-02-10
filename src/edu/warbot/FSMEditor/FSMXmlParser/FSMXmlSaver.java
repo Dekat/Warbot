@@ -10,11 +10,12 @@ import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
-import edu.warbot.FSM.plan.WarPlanSettings;
-import edu.warbot.FSMEditor.Modeles.Modele;
-import edu.warbot.FSMEditor.Modeles.ModeleBrain;
-import edu.warbot.FSMEditor.Modeles.ModeleCondition;
-import edu.warbot.FSMEditor.Modeles.ModeleState;
+import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
+import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.ModeleBrain;
+import edu.warbot.FSMEditor.models.ModeleCondition;
+import edu.warbot.FSMEditor.models.ModeleState;
 
 public class FSMXmlSaver extends FSMXmlParser{
 	
@@ -67,21 +68,53 @@ public class FSMXmlSaver extends FSMXmlParser{
 	private Element getContentForCondition(ModeleCondition cond) {
 		Element elemCond = new Element(Condition);
 
-		elemCond.addContent(new Element("Name").setText(cond.getName()));
-		elemCond.addContent(new Element("Type").setText(cond.getType()));
-		elemCond.addContent(new Element("StateOutName").setText(cond.getStateDestination().getName()));
-		//elemCond.addContent(new Element("StateInName").setText(cond.getSource().getNom()));
+		elemCond.addContent(new Element(Name).setText(cond.getName()));
+		elemCond.addContent(new Element(Type).setText(cond.getType().toString()));
+		elemCond.addContent(new Element(StateOutID).setText(cond.getStateDestination().getName()));
 		
-		//Content pour le type de condition attriutCheck
-		Element elemAttCheck = new Element("AttributCheck");
-		elemCond.addContent(elemAttCheck);
-		
-		elemAttCheck.addContent(new Element("Name").setText(cond.getAttributCheckName()));
-		elemAttCheck.addContent(new Element("operateur").setText(cond.getAttributCheckOperateur()));
-		elemAttCheck.addContent(new Element("Value").setText(cond.getAttributCheckValue()));
-		elemAttCheck.addContent(new Element("Pourcentage").setText(String.valueOf(cond.getAttributCheckPourcentage())));
+		elemCond.addContent(getContentConditionSettings(cond));
 		
 		return elemCond;
+	}
+	
+	private Element getContentConditionSettings(ModeleCondition modelCond) {
+		Element elemPlanSetting = new Element(PlanSettings);
+		
+		WarConditionSettings planSet = modelCond.getConditionSettings();
+		if(planSet == null)
+			planSet = new WarConditionSettings();
+		
+		Field[] fields = planSet.getClass().getDeclaredFields();
+		
+		String fieldValueString = null;
+		for (int i = 0; i < fields.length; i++) {
+			try {
+				//Pour les tableaux
+				if(fields[i].getType().isArray()){
+					if(fields[i].get(planSet) == null)
+						fieldValueString = "";
+					else{
+						Object[] fieldValues = (Object[]) fields[i].get(planSet);
+						fieldValueString = Arrays.toString(fieldValues);
+					}
+					
+				}else{ //Pour les valeurs simples
+					if(fields[i].get(planSet) == null)
+						fieldValueString = "";
+					else
+						fieldValueString = String.valueOf(fields[i].get(planSet));
+				}
+					
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			
+			elemPlanSetting.addContent(
+				new Element(fields[i].getName()).setText(fieldValueString));
+		}
+		return elemPlanSetting;
 	}
 
 	private Element getContentStatesForBrain(ModeleBrain brain) {
@@ -101,7 +134,7 @@ public class FSMXmlSaver extends FSMXmlParser{
 		elemState.addContent(new Element("Plan").setText(state.getPlanName().toString()));
 
 		elemState.addContent(getContentPlanSettings(state));
-		elemState.addContent(getContentConditionsOutNameForState(state));
+		elemState.addContent(getContentConditionsOutIDForState(state));
 		
 		return elemState;
 	}
@@ -146,7 +179,7 @@ public class FSMXmlSaver extends FSMXmlParser{
 		return elemPlanSetting;
 	}
 
-	private Element getContentConditionsOutNameForState(ModeleState state) {
+	private Element getContentConditionsOutIDForState(ModeleState state) {
 		Element elemconditions = new Element(ConditionsOutID);
 		
 		for (ModeleCondition currentCond : state.getConditionsOut()) {

@@ -11,7 +11,6 @@ import edu.warbot.agents.WarAgent;
 import edu.warbot.launcher.WarGameSettings;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.maps.DefaultWarMap;
-import edu.warbot.maps.OneWayWarMap;
 
 public class WarGame extends Observable implements Observer {
 

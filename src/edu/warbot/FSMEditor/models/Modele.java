@@ -1,4 +1,4 @@
-package edu.warbot.FSMEditor.Modeles;
+package edu.warbot.FSMEditor.models;
 
 import java.util.ArrayList;
 

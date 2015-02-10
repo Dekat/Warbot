@@ -1,6 +1,5 @@
-package edu.warbot.FSMEditor.Views;
+package edu.warbot.FSMEditor.views;
 
-import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Menu;
 import java.awt.MenuBar;
@@ -8,11 +7,10 @@ import java.awt.MenuItem;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import edu.warbot.FSMEditor.Modeles.Modele;
-import edu.warbot.FSMEditor.Modeles.ModeleBrain;
+import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.ModeleBrain;
 
 public class View extends JFrame {
 	
@@ -40,10 +38,10 @@ public class View extends JFrame {
 		}
 	}
 
-	private void createPanel() {//TODO (si on veut rajouter des nouveaux panel il faut les remetre dans ce panel pricipal
+	private void createPanel() {
 		mainPanel = new JTabbedPane();
 		for (ViewBrain viewBrain : viewBrains) {
-			mainPanel.add(viewBrain.getModele().getAgentTypeName(), viewBrain);
+			addViewBrain(viewBrain);
 		}
 		this.setContentPane(mainPanel);
 	}

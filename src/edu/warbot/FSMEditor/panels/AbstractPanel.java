@@ -1,4 +1,4 @@
-package edu.warbot.FSMEditor.Panel;
+package edu.warbot.FSMEditor.panels;
 
 import javax.swing.JPanel;
 

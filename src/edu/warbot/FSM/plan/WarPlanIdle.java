@@ -1,5 +1,6 @@
 package edu.warbot.FSM.plan;
 
+import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionIdle;
 import edu.warbot.FSM.action.WarActionWiggle;

@@ -1,4 +1,4 @@
-package edu.warbot.FSMEditor.Views;
+package edu.warbot.FSMEditor.views;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -14,12 +14,12 @@ import javax.swing.border.TitledBorder;
 
 import org.jfree.ui.tabbedui.VerticalLayout;
 
-import edu.warbot.FSMEditor.Modeles.ModeleBrain;
-import edu.warbot.FSMEditor.Modeles.ModeleCondition;
-import edu.warbot.FSMEditor.Modeles.ModeleState;
-import edu.warbot.FSMEditor.Panel.PanelCondition;
-import edu.warbot.FSMEditor.Panel.PanelEditor;
-import edu.warbot.FSMEditor.Panel.PanelState;
+import edu.warbot.FSMEditor.models.ModeleBrain;
+import edu.warbot.FSMEditor.models.ModeleCondition;
+import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.panels.PanelCondition;
+import edu.warbot.FSMEditor.panels.PanelEditor;
+import edu.warbot.FSMEditor.panels.PanelState;
 
 public class ViewBrain extends JPanel{
 
@@ -98,6 +98,25 @@ public class ViewBrain extends JPanel{
 		return panel;
 	}
 
+	public void addState(ModeleState state) {
+		this.panelEditor.addState(new PanelState(state));
+	}
+
+	public void addCondition(ModeleCondition condition) {
+		//Crée le nouveau panel condition
+		PanelCondition pc = new PanelCondition(condition);	
+	
+		//Récupère les panelSource et destination pour avoir leurs positions
+		PanelState panelSource = getPanelStateForModele(condition.getStateSource());
+		PanelState panelDest = getPanelStateForModele(condition.getStateDestination());
+		
+		pc.setPanelSourceAndDestination(panelSource, panelDest);
+		
+		panelEditor.addCondition(pc);
+		
+		this.getListeModeleConditions().addElement(condition.getName());	
+	}
+
 	public PanelEditor getViewEditor() {
 		return (PanelEditor) this.panelEditor;
 	}
@@ -152,24 +171,6 @@ public class ViewBrain extends JPanel{
 	private JButton buttonAddCond;
 	private JButton buttonEditCond;
 	private JButton buttonDelCond;
-
-	public void addCondition(ModeleCondition condition) {
-		//Crée le nouveau panel condition
-		PanelCondition pc = new PanelCondition(condition);	
-
-//		PanelState panelSource = this.getPanelCenter().getFirstSelectedState();
-//		PanelState panelDest = this.getPanelCenter().getSecondeSelectedState();
-
-		//Récupère les panelSource et destination pour avoir leurs positions
-		PanelState panelSource = getPanelStateForModele(condition.getStateSource());
-		PanelState panelDest = getPanelStateForModele(condition.getStateDestination());
-		
-		pc.setPanelSourceAndDestination(panelSource, panelDest);
-		
-		panelEditor.addCondition(pc);
-		
-		this.getListeModeleConditions().addElement(condition.getName());	
-	}
 
 	//TODO pas super propre
 	private PanelState getPanelStateForModele(ModeleState modele) {

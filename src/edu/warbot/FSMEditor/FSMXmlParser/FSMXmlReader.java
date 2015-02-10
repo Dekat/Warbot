@@ -12,11 +12,11 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
-import edu.warbot.FSM.plan.WarPlanSettings;
+import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSMEditor.FSMSettings.PlanEnum;
-import edu.warbot.FSMEditor.Modeles.Modele;
-import edu.warbot.FSMEditor.Modeles.ModeleBrain;
-import edu.warbot.FSMEditor.Modeles.ModeleState;
+import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.ModeleBrain;
+import edu.warbot.FSMEditor.models.ModeleState;
 import edu.warbot.agents.enums.WarAgentType;
 /**
  * Permet de lire un fichier de configuration au format de XML et de type FSM
