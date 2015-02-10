@@ -125,7 +125,7 @@ public class ControleurBrain {
 			modeleStateSource = panelSource.getModele();
 			modeleStateDest = panelDest.getModele();
 			
-			//Crée le nouveau modele condition
+			//Crï¿½e le nouveau modele condition
 			ModeleCondition mc = new ModeleCondition(d.getName(), d.getConditionType(), 
 					modeleStateSource, modeleStateDest);
 			
@@ -133,7 +133,7 @@ public class ControleurBrain {
 			
 			
 		}else{
-			System.out.println("Pour ajouter une condition deux etats doivent être selectionnés");
+			System.out.println("Pour ajouter une condition deux etats doivent ï¿½tre selectionnï¿½s");
 		}
 		
 		viewBrain.getPanelCenter().repaint();
@@ -189,7 +189,7 @@ public class ControleurBrain {
 	public void addState(ModeleState state) {
 		this.modeleBrain.addState(state);
 		
-		//Création du panel
+		//Crï¿½ation du panel
 		PanelState panel = new PanelState(state);
 		//Ajoute le panel 
 		this.viewBrain.getPanelCenter().addState(panel);		
@@ -201,7 +201,7 @@ public class ControleurBrain {
 		//Dit au modele d'ajouter la nouvelle condition
 		this.modeleBrain.addCondition(condition);
 		
-		//Dit à la vu d'ajouter la nouvelle condition
+		//Dit ï¿½ la vu d'ajouter la nouvelle condition
 		this.viewBrain.addCondition(condition);
 		
 	}
