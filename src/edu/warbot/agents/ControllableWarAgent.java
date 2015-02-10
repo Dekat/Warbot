@@ -286,8 +286,8 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 		return getPerceptsByAgentType(agentType, false);
 	}
 
-    public Shape getPerceptionAreaShape() {
-        return _perceptsGetter.getPerceptionAreaShape();
+    public Shape getPerceptionArea() {
+        return _perceptsGetter.getPerceptionArea();
     }
 
 	/**

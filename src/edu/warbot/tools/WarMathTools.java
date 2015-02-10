@@ -1,5 +1,6 @@
 package edu.warbot.tools;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Circle;
@@ -10,13 +11,13 @@ public class WarMathTools {
 		return Math.hypot(x2 - x1, y2 - y1);
 	}
 	
-	public static CoordCartesian addTwoPoints(CoordCartesian p1, CoordCartesian p2) {
+	public static CoordCartesian addTwoPoints(Point2D.Double p1, Point2D.Double p2) {
 		CoordCartesian toReturn = new CoordCartesian(p1.getX(), p1.getY());
 		toReturn.add(p2);
 		return toReturn;
 	}
 	
-	public static CoordCartesian addTwoPoints(CoordCartesian p1, CoordPolar p2) {
+	public static CoordCartesian addTwoPoints(Point2D.Double p1, CoordPolar p2) {
 		return addTwoPoints(p1, p2.toCartesian());
 	}
 	
