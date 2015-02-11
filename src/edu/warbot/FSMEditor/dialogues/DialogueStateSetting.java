@@ -9,25 +9,26 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
-import edu.warbot.FSMEditor.FSMSettings.PlanEnum;
 import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.settings.PlanEnum;
 import edu.warbot.FSMEditor.views.ViewBrain;
 
 public class DialogueStateSetting extends AbstractDialogue {
 
 	private static final long serialVersionUID = 1L;
 
-	private ModeleState modelState;
-	
 	public DialogueStateSetting(ViewBrain viewBrain, ModeleState modelState) {
 		this(viewBrain, modelState.getPlanSettings());
-		this.modelState = modelState;
+		
+		this.fieldName = new JTextField(modelState.getName());
+		this.comboxPlan.setSelectedItem(modelState.getPlanName());
 	}
+
 	public DialogueStateSetting(ViewBrain viewBrain, WarPlanSettings planSettings) {
 		super(viewBrain, planSettings);
 		
-		if(planSettings == null)
-			planSettings = new WarPlanSettings();
+		if(genericSettings == null)
+			genericSettings = new WarPlanSettings();
 	}
 	
 	@Override
@@ -39,18 +40,6 @@ public class DialogueStateSetting extends AbstractDialogue {
 		JPanel panelName = new JPanel(new GridLayout(2, 2));
 		panelName.setBorder(new TitledBorder("State settings"));
 
-		String name;
-		if(modelState != null)
-			name = modelState.getName();
-		else
-			name = DEFAULT_STATE_NAME;
-		
-		fieldName = new JTextField(name);
-		comboxPlan = new JComboBox<>(PlanEnum.values());
-		
-		if(modelState != null)
-			comboxPlan.setSelectedItem(this.modelState.getPlanName());
-
 		panelName.add(add(new JLabel("Name")));
 		panelName.add(fieldName);
 
@@ -61,19 +50,15 @@ public class DialogueStateSetting extends AbstractDialogue {
 
 	}
 
-	@Override 
-	protected void saveGeneralSettings() {
-		if(modelState != null){
-			this.modelState.setName(this.fieldName.getText());
-			this.modelState.setPlanName((PlanEnum) this.comboxPlan.getSelectedItem());	
-		}
-	}
-
 	@Override
 	protected boolean isValide(){
 		return !this.fieldName.getText().isEmpty();
 	}
 
+	public WarPlanSettings getPlanSettings(){
+		return (WarPlanSettings)genericSettings;
+	}
+	
 	public String getStateName() {
 		return this.fieldName.getText();
 	}
@@ -82,7 +67,7 @@ public class DialogueStateSetting extends AbstractDialogue {
 		return (PlanEnum) comboxPlan.getSelectedItem();
 	}
 
-	JTextField fieldName;
-	JComboBox<PlanEnum> comboxPlan;
+	JTextField fieldName = new JTextField(DEFAULT_STATE_NAME);
+	JComboBox<PlanEnum> comboxPlan = new JComboBox<PlanEnum>(PlanEnum.values());
 
 }

@@ -1,13 +1,13 @@
 package edu.warbot.FSMEditor;
 
-import edu.warbot.FSMEditor.FSMSettings.ConditionEnum;
-import edu.warbot.FSMEditor.FSMSettings.Settings;
-import edu.warbot.FSMEditor.FSMSettings.PlanEnum;
 import edu.warbot.FSMEditor.controleurs.Controleur;
 import edu.warbot.FSMEditor.controleurs.ControleurBrain;
 import edu.warbot.FSMEditor.models.Modele;
 import edu.warbot.FSMEditor.models.ModeleCondition;
 import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.settings.ConditionEnum;
+import edu.warbot.FSMEditor.settings.PlanEnum;
+import edu.warbot.FSMEditor.settings.Settings;
 import edu.warbot.FSMEditor.views.View;
 import edu.warbot.agents.enums.WarAgentType;
 

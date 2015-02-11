@@ -1,4 +1,4 @@
-package edu.warbot.FSMEditor.FSMXmlParser;
+package edu.warbot.FSMEditor.xmlParser;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.models.ModeleCondition;
 import edu.warbot.FSMEditor.models.ModeleState;
 
-public class FSMXmlSaver extends FSMXmlParser{
+public class FsmXmlSaver extends FsmXmlParser{
 	
 	Document document;
 	FileWriter file;
@@ -56,6 +56,15 @@ public class FSMXmlSaver extends FSMXmlParser{
 		System.out.println("FSMConfiguration file generated successfull");
 	}
 
+	private Element getContentStatesForBrain(ModeleBrain brain) {
+		Element states = new Element(States);
+		
+		for (ModeleState currentState : brain.getStates()) {
+			states.addContent(getContentForState(currentState));
+		}
+		return states;
+	}
+
 	private Element getContentConditionForBrain(ModeleBrain brain) {
 		Element elemConditions = new Element(Conditions);
 		
@@ -65,76 +74,14 @@ public class FSMXmlSaver extends FSMXmlParser{
 		return elemConditions;
 	}
 
-	private Element getContentForCondition(ModeleCondition cond) {
-		Element elemCond = new Element(Condition);
-
-		elemCond.addContent(new Element(Name).setText(cond.getName()));
-		elemCond.addContent(new Element(Type).setText(cond.getType().toString()));
-		elemCond.addContent(new Element(StateOutID).setText(cond.getStateDestination().getName()));
-		
-		elemCond.addContent(getContentConditionSettings(cond));
-		
-		return elemCond;
-	}
-	
-	private Element getContentConditionSettings(ModeleCondition modelCond) {
-		Element elemPlanSetting = new Element(PlanSettings);
-		
-		WarConditionSettings planSet = modelCond.getConditionSettings();
-		if(planSet == null)
-			planSet = new WarConditionSettings();
-		
-		Field[] fields = planSet.getClass().getDeclaredFields();
-		
-		String fieldValueString = null;
-		for (int i = 0; i < fields.length; i++) {
-			try {
-				//Pour les tableaux
-				if(fields[i].getType().isArray()){
-					if(fields[i].get(planSet) == null)
-						fieldValueString = "";
-					else{
-						Object[] fieldValues = (Object[]) fields[i].get(planSet);
-						fieldValueString = Arrays.toString(fieldValues);
-					}
-					
-				}else{ //Pour les valeurs simples
-					if(fields[i].get(planSet) == null)
-						fieldValueString = "";
-					else
-						fieldValueString = String.valueOf(fields[i].get(planSet));
-				}
-					
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-			
-			elemPlanSetting.addContent(
-				new Element(fields[i].getName()).setText(fieldValueString));
-		}
-		return elemPlanSetting;
-	}
-
-	private Element getContentStatesForBrain(ModeleBrain brain) {
-		
-		Element states = new Element(States);
-		
-		for (ModeleState currentState : brain.getStates()) {
-			states.addContent(getContentForState(currentState));
-		}
-		return states;
-	}
-
 	private Element getContentForState(ModeleState state) {
 		Element elemState = new Element(State);
 		
 		elemState.addContent(new Element("Name").setText(state.getName()));
 		elemState.addContent(new Element("Plan").setText(state.getPlanName().toString()));
-
-		elemState.addContent(getContentPlanSettings(state));
+	
 		elemState.addContent(getContentConditionsOutIDForState(state));
+		elemState.addContent(getContentPlanSettings(state));
 		
 		return elemState;
 	}
@@ -177,6 +124,59 @@ public class FSMXmlSaver extends FSMXmlParser{
 				new Element(fields[i].getName()).setText(fieldValueString));
 		}
 		return elemPlanSetting;
+	}
+
+	private Element getContentForCondition(ModeleCondition cond) {
+		Element elemCond = new Element(Condition);
+
+		elemCond.addContent(new Element(Name).setText(cond.getName()));
+		elemCond.addContent(new Element(Type).setText(cond.getType().toString()));
+		elemCond.addContent(new Element(StateOutID).setText(cond.getStateDestination().getName()));
+		
+		elemCond.addContent(getContentConditionSettings(cond));
+		
+		return elemCond;
+	}
+	
+	//TODO fusionner cette méthod avec celle des plans
+	private Element getContentConditionSettings(ModeleCondition modelCond) {
+		Element elemCondSetting = new Element(ConditionSettings);
+		
+		WarConditionSettings planSet = modelCond.getConditionSettings();
+		if(planSet == null)
+			planSet = new WarConditionSettings();
+		
+		Field[] fields = planSet.getClass().getDeclaredFields();
+		
+		String fieldValueString = null;
+		for (int i = 0; i < fields.length; i++) {
+			try {
+				//Pour les tableaux
+				if(fields[i].getType().isArray()){
+					if(fields[i].get(planSet) == null)
+						fieldValueString = "";
+					else{
+						Object[] fieldValues = (Object[]) fields[i].get(planSet);
+						fieldValueString = Arrays.toString(fieldValues);
+					}
+					
+				}else{ //Pour les valeurs simples
+					if(fields[i].get(planSet) == null)
+						fieldValueString = "";
+					else
+						fieldValueString = String.valueOf(fields[i].get(planSet));
+				}
+					
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			
+			elemCondSetting.addContent(
+				new Element(fields[i].getName()).setText(fieldValueString));
+		}
+		return elemCondSetting;
 	}
 
 	private Element getContentConditionsOutIDForState(ModeleState state) {

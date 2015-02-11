@@ -16,7 +16,7 @@ public class PanelState extends AbstractPanel{
 	
 	public PanelState(ModeleState m) {
 		this.modeleState = m;
-		position = new Point(new Random().nextInt(800), new Random().nextInt(600));
+		position = new Point(new Random().nextInt(700), new Random().nextInt(500));
 	}
 
 	public void paint(Graphics g){

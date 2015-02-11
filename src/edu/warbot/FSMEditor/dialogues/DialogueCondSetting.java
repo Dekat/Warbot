@@ -9,23 +9,27 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
-import edu.warbot.FSMEditor.FSMSettings.ConditionEnum;
-import edu.warbot.FSMEditor.FSMSettings.PlanEnum;
 import edu.warbot.FSMEditor.models.ModeleCondition;
+import edu.warbot.FSMEditor.settings.ConditionEnum;
 import edu.warbot.FSMEditor.views.ViewBrain;
 
 public class DialogueCondSetting extends AbstractDialogue{
 	
 	private static final long serialVersionUID = 1L;
 	
-	private ModeleCondition modelCondition;
+	
+	public DialogueCondSetting(ViewBrain f, ModeleCondition modelCondition) {
+		this(f, modelCondition.getConditionSettings());
+
+		this.fieldName.setText(modelCondition.getName());
+		this.comboTypeCond.setSelectedItem(modelCondition.getConditionType());
+	}
 	
 	public DialogueCondSetting(ViewBrain f, WarConditionSettings conditionsSettings) {
 		super(f, conditionsSettings);
 		
-		if(conditionsSettings == null)
-			conditionsSettings = new WarConditionSettings();
-		
+		if(genericSettings == null)
+			genericSettings = new WarConditionSettings();
 	}
 	
 	@Override
@@ -37,18 +41,6 @@ public class DialogueCondSetting extends AbstractDialogue{
 	protected JPanel getPanelMainSetting() {
 		JPanel panel = new JPanel(new GridLayout(2, 2));
 		panel.setBorder(new TitledBorder("General"));
-		
-		String name;
-		if(modelCondition != null)
-			name = modelCondition.getName();
-		else 
-			name = DEFAULT_CONDITION_NAME;
-			
-		fieldName = new JTextField(name);
-		comboTypeCond = new JComboBox<>(ConditionEnum.values());
-		
-		if(modelCondition != null)
-			comboTypeCond.setSelectedItem(modelCondition.getType());
 		
 		panel.add(new JLabel("Name "));
 		panel.add(fieldName);
@@ -64,14 +56,11 @@ public class DialogueCondSetting extends AbstractDialogue{
 		return !this.fieldName.getText().isEmpty();
 	}
 	
-	@Override
-	protected void saveGeneralSettings() {
-		if(modelCondition != null){
-			this.modelCondition.setName(this.fieldName.getText());
-			this.modelCondition.setConditionType((ConditionEnum) this.comboTypeCond.getSelectedItem());	
-		}
-	}
 
+	public WarConditionSettings getConditionSettings(){
+		return (WarConditionSettings)genericSettings;
+	}
+	
 	public String getConditionName(){
 		return this.fieldName.getText();
 	}
@@ -80,7 +69,7 @@ public class DialogueCondSetting extends AbstractDialogue{
 		return (ConditionEnum) comboTypeCond.getSelectedItem();
 	}
 	
-	JTextField fieldName;
-	JComboBox<ConditionEnum> comboTypeCond;
+	JTextField fieldName = new JTextField(DEFAULT_CONDITION_NAME);
+	JComboBox<ConditionEnum> comboTypeCond = new JComboBox<ConditionEnum>(ConditionEnum.values());
 	
 }

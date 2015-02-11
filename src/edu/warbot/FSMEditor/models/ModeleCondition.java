@@ -1,8 +1,8 @@
 package edu.warbot.FSMEditor.models;
 
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
-import edu.warbot.FSMEditor.FSMSettings.ConditionEnum;
-import edu.warbot.FSMEditor.FSMSettings.Settings;
+import edu.warbot.FSMEditor.settings.ConditionEnum;
+import edu.warbot.FSMEditor.settings.Settings;
 
 public class ModeleCondition {
 	

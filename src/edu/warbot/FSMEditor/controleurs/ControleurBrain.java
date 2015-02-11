@@ -10,8 +10,6 @@ import javax.swing.event.ListSelectionListener;
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSM.condition.WarCondition;
-import edu.warbot.FSMEditor.FSMSettings.ConditionEnum;
-import edu.warbot.FSMEditor.FSMSettings.PlanEnum;
 import edu.warbot.FSMEditor.dialogues.DialogueCondSetting;
 import edu.warbot.FSMEditor.dialogues.DialogueStateSetting;
 import edu.warbot.FSMEditor.models.ModeleBrain;
@@ -19,6 +17,8 @@ import edu.warbot.FSMEditor.models.ModeleCondition;
 import edu.warbot.FSMEditor.models.ModeleState;
 import edu.warbot.FSMEditor.panels.PanelCondition;
 import edu.warbot.FSMEditor.panels.PanelState;
+import edu.warbot.FSMEditor.settings.ConditionEnum;
+import edu.warbot.FSMEditor.settings.PlanEnum;
 import edu.warbot.FSMEditor.views.ViewBrain;
 
 public class ControleurBrain {
@@ -110,7 +110,7 @@ public class ControleurBrain {
 
 		if(d.isValideComponent()){
 			
-			ModeleState s = new ModeleState(d.getStateName(), d.getPlanName(), planSetting);
+			ModeleState s = new ModeleState(d.getStateName(), d.getPlanName(), d.getPlanSettings());
 
 			this.addState(s);
 			
@@ -124,8 +124,12 @@ public class ControleurBrain {
 		
 		DialogueStateSetting d = new DialogueStateSetting(this.viewBrain, modelState);
 		d.createDialog();
-
+		
 		if(d.isValideComponent()){
+			
+			modelState.setName(d.getStateName());
+			modelState.setPlanName(d.getPlanName());
+			modelState.setPlanSettings(d.getPlanSettings());
 			
 			viewBrain.getViewEditor().repaint();
 		}
@@ -200,9 +204,6 @@ public class ControleurBrain {
 			}
 			
 //			if(condSelec.equals(Settings.WarConditionActionTerminate)){
-//				
-//				
-//				
 //			}
 		}
 	}

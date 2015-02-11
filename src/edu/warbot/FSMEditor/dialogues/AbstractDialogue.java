@@ -245,12 +245,9 @@ public abstract class AbstractDialogue extends JDialog{
 	 */
 	
 	protected void saveSettings() {
-		saveGeneralSettings();
 		saveGenericSettings();
 	}
 	
-	abstract protected void saveGeneralSettings();
-
 	private void saveGenericSettings(){
 		for (Field field : mapFieldComp.keySet()) {
 			JComponent dynamicComp = mapFieldComp.get(field);

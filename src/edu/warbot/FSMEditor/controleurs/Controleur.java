@@ -10,14 +10,14 @@ import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSMEditor.FSMInstancier;
 import edu.warbot.FSMEditor.FSMModelRebuilder;
-import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
-import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlSaver;
 import edu.warbot.FSMEditor.models.Modele;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.models.ModeleCondition;
 import edu.warbot.FSMEditor.models.ModeleState;
 import edu.warbot.FSMEditor.views.View;
 import edu.warbot.FSMEditor.views.ViewBrain;
+import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
+import edu.warbot.FSMEditor.xmlParser.FsmXmlSaver;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.adapters.WarExplorerAdapter;
 
@@ -76,20 +76,20 @@ public class Controleur {
 	}
 	
 	public void eventMenuBarItemSave() {
-		FSMXmlSaver fsmSaver = new FSMXmlSaver();
+		FsmXmlSaver fsmSaver = new FsmXmlSaver();
 		
-		fsmSaver.saveFSM(modele, FSMXmlReader.xmlConfigurationDefaultFilename);
+		fsmSaver.saveFSM(modele, FsmXmlReader.xmlConfigurationDefaultFilename);
 		System.out.println("Configuration file exported successfull");
 		
 	}
 	
 	public void eventMenuBarItemSaveJar() {
-		FSMXmlSaver saver = new FSMXmlSaver();
-		saver.saveFSM(this.modele, FSMXmlReader.xmlConfigurationDefaultFilename);
+		FsmXmlSaver saver = new FsmXmlSaver();
+		saver.saveFSM(this.modele, FsmXmlReader.xmlConfigurationDefaultFilename);
 		
 		System.out.println("Configuration file exported successfull");
 
-		FSMXmlReader reader = new FSMXmlReader(FSMXmlReader.xmlConfigurationDefaultFilename);
+		FsmXmlReader reader = new FsmXmlReader(FsmXmlReader.xmlConfigurationDefaultFilename);
 		Modele modeleRead = reader.getGeneratedFSMModel();
 		
 //		printModelInformations(modeleRead);

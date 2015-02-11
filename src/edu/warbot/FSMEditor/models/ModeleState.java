@@ -2,11 +2,10 @@ package edu.warbot.FSMEditor.models;
 
 import java.util.ArrayList;
 
-import javax.swing.JTextField;
-
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
-import edu.warbot.FSMEditor.FSMSettings.Settings;
-import edu.warbot.FSMEditor.FSMSettings.PlanEnum;
+import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
+import edu.warbot.FSMEditor.settings.PlanEnum;
+import edu.warbot.FSMEditor.settings.Settings;
 
 public class ModeleState {
 	
@@ -79,6 +78,10 @@ public class ModeleState {
 
 	public void addConditionOutID(String name) {
 		this.conditionsOutID.add(name);
+	}
+
+	public void setPlanSettings(WarPlanSettings planSettings) {
+		this.planSettings = planSettings;
 	}
 	
 	

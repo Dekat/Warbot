@@ -23,10 +23,10 @@ import javax.swing.SwingUtilities;
 import edu.warbot.FSM.WarFSMBrainController;
 import edu.warbot.FSMEditor.FSMInstancier;
 import edu.warbot.FSMEditor.FSMModelRebuilder;
-import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlParser;
-import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlReader;
-import edu.warbot.FSMEditor.FSMXmlParser.FSMXmlSaver;
 import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.xmlParser.FsmXmlParser;
+import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
+import edu.warbot.FSMEditor.xmlParser.FsmXmlSaver;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.game.Team;
@@ -162,11 +162,11 @@ public class WarMain implements Observer {
                         if(analXML.isFSMTeam()){
                         	System.out.println("WarMain : FSM Team found");
                         	
-                        	JarEntry entryFSMConfiguration = allJarEntries.get(FSMXmlParser.xmlConfigurationDefaultFilename);
+                        	JarEntry entryFSMConfiguration = allJarEntries.get(FsmXmlParser.xmlConfigurationDefaultFilename);
                         	System.out.println("WarMain : jarEntry for FSMXmlConfiguration found");
                         	
                         	InputStream fileFSMConfig = jarCurrentFile.getInputStream(entryFSMConfiguration);
-                        	FSMXmlReader fsmXmlReader = new FSMXmlReader(fileFSMConfig);
+                        	FsmXmlReader fsmXmlReader = new FsmXmlReader(fileFSMConfig);
                         	FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
                         	currentTeam.setFSMModel(fsmModelRebuilder.getRebuildModel());
                         	System.out.println("WarMain : FSMXmlReader successfull read fsmConfigFile");

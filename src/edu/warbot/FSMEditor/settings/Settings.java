@@ -1,4 +1,4 @@
-package edu.warbot.FSMEditor.FSMSettings;
+package edu.warbot.FSMEditor.settings;
 
 public class Settings {
 

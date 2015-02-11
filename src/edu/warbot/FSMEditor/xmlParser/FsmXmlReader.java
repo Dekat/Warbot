@@ -1,7 +1,6 @@
-package edu.warbot.FSMEditor.FSMXmlParser;
+package edu.warbot.FSMEditor.xmlParser;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -11,12 +10,17 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.lwjgl.opencl.CLSampler;
 
+import edu.warbot.FSM.WarGenericSettings.AbstractGenericAttributSettings;
+import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
-import edu.warbot.FSMEditor.FSMSettings.PlanEnum;
 import edu.warbot.FSMEditor.models.Modele;
 import edu.warbot.FSMEditor.models.ModeleBrain;
+import edu.warbot.FSMEditor.models.ModeleCondition;
 import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.settings.ConditionEnum;
+import edu.warbot.FSMEditor.settings.PlanEnum;
 import edu.warbot.agents.enums.WarAgentType;
 /**
  * Permet de lire un fichier de configuration au format de XML et de type FSM
@@ -26,11 +30,11 @@ import edu.warbot.agents.enums.WarAgentType;
  * @author Olivier
  *
  */
-public class FSMXmlReader extends FSMXmlParser{
+public class FsmXmlReader extends FsmXmlParser{
 
 	private Modele modeleFSM;
 	
-	public FSMXmlReader(String fileName) {
+	public FsmXmlReader(String fileName) {
 
 		if(fileName == null)
 			fileName = xmlConfigurationDefaultFilename;
@@ -51,7 +55,7 @@ public class FSMXmlReader extends FSMXmlParser{
 		readConfigDocument(doc);
 	}
 	
-	public FSMXmlReader(InputStream inputStream) {
+	public FsmXmlReader(InputStream inputStream) {
 		Document doc = null;
 		try {
 			doc = new SAXBuilder().build(inputStream);
@@ -89,24 +93,27 @@ public class FSMXmlReader extends FSMXmlParser{
 		createConditions(brain.getChild(Conditions), modelBrain);
 	}
 
-	private void createConditions(Element child, ModeleBrain modeleBrain) {
-		// TODO Auto-generated method stub
-	}
-
 	private void createStates(Element states, ModeleBrain modeleBrain) {
 		for (Element state : states.getChildren()) {
 			createState(state, modeleBrain);
 		}
 	}
 
+	private void createConditions(Element elemCond, ModeleBrain modeleBrain) {
+		for (Element cond : elemCond.getChildren()) {
+			createCondition(cond, modeleBrain);
+		}
+	}
+
 	private void createState(Element state, ModeleBrain modeleBrain) {
 		
-		String name = state.getChild("Name").getValue();
-		String plan = state.getChild("Plan").getValue();
+		String name = state.getChild(Name).getValue();
+		String plan = state.getChild(Plan).getValue();
 		
 		ArrayList<String> condID = getConditionsOutID(state.getChild(ConditionsOutID));
 		
-		WarPlanSettings warPlanSetting = getWarPlanSettings(state.getChild(PlanSettings));
+		WarPlanSettings warPlanSetting = 
+				(WarPlanSettings) getWarGenericSettings(WarPlanSettings.class, state.getChild(PlanSettings));
 		
 		ModeleState modeleState = new ModeleState(name, PlanEnum.valueOf(plan), warPlanSetting);
 		modeleState.setConditionsOutID(condID);
@@ -114,50 +121,79 @@ public class FSMXmlReader extends FSMXmlParser{
 		modeleBrain.addState(modeleState);
 	}
 
-	private WarPlanSettings getWarPlanSettings(Element elemPlanSetting) {
-		WarPlanSettings planSet = new WarPlanSettings();
+	private void createCondition(Element cond, ModeleBrain modeleBrain) {
+		String name = cond.getChild(Name).getValue();
+		String type = cond.getChild(Type).getValue();
+
+		String stateOutID = cond.getChild(StateOutID).getValue();
 		
-		Field[] fields = planSet.getClass().getDeclaredFields();
+		WarConditionSettings warConditionSetting = 
+				(WarConditionSettings) getWarGenericSettings(WarConditionSettings.class, cond.getChild(ConditionSettings));
+		
+		ModeleCondition modeleCond = new ModeleCondition(name, ConditionEnum.valueOf(type), warConditionSetting);
+		modeleCond.setStateOutId(stateOutID);
+		
+		modeleBrain.addCondition(modeleCond);		
+	}
+	
+	private AbstractGenericAttributSettings getWarGenericSettings(Class classSetting, Element element){
+		AbstractGenericAttributSettings settings = null;
+		try {
+			settings = (AbstractGenericAttributSettings) classSetting.newInstance();
+		} catch (InstantiationException e1) {
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			e1.printStackTrace();
+		}
+		
+		Field[] fields = settings.getClass().getDeclaredFields();
 		
 		for (int i = 0; i < fields.length; i++) {
 			try {
-				
 				//Pour les attribtus simples
 				if (fields[i].getType().equals(Integer.class))
-					fields[i].set(planSet,getFieldForInteger(fields[i], elemPlanSetting));
+					fields[i].set(settings,getFieldForInteger(fields[i], element));
 				else if (fields[i].getType().equals(Boolean.class))
-					fields[i].set(planSet,getFieldForBoolean(fields[i], elemPlanSetting));
+					fields[i].set(settings,getFieldForBoolean(fields[i], element));
 				else if (fields[i].getType().equals(String.class))
-					fields[i].set(planSet,getFieldForString(fields[i], elemPlanSetting));
+					fields[i].set(settings,getFieldForString(fields[i], element));
 				else if (fields[i].getType().equals(Integer[].class))
-					fields[i].set(planSet,getFieldForIntegerTab(fields[i], elemPlanSetting));
+					fields[i].set(settings,getFieldForIntegerTab(fields[i], element));
 				else if (fields[i].getType().equals(String[].class))
-					fields[i].set(planSet,getFieldForStringTab(fields[i], elemPlanSetting));
+					fields[i].set(settings,getFieldForStringTab(fields[i], element));
 				else if (fields[i].getType().equals(WarAgentType[].class))
-					fields[i].set(planSet,getFieldForAgentTypeTab(fields[i], elemPlanSetting));
+					fields[i].set(settings,getFieldForAgentTypeTab(fields[i], element));
 				
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
+			}catch (NullPointerException e) {
+				e.printStackTrace();
+				System.err.println("ERREUR le champ " + fields[i].getName() + " n'existe pas");
 			}
 		}
-		return planSet;
+		
+		return settings;
 	}
 
 	private String[] parseStringTab(String stringTab) {
 		return stringTab.replaceAll("\\]", "").replaceAll("\\[", "").split(",");
 	}
 
-	/**
-	 * Cette méthode est peut etre générique pour d'autre type comme integer (je testerais après)
-	 * @param field
-	 * @param elemPlanSetting
-	 * @return
-	 */
-	private Object getFieldForString(Field field, Element elemPlanSetting) {
-		return field.getType().cast(elemPlanSetting.getChild(field.getName()).getValue());
-//		return elemPlanSetting.getChild(field.getName()).getValue();
+	//Ici essayer de fusionner avec les autre methodes mais le cast en marche pas de string a integer
+	//Et le mathode valueOf est déclaré dans chaque type donc impossible de faire ça de manière generique
+	private String getFieldForString(Field field, Element elemPlanSetting) {
+		return elemPlanSetting.getChild(field.getName()).getValue();
+//		return field.getType().cast(elemPlanSetting.getChild(field.getName()).getValue());
+	}
+
+	private Boolean getFieldForBoolean(Field field, Element elemPlanSetting) {
+		try{
+			return Boolean.valueOf(elemPlanSetting.getChild(field.getName()).getValue());
+		}catch(NumberFormatException e){
+			return null;
+		}
 	}
 
 	private Integer getFieldForInteger(Field field, Element elemPlanSetting) {
@@ -167,7 +203,7 @@ public class FSMXmlReader extends FSMXmlParser{
 			return null;
 		}
 	}
-	
+
 	private Integer[] getFieldForIntegerTab(Field field, Element elemPlanSetting) {
 		String fieldValue = elemPlanSetting.getChild(field.getName()).getValue();
 		
@@ -183,7 +219,7 @@ public class FSMXmlReader extends FSMXmlParser{
 		}
 		return valuesInteger;
 	}
-	
+
 	private String[] getFieldForStringTab(Field field, Element elemPlanSetting) {
 		String fieldValue = elemPlanSetting.getChild(field.getName()).getValue();
 		
@@ -216,14 +252,6 @@ public class FSMXmlReader extends FSMXmlParser{
 			valuesInteger[i] = WarAgentType.valueOf(stringValues[i]);
 		}
 		return valuesInteger;
-	}
-
-	private Boolean getFieldForBoolean(Field field, Element elemPlanSetting) {
-		try{
-			return Boolean.valueOf(elemPlanSetting.getChild(field.getName()).getValue());
-		}catch(NumberFormatException e){
-			return false;
-		}
 	}
 
 	private ArrayList<String> getConditionsOutID(Element element) {
