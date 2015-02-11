@@ -39,6 +39,7 @@ public class GeometryTools {
     }
 
     public static List<Path2D.Double> dividePluralPathIntoSingularPaths(Path2D.Double path) {
+        long start = System.nanoTime();
         List<Path2D.Double> singularPaths = new ArrayList<Path2D.Double>();
 
         PathIterator it = path.getPathIterator(null);
@@ -72,6 +73,9 @@ public class GeometryTools {
         }
         if(currentPath != null)
             singularPaths.add(new Path2D.Double(currentPath));
+
+        long timePassed = System.nanoTime()-start;
+        System.out.println("dividePluralPathIntoSingularPaths = " + timePassed);
 
         return singularPaths;
     }

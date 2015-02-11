@@ -23,6 +23,7 @@ public abstract class PerceptsGetter {
 	private ControllableWarAgent _agent;
 	private WarGame game;
 
+    private Area thisTickPerceptionArea;
     private boolean perceptsAlreadyGetThisTick;
     private ArrayList<WarPercept> allPercepts;
 	private ArrayList<WarPercept> alliesPercepts;
@@ -85,7 +86,9 @@ public abstract class PerceptsGetter {
     }
 
     public Area getPerceptionArea() {
-        return removeWallsHidedAreas(new Area(getPerceptionAreaShape()));
+        if(thisTickPerceptionArea == null)
+            thisTickPerceptionArea = removeWallsHidedAreas(new Area(getPerceptionAreaShape()));
+        return thisTickPerceptionArea;
     }
 
     protected abstract Shape getPerceptionAreaShape();
@@ -129,6 +132,7 @@ public abstract class PerceptsGetter {
 	}
 
     public void setPerceptsOutdated() {
+        thisTickPerceptionArea = null;
         perceptsAlreadyGetThisTick = false;
         allPercepts.clear();
         alliesPercepts.clear();
@@ -137,17 +141,16 @@ public abstract class PerceptsGetter {
     }
 
     private Area removeWallsHidedAreas(Area initialPerceptionArea) {
-        Shape seenWallsShape = game.getMap().getMapForbidArea();
-
         Area finalPerceptionArea;
 
-        Area perceptionArea = new Area(initialPerceptionArea);
-        perceptionArea.subtract(new Area(seenWallsShape));
-        finalPerceptionArea = new Area(perceptionArea);
+        Area seenWallsArea = game.getMap().getMapForbidArea();
+        seenWallsArea.intersect(initialPerceptionArea);
 
-        double shadowPointsDistance = 60;
+        finalPerceptionArea = new Area(initialPerceptionArea);
+
+        double shadowPointsDistance = 100;
         Path2D.Double wallsContoursPath = new Path2D.Double();
-        wallsContoursPath.append(seenWallsShape, false);
+        wallsContoursPath.append(seenWallsArea, false);
         PathIterator it = wallsContoursPath.getPathIterator(null);
         double[] coords = new double[6];
         Path2D.Double currentShadow = new Path2D.Double();
@@ -160,14 +163,9 @@ public abstract class PerceptsGetter {
                     currentShadow.moveTo(coords[0], coords[1]);
                     break;
                 case PathIterator.SEG_LINETO:
-                    currentShadow.lineTo(coords[0], coords[1]);
-                    break;
                 case PathIterator.SEG_CUBICTO:
-                    currentShadow.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-                    break;
                 case PathIterator.SEG_QUADTO:
-                    currentShadow.quadTo(coords[0], coords[1], coords[2], coords[3]);
-                    break;
+                    currentShadow.lineTo(coords[0], coords[1]);
             }
             if (type == PathIterator.SEG_LINETO || type == PathIterator.SEG_CUBICTO || type == PathIterator.SEG_QUADTO) {
                 CoordCartesian srcShadowPoint = WarMathTools.addTwoPoints(srcPoint, new CoordPolar(shadowPointsDistance, getAgent().getPosition().getAngleToPoint(srcPoint)));
@@ -186,7 +184,7 @@ public abstract class PerceptsGetter {
         if(! finalPerceptionArea.isSingular()) {
             Path2D.Double realPerceptionPath = new Path2D.Double();
             realPerceptionPath.append(finalPerceptionArea, false);
-            List<Path2D.Double> singularVisiblePaths = GeometryTools.dividePluralPathIntoSingularPaths(realPerceptionPath);
+            List<Path2D.Double> singularVisiblePaths = dividePluralPathIntoSingularPathsLined(realPerceptionPath);
             for(Path2D.Double path : singularVisiblePaths) {
                 Area pathArea = new Area(path);
                 pathArea.intersect(new Area(getAgent().getActualForm()));
@@ -196,7 +194,42 @@ public abstract class PerceptsGetter {
             }
         }
 
+        finalPerceptionArea.subtract(seenWallsArea);
         return finalPerceptionArea;
     }
+
+    private List<Path2D.Double> dividePluralPathIntoSingularPathsLined(Path2D.Double path) {
+        List<Path2D.Double> singularPaths = new ArrayList<Path2D.Double>();
+
+        PathIterator it = path.getPathIterator(null);
+        double[] coords = new double[6];
+        Path2D.Double currentPath = null;
+        while (!it.isDone()) {
+            int type = it.currentSegment(coords);
+            switch (type) {
+                case PathIterator.SEG_MOVETO:
+                    if(currentPath != null)
+                        singularPaths.add(new Path2D.Double(currentPath));
+                    currentPath = new Path2D.Double();
+                    currentPath.moveTo(coords[0], coords[1]);
+                    break;
+                case PathIterator.SEG_LINETO:
+                case PathIterator.SEG_CUBICTO:
+                case PathIterator.SEG_QUADTO:
+                    currentPath.lineTo(coords[0], coords[1]);
+                case PathIterator.SEG_CLOSE:
+                    currentPath.closePath();
+                    break;
+                default:
+                    throw new IllegalStateException("unknown PathIterator segment type: " + type);
+            }
+            it.next();
+        }
+        if(currentPath != null)
+            singularPaths.add(new Path2D.Double(currentPath));
+
+        return singularPaths;
+    }
+
 
 }

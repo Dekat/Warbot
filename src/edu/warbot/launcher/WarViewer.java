@@ -18,6 +18,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 import edu.warbot.tools.GeometryTools;
+import edu.warbot.tools.WarStar;
 import turtlekit.viewer.TKDefaultViewer;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
@@ -345,7 +346,7 @@ public class WarViewer extends TKDefaultViewer {
 
     private Shape createExplosionShape(CoordCartesian pos, int radius) {
         int newRadius = radius * cellSize;
-        return createStar(10, new CoordCartesian(pos.getX() * cellSize, pos.getY() * cellSize).toPoint(), newRadius, newRadius / 2);
+        return createStar(10, new CoordCartesian(pos.getX() * cellSize, pos.getY() * cellSize), newRadius, newRadius / 2);
     }
 
     private void paintExplosionShape(Graphics2D g2d, Shape s) {
@@ -357,17 +358,8 @@ public class WarViewer extends TKDefaultViewer {
         g2d.fill(s);
     }
 
-    private Shape createStar(int nbArms, Point center, double radiusOuterCircle, double radiusInnerCircle) {
-        double angle = Math.PI / nbArms;
-        GeneralPath path = new GeneralPath();
-        for (int i = 0; i < 2 * nbArms; i++) {
-            double r = (i & 1) == 0 ? radiusOuterCircle : radiusInnerCircle;
-            Point2D.Double p = new Point2D.Double(center.x + Math.cos(i * angle) * r, center.y + Math.sin(i * angle) * r);
-            if (i == 0) path.moveTo(p.getX(), p.getY());
-            else path.lineTo(p.getX(), p.getY());
-        }
-        path.closePath();
-        return path;
+    private WarStar createStar(int nbArms, Point2D.Double center, double radiusOuterCircle, double radiusInnerCircle) {
+        return new WarStar(nbArms, center, radiusOuterCircle, radiusInnerCircle);
     }
 
     public void setMapExplorationEventsEnabled(boolean bool) {

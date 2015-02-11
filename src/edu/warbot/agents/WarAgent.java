@@ -91,14 +91,13 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 		return hitbox;
 	}
 
-    public Path2D getActualForm() {
-        Rectangle2D hitboxBounds = getHitbox().getBounds2D();
-        return GeometryTools.moveToAndRotateShape(getHitbox(), getX() - (hitboxBounds.getWidth()/2.), getY() - (hitboxBounds.getHeight()/2.), getHeading());
+    public Area getActualForm() {
+        return getActualFormAtPosition(getX(), getY());
     }
 
-    public Path2D getActualFormAtPosition(double x, double y) {
+    public Area getActualFormAtPosition(double x, double y) {
         Rectangle2D hitboxBounds = getHitbox().getBounds2D();
-        return GeometryTools.moveToAndRotateShape(getHitbox(), x, y, getHeading());
+        return new Area(GeometryTools.moveToAndRotateShape(getHitbox(), x - (hitboxBounds.getWidth()/2.), y - (hitboxBounds.getHeight()/2.), getHeading()));
     }
 
     public double getHitboxMinRadius() {
