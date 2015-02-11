@@ -1,28 +1,12 @@
 package edu.warbot.launcher;
 
-import java.awt.AWTEvent;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.RadialGradientPaint;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.AWTEventListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
+import java.awt.geom.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
@@ -39,15 +23,7 @@ import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
 import edu.warbot.agents.actions.MovableActions;
-import edu.warbot.agents.agents.WarBase;
-import edu.warbot.agents.agents.WarEngineer;
-import edu.warbot.agents.agents.WarExplorer;
-import edu.warbot.agents.agents.WarKamikaze;
-import edu.warbot.agents.agents.WarRocketLauncher;
-import edu.warbot.agents.agents.WarTurret;
 import edu.warbot.agents.percepts.WarPercept;
-import edu.warbot.agents.projectiles.WarRocket;
-import edu.warbot.agents.resources.WarFood;
 import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
 import edu.warbot.gui.MapExplorationListener;
@@ -56,221 +32,202 @@ import edu.warbot.gui.debug.DebugModeToolBar;
 import edu.warbot.gui.toolbar.WarToolBar;
 import edu.warbot.launcher.WarMain.Shared;
 import edu.warbot.tools.CoordCartesian;
-import edu.warbot.tools.CoordPolar;
-import edu.warbot.tools.WarMathTools;
 
 @SuppressWarnings("serial")
 public class WarViewer extends TKDefaultViewer {
 
-	// Définit le niveau de zoom initial
-	public static final int CELL_SIZE = 1;
-	
-	private static final int _healthBarDefaultSize = 10;
-	private static final int _spaceBetweenAgentAndHealthBar = 2;
-	
-	private WarToolBar wtb;
-	private DebugModeToolBar _autorModeToolBar;
+    // Définit le niveau de zoom initial
+    public static final int CELL_SIZE = 1;
 
-	private MouseListener _mapExploremMouseListener;
-	
-	//private Graphics _mapDisplay;
-	private ArrayList<Shape> _explosions;
-	
-	private ArrayList<Integer> _agentsIDsSeenBySelectedAgent;
-	
-	private JTabbedPane tabs;
+    private static final int _healthBarDefaultSize = 10;
+    private static final int _spaceBetweenAgentAndHealthBar = 2;
 
-	private SwingView swingView;
-	private JScrollPane scrollPane;
-	
-	private JPanel gdxContainer;
-	
-	private int width, height;
-	
-	private boolean loadGdx;
-	
-	private WarGame game;
+    private WarToolBar wtb;
+    private DebugModeToolBar _autorModeToolBar;
 
-	public WarViewer() {
-		super();
-		this.game = Shared.getGame();
-		wtb = new WarToolBar(this);
-		_autorModeToolBar = new DebugModeToolBar(this);
-		_explosions = new ArrayList<>();
-		_agentsIDsSeenBySelectedAgent = new ArrayList<>();
-		
-		loadGdx = game.getSettings().isEnabledEnhancedGraphism();
-	}
+    private MouseListener _mapExploremMouseListener;
 
-	@Override
-	public void setupFrame(final JFrame frame) {
-		super.setupFrame(frame);
-		width = getWidth();
-		height = getHeight();
-		wtb.init(frame);
-		_autorModeToolBar.init(frame);
-		setCellSize(CELL_SIZE);
-		((JScrollPane) getDisplayPane()).getHorizontalScrollBar().setUnitIncrement(10);
-		((JScrollPane) getDisplayPane()).getVerticalScrollBar().setUnitIncrement(10);
-		swingView = new SwingView(game);
-		swingView.setSize(new Dimension(width, height));
-		
-		gdxContainer = new JPanel();
-		
-		frame.remove(getDisplayPane());
-		
-		scrollPane = new JScrollPane(swingView);
-		scrollPane.addMouseWheelListener(new MouseWheelListener() {
-			
-			@Override
-			public void mouseWheelMoved(MouseWheelEvent e) {
-				updateSize(e.getPoint(),e.getWheelRotation());
-			}
-		});
+    //private Graphics _mapDisplay;
+    private ArrayList<Shape> _explosions;
 
-		tabs = new JTabbedPane();
-		tabs.addTab("Vue standard", scrollPane);	
-		tabs.addTab("2D Isométrique", gdxContainer);
-		gdxContainer.setSize(1024, 768);
-		
-		frame.add(tabs, BorderLayout.CENTER);
-				
-		_mapExploremMouseListener = new MapExplorationListener(this);
-		setMapExplorationEventsEnabled(true);
+    private ArrayList<Integer> _agentsIDsSeenBySelectedAgent;
 
-		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-		
-		if (loadGdx) {
-			EventQueue.invokeLater(new Runnable() {
-				
-				@Override
-				public void run() {
-					new WarViewerEvolvedLauncher(gdxContainer, gdxContainer.getSize().width, gdxContainer.getSize().height, game);
-				}
-			});
-		} else {
-			showNoGdxLoaded();
-		}
-	}
-	
-	private void showNoGdxLoaded() {
-		JLabel text = new JLabel("Vue isométrique non chargée");
-		gdxContainer.add(text);
-	}
+    private JTabbedPane tabs;
 
-	private void updateSize(Point point, int wheelRotation) {
-		final int i = point.x / cellSize;
-		int offX = (int) i * wheelRotation;
-		int offY = (int) (point.y / cellSize) * wheelRotation;
-		cellSize -= wheelRotation;
-		if (cellSize < 1)
-			cellSize = 1;
-		if (cellSize > 1) {
-			swingView.setLocation(swingView.getLocation().x + offX,
-					scrollPane.getLocation().y + offY);
-		}
-		else{
-			swingView.setLocation(0, 0);
-		}
-		swingView.setPreferredSize(new Dimension(getWidth() * cellSize, getHeight() * cellSize));
-		swingView.getParent().doLayout();
-	}
-	
-	@Override
-	protected void observe() {
-		if (isSynchronousPainting()) {
-			try {
-				SwingUtilities.invokeAndWait(new Runnable() {
-					@Override
-					public void run() {
-						swingView.repaint();
-					}
-				});
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		} else {
-			swingView.repaint();
-		}
-	}
+    private SwingView swingView;
+    private JScrollPane scrollPane;
 
-	@Override
-	protected void activate() {
-		super.activate();
-		setSynchronousPainting(false);
-	}
+    private JPanel gdxContainer;
 
-	@Override
-	protected void render(Graphics g) {
-		// Avec observe redefini, render n est plus appelee. L'affichage est
-		// effectue dans SwingView.paintComponent
-	}
-	
-	private void paintTeam(Graphics g, Team team) {
+    private int width, height;
+
+    private boolean loadGdx;
+
+    private WarGame game;
+
+    public WarViewer() {
+        super();
+        this.game = Shared.getGame();
+        wtb = new WarToolBar(this);
+        _autorModeToolBar = new DebugModeToolBar(this);
+        _explosions = new ArrayList<>();
+        _agentsIDsSeenBySelectedAgent = new ArrayList<>();
+
+        loadGdx = game.getSettings().isEnabledEnhancedGraphism();
+    }
+
+    @Override
+    public void setupFrame(final JFrame frame) {
+        super.setupFrame(frame);
+        width = getWidth();
+        height = getHeight();
+        wtb.init(frame);
+        _autorModeToolBar.init(frame);
+        setCellSize(CELL_SIZE);
+        ((JScrollPane) getDisplayPane()).getHorizontalScrollBar().setUnitIncrement(10);
+        ((JScrollPane) getDisplayPane()).getVerticalScrollBar().setUnitIncrement(10);
+        swingView = new SwingView(game);
+        swingView.setSize(new Dimension(width, height));
+
+        gdxContainer = new JPanel();
+
+        frame.remove(getDisplayPane());
+
+        scrollPane = new JScrollPane(swingView);
+        scrollPane.addMouseWheelListener(new MouseWheelListener() {
+
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                updateSize(e.getPoint(),e.getWheelRotation());
+            }
+        });
+
+        tabs = new JTabbedPane();
+        tabs.addTab("Vue standard", scrollPane);
+        tabs.addTab("2D Isométrique", gdxContainer);
+        gdxContainer.setSize(1024, 768);
+
+        frame.add(tabs, BorderLayout.CENTER);
+
+        _mapExploremMouseListener = new MapExplorationListener(this);
+        setMapExplorationEventsEnabled(true);
+
+        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+
+        if (loadGdx) {
+            EventQueue.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    new WarViewerEvolvedLauncher(gdxContainer, gdxContainer.getSize().width, gdxContainer.getSize().height, game);
+                }
+            });
+        } else {
+            showNoGdxLoaded();
+        }
+    }
+
+    private void showNoGdxLoaded() {
+        JLabel text = new JLabel("Vue isométrique non chargée");
+        gdxContainer.add(text);
+    }
+
+    private void updateSize(Point point, int wheelRotation) {
+        final int i = point.x / cellSize;
+        int offX = (int) i * wheelRotation;
+        int offY = (int) (point.y / cellSize) * wheelRotation;
+        cellSize -= wheelRotation;
+        if (cellSize < 1)
+            cellSize = 1;
+        if (cellSize > 1) {
+            swingView.setLocation(swingView.getLocation().x + offX,
+                    scrollPane.getLocation().y + offY);
+        }
+        else{
+            swingView.setLocation(0, 0);
+        }
+        swingView.setPreferredSize(new Dimension(getWidth() * cellSize, getHeight() * cellSize));
+        swingView.getParent().doLayout();
+    }
+
+    @Override
+    protected void observe() {
+        if (isSynchronousPainting()) {
+            try {
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    @Override
+                    public void run() {
+                        swingView.repaint();
+                    }
+                });
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        } else {
+            swingView.repaint();
+        }
+    }
+
+    @Override
+    protected void activate() {
+        super.activate();
+        setSynchronousPainting(false);
+    }
+
+    @Override
+    protected void render(Graphics g) {
+        // Avec observe redefini, render n est plus appelee. L'affichage est
+        // effectue dans SwingView.paintComponent
+    }
+
+    private void paintTeam(Graphics g, Team team) {
         Graphics2D g2d = (Graphics2D) g;
 
-		Color backgroundColor = team.getColor();
-		Color borderColor = backgroundColor.darker();
-		Color perceptsColor = new Color(backgroundColor.getRed(), backgroundColor.getGreen(),
-				backgroundColor.getBlue(), 100);
-		boolean isCurrentAgentTheSelectedOne = false;
-		boolean haveOneColorChanged = false;
-		
-		for(WarAgent agent : team.getAllAgents()) {
-			// Si les couleurs ont été modifiées, on restaure les couleurs
-			if (haveOneColorChanged) {
-				backgroundColor = team.getColor();
-				borderColor = backgroundColor.darker();
-				isCurrentAgentTheSelectedOne = false;
-				haveOneColorChanged = false;
-			}
-			
-			if (_autorModeToolBar.isVisible()) {
-				if (_autorModeToolBar.getSelectedAgent() != null) {
-					if (agent.getID() == _autorModeToolBar.getSelectedAgent().getID()) {
-						borderColor = Color.GRAY;
-						backgroundColor = Color.WHITE;
-						isCurrentAgentTheSelectedOne = true;
-						haveOneColorChanged = true;
-					}
-				}
-			}
-			
-			// Si l'agent courant est vu par l'agent sélectionné
-			if (_agentsIDsSeenBySelectedAgent.contains(agent.getID())) {
-				borderColor = Color.YELLOW;
-				haveOneColorChanged = true;
-			}
+        Color backgroundColor = team.getColor();
+        Color borderColor = backgroundColor.darker();
+        Color perceptsColor = new Color(backgroundColor.getRed(), backgroundColor.getGreen(),
+                backgroundColor.getBlue(), 100);
+        boolean isCurrentAgentTheSelectedOne = false;
+        boolean haveOneColorChanged = false;
 
-			if (agent instanceof ControllableWarAgent) {
-				if (wtb.isShowHealthBars())
-					paintHealthBar(g2d, (ControllableWarAgent) agent);
-				if (wtb.isShowInfos())
-					paintInfos(g2d, (ControllableWarAgent) agent, backgroundColor);
-				if(wtb.isShowPercepts())
-					paintPerceptionArea(g2d, (ControllableWarAgent) agent, perceptsColor);
-				if (wtb.isShowDebugMessages() && !isCurrentAgentTheSelectedOne)
-					paintDebugMessage(g2d, (ControllableWarAgent) agent);
-			}
-			
-//			if (agent instanceof WarBase)
-//				paintWarBase(g, (WarBase) agent, borderColor, backgroundColor);
-//			else if (agent instanceof WarExplorer)
-//				paintWarExplorer(g, (WarExplorer) agent, borderColor, backgroundColor);
-//			else if (agent instanceof WarRocket)
-//				paintWarRocket(g, (WarRocket) agent, borderColor, backgroundColor);
-//			else if (agent instanceof WarRocketLauncher)
-//				paintWarRocketLauncher(g, (WarRocketLauncher) agent, borderColor, backgroundColor);
-//			else if (agent instanceof WarFood)
-//				paintWarFood(g, (WarFood) agent, borderColor, backgroundColor);
-//			else if (agent instanceof WarKamikaze)
-//				paintWarKamikaze(g, (WarKamikaze) agent, borderColor, backgroundColor);
-//			else if (agent instanceof WarEngineer)
-//				paintWarEngineer(g, (WarEngineer) agent, borderColor, backgroundColor);
-//			else if (agent instanceof WarTurret)
-//				paintWarTurret(g, (WarTurret) agent, borderColor, backgroundColor);
+        for(WarAgent agent : team.getAllAgents()) {
+            // Si les couleurs ont été modifiées, on restaure les couleurs
+            if (haveOneColorChanged) {
+                backgroundColor = team.getColor();
+                borderColor = backgroundColor.darker();
+                isCurrentAgentTheSelectedOne = false;
+                haveOneColorChanged = false;
+            }
+
+            if (_autorModeToolBar.isVisible()) {
+                if (_autorModeToolBar.getSelectedAgent() != null) {
+                    if (agent.getID() == _autorModeToolBar.getSelectedAgent().getID()) {
+                        borderColor = Color.GRAY;
+                        backgroundColor = Color.WHITE;
+                        isCurrentAgentTheSelectedOne = true;
+                        haveOneColorChanged = true;
+                    }
+                }
+            }
+
+            // Si l'agent courant est vu par l'agent sélectionné
+            if (_agentsIDsSeenBySelectedAgent.contains(agent.getID())) {
+                borderColor = Color.YELLOW;
+                haveOneColorChanged = true;
+            }
+
+            if (agent instanceof ControllableWarAgent) {
+                if (wtb.isShowHealthBars())
+                    paintHealthBar(g2d, (ControllableWarAgent) agent);
+                if (wtb.isShowInfos())
+                    paintInfos(g2d, (ControllableWarAgent) agent, backgroundColor);
+                if(wtb.isShowPercepts())
+                    paintPerceptionArea(g2d, (ControllableWarAgent) agent, perceptsColor);
+                if (wtb.isShowDebugMessages() && !isCurrentAgentTheSelectedOne)
+                    paintDebugMessage(g2d, (ControllableWarAgent) agent);
+            }
 
             Shape agentShape = GeometryTools.resize(agent.getActualForm(), cellSize);
             g2d.setColor(backgroundColor);
@@ -279,390 +236,215 @@ public class WarViewer extends TKDefaultViewer {
             g2d.draw(agentShape);
 
             if (agent instanceof MovableActions) {
-				paintHeading(g2d, agent, borderColor);
-			}
-		}
-		
-		if (_autorModeToolBar.getSelectedAgent() != null) {
-			if (_autorModeToolBar.getSelectedAgent() instanceof ControllableWarAgent)
-				paintDebugMessage(g2d, (ControllableWarAgent) _autorModeToolBar.getSelectedAgent());
-		}
-		
-		// Affichage des agents mourants
-		for (WarAgent a : team.getDyingAgents()) {
-			if (a instanceof WarProjectile)
-				_explosions.add(createExplosionShape(a.getPosition(), (int) (((WarProjectile)a).getExplosionRadius() - Team.MAX_DYING_STEP + a.getDyingStep())));				
-			else
-				_explosions.add(createExplosionShape(a.getPosition(), (int) ((a.getDyingStep() + a.getHitboxMinRadius()) * 2)));
-		}
-	}
+                paintHeading(g2d, agent, borderColor);
+            }
+        }
 
-	private void paintWarBase(Graphics g, WarBase agent, Color borderColor, Color backgroundColor) {
-		paintSquareOfAgent(g, agent, borderColor, backgroundColor);
-	}
+        if (_autorModeToolBar.getSelectedAgent() != null) {
+            if (_autorModeToolBar.getSelectedAgent() instanceof ControllableWarAgent)
+                paintDebugMessage(g2d, (ControllableWarAgent) _autorModeToolBar.getSelectedAgent());
+        }
 
-	private void paintWarRocketLauncher(Graphics g, WarRocketLauncher agent, Color borderColor, Color backgroundColor) {
-		paintOrientedSquareOfAgent(g, agent, borderColor, backgroundColor);
-	}
+        // Affichage des agents mourants
+        for (WarAgent a : team.getDyingAgents()) {
+            if (a instanceof WarProjectile)
+                _explosions.add(createExplosionShape(a.getPosition(), (int) (((WarProjectile)a).getExplosionRadius() - Team.MAX_DYING_STEP + a.getDyingStep())));
+            else
+                _explosions.add(createExplosionShape(a.getPosition(), (int) ((a.getDyingStep() + a.getHitboxMinRadius()) * 2)));
+        }
+    }
 
-	private void paintWarExplorer(Graphics g, WarExplorer agent, Color borderColor, Color backgroundColor) {
-		paintCircleOfAgent(g, agent, borderColor, backgroundColor);
-	}
+    private void paintHeading(Graphics g, WarAgent agent, Color color) {
+        g.setColor(color);
+        double xPos = agent.getX() * cellSize;
+        double yPos = agent.getY() * cellSize;
+        double hitboxRadius = agent.getHitboxMinRadius() * cellSize;
+        g.drawLine((int) xPos, (int) yPos,
+                (int) (xPos + hitboxRadius * Math.cos(Math.toRadians(agent.getHeading()))),
+                (int) (yPos + hitboxRadius * Math.sin(Math.toRadians(agent.getHeading()))));
+    }
 
-	private void paintWarFood(Graphics g, WarFood agent, Color borderColor, Color backgroundColor) {
-		paintSquareOfAgent(g, agent, borderColor, backgroundColor);
-	}
+    private void paintHealthBar(Graphics g, ControllableWarAgent agent) {
+        Color previousColor = g.getColor();
+        double xPos = agent.getX() * cellSize;
+        double yPos = agent.getY() * cellSize;
+        double hitboxRadius = agent.getHitboxMinRadius() * cellSize;
+        int healthBarHeight = 3 * cellSize;
+        double healthBarWidth = _healthBarDefaultSize * cellSize;
+        int healthWidth = (int) (healthBarWidth * (Double.valueOf(agent.getHealth()) / Double.valueOf(agent.getMaxHealth())));
+        double xBarPos = xPos - (healthBarWidth / 2);
+        double yBarPos = yPos - hitboxRadius - healthBarHeight - (_spaceBetweenAgentAndHealthBar * cellSize);
 
-	private void paintWarRocket(Graphics g, WarRocket agent, Color borderColor, Color backgroundColor) {
-		paintSquareOfAgent(g, agent, borderColor, backgroundColor);
-	}
+        if (agent.getHealth() <= (agent.getMaxHealth() * 0.25))
+            g.setColor(Color.RED);
+        else
+            g.setColor(Color.ORANGE);
+        g.fillRect((int) xBarPos, (int) yBarPos, (int) healthBarWidth, healthBarHeight);
 
-	private void paintWarKamikaze(Graphics g, WarKamikaze agent, Color borderColor, Color backgroundColor) {
-		paintOrientedDiamondOfAgent(g, agent, borderColor, backgroundColor);
-	}
+        g.setColor(Color.GREEN);
+        g.fillRect((int) xBarPos, (int) yBarPos, healthWidth, healthBarHeight);
 
-	private void paintWarEngineer(Graphics g, WarEngineer agent, Color borderColor, Color backgroundColor) {
-		paintOrientedTriangleOfAgent(g, agent, borderColor, backgroundColor);
-	}
+        g.setColor(Color.DARK_GRAY);
+        g.drawRect((int) xBarPos, (int) yBarPos, (int) healthBarWidth, healthBarHeight);
 
-	private void paintWarTurret(Graphics g, WarTurret agent, Color borderColor, Color backgroundColor) {
-		paintOrientedCustomTriangleOfAgent(g, agent, borderColor, backgroundColor);
-	}
+        g.setColor(previousColor);
+    }
 
-	private void paintHeading(Graphics g, WarAgent agent, Color color) {
-		g.setColor(color);
-		double xPos = agent.getX() * cellSize;
-		double yPos = agent.getY() * cellSize;
-		double hitboxRadius = agent.getHitboxMinRadius() * cellSize;
-		g.drawLine((int) xPos, (int) yPos,
-				(int) (xPos + hitboxRadius * Math.cos(Math.toRadians(agent.getHeading()))),
-				(int) (yPos + hitboxRadius * Math.sin(Math.toRadians(agent.getHeading()))));
-	}
+    private void paintDebugMessage(Graphics g, ControllableWarAgent agent) {
+        if(agent.getDebugString() != ""){
+            String msg = agent.getDebugString();
+            Color fontColor = agent.getDebugStringColor();
 
-	private void paintHealthBar(Graphics g, ControllableWarAgent agent) {
-		Color previousColor = g.getColor();
-		double xPos = agent.getX() * cellSize;
-		double yPos = agent.getY() * cellSize;
-		double hitboxRadius = agent.getHitboxMinRadius() * cellSize;
-		int healthBarHeight = 3 * cellSize;
-		double healthBarWidth = _healthBarDefaultSize * cellSize;
-		int healthWidth = (int) (healthBarWidth * (Double.valueOf(agent.getHealth()) / Double.valueOf(agent.getMaxHealth())));
-		double xBarPos = xPos - (healthBarWidth / 2);
-		double yBarPos = yPos - hitboxRadius - healthBarHeight - (_spaceBetweenAgentAndHealthBar * cellSize);
+            int distanceBubbleFromAgent = 20;
+            int padding = 2;
 
-		if (agent.getHealth() <= (agent.getMaxHealth() * 0.25))
-			g.setColor(Color.RED);
-		else
-			g.setColor(Color.ORANGE);
-		g.fillRect((int) xBarPos, (int) yBarPos, (int) healthBarWidth, healthBarHeight);
-		
-		g.setColor(Color.GREEN);
-		g.fillRect((int) xBarPos, (int) yBarPos, healthWidth, healthBarHeight);
+            Font font = new Font("Arial", Font.PLAIN, 10);
+            FontMetrics metrics = g.getFontMetrics(font);
+            Dimension speechBubbleSize = new Dimension(metrics.stringWidth(msg) + (2 * padding), metrics.getHeight() + (2 * padding));
 
-		g.setColor(Color.DARK_GRAY);
-		g.drawRect((int) xBarPos, (int) yBarPos, (int) healthBarWidth, healthBarHeight);
+            Color backgroundColor;
+            boolean fontIsDark = ((fontColor.getRed() + fontColor.getGreen() + fontColor.getBlue()) / 3) < 127;
+            if (fontIsDark)
+                backgroundColor = Color.WHITE;
+            else
+                backgroundColor = Color.BLACK;
 
-		g.setColor(previousColor);
-	}
+            int posX = (int) ((agent.getX()) * cellSize - (5 / cellSize) - speechBubbleSize.width - distanceBubbleFromAgent);
+            int posY = (int) ((agent.getY()) * cellSize - (5 / cellSize) - speechBubbleSize.height - distanceBubbleFromAgent);
+            g.setColor(Color.BLACK);
+            g.drawLine(posX, posY, ((int) agent.getX() * cellSize), ((int) agent.getY() * cellSize));
+            g.setColor(backgroundColor);
+            g.fillRect(posX, posY, speechBubbleSize.width, speechBubbleSize.height);
+            g.setColor(Color.BLACK);
+            g.drawRect(posX, posY, speechBubbleSize.width, speechBubbleSize.height);
+            g.setColor(fontColor);
+            g.setFont(font);
+            g.drawString(msg, posX + padding, posY + speechBubbleSize.height - padding);
+        }
+    }
 
-	private void paintDebugMessage(Graphics g, ControllableWarAgent agent) {
-		if(agent.getDebugString() != ""){
-			String msg = agent.getDebugString();
-			Color fontColor = agent.getDebugStringColor();
-			
-			int distanceBubbleFromAgent = 20;
-			int padding = 2;
-			
-			Font font = new Font("Arial", Font.PLAIN, 10);
-			FontMetrics metrics = g.getFontMetrics(font);
-			Dimension speechBubbleSize = new Dimension(metrics.stringWidth(msg) + (2 * padding), metrics.getHeight() + (2 * padding));
-			
-			Color backgroundColor;
-			boolean fontIsDark = ((fontColor.getRed() + fontColor.getGreen() + fontColor.getBlue()) / 3) < 127;
-			if (fontIsDark)
-				backgroundColor = Color.WHITE;
-			else
-				backgroundColor = Color.BLACK;
-			
-			int posX = (int) ((agent.getX()) * cellSize - (5 / cellSize) - speechBubbleSize.width - distanceBubbleFromAgent);
-			int posY = (int) ((agent.getY()) * cellSize - (5 / cellSize) - speechBubbleSize.height - distanceBubbleFromAgent);
-			g.setColor(Color.BLACK);
-			g.drawLine(posX, posY, ((int) agent.getX() * cellSize), ((int) agent.getY() * cellSize));
-			g.setColor(backgroundColor);
-			g.fillRect(posX, posY, speechBubbleSize.width, speechBubbleSize.height);
-			g.setColor(Color.BLACK);
-			g.drawRect(posX, posY, speechBubbleSize.width, speechBubbleSize.height);
-			g.setColor(fontColor);
-			g.setFont(font);
-			g.drawString(msg, posX + padding, posY + speechBubbleSize.height - padding);
-		}
-	}
+    public DebugModeToolBar getAutorModeToolBar() {
+        return _autorModeToolBar;
+    }
 
-	public DebugModeToolBar getAutorModeToolBar() {
-		return _autorModeToolBar;
-	}
+    private void paintInfos(Graphics g, ControllableWarAgent agent, Color color) {
+        g.setColor(color);
+        double xPos = agent.getX() * cellSize;
+        double yPos = agent.getY() * cellSize;
+        g.drawString(agent.getClass().getSimpleName() + " " + agent.getID()
+                        + ": " + agent.getTeam().getName() + ", " + agent.getHealth()
+                        + " HP, heading: " + (int) agent.getHeading(),
+                (int) (xPos + (agent.getHitboxMinRadius() * cellSize)),
+                (int) yPos);
+    }
 
-	private void paintOrientedSquareOfAgent(Graphics g, WarAgent agent, Color borderColor, Color backgroundColor) {
-		CoordCartesian agentPos = new CoordCartesian(agent.getX() * cellSize, agent.getY() * cellSize);
-		double hitboxRadius = agent.getHitboxMaxRadius() * cellSize;
-		Polygon square = new Polygon();
+    private void paintPerceptionArea(Graphics2D g, ControllableWarAgent agent, Color color) {
+        g.setColor(color);
+        g.draw(GeometryTools.resize(agent.getPerceptionArea(), cellSize));
+    }
 
-		double squaredHitboxRadius = Math.pow(hitboxRadius, 2);
-		double halfDiagonaleSize = Math.sqrt(squaredHitboxRadius * 2);
+    private Shape createExplosionShape(CoordCartesian pos, int radius) {
+        int newRadius = radius * cellSize;
+        return createStar(10, new CoordCartesian(pos.getX() * cellSize, pos.getY() * cellSize).toPoint(), newRadius, newRadius / 2);
+    }
 
-		CoordCartesian frontLeftPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(halfDiagonaleSize, agent.getHeading() + 45));
-		square.addPoint((int) frontLeftPos.getX(), (int) frontLeftPos.getY());
+    private void paintExplosionShape(Graphics2D g2d, Shape s) {
+        RadialGradientPaint color = new RadialGradientPaint(new CoordCartesian(s.getBounds2D().getCenterX(), s.getBounds2D().getCenterY()),
+                (float) s.getBounds2D().getWidth(),
+                new float[] {0.0f, 0.5f},
+                new Color[] {Color.RED, Color.YELLOW});
+        g2d.setPaint(color);
+        g2d.fill(s);
+    }
 
-		CoordCartesian frontRightPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(halfDiagonaleSize, agent.getHeading() - 45));
-		square.addPoint((int) frontRightPos.getX(), (int) frontRightPos.getY());
+    private Shape createStar(int nbArms, Point center, double radiusOuterCircle, double radiusInnerCircle) {
+        double angle = Math.PI / nbArms;
+        GeneralPath path = new GeneralPath();
+        for (int i = 0; i < 2 * nbArms; i++) {
+            double r = (i & 1) == 0 ? radiusOuterCircle : radiusInnerCircle;
+            Point2D.Double p = new Point2D.Double(center.x + Math.cos(i * angle) * r, center.y + Math.sin(i * angle) * r);
+            if (i == 0) path.moveTo(p.getX(), p.getY());
+            else path.lineTo(p.getX(), p.getY());
+        }
+        path.closePath();
+        return path;
+    }
 
-		CoordCartesian backRightPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(halfDiagonaleSize, agent.getHeading() - 135));
-		square.addPoint((int) backRightPos.getX(), (int) backRightPos.getY());
+    public void setMapExplorationEventsEnabled(boolean bool) {
+        if (bool) {
+            Toolkit.getDefaultToolkit().addAWTEventListener((AWTEventListener) _mapExploremMouseListener, AWTEvent.KEY_EVENT_MASK);
+            swingView.addMouseListener(_mapExploremMouseListener);
+            swingView.addMouseMotionListener((MouseMotionListener) _mapExploremMouseListener);
+        } else {
+            Toolkit.getDefaultToolkit().removeAWTEventListener((AWTEventListener) _mapExploremMouseListener);
+            swingView.removeMouseListener(_mapExploremMouseListener);
+            swingView.removeMouseMotionListener((MouseMotionListener) _mapExploremMouseListener);
+        }
+    }
 
-		CoordCartesian backtLeftPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(halfDiagonaleSize, agent.getHeading() + 135));
-		square.addPoint((int) backtLeftPos.getX(), (int) backtLeftPos.getY());
+    public JPanel getSwingView() {
+        return swingView;
+    }
 
-		g.setColor(backgroundColor);
-		g.fillPolygon(square);
-		g.setColor(borderColor);
-		g.drawPolygon(square);
-	}
+    public JScrollPane getScrollPane() {
+        return scrollPane;
+    }
 
-	private void paintSquareOfAgent(Graphics g, WarAgent agent, Color borderColor, Color backgroundColor) {
-		double xPos = agent.getX() * cellSize;
-		double yPos = agent.getY() * cellSize;
-		double hitboxRadius = agent.getHitboxMaxRadius() * cellSize;
-		Polygon square = new Polygon();
-		square.addPoint((int) (xPos - hitboxRadius),
-				(int) (yPos - hitboxRadius));
-		square.addPoint((int) (xPos - hitboxRadius),
-				(int) (yPos + hitboxRadius));
-		square.addPoint((int) (xPos + hitboxRadius),
-				(int) (yPos + hitboxRadius));
-		square.addPoint((int) (xPos + hitboxRadius),
-				(int) (yPos - hitboxRadius));
+    class SwingView extends JPanel {
 
-		g.setColor(backgroundColor);
-		g.fillPolygon(square);
-		g.setColor(borderColor);
-		g.drawPolygon(square);
-	}
+        private WarGame game;
 
-	private void paintCircleOfAgent(Graphics g, WarAgent agent, Color borderColor, Color backgroundColor) {
-		double xPos = agent.getX() * cellSize;
-		double yPos = agent.getY() * cellSize;
-		double hitboxRadius = agent.getHitboxMaxRadius() * cellSize;
+        public SwingView(WarGame game) {
+            this.game = game;
+        }
 
-		int xCenter = (int) (xPos - hitboxRadius);
-		int yCenter = (int) (yPos - hitboxRadius);
-		int hitboxDiameter = (int) (hitboxRadius * 2);
-
-		g.setColor(backgroundColor);
-		g.fillOval(xCenter, yCenter, hitboxDiameter, hitboxDiameter);
-		g.setColor(borderColor);
-		g.drawOval(xCenter, yCenter, hitboxDiameter, hitboxDiameter);
-	}
-
-	private void paintOrientedDiamondOfAgent(Graphics g, WarAgent agent, Color borderColor, Color backgroundColor) {
-		CoordCartesian agentPos = new CoordCartesian(agent.getX() * cellSize, agent.getY() * cellSize);
-		double hitboxRadius = agent.getHitboxMaxRadius() * cellSize;
-
-		Polygon diamond = new Polygon();
-
-		CoordCartesian frontPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading()));
-		diamond.addPoint((int) frontPos.getX(), (int) frontPos.getY());
-
-		CoordCartesian leftPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading() + 90));
-		diamond.addPoint((int) leftPos.getX(), (int) leftPos.getY());
-
-		CoordCartesian backPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading() + 180));
-		diamond.addPoint((int) backPos.getX(), (int) backPos.getY());
-
-		CoordCartesian rightPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading() - 90));
-		diamond.addPoint((int) rightPos.getX(), (int) rightPos.getY());
-
-		g.setColor(backgroundColor);
-		g.fillPolygon(diamond);
-		g.setColor(borderColor);
-		g.drawPolygon(diamond);
-	}
-
-	private void paintOrientedTriangleOfAgent(Graphics g, WarAgent agent, Color borderColor, Color backgroundColor) {
-		CoordCartesian agentPos = new CoordCartesian(agent.getX() * cellSize, agent.getY() * cellSize);
-		double hitboxRadius = agent.getHitboxMaxRadius() * cellSize;
-		Polygon triangle = new Polygon();
-
-		CoordCartesian frontPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading()));
-		triangle.addPoint((int) frontPos.getX(), (int) frontPos.getY());
-
-		CoordCartesian backLeftPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading() + 130));
-		triangle.addPoint((int) backLeftPos.getX(), (int) backLeftPos.getY());
-
-		CoordCartesian backRightPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading() - 130));
-		triangle.addPoint((int) backRightPos.getX(), (int) backRightPos.getY());
-
-		g.setColor(backgroundColor);
-		g.fillPolygon(triangle);
-		g.setColor(borderColor);
-		g.drawPolygon(triangle);
-	}
-
-	private void paintOrientedCustomTriangleOfAgent(Graphics g, WarAgent agent, Color borderColor, Color backgroundColor) {
-		CoordCartesian agentPos = new CoordCartesian(agent.getX() * cellSize, agent.getY() * cellSize);
-		double hitboxRadius = agent.getHitboxMaxRadius() * cellSize;
-		Polygon triangle = new Polygon();
-
-		CoordCartesian frontPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading()));
-		triangle.addPoint((int) frontPos.getX(), (int) frontPos.getY());
-
-		CoordCartesian backLeftPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading() + 130));
-		triangle.addPoint((int) backLeftPos.getX(), (int) backLeftPos.getY());
-
-		triangle.addPoint((int) agentPos.getX(), (int) agentPos.getY());
-
-		CoordCartesian backRightPos = WarMathTools.addTwoPoints(agentPos, new CoordPolar(hitboxRadius, agent.getHeading() - 130));
-		triangle.addPoint((int) backRightPos.getX(), (int) backRightPos.getY());
-
-		g.setColor(backgroundColor);
-		g.fillPolygon(triangle);
-		g.setColor(borderColor);
-		g.drawPolygon(triangle);
-	}
-
-	private void paintInfos(Graphics g, ControllableWarAgent agent, Color color) {
-		g.setColor(color);
-		double xPos = agent.getX() * cellSize;
-		double yPos = agent.getY() * cellSize;
-		g.drawString(agent.getClass().getSimpleName() + " " + agent.getID()
-				+ ": " + agent.getTeam().getName() + ", " + agent.getHealth()
-				+ " HP, heading: " + (int) agent.getHeading(),
-				(int) (xPos + (agent.getHitboxMinRadius() * cellSize)),
-				(int) yPos);
-	}
-
-	private void paintPerceptionArea(Graphics2D g, ControllableWarAgent agent, Color color) {
-		g.setColor(color);
-//		double radius = agent.getDistanceOfView() * cellSize;
-//		double xPos = agent.getX() * cellSize;
-//		double yPos = agent.getY() * cellSize;
-//		if (game.getSettings().getPerceptsGetterClass().equals(InRadiusPerceptsGetter.class)) {
-//			g.drawOval((int) (xPos - radius),
-//					(int) (yPos - radius),
-//					(int) (2 * radius),
-//					(int) (2 * radius));
-//		} else if (game.getSettings().getPerceptsGetterClass().equals(InConePerceptsGetter.class)) {
-//			((Graphics2D) g).draw(new Arc2D.Double(
-//					xPos - radius, yPos - radius,
-//					2. * radius, 2. * radius,
-//					360. - agent.getHeading() - (agent.getAngleOfView() / 2.),
-//					agent.getAngleOfView(),
-//					Arc2D.PIE));
-//		}
-        g.draw(GeometryTools.resize(agent.getPerceptionAreaShape(), cellSize));
-	}
-
-	private Shape createExplosionShape(CoordCartesian pos, int radius) {
-		int newRadius = radius * cellSize;
-	    return createStar(10, new CoordCartesian(pos.getX() * cellSize, pos.getY() * cellSize).toPoint(), newRadius, newRadius / 2);
-	}
-	
-	private void paintExplosionShape(Graphics2D g2d, Shape s) {
-		RadialGradientPaint color = new RadialGradientPaint(new CoordCartesian(s.getBounds2D().getCenterX(), s.getBounds2D().getCenterY()),
-				(float) s.getBounds2D().getWidth(),
-				new float[] {0.0f, 0.5f},
-				new Color[] {Color.RED, Color.YELLOW});
-	    g2d.setPaint(color);
-	    g2d.fill(s);
-	}
-	
-	private Shape createStar(int nbArms, Point center, double radiusOuterCircle, double radiusInnerCircle) {
-	    double angle = Math.PI / nbArms;
-	    GeneralPath path = new GeneralPath();
-	    for (int i = 0; i < 2 * nbArms; i++) {
-	        double r = (i & 1) == 0 ? radiusOuterCircle : radiusInnerCircle;
-	        Point2D.Double p = new Point2D.Double(center.x + Math.cos(i * angle) * r, center.y + Math.sin(i * angle) * r);
-	        if (i == 0) path.moveTo(p.getX(), p.getY());
-	        else path.lineTo(p.getX(), p.getY());
-	    }
-	    path.closePath();
-	    return path;
-	}
-	
-	public void setMapExplorationEventsEnabled(boolean bool) {
-		if (bool) {
-			Toolkit.getDefaultToolkit().addAWTEventListener((AWTEventListener) _mapExploremMouseListener, AWTEvent.KEY_EVENT_MASK);
-			swingView.addMouseListener(_mapExploremMouseListener);
-			swingView.addMouseMotionListener((MouseMotionListener) _mapExploremMouseListener);
-		} else {
-			Toolkit.getDefaultToolkit().removeAWTEventListener((AWTEventListener) _mapExploremMouseListener);
-			swingView.removeMouseListener(_mapExploremMouseListener);
-			swingView.removeMouseMotionListener((MouseMotionListener) _mapExploremMouseListener);
-		}
-	}
-	
-	public JPanel getSwingView() {
-		return swingView;
-	}
-
-	public JScrollPane getScrollPane() {
-		return scrollPane;
-	}
-
-	class SwingView extends JPanel {
-		
-		private WarGame game;
-		
-		public SwingView(WarGame game) {
-			this.game = game;
-		}
-		
-		@Override
-		 public void paintComponent(Graphics g) {
-			super.paintComponent(g);
+        @Override
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
 
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
-			
-			//affichage du nombre de FPS
+
+            //affichage du nombre de FPS
             g2d.drawString("TPS : " + game.getFPS().toString(), 1, 11);
-			
-			if (_autorModeToolBar.getSelectedAgent() != null) {
-				// Update de l'affichage des infos sur l'unité sélectionnée
-				_autorModeToolBar.getAgentInformationsPanel().update();
-				// On récupère la liste des agents vus par l'agent sélectionné
-				WarAgent selectedAgent = _autorModeToolBar.getSelectedAgent();
-				if (selectedAgent instanceof ControllableWarAgent) {
-					for(WarPercept p : ((ControllableWarAgent) selectedAgent).getPercepts())
-						_agentsIDsSeenBySelectedAgent.add(p.getID());
-				}
-			}
+
+            if (_autorModeToolBar.getSelectedAgent() != null) {
+                // Update de l'affichage des infos sur l'unité sélectionnée
+                _autorModeToolBar.getAgentInformationsPanel().update();
+                // On récupère la liste des agents vus par l'agent sélectionné
+                WarAgent selectedAgent = _autorModeToolBar.getSelectedAgent();
+                if (selectedAgent instanceof ControllableWarAgent) {
+                    for(WarPercept p : ((ControllableWarAgent) selectedAgent).getPercepts())
+                        _agentsIDsSeenBySelectedAgent.add(p.getID());
+                }
+            }
 
             g2d.setColor(Color.GRAY);
             g2d.fill(GeometryTools.resize(game.getMap().getMapForbidArea(), cellSize));
-			
-			// Affichage de Mère Nature (resources)
-			paintTeam(g2d, game.getMotherNatureTeam());
 
-			// Affichage des équipes
-			for (Team t : game.getPlayerTeams()) {
-				paintTeam(g2d, t);
-			}
+            // Affichage de Mère Nature (resources)
+            paintTeam(g2d, game.getMotherNatureTeam());
 
-			// Affichage des explosions
-			for (Shape s : _explosions)
-				paintExplosionShape(g2d, s);
-			_explosions.clear();
-			
-			g2d.setColor(Color.RED);
-			g2d.drawRect(0, 0, width * cellSize, height * cellSize);
-			
-			_agentsIDsSeenBySelectedAgent.clear();
-		 }
-		
-	}
-	
-	public WarGame getGame() {
-		return game;
-	}
+            // Affichage des équipes
+            for (Team t : game.getPlayerTeams()) {
+                paintTeam(g2d, t);
+            }
+
+            // Affichage des explosions
+            for (Shape s : _explosions)
+                paintExplosionShape(g2d, s);
+            _explosions.clear();
+
+            g2d.setColor(Color.RED);
+            g2d.drawRect(0, 0, width * cellSize, height * cellSize);
+
+            _agentsIDsSeenBySelectedAgent.clear();
+        }
+
+    }
+
+    public WarGame getGame() {
+        return game;
+    }
 }

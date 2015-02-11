@@ -19,7 +19,7 @@ public class InConePerceptsGetter extends PerceptsGetter {
 //	public ArrayList<WarPercept> getAgentPercepts() {
 //        ArrayList<WarPercept> percepts = new ArrayList<WarPercept>();
 //
-//        Area visibleArea = new Area(getPerceptionAreaShape());
+//        Area visibleArea = new Area(getPerceptionArea());
 //        for (WarAgent agentToTestVisible : getGame().getAllAgentsInRadiusOf(getAgent(), getAgent().getDistanceOfView())) {
 //			if (agentToTestVisible.getID() != getAgent().getID()) {
 ////				double a, b, c;
