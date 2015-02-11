@@ -150,19 +150,7 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 			Class c = Class.forName(modelState.getPlanLoaderName());
 
 			//Récupère le constructeur
-			Class typeOfAdapter = null;
-			Constructor<?>[] constructors = c.getConstructors();
-			if(constructors.length > 0){
-				Constructor<?> constructor = constructors[0];
-				Class<?>[] parameterTypes = constructor.getParameterTypes();
-				if(parameterTypes.length > 0) {
-					typeOfAdapter = parameterTypes[0];
-				}else{
-					System.err.println("ERREUR la class " + modelState.getPlanLoaderName() + "  ne possède pas de constructeur correct");
-				}
-			}else{
-				System.err.println("ERREUR la class " + modelState.getPlanLoaderName() + "  ne possède pas de constructeur");
-			}
+			Class typeOfAdapter = c.getConstructors()[0].getParameterTypes()[0];
 			
 			instanciatePlan = (WarPlan<AgentAdapterType>) c
 					.getConstructor(typeOfAdapter, modelState.getPlanSettings().getClass())
@@ -171,6 +159,10 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 		} catch (NoSuchMethodException | SecurityException
 				| ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
+			System.err.println("*** ERROR in dynamic instanciation of generated model check everything:");
+			System.err.println("* Check constructor in WarPlan, WarCondition, WarReflexe");
+			System.err.println("* Check attribut usage in subclass of previews and in " + modelState.getPlanLoaderName());
+			
 			System.err.println("ERROR during instanciate WarPlan with class name " + modelState.getPlanLoaderName() + " check name, constructor, classPath, etc...");
 			System.err.println("Objects send : Adapter : " + adapter.getClass() + " , WarPlanSettings : " + modelState.getPlanSettings().getClass());
 			try {
