@@ -18,8 +18,9 @@ public abstract class AbstractWarMap {
     private static final double BORDER_THICKNESS = 5.;
 
 	protected static final float TEAM_POSITION_RADIUS = 100;
-	protected static final float FOOD_POSITION_RADIUS = 200;
+	protected static final float FOOD_POSITION_RADIUS = 50;
 
+    private String name;
     protected Area mapAccessibleArea;
     protected Area mapForbidArea;
 	private ArrayList<ArrayList<WarCircle>> _teamsPositions;
@@ -27,7 +28,8 @@ public abstract class AbstractWarMap {
     private double mapWidth;
     private double mapHeight;
 
-    public AbstractWarMap(double mapWidth, double mapHeight) {
+    public AbstractWarMap(String name, double mapWidth, double mapHeight) {
+        this.name = name;
         _teamsPositions = new ArrayList<>();
         _foodPositions = new ArrayList<>();
         mapAccessibleArea = new Area(new Rectangle2D.Double(-MAP_ACCESSIBLE_AREA_PADDING, -MAP_ACCESSIBLE_AREA_PADDING, mapWidth + (MAP_ACCESSIBLE_AREA_PADDING*2.), mapHeight + (MAP_ACCESSIBLE_AREA_PADDING*2.)));
@@ -68,6 +70,10 @@ public abstract class AbstractWarMap {
 	public int getMaxTeams() {
 		return _teamsPositions.size();
 	}
+
+    public String getName() {
+        return name;
+    }
 
     public Area getMapAccessibleArea() {
         return new Area(mapAccessibleArea);

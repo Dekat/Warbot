@@ -176,7 +176,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	}
 	
 	public void setRandomPositionInCircle(WarCircle circle) {
-		setRandomPositionInCircle(new CoordCartesian(circle.getX(), circle.getY()), circle.getRadius());
+		setRandomPositionInCircle(new CoordCartesian(circle.getCenterX(), circle.getCenterY()), circle.getRadius());
 	}
 	
 	public CoordCartesian getPosition() {

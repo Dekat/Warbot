@@ -13,7 +13,7 @@ public class OneWayWarMap extends AbstractWarMap {
     private static final double MIDDLE_WALL_DOOR_HEIGHT = 60;
 
     public OneWayWarMap() {
-        super(WIDTH, HEIGHT);
+        super("Le mur", WIDTH, HEIGHT);
 
         forbidAllBorders();
 
@@ -30,11 +30,11 @@ public class OneWayWarMap extends AbstractWarMap {
 				new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, getHeight() / 2),
 				new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, getHeight() - TEAM_POSITION_RADIUS)
 				);
-		
-		addFoodPosition(getWidth() - FOOD_POSITION_RADIUS, FOOD_POSITION_RADIUS);
-		addFoodPosition(FOOD_POSITION_RADIUS, getHeight() - FOOD_POSITION_RADIUS);
-		addFoodPosition(getWidth() / 2, getHeight() / 2);
-		addFoodPosition(getWidth() / 2, getHeight() / 2);
+
+        addFoodPosition(getCenterX() - (getCenterX() / 4.), getCenterY());
+        addFoodPosition(getCenterX(), getCenterY());
+        addFoodPosition(getCenterX(), getCenterY());
+        addFoodPosition(getCenterX() + (getCenterX() / 4.), getCenterY());
 	}
 
 }

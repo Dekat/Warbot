@@ -18,6 +18,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 import edu.warbot.tools.GeometryTools;
+import edu.warbot.tools.WarCircle;
 import edu.warbot.tools.WarStar;
 import turtlekit.viewer.TKDefaultViewer;
 import edu.warbot.agents.ControllableWarAgent;
@@ -412,6 +413,7 @@ public class WarViewer extends TKDefaultViewer {
                 }
             }
 
+            // Map forbid area
             g2d.setColor(Color.GRAY);
             g2d.fill(GeometryTools.resize(game.getMap().getMapForbidArea(), cellSize));
 

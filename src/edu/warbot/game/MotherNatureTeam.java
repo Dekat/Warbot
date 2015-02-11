@@ -21,13 +21,14 @@ import edu.warbot.tools.WarMathTools;
 public class MotherNatureTeam extends Team {
 
 	public static final String NAME = "Mère nature";
+    public static final Color COLOR = Color.GREEN;
 	
 	private ArrayList<WarResource> _resources;
 	
 	public MotherNatureTeam(WarGame game) {
 		super(NAME);
 		_resources = new ArrayList<>();
-		setColor(Color.GREEN);
+		setColor(COLOR);
 		setGame(game);
 	}
 

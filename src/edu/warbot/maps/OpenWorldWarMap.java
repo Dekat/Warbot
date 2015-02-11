@@ -8,23 +8,23 @@ public class OpenWorldWarMap extends AbstractWarMap {
     private static final double HEIGHT = 600;
 
     public OpenWorldWarMap() {
-		super(WIDTH, HEIGHT);
+		super("Monde ouvert", WIDTH, HEIGHT);
 
+        double widthQuarter = WIDTH / 4.;
+        double heightThird = HEIGHT / 3.;
 		addTeamPositions(
-				new CoordCartesian(TEAM_POSITION_RADIUS, TEAM_POSITION_RADIUS),
-				new CoordCartesian(TEAM_POSITION_RADIUS, getHeight() / 2),
-				new CoordCartesian(TEAM_POSITION_RADIUS, getHeight() - TEAM_POSITION_RADIUS)
+				new CoordCartesian(widthQuarter, heightThird),
+				new CoordCartesian(widthQuarter, HEIGHT - heightThird)
 				);
 		addTeamPositions(
-				new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, TEAM_POSITION_RADIUS),
-				new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, getHeight() / 2),
-				new CoordCartesian(getWidth() - TEAM_POSITION_RADIUS, getHeight() - TEAM_POSITION_RADIUS)
+				new CoordCartesian(WIDTH - widthQuarter, heightThird),
+				new CoordCartesian(WIDTH - widthQuarter, HEIGHT - heightThird)
 				);
-		
-		addFoodPosition(getWidth() - FOOD_POSITION_RADIUS, FOOD_POSITION_RADIUS);
-		addFoodPosition(FOOD_POSITION_RADIUS, getHeight() - FOOD_POSITION_RADIUS);
-		addFoodPosition(getWidth() / 2, getHeight() / 2);
-		addFoodPosition(getWidth() / 2, getHeight() / 2);
+
+        addFoodPosition(getCenterX(), getCenterY() - (getCenterY() / 2.));
+        addFoodPosition(getCenterX(), getCenterY());
+        addFoodPosition(getCenterX(), getCenterY());
+        addFoodPosition(getCenterX(), getCenterY() + (getCenterY() / 2.));
 	}
 
 }

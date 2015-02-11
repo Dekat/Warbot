@@ -36,7 +36,7 @@ public class CoordPolar {
 	
 	public static CoordPolar getRandomInBounds (double maxDistance) {
 		Random random = new Random();
-		return new CoordPolar(random.nextDouble() * maxDistance, random.nextDouble() * 360);
+		return new CoordPolar(random.nextDouble() * maxDistance, random.nextDouble() * 359.);
 	}
 	
 	public static double invertDirectionAngle(double angle) {

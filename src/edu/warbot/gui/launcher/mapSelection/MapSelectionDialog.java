@@ -19,8 +19,8 @@ public class MapSelectionDialog extends JFrame implements ActionListener, ListSe
 
     private WarLauncherInterface warLauncherInterface;
     private Vector<MapMiniature> mapMiniaturesList;
-    private MapMiniature selectedMapMiniature;
     private JList mapMiniaturesJList;
+    private MapMiniaturePanel mapMiniaturePanel;
 
     public MapSelectionDialog(WarLauncherInterface warLauncherInterface) {
         super("Choix de la carte");
@@ -29,8 +29,8 @@ public class MapSelectionDialog extends JFrame implements ActionListener, ListSe
         this.warLauncherInterface = warLauncherInterface;
 
         /* *** Fenêtre *** */
-        setSize(800, 500);
-        setMinimumSize(new Dimension(400, 300));
+        setSize(800, 450);
+        setMinimumSize(getSize());
         setLocationRelativeTo(null);
         setIconImage(GuiIconsLoader.getLogo("iconLauncher.png").getImage());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -52,8 +52,9 @@ public class MapSelectionDialog extends JFrame implements ActionListener, ListSe
         mapMiniaturesJList.addListSelectionListener(this);
         add(new JScrollPane(mapMiniaturesJList), BorderLayout.CENTER);
 
-        selectedMapMiniature = new MapMiniature(((MapMiniature) mapMiniaturesJList.getSelectedValue()).getMap(), MapMiniature.SIZE_VERY_LARGE);
-        add(selectedMapMiniature, BorderLayout.EAST);
+        MapMiniature selectedMapMiniature = new MapMiniature(((MapMiniature) mapMiniaturesJList.getSelectedValue()).getMap(), MapMiniature.SIZE_VERY_LARGE);
+        mapMiniaturePanel = new MapMiniaturePanel(selectedMapMiniature);
+        add(mapMiniaturePanel, BorderLayout.EAST);
 
         JButton btnValid = new JButton("Valider");
         btnValid.addActionListener(this);
@@ -73,7 +74,6 @@ public class MapSelectionDialog extends JFrame implements ActionListener, ListSe
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        selectedMapMiniature.setMap(((MapMiniature) mapMiniaturesJList.getSelectedValue()).getMap());
-        selectedMapMiniature.repaint();
+        mapMiniaturePanel.setMap(((MapMiniature) mapMiniaturesJList.getSelectedValue()).getMap());
     }
 }

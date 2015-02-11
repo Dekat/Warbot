@@ -33,7 +33,7 @@ public class ForestWarMap extends AbstractWarMap {
     }
 
     public ForestWarMap() {
-        super(WIDTH, HEIGHT);
+        super("Forêt", WIDTH, HEIGHT);
 
         forbidAllBorders();
 
@@ -64,6 +64,7 @@ public class ForestWarMap extends AbstractWarMap {
         );
 
         addFoodPosition(getCenterX(), getCenterY() - (getCenterY() / 2.));
+        addFoodPosition(getCenterX(), getCenterY());
         addFoodPosition(getCenterX(), getCenterY());
         addFoodPosition(getCenterX(), getCenterY() + (getCenterY() / 2.));
     }
