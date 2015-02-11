@@ -3,8 +3,8 @@ package edu.warbot.FSMEditor;
 import edu.warbot.FSMEditor.controleurs.Controleur;
 import edu.warbot.FSMEditor.controleurs.ControleurBrain;
 import edu.warbot.FSMEditor.models.Modele;
-import edu.warbot.FSMEditor.models.ModeleCondition;
-import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.models.ModelCondition;
+import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.settings.ConditionEnum;
 import edu.warbot.FSMEditor.settings.PlanEnum;
 import edu.warbot.FSMEditor.settings.Settings;
@@ -28,10 +28,10 @@ public class FSMEditor {
 		controleur.createControleursBrains(WarAgentType.WarTurret);
 		controleur.createControleursBrains(WarAgentType.WarKamikaze);
 		
-		ModeleState s1 = new ModeleState("State Source", PlanEnum.WarPlanIdle, null);
-		ModeleState s2 = new ModeleState("State Dest", PlanEnum.WarPlanIdle, null);
+		ModelState s1 = new ModelState("State Source", PlanEnum.WarPlanIdle, null);
+		ModelState s2 = new ModelState("State Dest", PlanEnum.WarPlanIdle, null);
 		
-		ModeleCondition c1 = new ModeleCondition("Cond1", ConditionEnum.WarConditionActionTerminate, null);
+		ModelCondition c1 = new ModelCondition("Cond1", ConditionEnum.WarConditionActionTerminate, null);
 		c1.setSource(s1);
 		c1.setDestination(s2);
 
@@ -41,15 +41,15 @@ public class FSMEditor {
 		controleur.getControleurBrain(WarAgentType.WarBase).addCondition(c1);
 		
 		controleur.getControleurBrain(WarAgentType.WarRocketLauncher).addState(
-				new ModeleState("State Idle", PlanEnum.WarPlanWiggle, null));
+				new ModelState("State Idle", PlanEnum.WarPlanWiggle, null));
 		controleur.getControleurBrain(WarAgentType.WarEngineer).addState(
-				new ModeleState("State Idle", PlanEnum.WarPlanWiggle, null));
+				new ModelState("State Idle", PlanEnum.WarPlanWiggle, null));
 		controleur.getControleurBrain(WarAgentType.WarTurret).addState(
-				new ModeleState("State Idle", PlanEnum.WarPlanIdle, null));
+				new ModelState("State Idle", PlanEnum.WarPlanIdle, null));
 		controleur.getControleurBrain(WarAgentType.WarKamikaze).addState(
-				new ModeleState("State Idle", PlanEnum.WarPlanWiggle, null));
+				new ModelState("State Idle", PlanEnum.WarPlanWiggle, null));
 		controleur.getControleurBrain(WarAgentType.WarExplorer).addState(
-				new ModeleState("State Idle", PlanEnum.WarPlanWiggle, null));
+				new ModelState("State Idle", PlanEnum.WarPlanWiggle, null));
 		
 //		ControleurBrain cb = controleur.getControleurBrain(WarAgentType.WarExplorer);
 

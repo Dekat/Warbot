@@ -13,8 +13,8 @@ import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSMEditor.dialogues.DialogueCondSetting;
 import edu.warbot.FSMEditor.dialogues.DialogueStateSetting;
 import edu.warbot.FSMEditor.models.ModeleBrain;
-import edu.warbot.FSMEditor.models.ModeleCondition;
-import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.models.ModelCondition;
+import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.panels.PanelCondition;
 import edu.warbot.FSMEditor.panels.PanelState;
 import edu.warbot.FSMEditor.settings.ConditionEnum;
@@ -110,7 +110,7 @@ public class ControleurBrain {
 
 		if(d.isValideComponent()){
 			
-			ModeleState s = new ModeleState(d.getStateName(), d.getPlanName(), d.getPlanSettings());
+			ModelState s = new ModelState(d.getStateName(), d.getPlanName(), d.getPlanSettings());
 
 			this.addState(s);
 			
@@ -119,7 +119,7 @@ public class ControleurBrain {
 	}
 	
 	private void eventEditState(){
-		ModeleState modelState = 
+		ModelState modelState = 
 				this.viewBrain.getViewEditor().getFirstSelectedState().getModelState();
 		
 		DialogueStateSetting d = new DialogueStateSetting(this.viewBrain, modelState);
@@ -148,8 +148,8 @@ public class ControleurBrain {
 			
 				PanelState panelSource;
 				PanelState panelDest;
-				ModeleState modeleStateSource;
-				ModeleState modeleStateDest;
+				ModelState modeleStateSource;
+				ModelState modeleStateDest;
 				
 				panelSource = this.viewBrain.getViewEditor().getFirstSelectedState();
 				panelDest = this.viewBrain.getViewEditor().getSecondeSelectedState();
@@ -157,7 +157,7 @@ public class ControleurBrain {
 				modeleStateDest = panelDest.getModelState();
 				
 				//Crée le nouveau modele condition
-				ModeleCondition mc = new ModeleCondition(d.getConditionName(), d.getConditionType(), condSett);
+				ModelCondition mc = new ModelCondition(d.getConditionName(), d.getConditionType(), condSett);
 //						modeleStateSource, modeleStateDest);
 				mc.setSource(modeleStateSource);
 				mc.setDestination(modeleStateDest);
@@ -194,9 +194,9 @@ public class ControleurBrain {
 		
 		if(condSelec != null){
 			
-			ModeleCondition modeleCond;
+			ModelCondition modeleCond;
 			
-			for (ModeleCondition modeleC : this.modeleBrain.getConditions()) {
+			for (ModelCondition modeleC : this.modeleBrain.getConditions()) {
 				if(modeleC.getName().equals(condSelec)){
 					modeleCond = modeleC;
 					break;
@@ -217,7 +217,7 @@ public class ControleurBrain {
 	}
 
 
-	public void addState(ModeleState state) {
+	public void addState(ModelState state) {
 		//Dit au model le nouvel état
 		this.modeleBrain.addState(state);
 		
@@ -226,7 +226,7 @@ public class ControleurBrain {
 	}
 
 
-	public void addCondition(ModeleCondition condition) {
+	public void addCondition(ModelCondition condition) {
 
 		//Dit au modele d'ajouter la nouvelle condition
 		this.modeleBrain.addCondition(condition);

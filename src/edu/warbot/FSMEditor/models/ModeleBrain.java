@@ -9,32 +9,32 @@ public class ModeleBrain {
 	
 	private WarAgentType agentType;
 	
-	private ArrayList<ModeleState> sates = new ArrayList<>();
-	private ArrayList<ModeleCondition> conditions = new ArrayList<>();
+	private ArrayList<ModelState> sates = new ArrayList<>();
+	private ArrayList<ModelCondition> conditions = new ArrayList<>();
 	
 	public ModeleBrain(WarAgentType agentType) {
 		this.agentType = agentType;
 	}
 
-	public void addState(ModeleState d) {
+	public void addState(ModelState d) {
 		this.sates.add(d);
 	}
 	
-	public ArrayList<ModeleState> getStates(){
+	public ArrayList<ModelState> getStates(){
 		return this.sates;
 	}
 
-	public void addCondition(ModeleCondition c) {
+	public void addCondition(ModelCondition c) {
 		this.conditions.add(c);
 	}
 
-	public void removeState(ModeleState m) {
+	public void removeState(ModelState m) {
 		//On supprime toutes les conditions de l'�tat source
 		this.conditions.removeAll(m.getConditionsOut());
 		
 		//on parcours toutes les condtions pour voir si il yen a qui vont jusqua l'�tat qui va etre suppr
-		ArrayList<ModeleCondition> toDelet = new ArrayList<>();
-		for (ModeleCondition cond: this.conditions) {
+		ArrayList<ModelCondition> toDelet = new ArrayList<>();
+		for (ModelCondition cond: this.conditions) {
 			if(cond.getStateDestination().equals(m)){
 				toDelet.add(cond);
 			}
@@ -45,13 +45,13 @@ public class ModeleBrain {
 		this.sates.remove(m);
 	}
 
-	public ArrayList<ModeleCondition> getConditions() {
+	public ArrayList<ModelCondition> getConditions() {
 		return this.conditions;
 	}
 
 	public Vector<String> getConditionsName() {
 		Vector<String> res = new Vector<>();
-		for (ModeleCondition m : this.conditions) {
+		for (ModelCondition m : this.conditions) {
 			res.add(m.getName());
 		}
 		return res;

@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 import edu.warbot.FSMEditor.models.Modele;
 import edu.warbot.FSMEditor.models.ModeleBrain;
-import edu.warbot.FSMEditor.models.ModeleCondition;
-import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.models.ModelCondition;
+import edu.warbot.FSMEditor.models.ModelState;
 /**
  * Cette classe permet de prendre un Model du FSMEditor qui n'est pas complet
  * Le model contient des ID pour les états destinations des conditions et les conditions des états
@@ -44,41 +44,39 @@ public class FSMModelRebuilder {
 		//Construit une liste d'association conditionID - condition pointeur
 		//Construit une liste d'association stateID - state pointeur
 		
-		HashMap<String, ModeleCondition> mapConditionsID = new HashMap<>();
-		HashMap<String, ModeleState> mapStatesID = new HashMap<>();
+		HashMap<String, ModelCondition> mapConditionsID = new HashMap<>();
+		HashMap<String, ModelState> mapStatesID = new HashMap<>();
 		
 		//construit liste états
-		for (ModeleState state : brain.getStates()) {
+		for (ModelState state : brain.getStates()) {
 			mapStatesID.put(state.getName(), state);
 		}
 		
 		//Constuit liste condition
-		for (ModeleCondition condition: brain.getConditions()) {
+		for (ModelCondition condition: brain.getConditions()) {
 			mapConditionsID.put(condition.getName(), condition);
 		}
 		
-		//Pour chaque �tat
-		for (ModeleState state : brain.getStates()) {
+		//Pour chaque état
+		for (ModelState state : brain.getStates()) {
 			rebuildState(state, mapConditionsID);
 		}
 		
-		//Pour chaque �tat
-		for (ModeleCondition cond : brain.getConditions()) {
+		//Pour chaque condition
+		for (ModelCondition cond : brain.getConditions()) {
 			rebuildCondition(cond, mapStatesID);
 		}
 	}
 
-	private void rebuildCondition(ModeleCondition cond,
-			HashMap<String, ModeleState> mapStatesID) {
+	private void rebuildCondition(ModelCondition cond, HashMap<String, ModelState> mapStatesID) {
 		cond.setDestination(mapStatesID.get(cond.getStateOutId()));
 	}
 
-	private void rebuildState(ModeleState state,
-			HashMap<String, ModeleCondition> mapConditionsID) {
+	private void rebuildState(ModelState state, HashMap<String, ModelCondition> mapConditionsID) {
 		
 		//Pour chaque ID conditions de sortie de l'état
 		for (String currentConditionID : state.getConditionsOutID()) {
-			//On récupère la conditions dan la liste d'association et on l'ajoute au modele
+			//On récupère la conditions dans la liste d'association et on l'ajoute au modele
 			state.addConditionOut(mapConditionsID.get(currentConditionID));
 		}
 	}

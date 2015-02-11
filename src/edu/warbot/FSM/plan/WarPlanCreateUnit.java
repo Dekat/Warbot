@@ -2,6 +2,7 @@ package edu.warbot.FSM.plan;
 
 import java.util.ArrayList;
 
+import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionCreateUnit;
@@ -59,7 +60,9 @@ public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 		if(nbA > 1){
 			for(int i = 0; i < nbA; i++){
 				
-				cond[i%nbA] = new WarConditionActionTerminate<WarBaseAdapter>(getBrain(), actions[i%nbA]);
+				WarConditionSettings condSet1 = new WarConditionSettings();
+				condSet1.Action = actions[i%nbA];
+				cond[i%nbA] = new WarConditionActionTerminate<WarBaseAdapter>("cond_"+ i, getBrain(), condSet1);
 				cond[i%nbA].setDestination(actions[(i+1)%nbA]);
 				actions[i%nbA].addCondition(cond[i%nbA]);
 			}

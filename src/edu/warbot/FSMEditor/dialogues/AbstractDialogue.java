@@ -23,7 +23,7 @@ import com.sun.javafx.binding.SelectBinding.AsBoolean;
 
 import edu.warbot.FSM.WarGenericSettings.AbstractGenericAttributSettings;
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
-import edu.warbot.FSMEditor.models.ModeleCondition;
+import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.views.ViewBrain;
 import edu.warbot.agents.enums.WarAgentType;
 

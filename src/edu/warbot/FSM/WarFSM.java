@@ -26,7 +26,7 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 		
 		if(firstEtat == null){
 			this.firstEtat = listeEtat.get(0);
-			System.out.println("ATTENTION vous devez choisir un état de depart : par defaut le premier état ajouté est choisit comme état de départ <" + this.firstEtat.getNom() + ">");
+			System.out.println("ATTENTION vous devez choisir un état de depart : par defaut le premier état ajouté est choisit comme état de départ <" + this.firstEtat.getName() + ">");
 		}
 	
 		this.etatCourant = firstEtat;
@@ -70,7 +70,7 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 
 	public void addEtat(WarEtat<AgentAdapterType> e) {
 		if(this.listeEtat.contains(e))
-			System.out.println("ATTENTION le plan <" + e.getNom() + "> a deja ete ajoute a la FSM");
+			System.out.println("ATTENTION le plan <" + e.getName() + "> a deja ete ajoute a la FSM");
 		this.listeEtat.add(e);
 		
 	}
@@ -81,6 +81,10 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 
 	public void addReflexe(WarReflexe<AgentAdapterType> r) {
 		this.listeReflexe.add(r);
+	}
+
+	public ArrayList<WarEtat<AgentAdapterType>> getAllStates() {
+		return this.listeEtat;
 	}
 
 }

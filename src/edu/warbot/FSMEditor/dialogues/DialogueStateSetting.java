@@ -9,7 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
-import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.settings.PlanEnum;
 import edu.warbot.FSMEditor.views.ViewBrain;
 
@@ -17,7 +17,7 @@ public class DialogueStateSetting extends AbstractDialogue {
 
 	private static final long serialVersionUID = 1L;
 
-	public DialogueStateSetting(ViewBrain viewBrain, ModeleState modelState) {
+	public DialogueStateSetting(ViewBrain viewBrain, ModelState modelState) {
 		this(viewBrain, modelState.getPlanSettings());
 		
 		this.fieldName = new JTextField(modelState.getName());

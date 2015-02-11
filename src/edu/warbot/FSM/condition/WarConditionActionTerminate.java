@@ -1,5 +1,6 @@
 package edu.warbot.FSM.condition;
 
+import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 
@@ -7,9 +8,11 @@ public class WarConditionActionTerminate<AgentAdapterType extends ControllableWa
 	
 	WarAction<AgentAdapterType> action;
 	
-	public WarConditionActionTerminate(AgentAdapterType brain, WarAction<AgentAdapterType> action){
-		super(brain);
-		this.action = action;
+	public WarConditionActionTerminate(String name, AgentAdapterType brain, 
+			WarConditionSettings conditionSettings){
+		super(name, brain, conditionSettings);
+		//TODO très attention ici !!!
+		this.action = conditionSettings.Action;
 	}
 
 	@Override

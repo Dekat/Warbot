@@ -17,8 +17,8 @@ import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSMEditor.models.Modele;
 import edu.warbot.FSMEditor.models.ModeleBrain;
-import edu.warbot.FSMEditor.models.ModeleCondition;
-import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.models.ModelCondition;
+import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.settings.ConditionEnum;
 import edu.warbot.FSMEditor.settings.PlanEnum;
 import edu.warbot.agents.enums.WarAgentType;
@@ -115,7 +115,7 @@ public class FsmXmlReader extends FsmXmlParser{
 		WarPlanSettings warPlanSetting = 
 				(WarPlanSettings) getWarGenericSettings(WarPlanSettings.class, state.getChild(PlanSettings));
 		
-		ModeleState modeleState = new ModeleState(name, PlanEnum.valueOf(plan), warPlanSetting);
+		ModelState modeleState = new ModelState(name, PlanEnum.valueOf(plan), warPlanSetting);
 		modeleState.setConditionsOutID(condID);
 		
 		modeleBrain.addState(modeleState);
@@ -130,7 +130,7 @@ public class FsmXmlReader extends FsmXmlParser{
 		WarConditionSettings warConditionSetting = 
 				(WarConditionSettings) getWarGenericSettings(WarConditionSettings.class, cond.getChild(ConditionSettings));
 		
-		ModeleCondition modeleCond = new ModeleCondition(name, ConditionEnum.valueOf(type), warConditionSetting);
+		ModelCondition modeleCond = new ModelCondition(name, ConditionEnum.valueOf(type), warConditionSetting);
 		modeleCond.setStateOutId(stateOutID);
 		
 		modeleBrain.addCondition(modeleCond);		

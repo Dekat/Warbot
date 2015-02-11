@@ -12,8 +12,8 @@ import edu.warbot.FSMEditor.FSMInstancier;
 import edu.warbot.FSMEditor.FSMModelRebuilder;
 import edu.warbot.FSMEditor.models.Modele;
 import edu.warbot.FSMEditor.models.ModeleBrain;
-import edu.warbot.FSMEditor.models.ModeleCondition;
-import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.models.ModelCondition;
+import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.views.View;
 import edu.warbot.FSMEditor.views.ViewBrain;
 import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
@@ -92,19 +92,13 @@ public class Controleur {
 		FsmXmlReader reader = new FsmXmlReader(FsmXmlReader.xmlConfigurationDefaultFilename);
 		Modele modeleRead = reader.getGeneratedFSMModel();
 		
-//		printModelInformations(modeleRead);
-		
-		FSMModelRebuilder fsmModRebuilder = new FSMModelRebuilder(modeleRead);
-		Modele modelRebuild = fsmModRebuilder.getRebuildModel();
-		
-		printModelInformations(modelRebuild);
-		
 		System.out.println("Configuration file imported successfull");
 		
+//		printModelInformations(modeleRead);
+		
 		FSMInstancier fsmInstancier = new FSMInstancier(modeleRead);
-//		fsmInstancier.instanciateFSM();
+		
 		//Crée un agent pour tester
-//		WarBrain<WarExplorerAdapter> brain = null;
 		WarExplorerAdapter explorerAdapter = null;
 			//new WarExplorerAdapter(new WarExplorer(new Team("Team_debug_FSM"), brain));
 		
@@ -122,14 +116,14 @@ public class Controleur {
 			System.out.println("* Traitement du modele pour le type d'agent " + modBrain.getAgentTypeName() + " *");
 		
 			System.out.println("Liste des états " + modBrain.getStates().size());
-			for (ModeleState modState : modBrain.getStates()) {
+			for (ModelState modState : modBrain.getStates()) {
 				System.out.println("\tEtat : Name=" + modState.getName() + " plan=" + modState.getPlanLoaderName());
 				System.out.println("\tConditions de sorties ID : " + modState.getConditionsOutID().size());
 				for (String condID : modState.getConditionsOutID()) {
 					System.out.println("\t\t" + condID);
 				}
 				System.out.println("\tConditions de sorties : " + modState.getConditionsOut().size());
-				for (ModeleCondition condMod : modState.getConditionsOut()) {
+				for (ModelCondition condMod : modState.getConditionsOut()) {
 					System.out.println("\t\t" + condMod.getName());
 				}
 				
@@ -157,7 +151,7 @@ public class Controleur {
 			}
 			
 			System.out.println("Liste des conditions " + modBrain.getConditions().size());
-			for (ModeleCondition modCond : modBrain.getConditions()) {
+			for (ModelCondition modCond : modBrain.getConditions()) {
 				//TODO la ca va plnat� car il y aura l'id de l�tat destination mais pas le pointeur vers l'objet de l'�tat
 				System.out.println("\tConditin : Name=" + modCond.getName() + " type=" + modCond.getType() + " stateOutID=" + modCond.getStateOutId() + " stateOut=" + modCond.getStateDestination().getName());
 				

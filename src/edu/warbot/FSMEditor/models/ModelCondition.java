@@ -4,20 +4,20 @@ import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSMEditor.settings.ConditionEnum;
 import edu.warbot.FSMEditor.settings.Settings;
 
-public class ModeleCondition {
+public class ModelCondition {
 	
 	private String name;
 	private ConditionEnum typeName;
 	private WarConditionSettings conditionGenericAttributs;
 
-	ModeleState modeleDest;
-	ModeleState modeleSource;
+	ModelState modeleDest;
+	ModelState modeleSource;
 	
 	String stateOutId;
 	
 	ConditionEnum conditionType;
 	
-	public ModeleCondition(String name, ConditionEnum type, WarConditionSettings conditionSettings){
+	public ModelCondition(String name, ConditionEnum type, WarConditionSettings conditionSettings){
 		this.name = name;
 		this.typeName = type;
 		this.conditionGenericAttributs = conditionSettings;
@@ -39,21 +39,21 @@ public class ModeleCondition {
 		return Settings.getFullNameOf(typeName);
 	}
 	
-	public void setDestination(ModeleState d) {
+	public void setDestination(ModelState d) {
 		this.modeleDest = d;
 //		this.stateOutId = d.getName();
 	}
 	
-	public void setSource(ModeleState modelState) {
+	public void setSource(ModelState modelState) {
 		this.modeleSource = modelState;
 		modelState.addConditionOut(this);
 	}
 	
-	public ModeleState getStateDestination(){
+	public ModelState getStateDestination(){
 		return this.modeleDest;
 	}
 	
-	public ModeleState getStateSource(){
+	public ModelState getStateSource(){
 		return this.modeleSource;
 	}
 

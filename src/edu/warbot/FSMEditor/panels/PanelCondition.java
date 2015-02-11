@@ -6,18 +6,18 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-import edu.warbot.FSMEditor.models.ModeleCondition;
+import edu.warbot.FSMEditor.models.ModelCondition;
 
 public class PanelCondition extends AbstractPanel{
 
 	private static final long serialVersionUID = 1L;
 
-	private ModeleCondition modele;
+	private ModelCondition modele;
 
 	private PanelState panelSource;
 	private PanelState panelDest;
 
-	public PanelCondition(ModeleCondition m) {
+	public PanelCondition(ModelCondition m) {
 		this.modele = m;
 	}
 
@@ -46,7 +46,11 @@ public class PanelCondition extends AbstractPanel{
 
 		g.drawString(this.modele.getName(), (positionArr.x - positionDep.x)/2 + positionDep.x,
 				(positionArr.y - positionDep.y)/2 + positionDep.y - 1);
-
+		
+		
+		//Reset les configues d'écriture
+		g.setColor(Color.black);
+		g.setStroke(new BasicStroke(1));
 	}
 
 	public Point getPositionDep() {
@@ -65,7 +69,7 @@ public class PanelCondition extends AbstractPanel{
 		this.positionArr = d.position;
 	}
 	
-	public ModeleCondition getModele(){
+	public ModelCondition getModele(){
 		return this.modele;
 	}
 

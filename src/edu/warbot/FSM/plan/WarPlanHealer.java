@@ -1,5 +1,6 @@
 package edu.warbot.FSM.plan;
 
+import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionChercherNouriture;
@@ -44,15 +45,28 @@ public class WarPlanHealer<AgentAdapterType extends MovableWarAgentAdapter> exte
 		WarAction<AgentAdapterType> actionFindFood = new WarActionChercherNouriture<AgentAdapterType>(getBrain(), WarExplorer.BAG_SIZE);
 		addAction(actionFindFood);
 		
-		WarCondition<AgentAdapterType> condTerminateHeal = new WarConditionActionTerminate<AgentAdapterType>(getBrain(), actionHeal);
+		WarConditionSettings condSet1 = new WarConditionSettings();
+		condSet1.Action = actionHeal;
+		WarCondition<AgentAdapterType> condTerminateHeal = 
+		new WarConditionActionTerminate<AgentAdapterType>("cond_heal", getBrain(), condSet1);
 		condTerminateHeal.setDestination(actionFindFood);
 		actionHeal.addCondition(condTerminateHeal);
 		
-		WarCondition<AgentAdapterType> condTerminateFindFood = new WarConditionActionTerminate<AgentAdapterType>(getBrain(), actionFindFood);
+		WarConditionSettings condSet2 = new WarConditionSettings();
+		condSet2.Action = actionFindFood;
+		WarCondition<AgentAdapterType> condTerminateFindFood = 
+				new WarConditionActionTerminate<AgentAdapterType>("cond_food", getBrain(), condSet2);
 		condTerminateFindFood.setDestination(actionHeal);
 		actionFindFood.addCondition(condTerminateFindFood);
 		
-		WarCondition<AgentAdapterType> condLowLife = new WarConditionAttributCheck<AgentAdapterType>(getBrain(), WarConditionAttributCheck.HEALTH, "<", WarExplorer.MAX_HEALTH, 50);
+		WarConditionSettings condSet3 = new WarConditionSettings();
+		condSet3.Attribut_name = WarConditionAttributCheck.HEALTH;
+		condSet3.Operateur = "<";
+		condSet3.Reference = WarExplorer.MAX_HEALTH;
+		condSet3.Pourcentage = 50;
+		
+		WarCondition<AgentAdapterType> condLowLife = 
+				new WarConditionAttributCheck<AgentAdapterType>("cond_life", getBrain(), condSet3);
 		condLowLife.setDestination(actionHeal);
 		actionFindFood.addCondition(condLowLife);
 		
