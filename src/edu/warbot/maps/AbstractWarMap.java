@@ -21,6 +21,7 @@ public abstract class AbstractWarMap {
 	protected static final float FOOD_POSITION_RADIUS = 200;
 
     protected Area mapAccessibleArea;
+    protected Area mapForbidArea;
 	private ArrayList<ArrayList<WarCircle>> _teamsPositions;
 	private ArrayList<WarCircle> _foodPositions;
     private double mapWidth;
@@ -68,14 +69,14 @@ public abstract class AbstractWarMap {
 		return _teamsPositions.size();
 	}
 
-    public Shape getMapAccessibleArea() {
-        return mapAccessibleArea;
+    public Area getMapAccessibleArea() {
+        return new Area(mapAccessibleArea);
     }
 
-    public Shape getMapForbidArea() {
-        Area forbidArea = new Area(new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
-        forbidArea.subtract(mapAccessibleArea);
-        return forbidArea;
+    public Area getMapForbidArea() {
+        if(mapForbidArea == null)
+            updateForbidArea();
+        return new Area(mapForbidArea);
     }
 
 	public double getWidth() {
@@ -96,6 +97,7 @@ public abstract class AbstractWarMap {
 
     protected void forbidArea(Shape forbidArea) {
         mapAccessibleArea.subtract(new Area(forbidArea));
+        updateForbidArea();
     }
 
     protected void forbidAllBorders() {
@@ -103,5 +105,15 @@ public abstract class AbstractWarMap {
         forbidArea(new Rectangle2D.Double(getWidth() - BORDER_THICKNESS, 0, BORDER_THICKNESS, getHeight()));
         forbidArea(new Rectangle2D.Double(0, getHeight() - BORDER_THICKNESS, getWidth(), BORDER_THICKNESS));
         forbidArea(new Rectangle2D.Double(0, 0, BORDER_THICKNESS, getHeight()));
+    }
+
+    protected void allowArea(Shape allowedArea) {
+        mapAccessibleArea.add(new Area(allowedArea));
+        updateForbidArea();
+    }
+
+    private void updateForbidArea() {
+        mapForbidArea = new Area(new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
+        mapForbidArea.subtract(mapAccessibleArea);
     }
 }
