@@ -1,10 +1,12 @@
 package edu.warbot.FSM.plan;
 
+import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionAttaquer;
 import edu.warbot.FSM.action.WarActionChercherBase;
 import edu.warbot.FSM.condition.WarCondition;
+import edu.warbot.FSM.condition.WarConditionAttributCheck;
 import edu.warbot.FSM.condition.WarConditionPerceptCounter;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
@@ -41,11 +43,23 @@ public class WarPlanPatrouiller extends WarPlan<WarRocketLauncherAdapter> {
 			WarAction<WarRocketLauncherAdapter> actionKillEnemy = new WarActionAttaquer(getBrain(), WarAgentType.WarRocketLauncher);
 			addAction(actionKillEnemy);
 		
-			WarCondition<WarRocketLauncherAdapter> condSeekToKill = new WarConditionPerceptCounter<WarRocketLauncherAdapter>(getBrain(), WarAgentType.WarRocketLauncher, true, ">", 1);
+			WarConditionSettings condSet1 = new WarConditionSettings();
+			condSet1.Agent_type = WarAgentType.WarRocketLauncher;
+			condSet1.Est_pourcentage = true;
+			condSet1.Operateur = ">";
+			condSet1.Valeur = 1;
+			WarCondition<WarRocketLauncherAdapter> condSeekToKill = 
+					new WarConditionPerceptCounter<WarRocketLauncherAdapter>("cond_kill", getBrain(), condSet1);
 			actionSeekBase.addCondition(condSeekToKill);
 			condSeekToKill.setDestination(actionKillEnemy);
 		
-			WarCondition<WarRocketLauncherAdapter> condKillToSeek = new WarConditionPerceptCounter<WarRocketLauncherAdapter>(getBrain(), WarAgentType.WarRocketLauncher, true, "==", 0);
+			WarConditionSettings condSet2 = new WarConditionSettings();
+			condSet2.Agent_type = WarAgentType.WarRocketLauncher;
+			condSet2.Est_pourcentage = true;
+			condSet2.Operateur = "==";
+			condSet2.Valeur = 0;
+			WarCondition<WarRocketLauncherAdapter> condKillToSeek = 
+					new WarConditionPerceptCounter<WarRocketLauncherAdapter>("cond_seek", getBrain(), condSet2);
 			actionKillEnemy.addCondition(condKillToSeek);
 			condKillToSeek.setDestination(actionSeekBase);
 		

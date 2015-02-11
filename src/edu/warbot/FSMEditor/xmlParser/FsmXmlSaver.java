@@ -14,8 +14,8 @@ import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSMEditor.models.Modele;
 import edu.warbot.FSMEditor.models.ModeleBrain;
-import edu.warbot.FSMEditor.models.ModeleCondition;
-import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.models.ModelCondition;
+import edu.warbot.FSMEditor.models.ModelState;
 
 public class FsmXmlSaver extends FsmXmlParser{
 	
@@ -59,7 +59,7 @@ public class FsmXmlSaver extends FsmXmlParser{
 	private Element getContentStatesForBrain(ModeleBrain brain) {
 		Element states = new Element(States);
 		
-		for (ModeleState currentState : brain.getStates()) {
+		for (ModelState currentState : brain.getStates()) {
 			states.addContent(getContentForState(currentState));
 		}
 		return states;
@@ -68,13 +68,13 @@ public class FsmXmlSaver extends FsmXmlParser{
 	private Element getContentConditionForBrain(ModeleBrain brain) {
 		Element elemConditions = new Element(Conditions);
 		
-		for (ModeleCondition condition : brain.getConditions()) {
+		for (ModelCondition condition : brain.getConditions()) {
 			elemConditions.addContent(getContentForCondition(condition));
 		}
 		return elemConditions;
 	}
 
-	private Element getContentForState(ModeleState state) {
+	private Element getContentForState(ModelState state) {
 		Element elemState = new Element(State);
 		
 		elemState.addContent(new Element("Name").setText(state.getName()));
@@ -86,7 +86,7 @@ public class FsmXmlSaver extends FsmXmlParser{
 		return elemState;
 	}
 
-	private Element getContentPlanSettings(ModeleState state) {
+	private Element getContentPlanSettings(ModelState state) {
 		Element elemPlanSetting = new Element(PlanSettings);
 		
 		WarPlanSettings planSet = state.getPlanSettings();
@@ -126,7 +126,7 @@ public class FsmXmlSaver extends FsmXmlParser{
 		return elemPlanSetting;
 	}
 
-	private Element getContentForCondition(ModeleCondition cond) {
+	private Element getContentForCondition(ModelCondition cond) {
 		Element elemCond = new Element(Condition);
 
 		elemCond.addContent(new Element(Name).setText(cond.getName()));
@@ -139,7 +139,7 @@ public class FsmXmlSaver extends FsmXmlParser{
 	}
 	
 	//TODO fusionner cette méthod avec celle des plans
-	private Element getContentConditionSettings(ModeleCondition modelCond) {
+	private Element getContentConditionSettings(ModelCondition modelCond) {
 		Element elemCondSetting = new Element(ConditionSettings);
 		
 		WarConditionSettings planSet = modelCond.getConditionSettings();
@@ -179,10 +179,10 @@ public class FsmXmlSaver extends FsmXmlParser{
 		return elemCondSetting;
 	}
 
-	private Element getContentConditionsOutIDForState(ModeleState state) {
+	private Element getContentConditionsOutIDForState(ModelState state) {
 		Element elemconditions = new Element(ConditionsOutID);
 		
-		for (ModeleCondition currentCond : state.getConditionsOut()) {
+		for (ModelCondition currentCond : state.getConditionsOut()) {
 			elemconditions.addContent(new Element(ConditionOutID).setText(currentCond.getName()));
 		}
 		

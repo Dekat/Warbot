@@ -9,7 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
-import edu.warbot.FSMEditor.models.ModeleCondition;
+import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.settings.ConditionEnum;
 import edu.warbot.FSMEditor.views.ViewBrain;
 
@@ -18,7 +18,7 @@ public class DialogueCondSetting extends AbstractDialogue{
 	private static final long serialVersionUID = 1L;
 	
 	
-	public DialogueCondSetting(ViewBrain f, ModeleCondition modelCondition) {
+	public DialogueCondSetting(ViewBrain f, ModelCondition modelCondition) {
 		this(f, modelCondition.getConditionSettings());
 
 		this.fieldName.setText(modelCondition.getName());

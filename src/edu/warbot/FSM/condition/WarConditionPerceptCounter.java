@@ -2,6 +2,7 @@ package edu.warbot.FSM.condition;
 
 import java.util.ArrayList;
 
+import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.ControllableWarAgentAdapter;
@@ -14,25 +15,16 @@ public class WarConditionPerceptCounter<AgentAdapterType extends ControllableWar
 	boolean enemy;
 	WarAgentType agentType;
 	
-	/**
-	 * 
-	 * @param brain
-	 * @param agentType
-	 * @param enemy
-	 * @param operand
-	 * @param nameAtt
-	 * @param ref
-	 */
-	public WarConditionPerceptCounter(AgentAdapterType brain, WarAgentType agentType, boolean enemy,
-			String operand, int ref) {
+	public WarConditionPerceptCounter(String name, AgentAdapterType brain, 
+			WarConditionSettings conditionSettings){
 
-		super(brain);
+		super(name, brain, conditionSettings);
 		
-		this.agentType = agentType;
-		this.operand = operand;
-		this.reference = ref;
+		this.agentType = conditionSettings.Agent_type;
+		this.operand = conditionSettings.Operateur;
+		this.reference = conditionSettings.Reference;
 		
-		this.enemy = enemy;
+		this.enemy = conditionSettings.Enemie;
 	}
 	
 	@Override

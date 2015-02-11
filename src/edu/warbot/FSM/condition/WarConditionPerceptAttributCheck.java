@@ -2,6 +2,7 @@ package edu.warbot.FSM.condition;
 
 import java.util.ArrayList;
 
+import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.ControllableWarAgentAdapter;
@@ -29,24 +30,18 @@ public class WarConditionPerceptAttributCheck<AgentAdapterType extends Controlla
 	 * @param agentType null for all
 	 * @param oneOf oneOf = true, all = false
 	 */
-	public WarConditionPerceptAttributCheck(AgentAdapterType brain, String nameAtt,
-			String operand, int ref, int poucentage, boolean enemy, WarAgentType agentType, boolean oneOf) {
-		
-		this(brain, nameAtt, operand, (Integer)(ref*poucentage/100), enemy, agentType, oneOf);
-
-	}
 	
-	public WarConditionPerceptAttributCheck(AgentAdapterType brain, String nameAtt,
-			String operand, int ref, boolean enemy, WarAgentType agentType, boolean oneOf) {
+	public WarConditionPerceptAttributCheck(String name, AgentAdapterType brain, 
+			WarConditionSettings conditionSettings){
 		
-		super(brain);
-		this.nameAtt = nameAtt;
-		this.operand = operand;
-		this.reference = ref;
+		super(name, brain, conditionSettings);
+		this.nameAtt = conditionSettings.Attribut_name;
+		this.operand = conditionSettings.Operateur;
+		this.reference = conditionSettings.Reference;
 		
-		this.enemy = enemy;
-		this.agentType = agentType;
-		this.oneOf = oneOf;
+		this.enemy = conditionSettings.Enemie;
+		this.agentType = conditionSettings.Agent_type;
+		this.oneOf = conditionSettings.Offensif;
 		
 	}
 

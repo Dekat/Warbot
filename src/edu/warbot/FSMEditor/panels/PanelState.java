@@ -6,15 +6,15 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Random;
 
-import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.models.ModelState;
 
 public class PanelState extends AbstractPanel{
 
 	private static final long serialVersionUID = 1L;
 
-	private ModeleState modeleState;
+	private ModelState modeleState;
 	
-	public PanelState(ModeleState m) {
+	public PanelState(ModelState m) {
 		this.modeleState = m;
 		position = new Point(new Random().nextInt(700), new Random().nextInt(500));
 	}
@@ -51,7 +51,7 @@ public class PanelState extends AbstractPanel{
 		return this.position;
 	}
 
-	public ModeleState getModelState() {
+	public ModelState getModelState() {
 		return this.modeleState;
 	}
 

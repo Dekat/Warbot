@@ -15,8 +15,8 @@ import javax.swing.border.TitledBorder;
 import org.jfree.ui.tabbedui.VerticalLayout;
 
 import edu.warbot.FSMEditor.models.ModeleBrain;
-import edu.warbot.FSMEditor.models.ModeleCondition;
-import edu.warbot.FSMEditor.models.ModeleState;
+import edu.warbot.FSMEditor.models.ModelCondition;
+import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.panels.PanelCondition;
 import edu.warbot.FSMEditor.panels.PanelEditor;
 import edu.warbot.FSMEditor.panels.PanelState;
@@ -98,11 +98,11 @@ public class ViewBrain extends JPanel{
 		return panel;
 	}
 
-	public void addState(ModeleState state) {
+	public void addState(ModelState state) {
 		this.panelEditor.addState(new PanelState(state));
 	}
 
-	public void addCondition(ModeleCondition condition) {
+	public void addCondition(ModelCondition condition) {
 		//Crée le nouveau panel condition
 		PanelCondition pc = new PanelCondition(condition);	
 	
@@ -173,7 +173,7 @@ public class ViewBrain extends JPanel{
 	private JButton buttonDelCond;
 
 	//TODO pas super propre
-	private PanelState getPanelStateForModele(ModeleState modele) {
+	private PanelState getPanelStateForModele(ModelState modele) {
 		for (PanelState panel: panelEditor.getPanelState()) {
 			if(panel.getModelState().equals(modele))
 				return panel;

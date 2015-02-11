@@ -6,13 +6,14 @@ import java.util.HashMap;
 
 import edu.warbot.FSM.WarEtat;
 import edu.warbot.FSM.WarFSM;
+import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.plan.WarPlan;
+import edu.warbot.FSMEditor.models.ModelCondition;
+import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.models.Modele;
 import edu.warbot.FSMEditor.models.ModeleBrain;
-import edu.warbot.FSMEditor.models.ModeleState;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.ControllableWarAgentAdapter;
-import edu.warbot.brains.MovableWarAgentAdapter;
 import edu.warbot.brains.adapters.WarExplorerAdapter;
 
 /**
@@ -22,12 +23,15 @@ import edu.warbot.brains.adapters.WarExplorerAdapter;
  * @author Olivier
  *
  */
-public class FSMInstancier {
+public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter> {
 	
-//	ArrayList<WarFSM> fsm = new ArrayList<WarFSM>();
+	WarFSM<AgentAdapterType> fsm = new WarFSM<>();
+	
 	Modele model;
-
-	HashMap<WarAgentType, Class<? extends ControllableWarAgentAdapter>> mapAgentTypeAdapter = new HashMap<>();
+	
+	//HashMap pour assicier les états et condition avec leurs nom
+	HashMap<String, WarEtat<AgentAdapterType>> hashMapState = new HashMap<>();
+	HashMap<String, WarCondition<AgentAdapterType>> hashMapCond = new HashMap<>();
 
 	public FSMInstancier(Modele modele) {
 		this.model = modele;
@@ -38,8 +42,6 @@ public class FSMInstancier {
 			this.model = fsmModeleRebuilder.getRebuildModel();
 		}
 			
-		generateHashMap();
-
 	}
 	
 //	public FSMInstancier(String xmlConfigurationFileName) {
@@ -49,14 +51,6 @@ public class FSMInstancier {
 //		FSMModelRebuilder fsmRebuilder = new FSMModelRebuilder(model);
 //	}
 
-//	private static Modele getModel(String xmlConfigurationFileName) {
-//		FSMXmlReader xmlReader = new FSMXmlReader(xmlConfigurationFileName);
-//		Modele model = xmlReader.getGeneratedFSMModel();
-//		FSMModelRebuilder fsmRebuilder = new FSMModelRebuilder(model);
-//		return fsmRebuilder.getRebuildModel();
-//	}
-
-	//Ici le type generique de FSM est le type de l'adapteur mais comment le mettre comme type generique ?
 	/**
 	 * 
 	 * @param agentType le type de l'agent que l'on souhaite récupére le brain
@@ -66,16 +60,42 @@ public class FSMInstancier {
 	public WarFSM getBrainControleurForAgent(WarAgentType agentType, ControllableWarAgentAdapter adapter) {
 		System.out.println("FSMInstancier begining instanciation for " + agentType + "...");
 		
-		WarFSM fsm = new WarFSM<ControllableWarAgentAdapter>();
-
-		//On recupère le modeleBrain qui correspond à l'agentType 
+		//On recupère le modeleBrain qui correspond à l'agentType
 		ModeleBrain modelBrain = this.model.getModelBrain(agentType);
-		
+
 		//On commence par ajouter tous les états à la FSM
-		for (ModeleState modelState : modelBrain.getStates()) {
-			WarEtat<?> warState = getGenerateWarState(modelState, adapter);
+		for (ModelState modelState : modelBrain.getStates()) {
+			WarEtat<AgentAdapterType> warState = getGenerateWarState(modelState, adapter);
 			
+			//Ajoute l'état à la fsm
 			fsm.addEtat(warState);
+			
+			//Ajoute l'état dans la hashMap d'état
+			hashMapState.put(warState.getName(), warState);
+		}
+		
+		//On ajoute ensuite les conditions
+		for (ModelCondition modelCond : modelBrain.getConditions()) {
+			WarCondition<AgentAdapterType> warCond = getGeneratedCondition(modelCond, adapter);
+			
+			//Ajoute l'état de destination de la condition
+			WarEtat<AgentAdapterType> etat = hashMapState.get(modelCond.getName());
+			warCond.setDestination(etat);
+			
+			//Ajoute la condition à la HashMap
+			hashMapCond.put(warCond.getName(), warCond);
+		}
+		
+		//Reparcourir tous les états pour leurs ajouter leurs conditions de sorties
+		//(C'était pas possible avant car les conditions n'existaient pas
+		for (ModelState modelState : modelBrain.getStates()) {
+			WarEtat<AgentAdapterType> warEtat = hashMapState.get(modelState.getName());
+			
+			for (ModelCondition modelCond : modelBrain.getConditions()) {
+				WarCondition<AgentAdapterType> warCond = hashMapCond.get(modelCond.getName());
+				
+				warEtat.addCondition(warCond);
+			}
 		}
 		
 		System.out.println("FSMInstancier : lancement de l'initialisation de la FSM");
@@ -85,50 +105,64 @@ public class FSMInstancier {
 		return fsm;
 	}
 
-	private WarEtat<? extends ControllableWarAgentAdapter> getGenerateWarState(
-			ModeleState modelState, ControllableWarAgentAdapter adapter) {
+	private HashMap<String, ModelState> getHashMapStates(ModeleBrain modelBrain) {
+		HashMap<String, ModelState> hashRes = new HashMap<>();
+		for (ModelState state : modelBrain.getStates()) {
+			hashRes.put(state.getName(), state);
+		}
+		return hashRes;
+	}
+
+	private HashMap<String, ModelCondition> getHashMapConditions(ModeleBrain modelBrain) {
+		HashMap<String, ModelCondition> hashRes = new HashMap<>();
+		for (ModelCondition cond: modelBrain.getConditions()) {
+			hashRes.put(cond.getName(), cond);
+		}
+		return hashRes;
+	}
+	
+	private WarCondition<AgentAdapterType> getGeneratedCondition(ModelCondition modelCond,
+			ControllableWarAgentAdapter adapter) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private WarEtat<AgentAdapterType> getGenerateWarState(
+			ModelState modelState, ControllableWarAgentAdapter adapter) {
 		//Récupère le plan
-		WarPlan<? extends ControllableWarAgentAdapter> warPlan = 
+		WarPlan<AgentAdapterType> warPlan = 
 				getGenerateWarPlan(modelState, adapter);
 		
 		//Crée l'état
-		WarEtat<? extends ControllableWarAgentAdapter> warState = 
-				new WarEtat<ControllableWarAgentAdapter>(modelState.getName(), warPlan);
+		WarEtat<AgentAdapterType> warState = 
+				new WarEtat<>(modelState.getName(), warPlan);
 				
 		return warState;
 	}
 
-	private WarPlan<? extends ControllableWarAgentAdapter> getGenerateWarPlan(
-			ModeleState modelState, ControllableWarAgentAdapter adapter) {
+	private WarPlan<AgentAdapterType> getGenerateWarPlan(
+			ModelState modelState, ControllableWarAgentAdapter adapter) {
 		
 		//Instancie le plan
-		WarPlan<? extends ControllableWarAgentAdapter> instanciatePlan = null;
+		WarPlan<AgentAdapterType> instanciatePlan = null;
 		try {
 			
 			Class c = Class.forName(modelState.getPlanLoaderName());
 
 			//Récupère le constructeur
-			Class typeOfAdapter = null;
-			Constructor<?>[] constructors = c.getConstructors();
-			if(constructors.length > 0){
-				Constructor<?> constructor = constructors[0];
-				Class<?>[] parameterTypes = constructor.getParameterTypes();
-				if(parameterTypes.length > 0) {
-					typeOfAdapter = parameterTypes[0];
-				}else{
-					System.err.println("ERREUR la class " + modelState.getPlanLoaderName() + "  ne possède pas de constructeur correct");
-				}
-			}else{
-				System.err.println("ERREUR la class " + modelState.getPlanLoaderName() + "  ne possède pas de constructeur");
-			}
+			Class typeOfAdapter = c.getConstructors()[0].getParameterTypes()[0];
 			
-			instanciatePlan = (WarPlan<MovableWarAgentAdapter>) c
+			instanciatePlan = (WarPlan<AgentAdapterType>) c
 					.getConstructor(typeOfAdapter, modelState.getPlanSettings().getClass())
 					.newInstance(adapter, modelState.getPlanSettings());
 			
 		} catch (NoSuchMethodException | SecurityException
 				| ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
+			System.err.println("*** ERROR in dynamic instanciation of generated model check everything:");
+			System.err.println("* Check constructor in WarPlan, WarCondition, WarReflexe");
+			System.err.println("* Check attribut usage in subclass of previews and in " + modelState.getPlanLoaderName());
+			
 			System.err.println("ERROR during instanciate WarPlan with class name " + modelState.getPlanLoaderName() + " check name, constructor, classPath, etc...");
 			System.err.println("Objects send : Adapter : " + adapter.getClass() + " , WarPlanSettings : " + modelState.getPlanSettings().getClass());
 			try {
@@ -141,9 +175,5 @@ public class FSMInstancier {
 		return instanciatePlan;
 	}
 
-	private void generateHashMap() {
-		mapAgentTypeAdapter.put(WarAgentType.WarExplorer,
-				WarExplorerAdapter.class);
-	}
 
 }

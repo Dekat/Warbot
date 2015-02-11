@@ -7,7 +7,7 @@ import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSMEditor.settings.PlanEnum;
 import edu.warbot.FSMEditor.settings.Settings;
 
-public class ModeleState {
+public class ModelState {
 	
 	private String name;
 	private PlanEnum warPlanName;
@@ -17,30 +17,30 @@ public class ModeleState {
 	//TODO ecq il faut laisser ça ici ?
 	private ArrayList<String> conditionsOutID = new ArrayList<String>();
 	
-	private ArrayList<ModeleCondition> conditionsOut = new ArrayList<>();
-	private ArrayList<ModeleCondition> conditionsIn = new ArrayList<>();
+	private ArrayList<ModelCondition> conditionsOut = new ArrayList<>();
+	private ArrayList<ModelCondition> conditionsIn = new ArrayList<>();
 
-	public ModeleState(String name, PlanEnum planName, WarPlanSettings planSettings) {
+	public ModelState(String name, PlanEnum planName, WarPlanSettings planSettings) {
 		this.name = name;
 		this.warPlanName = planName;
 		this.planSettings = planSettings;
 	}
 
-	public void addConditionOut(ModeleCondition mc) {
+	public void addConditionOut(ModelCondition mc) {
 		this.conditionsOut.add(mc);
 //		this.conditionsOutID.add(mc.getName());
 	}
 
-	public void addConditionIn(ModeleCondition condition) {
+	public void addConditionIn(ModelCondition condition) {
 		this.conditionsIn.add(condition);
 	}
 	
 	/*** Accesseurs ***/
-	public ArrayList<ModeleCondition> getConditionsOut(){
+	public ArrayList<ModelCondition> getConditionsOut(){
 		return this.conditionsOut;
 	}
 	
-	public ArrayList<ModeleCondition> getConditionsIn(){
+	public ArrayList<ModelCondition> getConditionsIn(){
 		return this.conditionsIn;
 	}
 

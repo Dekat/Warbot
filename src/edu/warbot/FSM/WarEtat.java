@@ -44,13 +44,13 @@ public class WarEtat<AgentAdapterType extends ControllableWarAgentAdapter> {
 			cond.init();
 		}
 		
-		System.out.println("\tL'état <" + this.getNom() + "> " + "contient le plan <" + this.getPlan().getNom() + ">" + " et " + this.conditions.size() + " conditions de sorties");
+		System.out.println("\tL'état <" + this.getName() + "> " + "contient le plan <" + this.getPlan().getNom() + ">" + " et " + this.conditions.size() + " conditions de sorties");
 		
 		this.plan.initPlan();
 		
 	}
 
-	public String getNom() {
+	public String getName() {
 		return this.nom;
 	}
 
