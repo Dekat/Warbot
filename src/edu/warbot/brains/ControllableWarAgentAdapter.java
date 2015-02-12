@@ -3,6 +3,8 @@ package edu.warbot.brains;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import edu.warbot.agents.percepts.WallPercept;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import madkit.kernel.AbstractAgent.ReturnCode;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
@@ -88,36 +90,41 @@ public abstract class ControllableWarAgentAdapter extends WarAgentAdapter implem
 	}
 	
 	@Override
-	public ArrayList<WarPercept> getPerceptsAllies() {
+	public ArrayList<WarAgentPercept> getPerceptsAllies() {
 		return getAgent().getPerceptsAllies();
 	}
 	
 	@Override
-	public ArrayList<WarPercept> getPerceptsEnemies() {
+	public ArrayList<WarAgentPercept> getPerceptsEnemies() {
 		return getAgent().getPerceptsEnemies();
 	}
 	
 	@Override
-	public ArrayList<WarPercept> getPerceptsResources() {
+	public ArrayList<WarAgentPercept> getPerceptsResources() {
 		return getAgent().getPerceptsResources();
 	}
 	
 	@Override
-	public ArrayList<WarPercept> getPerceptsAlliesByType(WarAgentType agentType){
+	public ArrayList<WarAgentPercept> getPerceptsAlliesByType(WarAgentType agentType){
 		return getAgent().getPerceptsAlliesByType(agentType);
 	}
 
 	@Override
-	public ArrayList<WarPercept> getPerceptsEnemiesByType(WarAgentType agentType){
+	public ArrayList<WarAgentPercept> getPerceptsEnemiesByType(WarAgentType agentType){
 		return getAgent().getPerceptsEnemiesByType(agentType);
 	}
 	
 	@Override
-	public ArrayList<WarPercept> getPercepts() {
+	public ArrayList<WarAgentPercept> getPercepts() {
 		return getAgent().getPercepts();
 	}
-	
-	@Override
+
+    @Override
+    public ArrayList<WallPercept> getWallPercepts() {
+        return getAgent().getWallPercepts();
+    }
+
+    @Override
 	public String getDebugString() {
 		return getAgent().getDebugString();
 	}

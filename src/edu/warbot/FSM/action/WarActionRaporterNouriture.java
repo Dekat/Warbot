@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.MovableWarAgentAdapter;
 import edu.warbot.communications.WarMessage;
@@ -29,7 +30,7 @@ public class WarActionRaporterNouriture<AgentAdapterType extends MovableWarAgent
 		if(getAgent().isBlocked())
 			getAgent().setRandomHeading();
 
-		ArrayList<WarPercept> basePercepts = getAgent().getPerceptsAlliesByType(WarAgentType.WarBase);
+		ArrayList<WarAgentPercept> basePercepts = getAgent().getPerceptsAlliesByType(WarAgentType.WarBase);
 		
 		//Si je ne voit pas de base vois une base
 		if(basePercepts == null | basePercepts.size() == 0){
@@ -45,7 +46,7 @@ public class WarActionRaporterNouriture<AgentAdapterType extends MovableWarAgent
 			return MovableWarAgent.ACTION_MOVE;
 			
 		}else{//si je vois une base
-			WarPercept base = basePercepts.get(0);
+            WarAgentPercept base = basePercepts.get(0);
 			
 			if(base.getDistance() > MovableWarAgent.MAX_DISTANCE_GIVE){
 				getAgent().setHeading(base.getAngle());

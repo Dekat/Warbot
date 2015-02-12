@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.agents.WarEngineer;
 import edu.warbot.agents.agents.WarExplorer;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.agents.resources.WarFood;
 import edu.warbot.brains.WarBrain;
@@ -35,9 +36,9 @@ public class WarExplorerBrainController extends WarBrain<WarExplorerAdapter> {
 			getAgent().sendMessage(_idBase, "Are you full life", "");
 		}
 		
-		ArrayList<WarPercept> percepts = getAgent().getPercepts();
+		ArrayList<WarAgentPercept> percepts = getAgent().getPercepts();
 		
-		for (WarPercept p : percepts) {
+		for (WarAgentPercept p : percepts) {
 			switch(p.getType()) {
 			case WarFood :
 				if(p.getDistance() < WarFood.MAX_DISTANCE_TAKE && !getAgent().isBagFull()) {

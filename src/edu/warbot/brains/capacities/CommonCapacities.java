@@ -1,5 +1,6 @@
 package edu.warbot.brains.capacities;
 
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.percepts.WarPercept;
 import madkit.kernel.AbstractAgent;
 
@@ -16,7 +17,7 @@ public interface CommonCapacities {
 	public void setRandomHeading(int range);
 
 	public String getTeamName();
-	public boolean isEnemy(WarPercept percept);
+	public boolean isEnemy(WarAgentPercept percept);
 
 	public int getID();
 }

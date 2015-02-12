@@ -1,5 +1,6 @@
 package edu.warbot.brains;
 
+import edu.warbot.agents.percepts.WarAgentPercept;
 import madkit.kernel.AbstractAgent.ReturnCode;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.percepts.WarPercept;
@@ -43,7 +44,7 @@ public abstract class WarAgentAdapter implements CommonCapacities {
 	}
 	
 	@Override
-	public boolean isEnemy(WarPercept percept) {
+	public boolean isEnemy(WarAgentPercept percept) {
 		return getAgent().isEnemy(percept);
 	}
 

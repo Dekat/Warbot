@@ -6,6 +6,7 @@ import edu.warbot.FSM.WarFSMMessage;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.agents.projectiles.WarRocket;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
@@ -27,7 +28,7 @@ public class WarActionDefendre extends WarAction<WarRocketLauncherAdapter> {
 			return WarRocketLauncher.ACTION_RELOAD;
 		}
 		
-		ArrayList<WarPercept> perceptEnemy = getAgent().getPerceptsEnemiesByType(WarAgentType.WarRocketLauncher);
+		ArrayList<WarAgentPercept> perceptEnemy = getAgent().getPerceptsEnemiesByType(WarAgentType.WarRocketLauncher);
 
 		// si j'ai un enemy dans mon percept
 		if(perceptEnemy != null & perceptEnemy.size() > 0){

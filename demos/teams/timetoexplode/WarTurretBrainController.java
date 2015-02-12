@@ -3,6 +3,7 @@ package teams.timetoexplode;
 import java.util.ArrayList;
 
 import edu.warbot.agents.agents.WarTurret;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarTurretAdapter;
@@ -26,8 +27,8 @@ public class WarTurretBrainController extends WarBrain<WarTurretAdapter> {
 		}
 		getAgent().setHeading(_sight);
 		
-		ArrayList<WarPercept> percepts = getAgent().getPercepts();	
-		for (WarPercept p : percepts) {
+		ArrayList<WarAgentPercept> percepts = getAgent().getPercepts();
+		for (WarAgentPercept p : percepts) {
 			switch(p.getType()) {
 			default:
 				if (getAgent().isEnemy(p)) {

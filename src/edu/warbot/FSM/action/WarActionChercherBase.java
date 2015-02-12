@@ -6,6 +6,7 @@ import edu.warbot.FSM.WarFSMMessage;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 import edu.warbot.communications.WarMessage;
@@ -27,7 +28,7 @@ public class WarActionChercherBase extends WarAction<WarRocketLauncherAdapter> {
 	@Override
 	public String executeAction(){
 		
-		ArrayList<WarPercept> basePercepts = getAgent().getPerceptsEnemiesByType(WarAgentType.WarBase);
+		ArrayList<WarAgentPercept> basePercepts = getAgent().getPerceptsEnemiesByType(WarAgentType.WarBase);
 		
 		// Je vois la base
 		if(basePercepts != null && basePercepts.size() > 0){ 

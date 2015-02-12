@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.agents.resources.WarFood;
 import edu.warbot.brains.MovableWarAgentAdapter;
@@ -31,7 +32,7 @@ public class WarActionFuire<AgentAdapterType extends MovableWarAgentAdapter> ext
 //			setActionTerminate(true);
 		
 		//Si je n'ai pas denemie autour de moi j'ai terminé
-		ArrayList<WarPercept> percept = getAgent().getPerceptsEnemiesByType(WarAgentType.WarRocketLauncher);
+		ArrayList<WarAgentPercept> percept = getAgent().getPerceptsEnemiesByType(WarAgentType.WarRocketLauncher);
 		
 		// si il y a des enemy je fuis
 		if(percept.size() > 0){
@@ -41,7 +42,7 @@ public class WarActionFuire<AgentAdapterType extends MovableWarAgentAdapter> ext
 			// Sinon je prend de la nouriture pour me soigner
 			percept = getAgent().getPerceptsResources();
 			if(percept.size() > 0){
-				WarPercept p = percept.get(0);
+                WarAgentPercept p = percept.get(0);
 				if(p.getDistance() < WarFood.MAX_DISTANCE_TAKE)
 					return MovableWarAgent.ACTION_TAKE;
 				else{

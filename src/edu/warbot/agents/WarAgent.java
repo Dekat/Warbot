@@ -6,6 +6,7 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.tools.*;
 import madkit.kernel.AbstractAgent;
@@ -83,7 +84,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	}
 	
 	@Override
-	public boolean isEnemy(WarPercept percept) {
+	public boolean isEnemy(WarAgentPercept percept) {
 		return ! percept.getTeamName().equals(getTeamName());
 	}
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.agents.WarEngineer;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarBaseAdapter;
@@ -74,9 +75,9 @@ public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
 			if(msg.getMessage().equals("Give me my next target")) {
 				
 				
-				ArrayList<WarPercept> percepts = getAgent().getPercepts();
+				ArrayList<WarAgentPercept> percepts = getAgent().getPercepts();
 				
-				for (WarPercept p : percepts) {
+				for (WarAgentPercept p : percepts) {
 					switch(p.getType()) {
 					case WarEngineer :
 						if(!getAgent().isEnemy(p)) {
@@ -90,9 +91,9 @@ public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
 				}
 			}
 			if(msg.getMessage().equals("Am I on aim")) {
-				ArrayList<WarPercept> percepts = getAgent().getPercepts();
+				ArrayList<WarAgentPercept> percepts = getAgent().getPercepts();
 				
-				for (WarPercept p : percepts) {
+				for (WarAgentPercept p : percepts) {
 					switch(p.getType()) {
 					case WarEngineer :
 						if(!getAgent().isEnemy(p)) {
@@ -114,11 +115,11 @@ public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
 			
 		}
 		
-		ArrayList<WarPercept> percepts = getAgent().getPercepts();
+		ArrayList<WarAgentPercept> percepts = getAgent().getPercepts();
 		
 		//System.out.println(percepts);
 		
-		for (WarPercept p : percepts) {
+		for (WarAgentPercept p : percepts) {
 			switch(p.getType()) {
 			case WarRocketLauncher :
 				if(getAgent().isEnemy(p)) {
@@ -142,7 +143,7 @@ public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
 		}
 		
 		if(_inDanger) {
-			ArrayList<WarPercept> enemies = getAgent().getPerceptsEnemies();
+			ArrayList<WarAgentPercept> enemies = getAgent().getPerceptsEnemies();
 			if(enemies.isEmpty()) {
 				_inDanger = false;
 				getAgent().broadcastMessageToAll("I am the danger", "");

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
 
+import edu.warbot.agents.percepts.WallPercept;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import madkit.kernel.Message;
 import edu.warbot.agents.actions.ControllableActions;
 import edu.warbot.agents.enums.WarAgentType;
@@ -249,42 +251,47 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 	}
 
 	@Override
-	public ArrayList<WarPercept> getPercepts() {
+	public ArrayList<WarAgentPercept> getPercepts() {
 		return _perceptsGetter.getPercepts();
 	}
 
-	public ArrayList<WarPercept> getPercepts(boolean ally) {
+	public ArrayList<WarAgentPercept> getPercepts(boolean ally) {
 		return _perceptsGetter.getWarAgentsPercepts(ally);
 	}
 	
 	@Override
-	public ArrayList<WarPercept> getPerceptsAllies() {
+	public ArrayList<WarAgentPercept> getPerceptsAllies() {
 		return getPercepts(true);
 	}
 	
 	@Override
-	public ArrayList<WarPercept> getPerceptsEnemies() {
+	public ArrayList<WarAgentPercept> getPerceptsEnemies() {
 		return getPercepts(false);
 	}
 	
 	@Override
-	public ArrayList<WarPercept> getPerceptsResources() {
+	public ArrayList<WarAgentPercept> getPerceptsResources() {
 		return _perceptsGetter.getResourcesPercepts();
 	}
 	
-	public ArrayList<WarPercept> getPerceptsByAgentType(WarAgentType agentType, boolean ally) {
+	public ArrayList<WarAgentPercept> getPerceptsByAgentType(WarAgentType agentType, boolean ally) {
 		return _perceptsGetter.getPerceptsByType(agentType, ally);
 	}
 	
 	@Override
-	public ArrayList<WarPercept> getPerceptsAlliesByType(WarAgentType agentType) {
+	public ArrayList<WarAgentPercept> getPerceptsAlliesByType(WarAgentType agentType) {
 		return getPerceptsByAgentType(agentType, true);
 	}
 	
 	@Override
-	public ArrayList<WarPercept> getPerceptsEnemiesByType(WarAgentType agentType) {
+	public ArrayList<WarAgentPercept> getPerceptsEnemiesByType(WarAgentType agentType) {
 		return getPerceptsByAgentType(agentType, false);
 	}
+
+    @Override
+    public ArrayList<WallPercept> getWallPercepts() {
+        return _perceptsGetter.getWallsPercepts();
+    }
 
     public Shape getPerceptionArea() {
         return _perceptsGetter.getPerceptionArea();
@@ -333,7 +340,7 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 	 */
 	@Override
 	public CoordPolar getAveragePositionOfUnitInPercept(WarAgentType agentType, boolean ally) {
-		ArrayList<WarPercept> listPercept = this.getPerceptsByAgentType(agentType, ally);
+		ArrayList<WarAgentPercept> listPercept = this.getPerceptsByAgentType(agentType, ally);
 
 		if (listPercept.size() == 0)
 			return null;

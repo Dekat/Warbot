@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 import edu.warbot.tools.CoordPolar;
@@ -28,7 +29,7 @@ public class WarActionAttaquer extends WarAction<WarRocketLauncherAdapter> {
 			return WarRocketLauncher.ACTION_RELOAD;
 		}
 		
-		ArrayList<WarPercept> percept = getAgent().getPerceptsEnemiesByType(this.agentType);
+		ArrayList<WarAgentPercept> percept = getAgent().getPerceptsEnemiesByType(this.agentType);
 		
 		// Je un agentType dans le percept
 		if(percept != null && percept.size() > 0){

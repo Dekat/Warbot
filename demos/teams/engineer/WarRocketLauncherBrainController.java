@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.agents.WarRocketLauncher;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.agents.resources.WarFood;
 import edu.warbot.brains.WarBrain;
@@ -36,8 +37,8 @@ public class WarRocketLauncherBrainController extends WarBrain<WarRocketLauncher
 		if (getAgent().getHealth() <= (WarRocketLauncher.MAX_HEALTH / 5))
 			return WarRocketLauncher.ACTION_EAT;
 		
-		ArrayList<WarPercept> percepts = getAgent().getPercepts();	
-		for (WarPercept p : percepts) {
+		ArrayList<WarAgentPercept> percepts = getAgent().getPercepts();
+		for (WarAgentPercept p : percepts) {
 			switch(p.getType()) {
 			case WarFood :
 				if (p.getDistance() < WarFood.MAX_DISTANCE_TAKE && !getAgent().isBagFull()) {

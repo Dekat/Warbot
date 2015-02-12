@@ -7,6 +7,7 @@ import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.MovableWarAgentAdapter;
 
@@ -58,13 +59,13 @@ public class WarActionHeal<AgentAdapterType extends MovableWarAgentAdapter> exte
 			
 		}else{
 			// Je heal mes allies
-			ArrayList<WarPercept> percept = getAgent().getPerceptsAllies();
+			ArrayList<WarAgentPercept> percept = getAgent().getPerceptsAllies();
 			
 			if(percept.size() == 0){
 				return MovableWarAgent.ACTION_MOVE;
 			}
 			
-			for (WarPercept p : percept) {
+			for (WarAgentPercept p : percept) {
 				int maxHeath = maxHeathOfAgentType(p);
 				
 				if(maxHeath != -1){
@@ -88,7 +89,7 @@ public class WarActionHeal<AgentAdapterType extends MovableWarAgentAdapter> exte
 		
 	}
 
-	private int maxHeathOfAgentType(WarPercept p) {
+	private int maxHeathOfAgentType(WarAgentPercept p) {
 		if(p.getType().equals(WarAgentType.WarRocketLauncher))
 			return WarRocketLauncher.MAX_HEALTH;
 		else if(p.getType().equals(WarAgentType.WarExplorer))

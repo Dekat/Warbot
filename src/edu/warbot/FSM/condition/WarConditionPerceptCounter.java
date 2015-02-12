@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 
@@ -31,7 +32,7 @@ public class WarConditionPerceptCounter<AgentAdapterType extends ControllableWar
 	public boolean isValide() {
 
 		// Recupere les percepts
-		ArrayList<WarPercept> percepts = new ArrayList<>();
+		ArrayList<WarAgentPercept> percepts = new ArrayList<>();
 		
 		if(this.enemy){
 			if(this.agentType == null){

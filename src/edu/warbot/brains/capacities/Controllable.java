@@ -3,6 +3,8 @@ package edu.warbot.brains.capacities;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import edu.warbot.agents.percepts.WallPercept;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import madkit.kernel.AbstractAgent.ReturnCode;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarPercept;
@@ -30,12 +32,13 @@ public interface Controllable extends CommonCapacities {
 	public int getHealth();
 	public int getMaxHealth();
 	
-	public ArrayList<WarPercept> getPerceptsAllies();
-	public ArrayList<WarPercept> getPerceptsEnemies();
-	public ArrayList<WarPercept> getPerceptsResources();
-	public ArrayList<WarPercept> getPerceptsAlliesByType(WarAgentType agentType);
-	public ArrayList<WarPercept> getPerceptsEnemiesByType(WarAgentType agentType);
-	public ArrayList<WarPercept> getPercepts();
+	public ArrayList<WarAgentPercept> getPerceptsAllies();
+	public ArrayList<WarAgentPercept> getPerceptsEnemies();
+	public ArrayList<WarAgentPercept> getPerceptsResources();
+	public ArrayList<WarAgentPercept> getPerceptsAlliesByType(WarAgentType agentType);
+	public ArrayList<WarAgentPercept> getPerceptsEnemiesByType(WarAgentType agentType);
+	public ArrayList<WarAgentPercept> getPercepts();
+    public ArrayList<WallPercept> getWallPercepts();
 	
 	public String getDebugString();
 	public void setDebugString(String debugString);

@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.tools.GeometryTools;
 import edu.warbot.tools.WarCircle;
 import edu.warbot.tools.WarStar;
@@ -408,7 +409,7 @@ public class WarViewer extends TKDefaultViewer {
                 // On récupère la liste des agents vus par l'agent sélectionné
                 WarAgent selectedAgent = _autorModeToolBar.getSelectedAgent();
                 if (selectedAgent instanceof ControllableWarAgent) {
-                    for(WarPercept p : ((ControllableWarAgent) selectedAgent).getPercepts())
+                    for(WarAgentPercept p : ((ControllableWarAgent) selectedAgent).getPercepts())
                         _agentsIDsSeenBySelectedAgent.add(p.getID());
                 }
             }

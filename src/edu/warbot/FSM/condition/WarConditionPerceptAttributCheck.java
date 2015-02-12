@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 
@@ -19,17 +20,17 @@ public class WarConditionPerceptAttributCheck<AgentAdapterType extends Controlla
 	WarAgentType agentType;
 	boolean oneOf;
 	
-	/**
-	 * 
-	 * @param brain
-	 * @param nameAtt
-	 * @param operand
-	 * @param ref
-	 * @param poucentage
-	 * @param enemy = true, ally = false
-	 * @param agentType null for all
-	 * @param oneOf oneOf = true, all = false
-	 */
+//	/**
+//	 *
+//	 * @param brain
+//	 * @param nameAtt
+//	 * @param operand
+//	 * @param ref
+//	 * @param poucentage
+//	 * @param enemy = true, ally = false
+//	 * @param agentType null for all
+//	 * @param oneOf oneOf = true, all = false
+//	 */
 	
 	public WarConditionPerceptAttributCheck(String name, AgentAdapterType brain, 
 			WarConditionSettings conditionSettings){
@@ -49,7 +50,7 @@ public class WarConditionPerceptAttributCheck<AgentAdapterType extends Controlla
 	public boolean isValide() {
 
 		// Recupere les percepts
-		ArrayList<WarPercept> percepts = new ArrayList<>();
+		ArrayList<WarAgentPercept> percepts = new ArrayList<>();
 		
 		if(this.enemy){
 			if(this.agentType == null){
@@ -73,7 +74,7 @@ public class WarConditionPerceptAttributCheck<AgentAdapterType extends Controlla
 		if(this.oneOf){
 			listeAttriuts.add(getAttribut(percepts.get(0), this.nameAtt));
 		}else{
-			for (WarPercept p : percepts) {
+			for (WarAgentPercept p : percepts) {
 				listeAttriuts.add(getAttribut(p, this.nameAtt));
 			}
 		}
@@ -107,7 +108,7 @@ public class WarConditionPerceptAttributCheck<AgentAdapterType extends Controlla
 			
 	}
 	
-	private Integer getAttribut(WarPercept p, String att) {
+	private Integer getAttribut(WarAgentPercept p, String att) {
 		if(att.equals(WarConditionPerceptAttributCheck.HEALTH))
 			return p.getHealth();
 		else{

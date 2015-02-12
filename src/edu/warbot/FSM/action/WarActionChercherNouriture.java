@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.MovableWarAgentAdapter;
 import edu.warbot.communications.WarMessage;
@@ -31,7 +32,7 @@ public class WarActionChercherNouriture<AgentAdapterType extends MovableWarAgent
 		if(getAgent().isBlocked())
 			getAgent().setRandomHeading();
 
-		ArrayList<WarPercept> foodPercepts = getAgent().getPerceptsResources();
+		ArrayList<WarAgentPercept> foodPercepts = getAgent().getPerceptsResources();
 		
 		//Si il ny a pas de nouriture dans le percept
 		if(foodPercepts.size() == 0){
@@ -45,7 +46,7 @@ public class WarActionChercherNouriture<AgentAdapterType extends MovableWarAgent
 			return MovableWarAgent.ACTION_MOVE;
 				
 		}else{//Si il y a de la nouriture
-			WarPercept foodP = foodPercepts.get(0); //le 0 est le plus proche normalement
+            WarAgentPercept foodP = foodPercepts.get(0); //le 0 est le plus proche normalement
 			
 			//si il y a beaucoup de nourriture je previens mes alliés
 			if(foodPercepts.size() > 1)

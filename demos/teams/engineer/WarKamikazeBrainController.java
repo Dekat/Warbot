@@ -3,6 +3,7 @@ package teams.engineer;
 import java.util.ArrayList;
 
 import edu.warbot.agents.agents.WarExplorer;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarKamikazeAdapter;
@@ -15,9 +16,9 @@ public class WarKamikazeBrainController extends WarBrain<WarKamikazeAdapter> {
 
 	@Override
 	public String action() {
-		ArrayList<WarPercept> percepts = getAgent().getPercepts();
+		ArrayList<WarAgentPercept> percepts = getAgent().getPercepts();
 		
-		for (WarPercept p : percepts) {
+		for (WarAgentPercept p : percepts) {
 			switch(p.getType()) {
 			case WarBase :
 				if (getAgent().isEnemy(p)) {
