@@ -13,15 +13,18 @@ import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 public class WarPlanWiggle<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
 	
 	
+	private Integer nombrePas;
+
 	public WarPlanWiggle(AgentAdapterType brain, WarPlanSettings planSettings) {
 		super("Plan Wiggle", brain, planSettings);
+		this.nombrePas = planSettings.Value;
 	}
 
 	public void buildActionList() {
 		
 		setPrintTrace(true);
 		
-		WarAction<AgentAdapterType> actionAttaquer = new WarActionWiggle<AgentAdapterType>(getBrain(), 100000);
+		WarAction<AgentAdapterType> actionAttaquer = new WarActionWiggle<AgentAdapterType>(getBrain(), nombrePas);
 		
 		addAction(actionAttaquer);
 		

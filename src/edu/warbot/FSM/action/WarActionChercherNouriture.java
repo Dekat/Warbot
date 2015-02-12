@@ -25,8 +25,8 @@ public class WarActionChercherNouriture<AgentAdapterType extends MovableWarAgent
 
 	public String executeAction(){
 		
-		if(getAgent().isBagFull() | getAgent().getNbElementsInBag() >=this.nbMaxElement)
-			setActionTerminate(true);
+//		if(getAgent().isBagFull() | getAgent().getNbElementsInBag() >=this.nbMaxElement)
+//			setActionTerminate(true);
 		
 		if(getAgent().isBlocked())
 			getAgent().setRandomHeading();

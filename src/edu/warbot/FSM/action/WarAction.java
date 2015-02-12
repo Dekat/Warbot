@@ -3,17 +3,16 @@ package edu.warbot.FSM.action;
 import java.util.ArrayList;
 
 import edu.warbot.FSM.condition.WarCondition;
+import edu.warbot.FSMEditor.settings.EnumAction;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 
 public abstract class WarAction<AgentAdapterType extends ControllableWarAgentAdapter> {
 	
 	ArrayList<WarCondition<AgentAdapterType>> conditions = new ArrayList<>();
 	
-	private AgentAdapterType agent;
-	
 	private String nom;
-	
-	private boolean terminate = false;
+
+	private AgentAdapterType agent;
 	
 	public WarAction(AgentAdapterType b){
 		this.agent = b;
@@ -35,20 +34,12 @@ public abstract class WarAction<AgentAdapterType extends ControllableWarAgentAda
 	}
 
 	
-	public String getNom(){
+	public String getName(){
 		return this.nom;
 	}
 
 	public ArrayList<WarCondition<AgentAdapterType>> getConditions() {
 		return this.conditions;
-	}
-	
-	public void setActionTerminate(boolean b){
-		this.terminate = b;
-	}
-	
-	public boolean isTerminate(){
-		return this.terminate;
 	}
 	
 	public void addCondition(WarCondition<AgentAdapterType> cond){
@@ -59,8 +50,12 @@ public abstract class WarAction<AgentAdapterType extends ControllableWarAgentAda
 	 * Méthode appelée avant chaque première exécution de l'action
 	 */
 	public void actionWillBegin(){
-		setActionTerminate(false);
 		getAgent().setDebugString(this.getClass().getSimpleName());
+	}
+
+	//A voir si ça marche (si ça renvoi bien le type spécifique
+	public EnumAction getType() {
+		return EnumAction.valueOf(getClass().getSimpleName());
 	}
 
 }

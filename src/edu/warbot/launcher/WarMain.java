@@ -160,22 +160,26 @@ public class WarMain implements Observer {
 
                         //Vérifie si l'équipe est une FSM (regard dans le fichier de configuration)
                         if(analXML.isFSMTeam()){
-                        	System.out.println("WarMain : FSM Team found");
-                        	
-                        	JarEntry entryFSMConfiguration = allJarEntries.get(FsmXmlParser.xmlConfigurationDefaultFilename);
-                        	System.out.println("WarMain : jarEntry for FSMXmlConfiguration found");
-                        	
-                        	InputStream fileFSMConfig = jarCurrentFile.getInputStream(entryFSMConfiguration);
-                        	FsmXmlReader fsmXmlReader = new FsmXmlReader(fileFSMConfig);
-                        	FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
-                        	currentTeam.setFSMModel(fsmModelRebuilder.getRebuildModel());
-                        	System.out.println("WarMain : FSMXmlReader successfull read fsmConfigFile");
-                        	
-                        	HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();
-                    		
-							for (String agentName : brainControllersClassesName.keySet()) {
-								currentTeam.addBrainControllerClassForAgent(agentName, WarFSMBrainController.class);
-							}
+                        	try{
+	                        	System.out.println("WarMain : FSM Team found");
+	                        	
+	                        	JarEntry entryFSMConfiguration = allJarEntries.get(FsmXmlParser.xmlConfigurationDefaultFilename);
+	                        	System.out.println("WarMain : jarEntry for FSMXmlConfiguration found");
+	                        	
+	                        	InputStream fileFSMConfig = jarCurrentFile.getInputStream(entryFSMConfiguration);
+	                        	FsmXmlReader fsmXmlReader = new FsmXmlReader(fileFSMConfig);
+	                        	FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
+	                        	currentTeam.setFSMModel(fsmModelRebuilder.getRebuildModel());
+	                        	System.out.println("WarMain : FSMXmlReader successfull read fsmConfigFile");
+	                        	
+	                        	HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();
+	                    		
+								for (String agentName : brainControllersClassesName.keySet()) {
+									currentTeam.addBrainControllerClassForAgent(agentName, WarFSMBrainController.class);
+								}
+                        	}catch(IllegalArgumentException e){
+                        		System.err.println("ERROR during readind FSM teams " + analXML.getTeamName());
+                        	}
 
                         }else{
 	                        // On parcours chaque nom de classe, puis on les charge

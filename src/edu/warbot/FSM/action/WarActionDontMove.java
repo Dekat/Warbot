@@ -28,7 +28,6 @@ public class WarActionDontMove<AgentAdapterType extends MovableWarAgentAdapter> 
 		
 		//System.out.println("J'execute l'action dont move je suis au pas " + nbPas);
 		if(this.nbPas > nbPasMax){
-			setActionTerminate(true);
 			return MovableWarAgent.ACTION_IDLE;
 		}
 		

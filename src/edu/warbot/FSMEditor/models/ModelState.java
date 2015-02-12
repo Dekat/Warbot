@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
-import edu.warbot.FSMEditor.settings.PlanEnum;
+import edu.warbot.FSMEditor.settings.EnumPlan;
 import edu.warbot.FSMEditor.settings.Settings;
 
 public class ModelState {
 	
 	private String name;
-	private PlanEnum warPlanName;
+	private EnumPlan warPlanName;
 	
 	private WarPlanSettings planSettings;
 	
@@ -20,7 +20,7 @@ public class ModelState {
 	private ArrayList<ModelCondition> conditionsOut = new ArrayList<>();
 	private ArrayList<ModelCondition> conditionsIn = new ArrayList<>();
 
-	public ModelState(String name, PlanEnum planName, WarPlanSettings planSettings) {
+	public ModelState(String name, EnumPlan planName, WarPlanSettings planSettings) {
 		this.name = name;
 		this.warPlanName = planName;
 		this.planSettings = planSettings;
@@ -48,7 +48,7 @@ public class ModelState {
 		return Settings.getFullNameOf(this.warPlanName);
 	}
 	
-	public PlanEnum getPlanName(){
+	public EnumPlan getPlanName(){
 		return warPlanName;
 	}
 	
@@ -72,7 +72,7 @@ public class ModelState {
 		this.name = name;
 	}
 
-	public void setPlanName(PlanEnum planName) {
+	public void setPlanName(EnumPlan planName) {
 		this.warPlanName = planName;
 	}
 

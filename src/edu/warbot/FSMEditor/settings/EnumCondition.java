@@ -1,8 +1,7 @@
 package edu.warbot.FSMEditor.settings;
 
-
-public enum ConditionEnum {
-	WarConditionActionTerminate,
+public enum EnumCondition {
+	WarConditionTimeOut,
 	WarConditionAttributCheck,
 	WarConditionMessageChecker,
 	FWarConditionPerceptAttributCheck,

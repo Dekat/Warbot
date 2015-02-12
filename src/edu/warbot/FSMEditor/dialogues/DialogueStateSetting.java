@@ -10,7 +10,7 @@ import javax.swing.border.TitledBorder;
 
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSMEditor.models.ModelState;
-import edu.warbot.FSMEditor.settings.PlanEnum;
+import edu.warbot.FSMEditor.settings.EnumPlan;
 import edu.warbot.FSMEditor.views.ViewBrain;
 
 public class DialogueStateSetting extends AbstractDialogue {
@@ -63,11 +63,11 @@ public class DialogueStateSetting extends AbstractDialogue {
 		return this.fieldName.getText();
 	}
 
-	public PlanEnum getPlanName() {
-		return (PlanEnum) comboxPlan.getSelectedItem();
+	public EnumPlan getPlanName() {
+		return (EnumPlan) comboxPlan.getSelectedItem();
 	}
 
 	JTextField fieldName = new JTextField(DEFAULT_STATE_NAME);
-	JComboBox<PlanEnum> comboxPlan = new JComboBox<PlanEnum>(PlanEnum.values());
+	JComboBox<EnumPlan> comboxPlan = new JComboBox<EnumPlan>(EnumPlan.values());
 
 }

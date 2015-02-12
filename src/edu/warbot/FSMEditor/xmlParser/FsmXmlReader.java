@@ -19,8 +19,8 @@ import edu.warbot.FSMEditor.models.Modele;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
-import edu.warbot.FSMEditor.settings.ConditionEnum;
-import edu.warbot.FSMEditor.settings.PlanEnum;
+import edu.warbot.FSMEditor.settings.EnumCondition;
+import edu.warbot.FSMEditor.settings.EnumPlan;
 import edu.warbot.agents.enums.WarAgentType;
 /**
  * Permet de lire un fichier de configuration au format de XML et de type FSM
@@ -115,7 +115,7 @@ public class FsmXmlReader extends FsmXmlParser{
 		WarPlanSettings warPlanSetting = 
 				(WarPlanSettings) getWarGenericSettings(WarPlanSettings.class, state.getChild(PlanSettings));
 		
-		ModelState modeleState = new ModelState(name, PlanEnum.valueOf(plan), warPlanSetting);
+		ModelState modeleState = new ModelState(name, EnumPlan.valueOf(plan), warPlanSetting);
 		modeleState.setConditionsOutID(condID);
 		
 		modeleBrain.addState(modeleState);
@@ -130,7 +130,7 @@ public class FsmXmlReader extends FsmXmlParser{
 		WarConditionSettings warConditionSetting = 
 				(WarConditionSettings) getWarGenericSettings(WarConditionSettings.class, cond.getChild(ConditionSettings));
 		
-		ModelCondition modeleCond = new ModelCondition(name, ConditionEnum.valueOf(type), warConditionSetting);
+		ModelCondition modeleCond = new ModelCondition(name, EnumCondition.valueOf(type), warConditionSetting);
 		modeleCond.setStateOutId(stateOutID);
 		
 		modeleBrain.addCondition(modeleCond);		

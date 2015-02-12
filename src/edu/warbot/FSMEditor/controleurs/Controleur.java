@@ -9,11 +9,10 @@ import java.util.Arrays;
 import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSMEditor.FSMInstancier;
-import edu.warbot.FSMEditor.FSMModelRebuilder;
-import edu.warbot.FSMEditor.models.Modele;
-import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
+import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.views.View;
 import edu.warbot.FSMEditor.views.ViewBrain;
 import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
@@ -70,7 +69,7 @@ public class Controleur {
 		view.getMenuBarItemSaveJar().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				eventMenuBarItemSaveJar();
+				eventMenuBarItemTest();
 			}
 		});
 	}
@@ -79,24 +78,17 @@ public class Controleur {
 		FsmXmlSaver fsmSaver = new FsmXmlSaver();
 		
 		fsmSaver.saveFSM(modele, FsmXmlReader.xmlConfigurationDefaultFilename);
-		System.out.println("Configuration file exported successfull");
-		
+		System.out.println("Controleur : Configuration file exported successfull");
 	}
 	
-	public void eventMenuBarItemSaveJar() {
-		FsmXmlSaver saver = new FsmXmlSaver();
-		saver.saveFSM(this.modele, FsmXmlReader.xmlConfigurationDefaultFilename);
-		
-		System.out.println("Configuration file exported successfull");
+	public void eventMenuBarItemTest() {
+		//Sauvegarde le model
+		eventMenuBarItemSave();
 
-		FsmXmlReader reader = new FsmXmlReader(FsmXmlReader.xmlConfigurationDefaultFilename);
-		Modele modeleRead = reader.getGeneratedFSMModel();
+		//Charge le model
+		eventMenuBarItemLoad();
 		
-		System.out.println("Configuration file imported successfull");
-		
-//		printModelInformations(modeleRead);
-		
-		FSMInstancier fsmInstancier = new FSMInstancier(modeleRead);
+		FSMInstancier fsmInstancier = new FSMInstancier(this.modele);
 		
 		//Crée un agent pour tester
 		WarExplorerAdapter explorerAdapter = null;
@@ -110,6 +102,13 @@ public class Controleur {
 		
 	}
 	
+	public void eventMenuBarItemLoad(){
+		FsmXmlReader reader = new FsmXmlReader(FsmXmlReader.xmlConfigurationDefaultFilename);
+		this.modele = reader.getGeneratedFSMModel();
+
+		System.out.println("Controleur : Configuration file imported successfull");
+	}
+
 	private void printModelInformations(Modele modeleRead) {
 		System.out.println("*** Vérification du modele gnééré dynamiquement pour la FSM ***");
 		for (ModeleBrain modBrain : modeleRead.getModelsBrains()) {
@@ -159,10 +158,6 @@ public class Controleur {
 				//TODO faire la suite de l'affichage
 			}
 		}
-	}
-
-	public void eventMenuBarItemLoad(){
-		
 	}
 
 }

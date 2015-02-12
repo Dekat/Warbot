@@ -23,8 +23,8 @@ public class WarActionRaporterNouriture<AgentAdapterType extends MovableWarAgent
 
 	public String executeAction(){
 		
-		if(getAgent().isBagEmpty() | getAgent().getNbElementsInBag() <= nbElementToKeep)
-			setActionTerminate(true);
+//		if(getAgent().isBagEmpty() | getAgent().getNbElementsInBag() <= nbElementToKeep)
+//			setActionTerminate(true);
 		
 		if(getAgent().isBlocked())
 			getAgent().setRandomHeading();

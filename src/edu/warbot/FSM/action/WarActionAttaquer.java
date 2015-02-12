@@ -44,7 +44,6 @@ public class WarActionAttaquer extends WarAction<WarRocketLauncherAdapter> {
 				return WarRocketLauncher.ACTION_IDLE;
 			}
 		}else{ //Si il ny a pas agentType dans le percept
-			setActionTerminate(true);
 
 			return MovableWarAgent.ACTION_IDLE;
 

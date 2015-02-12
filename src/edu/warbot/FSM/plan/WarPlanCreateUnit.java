@@ -7,7 +7,9 @@ import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionCreateUnit;
 import edu.warbot.FSM.condition.WarCondition;
-import edu.warbot.FSM.condition.WarConditionActionTerminate;
+import edu.warbot.FSM.condition.WarConditionTimeOut;
+import edu.warbot.FSMEditor.settings.EnumAction;
+import edu.warbot.FSMEditor.settings.Settings;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.adapters.WarBaseAdapter;
 
@@ -32,8 +34,8 @@ public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 	public WarPlanCreateUnit(WarBaseAdapter brain, WarPlanSettings planSettings ) {
 		super("Plan healer", brain, planSettings);
 		
-		this.agentType = getPlanSettings().Agent_type_destination;
-		this.nombreAgent = getPlanSettings().Number_agent_destination;
+		this.agentType = getPlanSettings().Agent_type;
+		this.nombreAgent = getPlanSettings().Number_agent;
 		
 		this.reference = getPlanSettings().Value_reference;
 		this.pourcentage = getPlanSettings().Value_pourcentage;
@@ -61,14 +63,27 @@ public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 			for(int i = 0; i < nbA; i++){
 				
 				WarConditionSettings condSet1 = new WarConditionSettings();
-				condSet1.Action = actions[i%nbA];
-				cond[i%nbA] = new WarConditionActionTerminate<WarBaseAdapter>("cond_"+ i, getBrain(), condSet1);
+				condSet1.Action = actions[i%nbA].getType(); //EnumAction.valueOf(actions[i%nbA].getName());
+				cond[i%nbA] = new WarConditionTimeOut<WarBaseAdapter>("cond_"+ i, getBrain(), condSet1);
 				cond[i%nbA].setDestination(actions[(i+1)%nbA]);
 				actions[i%nbA].addCondition(cond[i%nbA]);
 			}
 		}
 		
 		setFirstAction(this.actions[0]);
+	}
+
+	private WarAction<WarBaseAdapter> getActionInstance(EnumAction warAction) {
+		try {
+			return (WarAction<WarBaseAdapter>) Class.forName(Settings.getFullNameOf(warAction)).newInstance();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 }

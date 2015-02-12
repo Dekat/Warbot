@@ -25,7 +25,7 @@ public class FSMModelRebuilder {
 	 */
 	public FSMModelRebuilder(Modele model) {
 		this.model = model;
-		System.out.println("FSMRebuilder : begining construction...");
+		System.out.println("FSMRebuilder : rebuilding model");
 		rebuildModel();
 		this.model.setIsRebuild(true);
 	}

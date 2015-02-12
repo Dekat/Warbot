@@ -27,7 +27,6 @@ public class WarActionCreateUnit extends WarAction<WarBaseAdapter> {
 	public String executeAction(){
 		
 		if(nbCreate == nbToCreate){
-			setActionTerminate(true);
 			return MovableWarAgent.ACTION_IDLE;
 		}
 		

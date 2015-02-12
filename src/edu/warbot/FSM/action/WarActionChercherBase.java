@@ -37,8 +37,6 @@ public class WarActionChercherBase extends WarAction<WarRocketLauncherAdapter> {
 			// Previent les autres unités de où est la base
 			getAgent().broadcastMessageToAgentType(WarAgentType.WarRocketLauncher, WarFSMMessage.enemyBaseHere, baseCoord);
 
-			setActionTerminate(true);
-			
 			getAgent().setHeading(basePercepts.get(0).getAngle());
 			return MovableWarAgent.ACTION_MOVE;
 			

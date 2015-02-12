@@ -17,8 +17,8 @@ import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.panels.PanelCondition;
 import edu.warbot.FSMEditor.panels.PanelState;
-import edu.warbot.FSMEditor.settings.ConditionEnum;
-import edu.warbot.FSMEditor.settings.PlanEnum;
+import edu.warbot.FSMEditor.settings.EnumCondition;
+import edu.warbot.FSMEditor.settings.EnumPlan;
 import edu.warbot.FSMEditor.views.ViewBrain;
 
 public class ControleurBrain {

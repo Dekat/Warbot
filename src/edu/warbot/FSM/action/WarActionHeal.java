@@ -46,13 +46,11 @@ public class WarActionHeal<AgentAdapterType extends MovableWarAgentAdapter> exte
 	public String executeAction(){
 		
 		if(getAgent().isBagEmpty()){
-			setActionTerminate(true);
 			return MovableWarAgent.ACTION_IDLE;
 		}
 		
 		if(!this.healAlly){
 			if(getAgent().getHealth() >= this.pourcentageLife){
-				setActionTerminate(true);
 				return MovableWarAgent.ACTION_IDLE;
 			}else{
 				return MovableWarAgent.ACTION_EAT;
@@ -63,7 +61,6 @@ public class WarActionHeal<AgentAdapterType extends MovableWarAgentAdapter> exte
 			ArrayList<WarPercept> percept = getAgent().getPerceptsAllies();
 			
 			if(percept.size() == 0){
-				setActionTerminate(true);
 				return MovableWarAgent.ACTION_MOVE;
 			}
 			
@@ -87,7 +84,6 @@ public class WarActionHeal<AgentAdapterType extends MovableWarAgentAdapter> exte
 			}
 		}
 		
-		setActionTerminate(true);
 		return MovableWarAgent.ACTION_IDLE;
 		
 	}

@@ -54,4 +54,13 @@ public class WarEtat<AgentAdapterType extends ControllableWarAgentAdapter> {
 		return this.nom;
 	}
 
+	public void stateWillBegin() {
+		//On dit l'état qu'il va commencer
+		this.plan.planWillBegin();
+		//On dit aux conditions qu'elles vont commencer
+		for (WarCondition<AgentAdapterType> warCondition : conditions) {
+			warCondition.conditionWillBegin();
+		}
+	}
+
 }

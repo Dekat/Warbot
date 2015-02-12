@@ -27,8 +27,8 @@ public class WarActionFuire<AgentAdapterType extends MovableWarAgentAdapter> ext
 		if(getAgent().isBlocked())
 			getAgent().setRandomHeading();
 		
-		if(getAgent().getHealth() >= this.lifeBeforStopFuire)
-			setActionTerminate(true);
+//		if(getAgent().getHealth() >= this.lifeBeforStopFuire)
+//			setActionTerminate(true);
 		
 		//Si je n'ai pas denemie autour de moi j'ai terminé
 		ArrayList<WarPercept> percept = getAgent().getPerceptsEnemiesByType(WarAgentType.WarRocketLauncher);

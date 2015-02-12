@@ -1,8 +1,6 @@
 package edu.warbot.FSM.WarGenericSettings;
 
-import java.net.Inet4Address;
-
-import edu.warbot.FSM.action.WarAction;
+import edu.warbot.FSMEditor.settings.EnumAction;
 import edu.warbot.agents.enums.WarAgentType;
 
 
@@ -14,27 +12,30 @@ import edu.warbot.agents.enums.WarAgentType;
  */
 public class WarConditionSettings extends AbstractGenericAttributSettings{
 	
+	public Integer Valeur;
+
 	public String Operateur;
 	
-	public Boolean Est_pourcentage;
+	public Integer Reference;
 
 	public Integer Pourcentage;
 
-	public WarAction Action;
+	public Boolean Est_pourcentage;
+
+	public EnumAction Action;
 
 	public String Attribut_name;
-
-	public Integer Reference;
 
 	public String Message;
 
 	public WarAgentType Agent_type;
 
-	public boolean Enemie;
+	public Boolean Enemie;
 
-	public boolean Offensif;
+	public Boolean Offensif;
 
-	public Integer Valeur;
+	public Integer Time_out;
+
 
 
 }

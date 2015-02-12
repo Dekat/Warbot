@@ -6,8 +6,9 @@ import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionChercherNouriture;
 import edu.warbot.FSM.action.WarActionHeal;
 import edu.warbot.FSM.condition.WarCondition;
-import edu.warbot.FSM.condition.WarConditionActionTerminate;
+import edu.warbot.FSM.condition.WarConditionTimeOut;
 import edu.warbot.FSM.condition.WarConditionAttributCheck;
+import edu.warbot.FSMEditor.settings.EnumAction;
 import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.brains.MovableWarAgentAdapter;
 
@@ -46,16 +47,16 @@ public class WarPlanHealer<AgentAdapterType extends MovableWarAgentAdapter> exte
 		addAction(actionFindFood);
 		
 		WarConditionSettings condSet1 = new WarConditionSettings();
-		condSet1.Action = actionHeal;
+		condSet1.Action = actionHeal.getType(); //EnumAction.valueOf(actionHeal.getName());
 		WarCondition<AgentAdapterType> condTerminateHeal = 
-		new WarConditionActionTerminate<AgentAdapterType>("cond_heal", getBrain(), condSet1);
+		new WarConditionTimeOut<AgentAdapterType>("cond_heal", getBrain(), condSet1);
 		condTerminateHeal.setDestination(actionFindFood);
 		actionHeal.addCondition(condTerminateHeal);
 		
 		WarConditionSettings condSet2 = new WarConditionSettings();
-		condSet2.Action = actionFindFood;
+		condSet2.Action = actionFindFood.getType(); //EnumAction.valueOf(actionFindFood.getName());
 		WarCondition<AgentAdapterType> condTerminateFindFood = 
-				new WarConditionActionTerminate<AgentAdapterType>("cond_food", getBrain(), condSet2);
+				new WarConditionTimeOut<AgentAdapterType>("cond_food", getBrain(), condSet2);
 		condTerminateFindFood.setDestination(actionHeal);
 		actionFindFood.addCondition(condTerminateFindFood);
 		

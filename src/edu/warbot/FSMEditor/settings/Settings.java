@@ -9,36 +9,25 @@ public class Settings {
 	public static final String FSM_CLASS_PATH_PLAN = FSM_CLASS_PATH + "plan.";
 	public static final String FSM_CLASS_PATH_REFELEXE = FSM_CLASS_PATH + "reflexe.";
 
-	//Normalement pour l'instant pas besoin
-	//Si dans le future l'editeur permet d'éditer des plans on pourra créer aussi une enum
-	public static final String[] ACTION = { 
-		FSM_CLASS_PATH_ACTION + ".WarActionAttaquer",
-		FSM_CLASS_PATH_ACTION + ".WarActionChercherBase",
-		FSM_CLASS_PATH_ACTION + ".WarActionChercherNouriture",
-		FSM_CLASS_PATH_ACTION + ".WarActionCreateUnit",
-		FSM_CLASS_PATH_ACTION + ".WarActionDefendre",
-		FSM_CLASS_PATH_ACTION + ".WarActionDontMove",
-		FSM_CLASS_PATH_ACTION + ".WarActionFuire",
-		FSM_CLASS_PATH_ACTION + ".WarActionHeal",
-		FSM_CLASS_PATH_ACTION + ".WarActionRaporterNouriture",
-		FSM_CLASS_PATH_ACTION + ".WarActionWiggle"
-	};
-
 	//Je sais pas encore si il faut faire un enum et comment !
 	public static final String[] ATTRIBUTES = {
 			edu.warbot.FSM.condition.WarConditionAttributCheck.HEALTH,
 			edu.warbot.FSM.condition.WarConditionAttributCheck.NB_ELEMEN_IN_BAG };
 
-	public static String getFullNameOf(PlanEnum warPlanName) {
-		return FSM_CLASS_PATH_PLAN + warPlanName;
+	public static String getFullNameOf(EnumPlan plan) {
+		return FSM_CLASS_PATH_PLAN + plan;
 	}
 	
-	public static String getFullNameOf(ConditionEnum warPlanName) {
-		return FSM_CLASS_PATH_CONDITION + warPlanName;
+	public static String getFullNameOf(EnumCondition condition) {
+		return FSM_CLASS_PATH_CONDITION + condition;
 	}
 	
-	public static String getFullNameOf(ReflexeEnum warPlanName) {
-		return FSM_CLASS_PATH_REFELEXE + warPlanName;
+	public static String getFullNameOf(EnumReflexe reflexe) {
+		return FSM_CLASS_PATH_REFELEXE + reflexe;
+	}
+	
+	public static String getFullNameOf(EnumAction action) {
+		return FSM_CLASS_PATH_ACTION + action;
 	}
 
 }

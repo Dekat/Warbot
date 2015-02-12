@@ -1,7 +1,7 @@
 package edu.warbot.FSMEditor.settings;
 
 
-public enum PlanEnum {
+public enum EnumPlan {
 	WarPlanAttaquer,
 	WarPlanBeSecure,
 	WarPlanCreateUnit,

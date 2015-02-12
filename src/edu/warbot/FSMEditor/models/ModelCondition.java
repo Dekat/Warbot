@@ -1,13 +1,13 @@
 package edu.warbot.FSMEditor.models;
 
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
-import edu.warbot.FSMEditor.settings.ConditionEnum;
+import edu.warbot.FSMEditor.settings.EnumCondition;
 import edu.warbot.FSMEditor.settings.Settings;
 
 public class ModelCondition {
 	
 	private String name;
-	private ConditionEnum typeName;
+	private EnumCondition typeName;
 	private WarConditionSettings conditionGenericAttributs;
 
 	ModelState modeleDest;
@@ -15,9 +15,9 @@ public class ModelCondition {
 	
 	String stateOutId;
 	
-	ConditionEnum conditionType;
+	EnumCondition conditionType;
 	
-	public ModelCondition(String name, ConditionEnum type, WarConditionSettings conditionSettings){
+	public ModelCondition(String name, EnumCondition type, WarConditionSettings conditionSettings){
 		this.name = name;
 		this.typeName = type;
 		this.conditionGenericAttributs = conditionSettings;
@@ -31,7 +31,7 @@ public class ModelCondition {
 		this.name = name;
 	}
 
-	public ConditionEnum getType() {
+	public EnumCondition getType() {
 		return typeName;
 	}
 	
@@ -69,11 +69,11 @@ public class ModelCondition {
 		return this.conditionGenericAttributs;
 	}
 
-	public void setConditionType(ConditionEnum conditionType) {
+	public void setConditionType(EnumCondition conditionType) {
 		this.conditionType = conditionType;
 	}
 	
-	public ConditionEnum getConditionType() {
+	public EnumCondition getConditionType() {
 		return this.conditionType;
 	}
 

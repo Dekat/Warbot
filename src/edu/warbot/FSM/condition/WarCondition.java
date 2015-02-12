@@ -22,6 +22,10 @@ public abstract class WarCondition<AgentAdapterType extends ControllableWarAgent
 	
 	public abstract boolean isValide();
 
+	public void conditionWillBegin(){
+		//Ici rien a faire mais certains conditions peuvent en avoir besoin
+	}
+
 	public void setDestination(WarEtat<AgentAdapterType> etatDestination) {
 		this.etatDestination = etatDestination;
 	}

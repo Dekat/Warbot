@@ -21,10 +21,6 @@ public class WarActionIdle<AgentAdapterType extends ControllableWarAgentAdapter>
 	
 	public String executeAction(){
 		
-		if(currentPas++ >nombrePas){
-			setActionTerminate(true);
-		}
-		
 		return MovableWarAgent.ACTION_IDLE;
 	}
 

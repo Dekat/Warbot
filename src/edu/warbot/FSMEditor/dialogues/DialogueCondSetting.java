@@ -10,7 +10,7 @@ import javax.swing.border.TitledBorder;
 
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSMEditor.models.ModelCondition;
-import edu.warbot.FSMEditor.settings.ConditionEnum;
+import edu.warbot.FSMEditor.settings.EnumCondition;
 import edu.warbot.FSMEditor.views.ViewBrain;
 
 public class DialogueCondSetting extends AbstractDialogue{
@@ -35,6 +35,7 @@ public class DialogueCondSetting extends AbstractDialogue{
 	@Override
 	public void createDialog() {
 		super.createDialog();
+		setSize(400, 500);
 	}
 	
 	@Override
@@ -65,11 +66,11 @@ public class DialogueCondSetting extends AbstractDialogue{
 		return this.fieldName.getText();
 	}
 	
-	public ConditionEnum getConditionType(){
-		return (ConditionEnum) comboTypeCond.getSelectedItem();
+	public EnumCondition getConditionType(){
+		return (EnumCondition) comboTypeCond.getSelectedItem();
 	}
 	
 	JTextField fieldName = new JTextField(DEFAULT_CONDITION_NAME);
-	JComboBox<ConditionEnum> comboTypeCond = new JComboBox<ConditionEnum>(ConditionEnum.values());
+	JComboBox<EnumCondition> comboTypeCond = new JComboBox<EnumCondition>(EnumCondition.values());
 	
 }

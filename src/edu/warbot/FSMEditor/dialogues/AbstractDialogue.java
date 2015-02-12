@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JButton;
@@ -24,6 +25,7 @@ import com.sun.javafx.binding.SelectBinding.AsBoolean;
 import edu.warbot.FSM.WarGenericSettings.AbstractGenericAttributSettings;
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSMEditor.models.ModelCondition;
+import edu.warbot.FSMEditor.settings.EnumAction;
 import edu.warbot.FSMEditor.views.ViewBrain;
 import edu.warbot.agents.enums.WarAgentType;
 
@@ -98,7 +100,6 @@ public abstract class AbstractDialogue extends JDialog{
 	/**
 	 * Creation dynamique des composant generique
 	 */
-	
 	public JPanel getPanelGenericSettings(){
 		JPanel panel = new JPanel(new VerticalLayout());
 		panel.setBorder(new TitledBorder("Specific settings"));
@@ -118,12 +119,22 @@ public abstract class AbstractDialogue extends JDialog{
 		panel.add(getLabelForField(field));
 
 		JComponent component = null;
+		
 		if (field.getType().equals(Boolean.class)) {
 			panel.add(component = getComponentForBoolean(field));
+			
 		} else if (field.getType().equals(Integer.class)) {
 			panel.add(component = getComponentForInteger(field));
+			
 		}else if (field.getType().equals(String.class)) {
 			panel.add(component = getComponentForString(field));
+			
+		}else if (field.getType().equals(WarAgentType.class)) {
+			panel.add(component = getComponentForAgentType(field));
+			
+		}else if (field.getType().equals(EnumAction.class)) {
+			panel.add(component = getComponentForAction(field));
+			
 		}else if (field.getType().equals(Integer[].class)) {
 			panel.add(component = getComponentForIntegerTab(field));
 		}else if (field.getType().equals(String[].class)) {
@@ -137,6 +148,24 @@ public abstract class AbstractDialogue extends JDialog{
 
 		mapFieldComp.put(field, component);
 		return panel;
+	}
+
+	private JCheckBox getComponentForBoolean(Field field) {
+		Boolean b = null;
+		try {
+			b = (Boolean) field.get(genericSettings);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	
+		JCheckBox cb = new JCheckBox();
+	
+		if (b != null)
+			cb.setSelected(b.booleanValue());
+	
+		return cb;
 	}
 
 	private JTextField getComponentForInteger(Field field) {
@@ -157,7 +186,38 @@ public abstract class AbstractDialogue extends JDialog{
 		return cb;
 	}
 	
-	private JComboBox<Integer> getComponentForIntegerTab(Field field) {
+	private JTextField getComponentForString(Field field) {
+		String b = null;
+		try {
+			b = (String) field.get(genericSettings);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	
+		JTextField cb = new JTextField();
+	
+		if (b != null)
+			cb.setText(b);
+	
+		return cb;
+	}
+	
+	//Ici et dans les autre du meme genre changer le type generic de la colection en WarAgent type
+	private JComboBox<String> getComponentForAgentType(Field field) {
+		JComboBox<String> cb = new JComboBox<>();
+		for (WarAgentType at : WarAgentType.values()) {
+			cb.addItem(at.name());
+		}
+		return cb;
+	}
+	
+	private JComboBox<EnumAction> getComponentForAction(Field field) {
+		return new JComboBox<>(EnumAction.values());
+	}
+
+	private JTextField getComponentForIntegerTab(Field field) {
 		Integer[] integers = null;
 		try {
 			integers = Integer[].class.cast(field.get(genericSettings));
@@ -166,16 +226,15 @@ public abstract class AbstractDialogue extends JDialog{
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		JComboBox<Integer> cb = new JComboBox<>();
-		for (Integer i = 0; i < 11; i++) {
-//			JCheckBox cbmi = new JCheckBox(String.valueOf(i));
-			cb.addItem(i);
+		String s = "";
+		if(integers != null){
+			for (Integer integer : integers) {
+				s += integer + ", ";
+			}
 		}
 		
-		if(integers != null && integers.length > 0){
-			System.out.println("save ici");
-			cb.setSelectedItem(integers[0]);
-		}
+		JTextField cb = new JTextField(s);
+		cb.setToolTipText("Nombre séparés par des virgules : \",\"");
 		
 		return cb;
 	}
@@ -200,42 +259,6 @@ public abstract class AbstractDialogue extends JDialog{
 		return cb;
 	}
 	
-	private JTextField getComponentForString(Field field) {
-		String b = null;
-		try {
-			b = (String) field.get(genericSettings);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-
-		JTextField cb = new JTextField();
-
-		if (b != null)
-			cb.setText(b);
-
-		return cb;
-	}
-
-	private JCheckBox getComponentForBoolean(Field field) {
-		Boolean b = null;
-		try {
-			b = (Boolean) field.get(genericSettings);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-
-		JCheckBox cb = new JCheckBox();
-
-		if (b != null)
-			cb.setSelected(b.booleanValue());
-
-		return cb;
-	}
-
 	private JLabel getLabelForField(Field field) {
 		return new JLabel(field.getName());
 	}
@@ -251,12 +274,22 @@ public abstract class AbstractDialogue extends JDialog{
 	private void saveGenericSettings(){
 		for (Field field : mapFieldComp.keySet()) {
 			JComponent dynamicComp = mapFieldComp.get(field);
+			
 			if(field.getType().equals(Boolean.class)){
 				setFieldForBoolean(field, dynamicComp);
+				
 			}else if(field.getType().equals(Integer.class)){
 				setFieldForInteger(field, dynamicComp);
+				
 			}else if(field.getType().equals(String.class)){
 				setFieldForString(field, dynamicComp);
+				
+			}else if(field.getType().equals(WarAgentType.class)){
+				setFieldForAgentType(field, dynamicComp);
+				
+			}else if(field.getType().equals(EnumAction.class)){
+				setFieldForAction(field, dynamicComp);
+				
 			}else if(field.getType().equals(Integer[].class)){
 				setFieldForIntegerTab(field, dynamicComp);
 			}else if(field.getType().equals(String[].class)){
@@ -291,17 +324,74 @@ public abstract class AbstractDialogue extends JDialog{
 		}
 	}
 	
-	private void setFieldForIntegerTab(Field field, JComponent comp) {
-		//TODO à modifié si on veut sauvegarder plusieurs valeurs
-		Integer b[] = new Integer[1];
-		try{
-			b[0] = (Integer) ((JComboBox<Integer>)comp).getSelectedItem();
-		} catch (NumberFormatException e) {
-			b = null;
-		}
+	private void setFieldForString(Field field, JComponent comp) {
+		String b = ((JTextField)comp).getText();
 		try {
 			field.set(genericSettings, b);
-		} catch (IllegalArgumentException | IllegalAccessException e) {
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void setFieldForAgentType(Field field, JComponent comp) {
+		WarAgentType at = null;
+		try{
+			at = (WarAgentType) ((JComboBox<WarAgentType>)comp).getSelectedItem();
+		} catch (NumberFormatException e) {
+			at = null;
+		}
+		try {
+			field.set(genericSettings, at);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void setFieldForAction(Field field, JComponent comp) {
+		EnumAction at = null;
+		try{
+			at = (EnumAction) ((JComboBox<EnumAction>)comp).getSelectedItem();
+		} catch (NumberFormatException e) {
+			at = null;
+		}
+		try {
+			field.set(genericSettings, at);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void setFieldForIntegerTab(Field field, JComponent comp) {
+		String string = null;
+		try{
+			string = ((JTextField)comp).getText();
+		} catch (NumberFormatException e) {
+			string = null;
+		}
+		String sTab[] = string.replaceAll(" ", "").split(",");
+		ArrayList<Integer> arrayInt = new ArrayList<>();
+		
+		for (int i = 0; i < sTab.length; i++) {
+			try {
+				arrayInt.add(Integer.valueOf(sTab[i]));
+			} catch (NumberFormatException e) {
+				
+			}
+		}
+		Integer intTab[] = new Integer[arrayInt.size()];
+		intTab = arrayInt.toArray(intTab);
+		
+		try {
+			field.set(genericSettings, intTab);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
 	}
@@ -336,17 +426,6 @@ public abstract class AbstractDialogue extends JDialog{
 		}
 	}
 	
-	private void setFieldForString(Field field, JComponent comp) {
-		String b = ((JTextField)comp).getText();
-		try {
-			field.set(genericSettings, b);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public JPanel getPanelBottom(){
 		JPanel panel = new JPanel();
 		labelConsole = new JLabel();

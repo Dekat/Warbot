@@ -6,7 +6,8 @@ import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionChercherNouriture;
 import edu.warbot.FSM.action.WarActionRaporterNouriture;
 import edu.warbot.FSM.condition.WarCondition;
-import edu.warbot.FSM.condition.WarConditionActionTerminate;
+import edu.warbot.FSM.condition.WarConditionTimeOut;
+import edu.warbot.FSMEditor.settings.EnumAction;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.MovableWarAgentAdapter;
 
@@ -35,14 +36,14 @@ public class WarPlanRamasserNouriture<AgentAdapterType extends MovableWarAgentAd
 		addAction(actionRamenerN);
 		
 		WarConditionSettings condSet1 = new WarConditionSettings();
-		condSet1.Action = actionChercheN;
-		WarCondition<AgentAdapterType> condStopChercher = new WarConditionActionTerminate<AgentAdapterType>("cond_back", getBrain(), condSet1);
+		condSet1.Action = actionChercheN.getType(); //EnumAction.valueOf(actionChercheN.getName());
+		WarCondition<AgentAdapterType> condStopChercher = new WarConditionTimeOut<AgentAdapterType>("cond_back", getBrain(), condSet1);
 		actionChercheN.addCondition(condStopChercher);
 		condStopChercher.setDestination(actionRamenerN);
 		
 		WarConditionSettings condSet2 = new WarConditionSettings();
-		condSet2.Action = actionRamenerN;
-		WarCondition<AgentAdapterType> condStopRamener = new WarConditionActionTerminate<AgentAdapterType>("cond_seek", getBrain(), condSet2);
+		condSet2.Action = actionRamenerN.getType(); //EnumAction.valueOf(actionRamenerN.getName());
+		WarCondition<AgentAdapterType> condStopRamener = new WarConditionTimeOut<AgentAdapterType>("cond_seek", getBrain(), condSet2);
 		actionRamenerN.addCondition(condStopRamener);
 		condStopRamener.setDestination(actionChercheN);
 		

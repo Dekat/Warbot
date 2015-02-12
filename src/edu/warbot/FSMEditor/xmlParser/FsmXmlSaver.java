@@ -53,7 +53,6 @@ public class FsmXmlSaver extends FsmXmlParser{
 			e.printStackTrace();
 		}
 		
-		System.out.println("FSMConfiguration file generated successfull");
 	}
 
 	private Element getContentStatesForBrain(ModeleBrain brain) {

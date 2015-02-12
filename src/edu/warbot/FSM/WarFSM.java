@@ -60,6 +60,7 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 		for (WarCondition<AgentAdapterType> conditionCourante : conditions) {
 			if(conditionCourante.isValide()){
 				this.etatCourant = conditionCourante.getEtatDestination();
+				this.etatCourant.stateWillBegin();
 				break;
 			}
 		}
@@ -70,9 +71,8 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 
 	public void addEtat(WarEtat<AgentAdapterType> e) {
 		if(this.listeEtat.contains(e))
-			System.out.println("ATTENTION le plan <" + e.getName() + "> a deja ete ajoute a la FSM");
+			System.err.println("ATTENTION l'état <" + e.getName() + "> à déjà ete ajoute à la FSM");
 		this.listeEtat.add(e);
-		
 	}
 	
 	public void setFirstEtat(WarEtat<AgentAdapterType> e){

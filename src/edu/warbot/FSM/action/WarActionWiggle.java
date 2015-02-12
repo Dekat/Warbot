@@ -28,7 +28,6 @@ public class WarActionWiggle<AgentAdapterType extends MovableWarAgentAdapter> ex
 		nbPas++;
 		
 		if(this.nbPas > nbPasMax){
-			setActionTerminate(true);
 			return MovableWarAgent.ACTION_IDLE;
 		}
 		

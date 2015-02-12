@@ -1,6 +1,6 @@
 package edu.warbot.FSMEditor.settings;
 
-public enum ReflexeEnum {
+public enum EnumReflexe {
 	WarReflexeAnswerMessage,
 	WarReflexeWarnWithCondition
 }
