@@ -23,7 +23,9 @@ public class MapMiniature extends JPanel {
     private static final double DEFAULT_WIDTH = 200.;
     private static final double DEFAULT_HEIGHT = 120.;
 
-    private static final int FOOD_AND_TEAMS_POSITIONS_TRANSPARENCY = 120;
+    public static final int FOOD_AND_TEAMS_POSITIONS_TRANSPARENCY = 120;
+
+    public static final Color COLOR_FOOD = new Color(MotherNatureTeam.COLOR.getRed(), MotherNatureTeam.COLOR.getGreen(), MotherNatureTeam.COLOR.getBlue(), FOOD_AND_TEAMS_POSITIONS_TRANSPARENCY);
 
     private AbstractWarMap map;
     private double width;
@@ -67,7 +69,7 @@ public class MapMiniature extends JPanel {
         g2d.draw(GeometryTools.translateShape(mapBorders, translateX, translateY));
 
         // Food positions
-        Color backgroundColor = new Color(MotherNatureTeam.COLOR.getRed(), MotherNatureTeam.COLOR.getGreen(), MotherNatureTeam.COLOR.getBlue(), FOOD_AND_TEAMS_POSITIONS_TRANSPARENCY);
+        Color backgroundColor = COLOR_FOOD;
         Color borderColor = backgroundColor.darker();
         for (WarCircle position : map.getFoodPositions()) {
             resizedShape = GeometryTools.translateShape(GeometryTools.resize(position, resizeMultiplier), translateX, translateY);
