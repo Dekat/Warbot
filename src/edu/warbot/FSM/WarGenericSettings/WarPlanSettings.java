@@ -23,6 +23,5 @@ public class WarPlanSettings extends AbstractGenericAttributSettings{
 	public Integer Value_pourcentage_destination;
 
 	public Boolean Offensif;
-
 	
 }

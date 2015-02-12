@@ -50,37 +50,23 @@ public class FSMEditor {
 		cIToW.setSource(sI);
 		cIToW.setDestination(sW);
 
-		controleur.getControleurBrain(WarAgentType.WarBase).addState(sW);
-		controleur.getControleurBrain(WarAgentType.WarBase).addState(sI);
+		controleur.getControleurBrain(WarAgentType.WarExplorer).addState(sW);
+		controleur.getControleurBrain(WarAgentType.WarExplorer).addState(sI);
 		
-		controleur.getControleurBrain(WarAgentType.WarBase).addCondition(cWToI);
+		controleur.getControleurBrain(WarAgentType.WarExplorer).addCondition(cWToI);
+		controleur.getControleurBrain(WarAgentType.WarExplorer).addCondition(cIToW);
 		
+		controleur.getControleurBrain(WarAgentType.WarBase).addState(
+				new ModelState("State Idle", EnumPlan.WarPlanIdle, null));
 		controleur.getControleurBrain(WarAgentType.WarRocketLauncher).addState(
-				new ModelState("State Idle", EnumPlan.WarPlanWiggle, null));
+				new ModelState("State Wiggle", EnumPlan.WarPlanWiggle, null));
 		controleur.getControleurBrain(WarAgentType.WarEngineer).addState(
-				new ModelState("State Idle", EnumPlan.WarPlanWiggle, null));
+				new ModelState("State Wiggle", EnumPlan.WarPlanWiggle, null));
 		controleur.getControleurBrain(WarAgentType.WarTurret).addState(
 				new ModelState("State Idle", EnumPlan.WarPlanIdle, null));
 		controleur.getControleurBrain(WarAgentType.WarKamikaze).addState(
-				new ModelState("State Idle", EnumPlan.WarPlanWiggle, null));
-		controleur.getControleurBrain(WarAgentType.WarExplorer).addState(
-				new ModelState("State Idle", EnumPlan.WarPlanWiggle, null));
+				new ModelState("State Wiggle", EnumPlan.WarPlanWiggle, null));
 		
-//		ControleurBrain cb = controleur.getControleurBrain(WarAgentType.WarExplorer);
-
-//		ModeleState state1 = new ModeleState("State1", Configuration.PLAN[1], new WarPlanSettings());
-//		ModeleState state2 = new ModeleState("State2", Configuration.PLAN[0], new WarPlanSettings());
-//		ModeleState state3 = new ModeleState("State3", Configuration.PLAN[0], new WarPlanSettings());
-//		
-//		ModeleCondition cond = new ModeleCondition("Condition1", Configuration.CONDITION[1], state1, state2);
-//		ModeleCondition cond2 = new ModeleCondition("Condition2", Configuration.CONDITION[1], state1, state3);
-//		
-//		cb.addState(state1);
-//		cb.addState(state2);
-//		cb.addState(state3);
-//		
-//		cb.addCondition(cond);
-//		cb.addCondition(cond2);
 		
 	}
 }

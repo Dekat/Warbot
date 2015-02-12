@@ -20,16 +20,16 @@ public class ModeleBrain {
 		this.sates.add(d);
 	}
 	
-	public ArrayList<ModelState> getStates(){
-		return this.sates;
-	}
-
 	public void addCondition(ModelCondition c) {
 		this.conditions.add(c);
 	}
 
+	public ArrayList<ModelState> getStates(){
+		return this.sates;
+	}
+
 	public void removeState(ModelState m) {
-		//On supprime toutes les conditions de l'�tat source
+		//On supprime toutes les conditions de l'état source
 		this.conditions.removeAll(m.getConditionsOut());
 		
 		//on parcours toutes les condtions pour voir si il yen a qui vont jusqua l'�tat qui va etre suppr
