@@ -64,8 +64,7 @@ public class FSMEditor {
 		
 		Controleur controleur = new Controleur(modele, view);
 		
-		controleur.update();
-
+//		controleur.update();
 		
 
 //		//Pour tester on ajoute directement des elements à la FSM

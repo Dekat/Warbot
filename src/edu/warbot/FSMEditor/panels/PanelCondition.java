@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import edu.warbot.FSMEditor.models.ModelCondition;
+import edu.warbot.FSMEditor.models.ModelState;
 
 public class PanelCondition extends AbstractPanel{
 

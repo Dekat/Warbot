@@ -18,7 +18,7 @@ public class View extends JFrame {
 
 	private Modele modele;
 	
-	ArrayList<ViewBrain> viewBrains = new ArrayList<>();
+	private ArrayList<ViewBrain> viewBrains;
 	
 	private JTabbedPane mainPanel;
 	
