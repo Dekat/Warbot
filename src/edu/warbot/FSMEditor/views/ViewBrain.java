@@ -40,13 +40,11 @@ public class ViewBrain extends JPanel{
 		this.add(getPanelLeft(), BorderLayout.WEST);
 		
 		// Panel center (l'éditeur)
-		panelEditor = new PanelEditor(this.modeleBrain, "Explorer (class ViewBrain)");
+		panelEditor = new PanelEditor(this.modeleBrain);
 		
 		this.add(panelEditor, BorderLayout.CENTER);
 
 		// Panel droite
-		
-		// mainPanelEditor.afficherEnvironnement();
 	}
 
 	private JPanel getPanelLeft() {
@@ -121,7 +119,7 @@ public class ViewBrain extends JPanel{
 		return (PanelEditor) this.panelEditor;
 	}
 
-	public ModeleBrain getModele(){
+	public ModeleBrain getModel(){
 		return this.modeleBrain;
 	}	
 

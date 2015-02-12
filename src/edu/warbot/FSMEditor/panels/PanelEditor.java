@@ -15,11 +15,9 @@ public class PanelEditor extends JPanel {
 	ArrayList<PanelCondition> panelsCondition = new ArrayList<>();
 
 	ModeleBrain modele;
-	String panelName;
 
-	public PanelEditor(ModeleBrain modele, String panelName) {
+	public PanelEditor(ModeleBrain modele) {
 		this.modele = modele;
-		this.panelName = panelName;
 	}
 
 	public void paintComponent(Graphics g) {

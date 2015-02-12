@@ -6,10 +6,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
-import edu.warbot.FSMEditor.FSMInstancier;
 import edu.warbot.FSMEditor.FSMModelRebuilder;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
@@ -20,19 +18,34 @@ import edu.warbot.FSMEditor.views.ViewBrain;
 import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
 import edu.warbot.FSMEditor.xmlParser.FsmXmlSaver;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.adapters.WarExplorerAdapter;
 
 public class Controleur {
 	public Modele modele;
 	public View view;
 	
-	private ArrayList<ControleurBrain> controleursBrains = new ArrayList<ControleurBrain>();
+	private ArrayList<ControleurBrain> controleursBrains = new ArrayList<>();
 	
 	public Controleur(Modele modele, View view) {
 		this.modele = modele;
 		this.view = view;
 		
+		createControleurBrains();
+		
 		placeListenerOnMenuBar();
+		
+	}
+
+	private void createControleurBrains() {
+		controleursBrains = new ArrayList<>();
+		
+		for (ViewBrain viewBrain : this.view.getViewBrains()) {
+			this.controleursBrains.add(new ControleurBrain(viewBrain.getModel(), viewBrain));
+		}
+	}
+
+	public void update() {
+		modele.update();
+		view.update();
 	}
 
 	public ControleurBrain getControleurBrain(WarAgentType agentType) {
@@ -40,7 +53,7 @@ public class Controleur {
 			if(controleurBrain.modeleBrain.getAgentType().equals(agentType))
 				return controleurBrain;
 		}
-		System.err.println("Impossible to find controleurBrain for agent type " + agentType);
+		System.err.println("Controleur : Impossible to find controleurBrain for agent type " + agentType);
 		return null;
 	}
 
@@ -113,6 +126,9 @@ public class Controleur {
 		FSMModelRebuilder rebuilder = new FSMModelRebuilder(this.modele);
 		this.modele = rebuilder.getRebuildModel();
 
+//		System.out.println("print model load");
+//		printModelInformations(this.modele);
+		
 		System.out.println("Controleur : Configuration file imported successfull");
 	}
 

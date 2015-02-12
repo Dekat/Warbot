@@ -2,23 +2,19 @@ package edu.warbot.FSMEditor.controleurs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
-import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSMEditor.dialogues.DialogueCondSetting;
 import edu.warbot.FSMEditor.dialogues.DialogueStateSetting;
-import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
+import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.panels.PanelCondition;
 import edu.warbot.FSMEditor.panels.PanelState;
-import edu.warbot.FSMEditor.settings.EnumCondition;
-import edu.warbot.FSMEditor.settings.EnumPlan;
 import edu.warbot.FSMEditor.views.ViewBrain;
 
 public class ControleurBrain {
@@ -34,7 +30,7 @@ public class ControleurBrain {
 		placeListeerOnPanel();
 
 	}
-	
+
 	private void placeListeerOnPanel() {
 		MouseListenerPanelCenter mouseListener = new MouseListenerPanelCenter(this);
 		viewBrain.getViewEditor().addMouseListener(mouseListener);
