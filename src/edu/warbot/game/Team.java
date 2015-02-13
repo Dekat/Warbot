@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSM.WarFSMBrainController;
 import edu.warbot.FSMEditor.FSMInstancier;
-import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
@@ -40,7 +40,7 @@ public class Team extends Observable {
 	private HashMap<WarAgentType, Integer> _nbUnitsLeft;
 	private ArrayList<WarAgent> _dyingAgents;
 	private WarGame game;
-	private Modele fsmModel;
+	private Model fsmModel;
 	
 	public Team(String nom) {
 		_name = nom;
@@ -301,11 +301,11 @@ public class Team extends Observable {
 		return a;
 	}
 	
-	private Modele getFSMModel() {
+	private Model getFSMModel() {
 		return this.fsmModel;
 	}
 	
-	public void setFSMModel(Modele fsmModel) {
+	public void setFSMModel(Model fsmModel) {
 		this.fsmModel = fsmModel;
 	}
 

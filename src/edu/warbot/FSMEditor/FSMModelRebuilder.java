@@ -2,7 +2,7 @@ package edu.warbot.FSMEditor;
 
 import java.util.HashMap;
 
-import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
@@ -17,13 +17,13 @@ import edu.warbot.FSMEditor.models.ModelState;
  */
 public class FSMModelRebuilder {
 
-	private Modele model;
+	private Model model;
 
 	/**
 	 * Appeler le constructeur lancer directement la reconstruction du modele
 	 * @param model
 	 */
-	public FSMModelRebuilder(Modele model) {
+	public FSMModelRebuilder(Model model) {
 		this.model = model;
 		System.out.println("FSMRebuilder : rebuilding model");
 		rebuildModel();
@@ -57,6 +57,7 @@ public class FSMModelRebuilder {
 			mapConditionsID.put(condition.getName(), condition);
 		}
 		
+		/*** Remplace les ID par des pointeurs ***/
 		//Pour chaque état
 		for (ModelState state : brain.getStates()) {
 			rebuildState(state, mapConditionsID);
@@ -66,10 +67,13 @@ public class FSMModelRebuilder {
 		for (ModelCondition cond : brain.getConditions()) {
 			rebuildCondition(cond, mapStatesID);
 		}
-	}
-
-	private void rebuildCondition(ModelCondition cond, HashMap<String, ModelState> mapStatesID) {
-		cond.setDestination(mapStatesID.get(cond.getStateOutId()));
+		
+//		//Remet les états sources aux conditions
+//		for (ModelState state : brain.getStates()) {
+//			for (ModelCondition condOut : state.getConditionsOut()) {
+//				condOut.setSource(state);
+//			}
+//		}
 	}
 
 	private void rebuildState(ModelState state, HashMap<String, ModelCondition> mapConditionsID) {
@@ -77,14 +81,25 @@ public class FSMModelRebuilder {
 		//Pour chaque ID conditions de sortie de l'état
 		for (String currentConditionID : state.getConditionsOutID()) {
 			//On récupère la conditions dans la liste d'association et on l'ajoute au modele
+			ModelCondition modCond = mapConditionsID.get(currentConditionID);
+			if(modCond == null)
+				System.out.println("FSMRebuilder : WARNING no condition found for ID " + currentConditionID);
 			state.addConditionOut(mapConditionsID.get(currentConditionID));
 		}
+	}
+
+	private void rebuildCondition(ModelCondition cond, HashMap<String, ModelState> mapStatesID) {
+		ModelState state = mapStatesID.get(cond.getStateOutId());
+		if(state == null)
+			System.out.println("FSMRebuilder : WARNING no state found for ID " + cond.getStateOutId());
+		state.addConditionOut(cond);
+		cond.setDestination(state);
 	}
 
 	/**
 	 * @return Le modèle de la FSM reconstuit (correspond au modèle utilisable pour instiancier des FSMBrains)
 	 */
-	public Modele getRebuildModel() {
+	public Model getRebuildModel() {
 		return this.model;
 	}
 

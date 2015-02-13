@@ -3,6 +3,7 @@ package edu.warbot.FSMEditor.models;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import edu.warbot.FSMEditor.views.ViewBrain;
 import edu.warbot.agents.enums.WarAgentType;
 
 public class ModeleBrain {
@@ -63,6 +64,17 @@ public class ModeleBrain {
 	
 	public WarAgentType getAgentType() {
 		return this.agentType;
+	}
+
+	/**** Les modeles brains connaissent leurs vue ***/
+	ViewBrain viewBrain;
+	
+	public void setViewBrain(ViewBrain vb) {
+		this.viewBrain = vb;
+	}
+	
+	public ViewBrain getViewBrain(){
+		return viewBrain;
 	}
 
 }

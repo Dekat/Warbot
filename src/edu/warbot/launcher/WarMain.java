@@ -23,7 +23,7 @@ import javax.swing.SwingUtilities;
 import edu.warbot.FSM.WarFSMBrainController;
 import edu.warbot.FSMEditor.FSMInstancier;
 import edu.warbot.FSMEditor.FSMModelRebuilder;
-import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.xmlParser.FsmXmlParser;
 import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
 import edu.warbot.FSMEditor.xmlParser.FsmXmlSaver;

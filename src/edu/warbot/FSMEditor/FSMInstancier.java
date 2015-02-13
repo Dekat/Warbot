@@ -10,7 +10,7 @@ import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.plan.WarPlan;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
-import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.ControllableWarAgentAdapter;
@@ -27,13 +27,13 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 	
 	WarFSM<AgentAdapterType> fsm = new WarFSM<>();
 	
-	Modele model;
+	Model model;
 	
 	//HashMap pour assicier les états et condition avec leurs nom
 	HashMap<String, WarEtat<AgentAdapterType>> hashMapState = new HashMap<>();
 	HashMap<String, WarCondition<AgentAdapterType>> hashMapCond = new HashMap<>();
 
-	public FSMInstancier(Modele modele) {
+	public FSMInstancier(Model modele) {
 		this.model = modele;
 
 		if(!modele.isRebuild()){
