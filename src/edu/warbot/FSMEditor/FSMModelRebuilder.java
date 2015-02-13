@@ -67,13 +67,6 @@ public class FSMModelRebuilder {
 		for (ModelCondition cond : brain.getConditions()) {
 			rebuildCondition(cond, mapStatesID);
 		}
-		
-//		//Remet les états sources aux conditions
-//		for (ModelState state : brain.getStates()) {
-//			for (ModelCondition condOut : state.getConditionsOut()) {
-//				condOut.setSource(state);
-//			}
-//		}
 	}
 
 	private void rebuildState(ModelState state, HashMap<String, ModelCondition> mapConditionsID) {
@@ -84,7 +77,7 @@ public class FSMModelRebuilder {
 			ModelCondition modCond = mapConditionsID.get(currentConditionID);
 			if(modCond == null)
 				System.out.println("FSMRebuilder : WARNING no condition found for ID " + currentConditionID);
-			state.addConditionOut(mapConditionsID.get(currentConditionID));
+			state.addConditionOut(modCond);
 		}
 	}
 
@@ -92,7 +85,7 @@ public class FSMModelRebuilder {
 		ModelState state = mapStatesID.get(cond.getStateOutId());
 		if(state == null)
 			System.out.println("FSMRebuilder : WARNING no state found for ID " + cond.getStateOutId());
-		state.addConditionOut(cond);
+//		state.addConditionOut(cond);
 		cond.setDestination(state);
 	}
 

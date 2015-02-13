@@ -138,11 +138,12 @@ public class Controleur {
 		FsmXmlReader reader = new FsmXmlReader(FsmXmlReader.xmlConfigurationDefaultFilename);
 		this.model = reader.getGeneratedFSMModel();
 		
+//		printModelInformations(this.model);
 		
 		FSMModelRebuilder rebuilder = new FSMModelRebuilder(this.model);
 		this.model = rebuilder.getRebuildModel();
 
-//		printModelInformations(this.model);
+		printModelInformations(this.model);
 
 //		System.out.println("print model load");
 //		printModelInformations(this.modele);
