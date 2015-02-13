@@ -130,7 +130,6 @@ public class WarLauncherInterface extends JFrame {
         JPanel panelMap = new JPanel();
         panelMap.setLayout(new BorderLayout());
         panelMap.setBorder(new TitledBorder("Carte"));
-        this.settings.setSelectedMap(new DefaultWarMap());
         currentDisplayedMapMiniature = new MapMiniature(this.settings.getSelectedMap(), MapMiniature.SIZE_SMALL);
         panelMap.add(currentDisplayedMapMiniature, BorderLayout.CENTER);
         JButton btnChooseMap = new JButton("Choisir une autre carte");
