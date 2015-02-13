@@ -2,20 +2,18 @@ package edu.warbot.agents.percepts;
 
 import edu.warbot.agents.ControllableWarAgent;
 
-import java.awt.geom.Path2D;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.geom.Line2D;
 
 public class WallPercept extends WarPercept {
 
-    private List<Path2D.Double> seenWalls;
+    private Line2D.Double seenWall;
 
-    public WallPercept(ControllableWarAgent observer, List<Path2D.Double> seenWalls) {
+    public WallPercept(ControllableWarAgent observer, Line2D.Double seenWall) {
         super(observer);
-        this.seenWalls = seenWalls;
+        this.seenWall = seenWall;
     }
 
-    public List<Path2D.Double> getSeenWalls() {
-        return seenWalls;
+    public Line2D.Double getSeenWall() {
+        return seenWall;
     }
 }

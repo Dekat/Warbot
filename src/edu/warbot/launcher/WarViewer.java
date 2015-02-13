@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
+import edu.warbot.agents.percepts.WallPercept;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.tools.GeometryTools;
 import edu.warbot.tools.WarCircle;

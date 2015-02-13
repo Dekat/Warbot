@@ -1,11 +1,10 @@
 package edu.warbot.agents.percepts;
 
 import java.awt.*;
-import java.awt.geom.Area;
-import java.awt.geom.Path2D;
-import java.awt.geom.PathIterator;
+import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.warbot.agents.ControllableWarAgent;
@@ -15,6 +14,7 @@ import edu.warbot.game.MotherNatureTeam;
 import edu.warbot.game.WarGame;
 import edu.warbot.tools.CoordCartesian;
 import edu.warbot.tools.CoordPolar;
+import edu.warbot.tools.GeometryTools;
 import edu.warbot.tools.WarMathTools;
 
 public abstract class PerceptsGetter {
@@ -37,6 +37,7 @@ public abstract class PerceptsGetter {
         alliesPercepts = new ArrayList<>();
         enemiesPercepts = new ArrayList<>();
         resourcesPercepts = new ArrayList<>();
+        wallsPercepts = new ArrayList<>();
 	}
 
 	protected ControllableWarAgent getAgent() {
@@ -147,12 +148,14 @@ public abstract class PerceptsGetter {
 
     private Area removeWallsHidedAreasAndGetWallPercepts(Area initialPerceptionArea) {
         Area finalPerceptionArea;
+        ArrayList<Line2D.Double> seenWalls = new ArrayList<>();
 
         Area seenWallsArea = game.getMap().getMapForbidArea();
         seenWallsArea.intersect(initialPerceptionArea);
 
         finalPerceptionArea = new Area(initialPerceptionArea);
 
+        ArrayList<Area> shadowsAreas = new ArrayList<>();
         double shadowPointsDistance = 100;
         Path2D.Double wallsContoursPath = new Path2D.Double();
         wallsContoursPath.append(seenWallsArea, false);
@@ -178,9 +181,12 @@ public abstract class PerceptsGetter {
                 currentShadow.lineTo(destShadowPoint.getX(), destShadowPoint.getY());
                 currentShadow.lineTo(srcShadowPoint.getX(), srcShadowPoint.getY());
                 currentShadow.lineTo(srcPoint.getX(), srcPoint.getY());
-                finalPerceptionArea.subtract(new Area(currentShadow));
+                Area currentShadowArea = new Area(currentShadow);
+                finalPerceptionArea.subtract(currentShadowArea);
+                shadowsAreas.add(currentShadowArea);
                 currentShadow = new Path2D.Double();
                 currentShadow.moveTo(coords[0], coords[1]);
+                seenWalls.add(new Line2D.Double(srcPoint, destPoint));
             }
             srcPoint = destPoint;
             it.next();
@@ -200,11 +206,33 @@ public abstract class PerceptsGetter {
         }
 
         finalPerceptionArea.subtract(seenWallsArea);
+
+        // Get WallsPercepts
+        HashMap<Point2D.Double, Boolean> wallPointsSeenByAgent = new HashMap<>();
+        for(Point2D.Double wallPoint : GeometryTools.getPointsFromPath(wallsContoursPath)) {
+            Line2D.Double lineFromPointToAgent = new Line2D.Double(wallPoint, getAgent().getPosition());
+            boolean pointSeenByAgent = true;
+            for(Line2D.Double comparedWall : seenWalls) {
+                if(! (comparedWall.getP1().equals(wallPoint) || comparedWall.getP2().equals(wallPoint))) { // Si le point n'appartient pas au segment
+                    if(lineFromPointToAgent.intersectsLine(comparedWall)) {
+                        pointSeenByAgent = false;
+                        break;
+                    }
+                }
+            }
+            wallPointsSeenByAgent.put(wallPoint, pointSeenByAgent);
+        }
+        for(Line2D.Double wall : seenWalls) {
+            if(wallPointsSeenByAgent.get(wall.getP1()) && wallPointsSeenByAgent.get(wall.getP2())) {
+                wallsPercepts.add(new WallPercept(getAgent(), wall));
+            }
+        }
+
         return finalPerceptionArea;
     }
 
-    private List<Path2D.Double> dividePluralPathIntoSingularPathsLined(Path2D.Double path) {
-        List<Path2D.Double> singularPaths = new ArrayList<Path2D.Double>();
+    private ArrayList<Path2D.Double> dividePluralPathIntoSingularPathsLined(Path2D.Double path) {
+        ArrayList<Path2D.Double> singularPaths = new ArrayList<Path2D.Double>();
 
         PathIterator it = path.getPathIterator(null);
         double[] coords = new double[6];
