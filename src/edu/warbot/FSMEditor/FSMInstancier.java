@@ -30,6 +30,7 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 	Model model;
 	
 	//HashMap pour assicier les états et condition avec leurs nom
+	//Ca pourrait plutot etre des hashmap de ModelState associé au warState
 	HashMap<String, WarEtat<AgentAdapterType>> hashMapState = new HashMap<>();
 	HashMap<String, WarCondition<AgentAdapterType>> hashMapCond = new HashMap<>();
 
@@ -79,7 +80,7 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 			WarCondition<AgentAdapterType> warCond = getGeneratedCondition(modelCond, adapter);
 			
 			//Ajoute l'état de destination de la condition
-			WarEtat<AgentAdapterType> etat = hashMapState.get(modelCond.getName());
+			WarEtat<AgentAdapterType> etat = hashMapState.get(modelCond.getStateDestination().getName());
 			warCond.setDestination(etat);
 			
 			//Ajoute la condition à la HashMap
@@ -91,7 +92,7 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 		for (ModelState modelState : modelBrain.getStates()) {
 			WarEtat<AgentAdapterType> warEtat = hashMapState.get(modelState.getName());
 			
-			for (ModelCondition modelCond : modelBrain.getConditions()) {
+			for (ModelCondition modelCond : modelState.getConditionsOut()) {
 				WarCondition<AgentAdapterType> warCond = hashMapCond.get(modelCond.getName());
 				
 				warEtat.addCondition(warCond);

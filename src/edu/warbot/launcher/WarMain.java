@@ -221,9 +221,10 @@ public class WarMain implements Observer {
 	                        	
 	                        	InputStream fileFSMConfig = jarCurrentFile.getInputStream(entryFSMConfiguration);
 	                        	FsmXmlReader fsmXmlReader = new FsmXmlReader(fileFSMConfig);
-	                        	FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
-	                        	currentTeam.setFSMModel(fsmModelRebuilder.getRebuildModel());
 	                        	System.out.println("WarMain : FSMXmlReader successfull read fsmConfigFile");
+	                        	FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
+	                        	currentTeam.setFsmModel(fsmModelRebuilder.getRebuildModel());
+	                        	System.out.println("WarMain : FSMModelRebuilder successfull rebuild model");
 	                        	
 	                        	HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();
 	                    		

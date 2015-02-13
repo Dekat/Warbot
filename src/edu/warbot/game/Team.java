@@ -284,12 +284,17 @@ public class Team extends Observable {
 		a.setLogLevel(getGame().getSettings().getLogLevel());
 
 		if(a.getBrain() instanceof WarFSMBrainController){
+			WarAgentType agentType = WarAgentType.valueOf(agentName);
 			System.out.println("Team : Instance of FSM brain found");
 			System.out.println("Team : Generating fsm instance for " + agentName + "...");
+
 			//Intancie la fsm et la donne comme brain à l'agent
-			FSMInstancier fsmInstancier = new FSMInstancier(getFSMModel());
 			ControllableWarAgentAdapter adapter = a.getBrain().getAgent();
-			WarFSM warFsm = fsmInstancier.getBrainControleurForAgent(WarAgentType.valueOf(agentName), adapter);
+//			Class<? extends ControllableWarAgentAdapter> agentTypeAdapterClass = adapter.getClass();
+
+			FSMInstancier<ControllableWarAgentAdapter> fsmInstancier = new FSMInstancier(getFSMModel());
+			
+			WarFSM warFsm = fsmInstancier.getBrainControleurForAgent(agentType, adapter);
 			System.out.println("Generation succesfull");
 			
 			WarFSMBrainController fsmBrainController = (WarFSMBrainController)a.getBrain();
@@ -305,7 +310,7 @@ public class Team extends Observable {
 		return this.fsmModel;
 	}
 	
-	public void setFSMModel(Model fsmModel) {
+	public void setFsmModel(Model fsmModel) {
 		this.fsmModel = fsmModel;
 	}
 

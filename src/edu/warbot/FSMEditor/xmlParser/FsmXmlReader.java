@@ -228,12 +228,19 @@ public class FsmXmlReader extends FsmXmlParser{
 		
 		String[] stringValues = parseStringTab(fieldValue);
 		
-		Integer valuesInteger[] = new Integer[stringValues.length];
+		ArrayList<Integer> arrayInt = new ArrayList<>();
 		
 		for (int i = 0; i < stringValues.length; i++) {
-			valuesInteger[i] = Integer.valueOf(stringValues[i]);
+			try{
+				arrayInt.add(Integer.valueOf(stringValues[i]));
+			}catch(NumberFormatException e){
+				
+			}
 		}
-		return valuesInteger;
+		
+		Integer valuesInteger[] = new Integer[arrayInt.size()];
+		return arrayInt.toArray(valuesInteger);
+//		return valuesInteger;
 	}
 
 	private String[] getFieldForStringTab(Field field, Element elemPlanSetting) {
