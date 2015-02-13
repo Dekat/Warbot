@@ -29,6 +29,7 @@ public class ViewBrain extends JPanel{
 
 	public ViewBrain(ModeleBrain modeleBrain) {
 		this.modeleBrain = modeleBrain;
+		
 		createView();
 	}
 
@@ -40,13 +41,11 @@ public class ViewBrain extends JPanel{
 		this.add(getPanelLeft(), BorderLayout.WEST);
 		
 		// Panel center (l'éditeur)
-		panelEditor = new PanelEditor(this.modeleBrain, "Explorer (class ViewBrain)");
+		panelEditor = new PanelEditor(this.modeleBrain);
 		
 		this.add(panelEditor, BorderLayout.CENTER);
 
 		// Panel droite
-		
-		// mainPanelEditor.afficherEnvironnement();
 	}
 
 	private JPanel getPanelLeft() {
@@ -72,9 +71,9 @@ public class ViewBrain extends JPanel{
 		
 		panel.add(buttonAddCond);
 		panel.add(new JSeparator());
-		panel.add(buttonDelCond);
-		panel.add(new JSeparator());
 		panel.add(buttonEditCond);
+		panel.add(new JSeparator());
+		panel.add(buttonDelCond);
 		panel.add(new JSeparator());
 		panel.add(listCond);
 		
@@ -103,16 +102,18 @@ public class ViewBrain extends JPanel{
 	}
 
 	public void addCondition(ModelCondition condition) {
-		//Crée le nouveau panel condition
-		PanelCondition pc = new PanelCondition(condition);	
-	
-		//Récupère les panelSource et destination pour avoir leurs positions
-		PanelState panelSource = getPanelStateForModele(condition.getStateSource());
-		PanelState panelDest = getPanelStateForModele(condition.getStateDestination());
 		
-		pc.setPanelSourceAndDestination(panelSource, panelDest);
-		
-		panelEditor.addCondition(pc);
+		panelEditor.addCondition(condition);
+//		//Crée le nouveau panel condition
+//		PanelCondition pc = new PanelCondition(condition);	
+//	
+//		//Récupère les panelSource et destination pour avoir leurs positions
+//		PanelState panelSource = getPanelStateForModele(condition.getStateSource());
+//		PanelState panelDest = getPanelStateForModele(condition.getStateDestination());
+//		
+//		pc.setPanelSourceAndDestination(panelSource, panelDest);
+//		
+//		panelEditor.addCondition(pc);
 		
 		this.getListeModeleConditions().addElement(condition.getName());	
 	}
@@ -121,7 +122,7 @@ public class ViewBrain extends JPanel{
 		return (PanelEditor) this.panelEditor;
 	}
 
-	public ModeleBrain getModele(){
+	public ModeleBrain getModel(){
 		return this.modeleBrain;
 	}	
 
@@ -172,15 +173,5 @@ public class ViewBrain extends JPanel{
 	private JButton buttonEditCond;
 	private JButton buttonDelCond;
 
-	//TODO pas super propre
-	private PanelState getPanelStateForModele(ModelState modele) {
-		for (PanelState panel: panelEditor.getPanelState()) {
-			if(panel.getModelState().equals(modele))
-				return panel;
-		}
-		return null;
-	}
-	
-	
 
 }

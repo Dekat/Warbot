@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import edu.warbot.FSMEditor.models.ModelCondition;
+import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 
 public class PanelEditor extends JPanel {
@@ -14,12 +16,33 @@ public class PanelEditor extends JPanel {
 	ArrayList<PanelState> panelSates = new ArrayList<>();
 	ArrayList<PanelCondition> panelsCondition = new ArrayList<>();
 
-	ModeleBrain modele;
-	String panelName;
+	ModeleBrain modelBrain;
+	
+	public PanelEditor(ModeleBrain model) {
+		this.modelBrain = model;
+		createComposant();
+	}
 
-	public PanelEditor(ModeleBrain modele, String panelName) {
-		this.modele = modele;
-		this.panelName = panelName;
+	private void createComposant() {
+		for (ModelState modelState : modelBrain.getStates()) {
+			panelSates.add(new PanelState(modelState));
+		}
+		for (ModelCondition modelCond : modelBrain.getConditions()) {
+			PanelCondition pc = new PanelCondition(modelCond);
+			pc.setPanelSourceAndDestination(
+					getPanelStateForModele(modelCond.getStateSource()), 
+					getPanelStateForModele(modelCond.getStateDestination()));
+			panelsCondition.add(pc);
+		}		
+	}
+	
+	//TODO pas super propre
+	private PanelState getPanelStateForModele(ModelState model) {
+		for (PanelState panel: panelSates) {
+			if(panel.getModelState().equals(model))
+				return panel;
+		}
+		return null;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -59,8 +82,12 @@ public class PanelEditor extends JPanel {
 		}
 	}
 
-	public void addCondition(PanelCondition pc) {
-		this.panelsCondition.add(pc);
+	public void addCondition(ModelCondition modelCondition) {
+		PanelCondition pc = new PanelCondition(modelCondition);
+		pc.setPanelSourceAndDestination(
+				getPanelStateForModele(modelCondition.getStateSource()), 
+				getPanelStateForModele(modelCondition.getStateDestination()));
+		panelsCondition.add(pc);
 	}
 
 	public void addState(PanelState panel) {
@@ -110,5 +137,10 @@ public class PanelEditor extends JPanel {
 
 	public ArrayList<PanelCondition> getPanelcondition() {
 		return this.panelsCondition;
+	}
+
+	public void createState(ModelState modelState) {
+		// TODO Auto-generated method stub
+		
 	}
 }

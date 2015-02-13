@@ -13,37 +13,40 @@ import edu.warbot.FSMEditor.models.Modele;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 
 public class View extends JFrame {
-	
+
 	private static final long serialVersionUID = 1L;
-	
-	ArrayList<ViewBrain> viewBrains = new ArrayList<ViewBrain>();
 
 	private Modele modele;
+	
+	private ArrayList<ViewBrain> viewBrains;
 	
 	private JTabbedPane mainPanel;
 	
 	public View(Modele modele) {
 		this.modele = modele;
 		
-		initiateViewBrains();
+		createViewBrains();
 		
 		createFrame();
-		
-		createPanel();
 	}
-
-	private void initiateViewBrains() {
-		for (ModeleBrain modeleBrain : modele.getModelsBrains()) {
-			viewBrains.add(new ViewBrain(modeleBrain));
-		}
-	}
-
-	private void createPanel() {
+	
+	public void update(){
+		//On reconstruit la liste des vu
+//		modele.update(); necessaire ou pas ?
+		viewBrains = new ArrayList<>();
 		mainPanel = new JTabbedPane();
-		for (ViewBrain viewBrain : viewBrains) {
-			addViewBrain(viewBrain);
+		createViewBrains();
+	}
+
+	private void createViewBrains() {
+		viewBrains = new ArrayList<>();
+		mainPanel = new JTabbedPane();
+		
+		for (ModeleBrain modeleBrain : modele.getModelsBrains()) {
+			ViewBrain vb = new ViewBrain(modeleBrain);
+			viewBrains.add(vb);
+			mainPanel.add(vb.getModel().getAgentTypeName(), vb);
 		}
-		this.setContentPane(mainPanel);
 	}
 
 	private void createFrame() {
@@ -53,6 +56,8 @@ public class View extends JFrame {
 		this.setLocationRelativeTo(null);
 		
 		this.setMenuBar(getMainMenuBar());
+		
+		this.setContentPane(mainPanel);
 
 		this.setVisible(true);
 		
@@ -98,7 +103,7 @@ public class View extends JFrame {
 	
 	public void addViewBrain(ViewBrain viewBrain) {
 		this.viewBrains.add(viewBrain);
-		mainPanel.add(viewBrain.getModele().getAgentTypeName(), viewBrain);
+		mainPanel.add(viewBrain.getModel().getAgentTypeName(), viewBrain);
 	}
 
 	/*** Attributs ***/

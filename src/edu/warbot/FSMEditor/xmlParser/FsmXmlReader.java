@@ -180,17 +180,34 @@ public class FsmXmlReader extends FsmXmlParser{
 	private String[] parseStringTab(String stringTab) {
 		return stringTab.replaceAll("\\]", "").replaceAll("\\[", "").split(",");
 	}
+	
+	private String getField(Field field, Element elemPlanSetting){
+		try{
+			return elemPlanSetting.getChild(field.getName()).getValue();
+		}catch(NullPointerException e){
+			System.err.println("ERROR : Field " + field.getName() + " do not exist in xmlConfigurationFile but exist in GenericSettings");
+			return null;
+		}
+	}
 
 	//Ici essayer de fusionner avec les autre methodes mais le cast en marche pas de string a integer
 	//Et le mathode valueOf est déclaré dans chaque type donc impossible de faire ça de manière generique
 	private String getFieldForString(Field field, Element elemPlanSetting) {
-		return elemPlanSetting.getChild(field.getName()).getValue();
+		String s = getField(field, elemPlanSetting);
+		if(s.isEmpty())
+			return null;
+		else
+			return s;
 //		return field.getType().cast(elemPlanSetting.getChild(field.getName()).getValue());
 	}
 
 	private Boolean getFieldForBoolean(Field field, Element elemPlanSetting) {
 		try{
-			return Boolean.valueOf(elemPlanSetting.getChild(field.getName()).getValue());
+			String s = getField(field, elemPlanSetting);
+			if(s.isEmpty())
+				return null;
+			else
+				return Boolean.valueOf(s);
 		}catch(NumberFormatException e){
 			return null;
 		}
@@ -198,14 +215,14 @@ public class FsmXmlReader extends FsmXmlParser{
 
 	private Integer getFieldForInteger(Field field, Element elemPlanSetting) {
 		try{
-			return Integer.valueOf(elemPlanSetting.getChild(field.getName()).getValue());
+			return Integer.valueOf(getField(field, elemPlanSetting));
 		}catch(NumberFormatException e){
 			return null;
 		}
 	}
 
 	private Integer[] getFieldForIntegerTab(Field field, Element elemPlanSetting) {
-		String fieldValue = elemPlanSetting.getChild(field.getName()).getValue();
+		String fieldValue = getField(field, elemPlanSetting);
 		
 		if(fieldValue.isEmpty())
 			return null;
@@ -221,7 +238,7 @@ public class FsmXmlReader extends FsmXmlParser{
 	}
 
 	private String[] getFieldForStringTab(Field field, Element elemPlanSetting) {
-		String fieldValue = elemPlanSetting.getChild(field.getName()).getValue();
+		String fieldValue = getField(field, elemPlanSetting);
 		
 		if(fieldValue.isEmpty())
 			return null;
@@ -238,7 +255,7 @@ public class FsmXmlReader extends FsmXmlParser{
 	}
 	
 	private WarAgentType[] getFieldForAgentTypeTab(Field field, Element elemPlanSetting) {
-		String fieldValue = elemPlanSetting.getChild(field.getName()).getValue();
+		String fieldValue = getField(field, elemPlanSetting);
 
 		if(fieldValue.isEmpty())
 			return null;
