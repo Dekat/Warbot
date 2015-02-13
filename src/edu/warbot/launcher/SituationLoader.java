@@ -32,7 +32,9 @@ import edu.warbot.tools.WarXmlReader;
 
 public class SituationLoader {
 
-	private HashMap<String, ArrayList<HashMap<String, String>>> xmlSituationFileContent;
+    public static final String SITUATION_FILES_EXTENSION = ".warsit";
+
+    private HashMap<String, ArrayList<HashMap<String, String>>> xmlSituationFileContent;
 	
 	public SituationLoader(File xmlSituationFile) {
 		xmlSituationFileContent = getXmlSituationFileContent(xmlSituationFile);

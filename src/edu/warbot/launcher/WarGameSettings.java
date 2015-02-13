@@ -15,6 +15,7 @@ import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameMode;
 import edu.warbot.maps.AbstractWarMap;
+import edu.warbot.maps.DefaultWarMap;
 
 public class WarGameSettings {
 	
@@ -44,10 +45,11 @@ public class WarGameSettings {
 		_foodAppearanceRate = WarConfig.getFoodAppearanceRate();
 		_perceptsGetter = WarConfig.getDefaultPerception();
 		_isEnabledEnhancedGraphism = false; // TODO add it to config file
+        this.selectedMap = new DefaultWarMap();
 	}
 	
-	public void setNbAgentOfType(WarAgentType agent, int nombre) {
-		_nbAgentOfEachType.put(agent, nombre);
+	public void setNbAgentOfType(WarAgentType agent, int number) {
+		_nbAgentOfEachType.put(agent, number);
 	}
 	
 	public int getNbAgentOfType(WarAgentType agent) {

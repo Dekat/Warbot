@@ -26,20 +26,20 @@ public class LoadSituationActionListener implements ActionListener {
 		fc.setFileFilter(new FileFilter() {
 			@Override
 			public String getDescription() {
-				return "*" + DebugModeToolBar.SITUATION_FILES_EXTENSION;
+				return "*" + SituationLoader.SITUATION_FILES_EXTENSION;
 			}
 
 			@Override
 			public boolean accept(File f) {
-				return f.getName().endsWith(DebugModeToolBar.SITUATION_FILES_EXTENSION);
+				return f.getName().endsWith(SituationLoader.SITUATION_FILES_EXTENSION);
 			}
 		});
 		int returnVal = fc.showOpenDialog(_launcherInterface);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
 			String fileName = file.toString();
-			if (!fileName.endsWith(DebugModeToolBar.SITUATION_FILES_EXTENSION))
-				file = new File(fileName + DebugModeToolBar.SITUATION_FILES_EXTENSION);
+			if (!fileName.endsWith(SituationLoader.SITUATION_FILES_EXTENSION))
+				file = new File(fileName + SituationLoader.SITUATION_FILES_EXTENSION);
 			_launcherInterface.getGameSettings().setSituationLoader(new SituationLoader(file));
 			_launcherInterface.startGame();
 		}

@@ -20,8 +20,6 @@ import edu.warbot.launcher.WarViewer;
 @SuppressWarnings("serial")
 public class DebugModeToolBar extends JToolBar {
 
-	public static final String SITUATION_FILES_EXTENSION = ".warsit";
-	
 	private WarAgent _selectedAgent;
 
 	private WarViewer _viewer;
