@@ -3,6 +3,7 @@ package edu.warbot.launcher;
 import java.util.Observable;
 import java.util.Observer;
 
+import edu.warbot.game.WarGameListener;
 import madkit.action.KernelAction;
 import madkit.agr.LocalCommunity;
 import madkit.agr.LocalCommunity.Groups;
@@ -17,7 +18,7 @@ import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
 import edu.warbot.launcher.WarMain.Shared;
 
-public class WarScheduler extends TKScheduler implements Observer {
+public class WarScheduler extends TKScheduler implements WarGameListener {
 
 	// Délai initial entre chaque tick. Evite que le jeu aille trop vite.
 	public static final int INITIAL_DELAY = 10;
@@ -33,12 +34,12 @@ public class WarScheduler extends TKScheduler implements Observer {
 	protected void activate() {
 		super.activate();
 
-		_warAgentDoOnEachTickActivator = new GenericBehaviorActivator<WarAgent>(community, TKOrganization.TURTLES_GROUP, TKOrganization.TURTLE_ROLE, "doOnEachTick");
+		_warAgentDoOnEachTickActivator = new GenericBehaviorActivator<>(community, TKOrganization.TURTLES_GROUP, TKOrganization.TURTLE_ROLE, "doOnEachTick");
 		addActivator(_warAgentDoOnEachTickActivator);
 
 		setDelay(INITIAL_DELAY);
 
-		game.addObserver(this);
+		game.addWarGameListener(this);
 	}
 
 	@Override
@@ -65,13 +66,6 @@ public class WarScheduler extends TKScheduler implements Observer {
 			game.getMotherNatureTeam().createAndLaunchNewResource(game.getMap(), this, WarAgentType.WarFood);
 		}
 
-		// Testes pour voir si une équipe n'a plus de base
-		for (Team t : game.getPlayerTeams()) {
-			if (t.getNbUnitsLeftOfType(WarAgentType.WarBase) == 0) {
-				game.removePlayerTeam(t);
-			}
-		}
-
 		game.doOnEachTick();
 	}
 
@@ -79,16 +73,21 @@ public class WarScheduler extends TKScheduler implements Observer {
 		return _warAgentDoOnEachTickActivator;
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		Integer reason = (Integer) arg;
-		if ((reason == WarGame.UPDATE_TEAM_REMOVED && game.getPlayerTeams().size() <= 1) ||
-				reason == WarGame.GAME_STOPPED) {
-			sendMessage(
-					LocalCommunity.NAME, 
-					Groups.SYSTEM, 
-					Organization.GROUP_MANAGER_ROLE, 
-					new KernelMessage(KernelAction.EXIT));
-		}
-	}
+    @Override
+    public void onNewTeamAdded(Team newTeam) {}
+
+    @Override
+    public void onTeamRemoved(Team removedTeam) {}
+
+    @Override
+    public void onGameStopped() {
+        sendMessage(
+                LocalCommunity.NAME,
+                Groups.SYSTEM,
+                Organization.GROUP_MANAGER_ROLE,
+                new KernelMessage(KernelAction.EXIT));
+    }
+
+    @Override
+    public void onGameStarted() {}
 }

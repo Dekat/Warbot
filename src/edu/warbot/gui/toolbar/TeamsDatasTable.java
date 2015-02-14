@@ -5,10 +5,12 @@ import java.util.Observer;
 
 import javax.swing.JTable;
 
+import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
+import edu.warbot.game.WarGameListener;
 
 @SuppressWarnings("serial")
-public class TeamsDatasTable extends JTable implements Observer {
+public class TeamsDatasTable extends JTable implements WarGameListener {
 
 	private TeamsDatasTableModel _model;
 	private WarGame game;
@@ -25,19 +27,28 @@ public class TeamsDatasTable extends JTable implements Observer {
 		setModel(_model);
 		getColumnModel().getColumn(0).setCellRenderer(new HeaderCellRenderer());
 		
-		game.addObserver(this);
+		game.addWarGameListener(this);
 	}
 	
-	@Override
-	public void update(Observable o, Object arg) {
-		if (arg instanceof Integer) {
-			Integer cause = (Integer) arg;
-			if (cause == WarGame.UPDATE_TEAM_ADDED || cause == WarGame.UPDATE_TEAM_REMOVED) {
-				_model = new TeamsDatasTableModel(game);
-				setModel(_model);
-				getColumnModel().getColumn(0).setCellRenderer(new HeaderCellRenderer());
-			}
-		}
-	}
-	
+    @Override
+    public void onNewTeamAdded(Team newTeam) {
+        updateTeamsDataTable();
+    }
+
+    @Override
+    public void onTeamRemoved(Team removedTeam) {
+        updateTeamsDataTable();
+    }
+
+    @Override
+    public void onGameStopped() {}
+
+    @Override
+    public void onGameStarted() {}
+
+    private void updateTeamsDataTable() {
+        _model = new TeamsDatasTableModel(game);
+        setModel(_model);
+        getColumnModel().getColumn(0).setCellRenderer(new HeaderCellRenderer());
+    }
 }
