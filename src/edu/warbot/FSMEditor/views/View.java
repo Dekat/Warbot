@@ -9,20 +9,20 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
-import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 
 public class View extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	private Modele modele;
+	private Model modele;
 	
-	private ArrayList<ViewBrain> viewBrains;
+	private ArrayList<ViewBrain> viewBrains = new ArrayList<>();
 	
-	private JTabbedPane mainPanel;
+	private JTabbedPane mainPanel = new JTabbedPane();
 	
-	public View(Modele modele) {
+	public View(Model modele) {
 		this.modele = modele;
 		
 		createViewBrains();
@@ -33,17 +33,19 @@ public class View extends JFrame {
 	public void update(){
 		//On reconstruit la liste des vu
 //		modele.update(); necessaire ou pas ?
-		viewBrains = new ArrayList<>();
-		mainPanel = new JTabbedPane();
+		viewBrains.clear();
+		mainPanel.removeAll();
 		createViewBrains();
 	}
 
 	private void createViewBrains() {
-		viewBrains = new ArrayList<>();
-		mainPanel = new JTabbedPane();
+//		viewBrains = new ArrayList<>();
+//		mainPanel = new JTabbedPane();
 		
 		for (ModeleBrain modeleBrain : modele.getModelsBrains()) {
 			ViewBrain vb = new ViewBrain(modeleBrain);
+			modeleBrain.setViewBrain(vb);
+			
 			viewBrains.add(vb);
 			mainPanel.add(vb.getModel().getAgentTypeName(), vb);
 		}
@@ -85,6 +87,10 @@ public class View extends JFrame {
 	
 	/*** Accesseurs ***/
 	
+	public void setModel(Model model) {
+		this.modele = model;
+	}
+	
 	public MenuItem getMenuBarItemSave() {
 		return miSave;
 	}
@@ -111,6 +117,8 @@ public class View extends JFrame {
 	private MenuItem miSave;
 	private MenuItem miLoad;
 	private MenuItem miSaveJar;
+
+
 
 
 

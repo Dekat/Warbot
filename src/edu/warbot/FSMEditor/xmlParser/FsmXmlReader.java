@@ -10,15 +10,14 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
-import org.lwjgl.opencl.CLSampler;
 
 import edu.warbot.FSM.WarGenericSettings.AbstractGenericAttributSettings;
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
-import edu.warbot.FSMEditor.models.Modele;
-import edu.warbot.FSMEditor.models.ModeleBrain;
+import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
+import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.settings.EnumCondition;
 import edu.warbot.FSMEditor.settings.EnumPlan;
 import edu.warbot.agents.enums.WarAgentType;
@@ -32,7 +31,7 @@ import edu.warbot.agents.enums.WarAgentType;
  */
 public class FsmXmlReader extends FsmXmlParser{
 
-	private Modele modeleFSM;
+	private Model modeleFSM;
 	
 	public FsmXmlReader(String fileName) {
 
@@ -70,7 +69,7 @@ public class FsmXmlReader extends FsmXmlParser{
 	}
 	
 	private void readConfigDocument(Document document){
-		modeleFSM = new Modele();
+		modeleFSM = new Model();
 		modeleFSM.setIsRebuild(false);
 		
 		Element root = document.getRootElement();
@@ -81,7 +80,7 @@ public class FsmXmlReader extends FsmXmlParser{
 		}
 	}
 
-	private void createBrain(Element brain, Modele modele) {
+	private void createBrain(Element brain, Model modele) {
 		//Pour chaque conditions et chaque états
 		String agentTypeName = brain.getChild(AgentType).getValue();
 		WarAgentType agentType = WarAgentType.valueOf(agentTypeName);
@@ -229,12 +228,19 @@ public class FsmXmlReader extends FsmXmlParser{
 		
 		String[] stringValues = parseStringTab(fieldValue);
 		
-		Integer valuesInteger[] = new Integer[stringValues.length];
+		ArrayList<Integer> arrayInt = new ArrayList<>();
 		
 		for (int i = 0; i < stringValues.length; i++) {
-			valuesInteger[i] = Integer.valueOf(stringValues[i]);
+			try{
+				arrayInt.add(Integer.valueOf(stringValues[i]));
+			}catch(NumberFormatException e){
+				
+			}
 		}
-		return valuesInteger;
+		
+		Integer valuesInteger[] = new Integer[arrayInt.size()];
+		return arrayInt.toArray(valuesInteger);
+//		return valuesInteger;
 	}
 
 	private String[] getFieldForStringTab(Field field, Element elemPlanSetting) {
@@ -282,7 +288,7 @@ public class FsmXmlReader extends FsmXmlParser{
 	/**
 	 * @return Renvoi le modele de FSM générer grace au fichier de configuration
 	 */
-	public Modele getGeneratedFSMModel() {
+	public Model getGeneratedFSMModel() {
 		return this.modeleFSM;
 	}
 	

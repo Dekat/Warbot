@@ -6,14 +6,12 @@ import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.brains.MovableWarAgentAdapter;
 
 /**
- * Description de l'action
- * @author Olivier
- *
+ * Description de l'action : wiggle pendant un certains nombre de pas
  */
 public class WarActionWiggle<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType> {
 
-	private final int nbPasMax;	
-	int nbPas = 0;
+	private int nbPasMax;	
+	private int nbPas = 0;
 	
 	public WarActionWiggle(AgentAdapterType brain, int nombrePas) {
 		super(brain);
@@ -21,25 +19,24 @@ public class WarActionWiggle<AgentAdapterType extends MovableWarAgentAdapter> ex
 	}
 	
 	public String executeAction(){
-		
-		if(this.nbPasMax == 0)
-			return MovableWarAgent.ACTION_MOVE;
-		
+
 		nbPas++;
 		
 		if(this.nbPas > nbPasMax){
+			getAgent().setDebugString(this.getClass().getSimpleName() + " IDLE (finish)");
 			return MovableWarAgent.ACTION_IDLE;
+			
+		}else{
+		
+			double angle = getAgent().getHeading();
+			
+			angle = angle + new Random().nextInt(30) - new Random().nextInt(30);
+			
+			getAgent().setHeading(angle);
+		
+			getAgent().setDebugString(this.getClass().getSimpleName() + " MOVE");
+			return MovableWarAgent.ACTION_MOVE;
 		}
-		
-		double angle = getAgent().getHeading();
-		
-		angle = angle + new Random().nextInt(30) - new Random().nextInt(30);
-		
-		getAgent().setHeading(angle);
-	
-		return MovableWarAgent.ACTION_MOVE;
-
-		
 	}
 
 	@Override

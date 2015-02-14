@@ -35,9 +35,13 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 			e.initEtat();
 		}
 	
-		
+		fsmWillBegin();
 	}
 	
+	private void fsmWillBegin() {
+		this.firstEtat.stateWillBegin();
+	}
+
 	public String executeFSM(){
 		String actionResultat = null;
 		

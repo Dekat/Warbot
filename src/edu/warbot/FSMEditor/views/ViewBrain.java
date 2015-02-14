@@ -14,10 +14,9 @@ import javax.swing.border.TitledBorder;
 
 import org.jfree.ui.tabbedui.VerticalLayout;
 
-import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
-import edu.warbot.FSMEditor.panels.PanelCondition;
+import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.panels.PanelEditor;
 import edu.warbot.FSMEditor.panels.PanelState;
 
@@ -26,6 +25,8 @@ public class ViewBrain extends JPanel{
 	private static final long serialVersionUID = 1L;
 
 	ModeleBrain modeleBrain;
+	
+	private PanelEditor panelEditor;
 
 	public ViewBrain(ModeleBrain modeleBrain) {
 		this.modeleBrain = modeleBrain;
@@ -98,23 +99,12 @@ public class ViewBrain extends JPanel{
 	}
 
 	public void addState(ModelState state) {
-		this.panelEditor.addState(new PanelState(state));
+		this.panelEditor.addState(state);
 	}
 
 	public void addCondition(ModelCondition condition) {
 		
-		panelEditor.addCondition(condition);
-//		//Crée le nouveau panel condition
-//		PanelCondition pc = new PanelCondition(condition);	
-//	
-//		//Récupère les panelSource et destination pour avoir leurs positions
-//		PanelState panelSource = getPanelStateForModele(condition.getStateSource());
-//		PanelState panelDest = getPanelStateForModele(condition.getStateDestination());
-//		
-//		pc.setPanelSourceAndDestination(panelSource, panelDest);
-//		
-//		panelEditor.addCondition(pc);
-		
+		panelEditor.addCondition(condition);	
 		this.getListeModeleConditions().addElement(condition.getName());	
 	}
 
@@ -164,8 +154,6 @@ public class ViewBrain extends JPanel{
 	private JList<String> listCond;
 	private DefaultListModel<String> listModeleCond;
 	
-	private PanelEditor panelEditor;
-
 	private JButton buttonAddSate;
 	private JButton buttonEditState;
 	private JButton buttonDelSate;

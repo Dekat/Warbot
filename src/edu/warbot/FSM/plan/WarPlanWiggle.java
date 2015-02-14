@@ -17,14 +17,15 @@ public class WarPlanWiggle<AgentAdapterType extends MovableWarAgentAdapter> exte
 
 	public WarPlanWiggle(AgentAdapterType brain, WarPlanSettings planSettings) {
 		super("Plan Wiggle", brain, planSettings);
-		this.nombrePas = planSettings.Value;
+		this.nombrePas = planSettings.Nombre_pas;
 	}
 
 	public void buildActionList() {
 		
 		setPrintTrace(true);
 		
-		WarAction<AgentAdapterType> actionAttaquer = new WarActionWiggle<AgentAdapterType>(getBrain(), nombrePas);
+		WarAction<AgentAdapterType> actionAttaquer = new WarActionWiggle<AgentAdapterType>(getBrain(),
+				nombrePas);
 		
 		addAction(actionAttaquer);
 		

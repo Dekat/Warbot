@@ -11,7 +11,7 @@ import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSMEditor.FSMModelRebuilder;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
-import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.views.View;
 import edu.warbot.FSMEditor.views.ViewBrain;
@@ -20,13 +20,13 @@ import edu.warbot.FSMEditor.xmlParser.FsmXmlSaver;
 import edu.warbot.agents.enums.WarAgentType;
 
 public class Controleur {
-	public Modele modele;
+	public Model model;
 	public View view;
 	
 	private ArrayList<ControleurBrain> controleursBrains = new ArrayList<>();
 	
-	public Controleur(Modele modele, View view) {
-		this.modele = modele;
+	public Controleur(Model modele, View view) {
+		this.model = modele;
 		this.view = view;
 		
 		createControleurBrains();
@@ -43,9 +43,24 @@ public class Controleur {
 		}
 	}
 
-	public void update() {
-		modele.update();
+	public void rechargeModel() {
+		model.update();
+		
+		//On donne le nouveau model à la vu
+		view.setModel(this.model);
+		//On lui dit de ce mettre à jour
 		view.update();
+		
+		//La vu connait son model (à ce niveau ca ne sert a rien mais ca ne gene rien non plus pour 'linstant on le laisse
+		model.setView(view);
+		
+		this.update();
+
+	}
+
+	private void update() {
+		controleursBrains.clear();
+		createControleurBrains();		
 	}
 
 	public ControleurBrain getControleurBrain(WarAgentType agentType) {
@@ -62,7 +77,7 @@ public class Controleur {
 		ViewBrain vb = new ViewBrain(mb);
 		ControleurBrain cb = new ControleurBrain(mb, vb);
 		
-		this.modele.addModelBrain(mb);
+		this.model.addModelBrain(mb);
 		this.view.addViewBrain(vb);
 		
 		this.controleursBrains.add(cb);
@@ -92,7 +107,7 @@ public class Controleur {
 	public void eventMenuBarItemSave() {
 		FsmXmlSaver fsmSaver = new FsmXmlSaver();
 		
-		fsmSaver.saveFSM(modele, FsmXmlReader.xmlConfigurationDefaultFilename);
+		fsmSaver.saveFSM(model, FsmXmlReader.xmlConfigurationDefaultFilename);
 		System.out.println("Controleur : Configuration file exported successfull");
 	}
 	
@@ -103,7 +118,7 @@ public class Controleur {
 		//Charge le model
 		eventMenuBarItemLoad();
 		
-		printModelInformations(this.modele);
+		printModelInformations(this.model);
 		
 //		FSMInstancier fsmInstancier = new FSMInstancier(this.modele);
 		
@@ -121,19 +136,26 @@ public class Controleur {
 	
 	public void eventMenuBarItemLoad(){
 		FsmXmlReader reader = new FsmXmlReader(FsmXmlReader.xmlConfigurationDefaultFilename);
-		this.modele = reader.getGeneratedFSMModel();
+		this.model = reader.getGeneratedFSMModel();
 		
-		FSMModelRebuilder rebuilder = new FSMModelRebuilder(this.modele);
-		this.modele = rebuilder.getRebuildModel();
+		FSMModelRebuilder rebuilder = new FSMModelRebuilder(this.model);
+		this.model = rebuilder.getRebuildModel();
+
+//		printModelInformations(this.model);
 
 //		System.out.println("print model load");
 //		printModelInformations(this.modele);
 		
+		this.rechargeModel();
+		
 		System.out.println("Controleur : Configuration file imported successfull");
 	}
 
-	private void printModelInformations(Modele modeleRead) {
-		System.out.println("*** Vérification du modele gnééré dynamiquement pour la FSM ***");
+	private void printModelInformations(Model modeleRead) {
+		if(!modeleRead.isRebuild())
+			System.out.println("Controleur : WARNING model is not rebuild the print will probabli crash");
+		
+		System.out.println("*** Vérification du modele généré dynamiquement pour la FSM ***");
 		for (ModeleBrain modBrain : modeleRead.getModelsBrains()) {
 			System.out.println("* Traitement du modele pour le type d'agent " + modBrain.getAgentTypeName() + " *");
 		

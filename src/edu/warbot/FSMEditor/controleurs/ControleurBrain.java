@@ -155,7 +155,7 @@ public class ControleurBrain {
 				//Crée le nouveau modele condition
 				ModelCondition mc = new ModelCondition(d.getConditionName(), d.getConditionType(), condSett);
 //						modeleStateSource, modeleStateDest);
-				mc.setSource(modeleStateSource);
+				modeleStateSource.addConditionOut(mc);
 				mc.setDestination(modeleStateDest);
 				
 				addCondition(mc);

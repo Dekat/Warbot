@@ -24,27 +24,22 @@ public class PanelEditor extends JPanel {
 	}
 
 	private void createComposant() {
+		panelSates = new ArrayList<>();
+		panelsCondition = new ArrayList<>();
+		
+		//Crée les états
 		for (ModelState modelState : modelBrain.getStates()) {
-			panelSates.add(new PanelState(modelState));
+			PanelState ps = new PanelState(modelState);
+			panelSates.add(ps);
+			modelState.setViewState(ps);
 		}
+		//Crée les conditions
 		for (ModelCondition modelCond : modelBrain.getConditions()) {
 			PanelCondition pc = new PanelCondition(modelCond);
-			pc.setPanelSourceAndDestination(
-					getPanelStateForModele(modelCond.getStateSource()), 
-					getPanelStateForModele(modelCond.getStateDestination()));
 			panelsCondition.add(pc);
-		}		
+		}	
 	}
 	
-	//TODO pas super propre
-	private PanelState getPanelStateForModele(ModelState model) {
-		for (PanelState panel: panelSates) {
-			if(panel.getModelState().equals(model))
-				return panel;
-		}
-		return null;
-	}
-
 	public void paintComponent(Graphics g) {
 
 		g.clearRect(0, 0, this.getWidth(), this.getHeight());
@@ -82,16 +77,13 @@ public class PanelEditor extends JPanel {
 		}
 	}
 
-	public void addCondition(ModelCondition modelCondition) {
-		PanelCondition pc = new PanelCondition(modelCondition);
-		pc.setPanelSourceAndDestination(
-				getPanelStateForModele(modelCondition.getStateSource()), 
-				getPanelStateForModele(modelCondition.getStateDestination()));
-		panelsCondition.add(pc);
+	public void addState(ModelState modelState) {
+		panelSates.add(new PanelState(modelState));
 	}
 
-	public void addState(PanelState panel) {
-		this.panelSates.add(panel);
+	public void addCondition(ModelCondition modelCondition) {
+		PanelCondition pc = new PanelCondition(modelCondition);
+		panelsCondition.add(pc);
 	}
 
 	public void setNoItemSelected() {

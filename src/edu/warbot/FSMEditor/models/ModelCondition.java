@@ -10,8 +10,8 @@ public class ModelCondition {
 	private EnumCondition typeName;
 	private WarConditionSettings conditionGenericAttributs;
 
-	ModelState modeleDest;
 	ModelState modeleSource;
+	ModelState modeleDest;
 	
 	String stateOutId;
 	
@@ -23,6 +23,18 @@ public class ModelCondition {
 		this.conditionGenericAttributs = conditionSettings;
 	}
 	
+	public void setSource(ModelState modelState) {
+		this.modeleSource = modelState;
+		
+//		if(modelState.getConditionsOut() == null || !modelState.getConditionsOut().contains(this))
+//			modelState.addConditionOut(this);
+	}
+
+	public void setDestination(ModelState d) {
+		this.modeleDest = d;
+//		d.addConditionIn(this);
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -37,16 +49,6 @@ public class ModelCondition {
 	
 	public String getTypeLoaderName() {
 		return Settings.getFullNameOf(typeName);
-	}
-	
-	public void setDestination(ModelState d) {
-		this.modeleDest = d;
-//		this.stateOutId = d.getName();
-	}
-	
-	public void setSource(ModelState modelState) {
-		this.modeleSource = modelState;
-		modelState.addConditionOut(this);
 	}
 	
 	public ModelState getStateDestination(){
@@ -75,6 +77,10 @@ public class ModelCondition {
 	
 	public EnumCondition getConditionType() {
 		return this.conditionType;
+	}
+
+	public String getConditionLoaderName() {
+		return Settings.getFullNameOf(typeName);
 	}
 
 }

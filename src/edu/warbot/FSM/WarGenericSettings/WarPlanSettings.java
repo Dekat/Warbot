@@ -24,4 +24,8 @@ public class WarPlanSettings extends AbstractGenericAttributSettings{
 
 	public Boolean Offensif;
 	
+	public Integer Nombre_pas = 1000;
+	
+	public Integer Time_out = 1000;
+	
 }

@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSM.WarFSMBrainController;
 import edu.warbot.FSMEditor.FSMInstancier;
-import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
@@ -40,7 +40,7 @@ public class Team extends Observable {
 	private HashMap<WarAgentType, Integer> _nbUnitsLeft;
 	private ArrayList<WarAgent> _dyingAgents;
 	private WarGame game;
-	private Modele fsmModel;
+	private Model fsmModel;
 	
 	public Team(String nom) {
 		_name = nom;
@@ -284,12 +284,17 @@ public class Team extends Observable {
 		a.setLogLevel(getGame().getSettings().getLogLevel());
 
 		if(a.getBrain() instanceof WarFSMBrainController){
+			WarAgentType agentType = WarAgentType.valueOf(agentName);
 			System.out.println("Team : Instance of FSM brain found");
 			System.out.println("Team : Generating fsm instance for " + agentName + "...");
+
 			//Intancie la fsm et la donne comme brain à l'agent
-			FSMInstancier fsmInstancier = new FSMInstancier(getFSMModel());
 			ControllableWarAgentAdapter adapter = a.getBrain().getAgent();
-			WarFSM warFsm = fsmInstancier.getBrainControleurForAgent(WarAgentType.valueOf(agentName), adapter);
+//			Class<? extends ControllableWarAgentAdapter> agentTypeAdapterClass = adapter.getClass();
+
+			FSMInstancier<ControllableWarAgentAdapter> fsmInstancier = new FSMInstancier(getFSMModel());
+			
+			WarFSM warFsm = fsmInstancier.getBrainControleurForAgent(agentType, adapter);
 			System.out.println("Generation succesfull");
 			
 			WarFSMBrainController fsmBrainController = (WarFSMBrainController)a.getBrain();
@@ -301,11 +306,11 @@ public class Team extends Observable {
 		return a;
 	}
 	
-	private Modele getFSMModel() {
+	private Model getFSMModel() {
 		return this.fsmModel;
 	}
 	
-	public void setFSMModel(Modele fsmModel) {
+	public void setFsmModel(Model fsmModel) {
 		this.fsmModel = fsmModel;
 	}
 

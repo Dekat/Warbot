@@ -12,7 +12,7 @@ import org.jdom2.output.XMLOutputter;
 
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
-import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
@@ -22,7 +22,7 @@ public class FsmXmlSaver extends FsmXmlParser{
 	Document document;
 	FileWriter file;
 	
-	public void saveFSM(Modele modele, String fileName) {
+	public void saveFSM(Model modele, String fileName) {
 		
 		try {
 			file = new FileWriter(fileName);

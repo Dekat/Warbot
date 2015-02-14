@@ -1,6 +1,6 @@
 package edu.warbot.launcher;
 
-import java.awt.*;
+import java.awt.Image;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -8,12 +8,20 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import edu.warbot.FSM.WarFSMBrainController;
 import edu.warbot.FSMEditor.FSMModelRebuilder;
@@ -178,9 +186,10 @@ public class WarMain implements WarGameListener {
 	                        	
 	                        	InputStream fileFSMConfig = jarCurrentFile.getInputStream(entryFSMConfiguration);
 	                        	FsmXmlReader fsmXmlReader = new FsmXmlReader(fileFSMConfig);
-	                        	FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
-	                        	currentTeam.setFSMModel(fsmModelRebuilder.getRebuildModel());
 	                        	System.out.println("WarMain : FSMXmlReader successfull read fsmConfigFile");
+	                        	FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
+	                        	currentTeam.setFsmModel(fsmModelRebuilder.getRebuildModel());
+	                        	System.out.println("WarMain : FSMModelRebuilder successfull rebuild model");
 	                        	
 	                        	HashMap<String, String> brainControllersClassesName = analXML.getBrainControllersClassesNameOfEachAgentType();
 	                    		

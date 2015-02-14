@@ -13,19 +13,18 @@ import edu.warbot.brains.MovableWarAgentAdapter;
  */
 public class WarPlanIdle<AgentAdapterType extends ControllableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
 	
-	
-	private Integer nombrePas;
+	private Integer nombreTik;
 
 	public WarPlanIdle(AgentAdapterType brain, WarPlanSettings planSettings) {
 		super("Plan Idle", brain, planSettings);
-		this.nombrePas = planSettings.Value;
+		this.nombreTik = planSettings.Time_out;
 	}
 
 	public void buildActionList() {
 		
 		setPrintTrace(true);
 		
-		WarAction<AgentAdapterType> actionAttaquer = new WarActionIdle<AgentAdapterType>(getBrain(), nombrePas);
+		WarAction<AgentAdapterType> actionAttaquer = new WarActionIdle<AgentAdapterType>(getBrain(), nombreTik);
 		
 		addAction(actionAttaquer);
 		

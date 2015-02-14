@@ -3,7 +3,7 @@ package edu.warbot.FSMEditor.models;
 import java.util.ArrayList;
 
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
-import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
+import edu.warbot.FSMEditor.panels.PanelState;
 import edu.warbot.FSMEditor.settings.EnumPlan;
 import edu.warbot.FSMEditor.settings.Settings;
 
@@ -14,7 +14,6 @@ public class ModelState {
 	
 	private WarPlanSettings planSettings;
 	
-	//TODO ecq il faut laisser ça ici ?
 	private ArrayList<String> conditionsOutID = new ArrayList<String>();
 	
 	private ArrayList<ModelCondition> conditionsOut = new ArrayList<>();
@@ -28,7 +27,9 @@ public class ModelState {
 
 	public void addConditionOut(ModelCondition mc) {
 		this.conditionsOut.add(mc);
-//		this.conditionsOutID.add(mc.getName());
+		
+//		if(mc.getStateSource() == null /*| !mc.getStateSource().equals(this)*/)
+		mc.setSource(this);
 	}
 
 	public void addConditionIn(ModelCondition condition) {
@@ -83,7 +84,16 @@ public class ModelState {
 	public void setPlanSettings(WarPlanSettings planSettings) {
 		this.planSettings = planSettings;
 	}
+
+	/*** Le modelState connait son viewState ***/
+	private PanelState viewState;
 	
+	public void setViewState(PanelState ps) {
+		this.viewState = ps;
+	}
 	
+	public PanelState getViewState(){
+		return viewState;
+	}
 
 }

@@ -1,11 +1,13 @@
 package edu.warbot.FSMEditor;
 
+import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
+
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSMEditor.controleurs.Controleur;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
-import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.settings.EnumCondition;
 import edu.warbot.FSMEditor.settings.EnumPlan;
 import edu.warbot.FSMEditor.views.View;
@@ -14,7 +16,7 @@ import edu.warbot.agents.enums.WarAgentType;
 public class FSMEditor {
 	
 	public FSMEditor() {
-		Modele modele = new Modele();
+		Model modele = new Model();
 		
 		//Pour tester on ajoute directement des elements au model de la FSM
 		modele.createModelBrain(WarAgentType.WarBase);
@@ -36,11 +38,11 @@ public class FSMEditor {
 		WarConditionSettings cSWToI = new WarConditionSettings();
 		cSWToI.Time_out = 100;
 		ModelCondition cWToI = new ModelCondition("Cond_W_To_I", EnumCondition.WarConditionTimeOut, cSWToI);
-		cWToI.setSource(sW);
+		sW.addConditionOut(cWToI);
 		cWToI.setDestination(sI);
 		
 		ModelCondition cIToW = new ModelCondition("Cond_I_To_W", EnumCondition.WarConditionTimeOut, cSWToI);
-		cIToW.setSource(sI);
+		sI.addConditionOut(cIToW);
 		cIToW.setDestination(sW);
 
 		modele.getModelBrain(WarAgentType.WarExplorer).addState(sW);

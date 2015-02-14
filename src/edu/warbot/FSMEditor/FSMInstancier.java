@@ -10,7 +10,7 @@ import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.plan.WarPlan;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
-import edu.warbot.FSMEditor.models.Modele;
+import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.ControllableWarAgentAdapter;
@@ -27,13 +27,14 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 	
 	WarFSM<AgentAdapterType> fsm = new WarFSM<>();
 	
-	Modele model;
+	Model model;
 	
 	//HashMap pour assicier les états et condition avec leurs nom
+	//Ca pourrait plutot etre des hashmap de ModelState associé au warState
 	HashMap<String, WarEtat<AgentAdapterType>> hashMapState = new HashMap<>();
 	HashMap<String, WarCondition<AgentAdapterType>> hashMapCond = new HashMap<>();
 
-	public FSMInstancier(Modele modele) {
+	public FSMInstancier(Model modele) {
 		this.model = modele;
 
 		if(!modele.isRebuild()){
@@ -79,7 +80,7 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 			WarCondition<AgentAdapterType> warCond = getGeneratedCondition(modelCond, adapter);
 			
 			//Ajoute l'état de destination de la condition
-			WarEtat<AgentAdapterType> etat = hashMapState.get(modelCond.getName());
+			WarEtat<AgentAdapterType> etat = hashMapState.get(modelCond.getStateDestination().getName());
 			warCond.setDestination(etat);
 			
 			//Ajoute la condition à la HashMap
@@ -91,7 +92,7 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 		for (ModelState modelState : modelBrain.getStates()) {
 			WarEtat<AgentAdapterType> warEtat = hashMapState.get(modelState.getName());
 			
-			for (ModelCondition modelCond : modelBrain.getConditions()) {
+			for (ModelCondition modelCond : modelState.getConditionsOut()) {
 				WarCondition<AgentAdapterType> warCond = hashMapCond.get(modelCond.getName());
 				
 				warEtat.addCondition(warCond);
@@ -105,26 +106,55 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 		return fsm;
 	}
 
-	private HashMap<String, ModelState> getHashMapStates(ModeleBrain modelBrain) {
-		HashMap<String, ModelState> hashRes = new HashMap<>();
-		for (ModelState state : modelBrain.getStates()) {
-			hashRes.put(state.getName(), state);
-		}
-		return hashRes;
-	}
-
-	private HashMap<String, ModelCondition> getHashMapConditions(ModeleBrain modelBrain) {
-		HashMap<String, ModelCondition> hashRes = new HashMap<>();
-		for (ModelCondition cond: modelBrain.getConditions()) {
-			hashRes.put(cond.getName(), cond);
-		}
-		return hashRes;
-	}
+//	private HashMap<String, ModelState> getHashMapStates(ModeleBrain modelBrain) {
+//		HashMap<String, ModelState> hashRes = new HashMap<>();
+//		for (ModelState state : modelBrain.getStates()) {
+//			hashRes.put(state.getName(), state);
+//		}
+//		return hashRes;
+//	}
+//
+//	private HashMap<String, ModelCondition> getHashMapConditions(ModeleBrain modelBrain) {
+//		HashMap<String, ModelCondition> hashRes = new HashMap<>();
+//		for (ModelCondition cond: modelBrain.getConditions()) {
+//			hashRes.put(cond.getName(), cond);
+//		}
+//		return hashRes;
+//	}
 	
 	private WarCondition<AgentAdapterType> getGeneratedCondition(ModelCondition modelCond,
 			ControllableWarAgentAdapter adapter) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		//Instancie le plan
+		WarCondition<AgentAdapterType> instanciateCond = null;
+		try {
+			
+			Class c = Class.forName(modelCond.getConditionLoaderName());
+
+			//Récupère le constructeur
+			Class typeOfAdapter = c.getConstructors()[0].getParameterTypes()[1];
+			
+			instanciateCond = (WarCondition<AgentAdapterType>) c
+					.getConstructor(String.class, typeOfAdapter, modelCond.getConditionSettings().getClass())
+					.newInstance(modelCond.getName(), adapter, modelCond.getConditionSettings());
+			
+		} catch (NoSuchMethodException | SecurityException
+				| ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+			System.err.println("*** ERROR in dynamic instanciation of generated model check everything:");
+			System.err.println("* Check constructor in WarPlan, WarCondition, WarReflexe");
+			System.err.println("* Check attribut usage in subclass of previews and in " + modelCond.getConditionLoaderName());
+			
+			System.err.println("ERROR during instanciate WarCondition with class name " + modelCond.getConditionLoaderName() + " check name, constructor, classPath, etc...");
+			System.err.println("Objects send : Adapter : " + adapter.getClass() + " , WarPlanSettings : " + modelCond.getConditionLoaderName().getClass());
+			try {
+				System.err.println("Objects expected : Adapter : " + Class.forName(modelCond.getConditionLoaderName()).getConstructors()[0].getParameterTypes()[0] + " , WarPlanSettings : " + Class.forName(modelCond.getConditionLoaderName()).getConstructors()[0].getParameterTypes()[1]);
+			} catch (SecurityException | ClassNotFoundException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		return instanciateCond;
 	}
 
 	private WarEtat<AgentAdapterType> getGenerateWarState(

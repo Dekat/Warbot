@@ -30,11 +30,15 @@ public abstract class WarPlan<AgentAdapterType extends ControllableWarAgentAdapt
 	public abstract void buildActionList();
 	
 	public void initPlan() {
-		this.buildActionList();
+		
+		try{
+			this.buildActionList();
+		}catch(NullPointerException e){
+			System.err.println("ERROR during initialisation of warPlan <" + this.nom + ">, check you have set the right attribut for this plan ");
+		}
 		
 		if(this.actions.size() < 1){
 			System.err.println("ERREUR le plan <" + this.nom + "> ne contient aucune actions à executer");
-			System.exit(0);
 		}
 		
 		if(this.firstAction == null){
@@ -82,7 +86,8 @@ public abstract class WarPlan<AgentAdapterType extends ControllableWarAgentAdapt
 	}
 	
 	public void planWillBegin(){
-		//Ici on ne fait rien mais certains plan peuvent en avoir besoin
+		firstAction.actionWillBegin();
+		actionCourante = firstAction;
 	}
 	
 	private void printTrace() {
