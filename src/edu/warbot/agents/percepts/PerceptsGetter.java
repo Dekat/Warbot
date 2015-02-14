@@ -55,7 +55,7 @@ public abstract class PerceptsGetter {
                 if(getAgent().isEnemy(percept))
                     enemiesPercepts.add(percept);
                 else {
-                    if (percept.getTeamName().equals(MotherNatureTeam.NAME))
+                    if (percept.getType().equals(WarAgentType.WarFood))
                         resourcesPercepts.add(percept);
                     else
                         alliesPercepts.add(percept);

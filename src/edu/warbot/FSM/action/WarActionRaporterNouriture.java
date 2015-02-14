@@ -15,25 +15,28 @@ import edu.warbot.communications.WarMessage;
  */
 public class WarActionRaporterNouriture<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType>{
 	
-	private final int nbElementToKeep;	
-
-	public WarActionRaporterNouriture(AgentAdapterType brain, int nombreAGarder) {
+	public WarActionRaporterNouriture(AgentAdapterType brain) {
 		super(brain);
-		this.nbElementToKeep = nombreAGarder;
 	}
 
 	public String executeAction(){
 		
-//		if(getAgent().isBagEmpty() | getAgent().getNbElementsInBag() <= nbElementToKeep)
-//			setActionTerminate(true);
+		if(getAgent().isBagEmpty()){
+			getAgent().setDebugString("Action RapporterNourriture : bag empty");
+			if(getAgent().isBlocked())
+				getAgent().setRandomHeading();
+			return MovableWarAgent.ACTION_MOVE;
+		}
 		
 		if(getAgent().isBlocked())
 			getAgent().setRandomHeading();
 
 		ArrayList<WarAgentPercept> basePercepts = getAgent().getPerceptsAlliesByType(WarAgentType.WarBase);
 		
-		//Si je ne voit pas de base vois une base
+		//Si je ne voit pas de base ou vois zero base
 		if(basePercepts == null | basePercepts.size() == 0){
+			
+			getAgent().setDebugString("Action RapporterNourriture : seek base");
 			
 			WarMessage m = this.getMessageFromBase();
 			//Si j'ai un message de la base je vais vers elle
@@ -46,6 +49,9 @@ public class WarActionRaporterNouriture<AgentAdapterType extends MovableWarAgent
 			return MovableWarAgent.ACTION_MOVE;
 			
 		}else{//si je vois une base
+			
+			getAgent().setDebugString("Action RapporterNourriture : base found");
+			
             WarAgentPercept base = basePercepts.get(0);
 			
 			if(base.getDistance() > MovableWarAgent.MAX_DISTANCE_GIVE){

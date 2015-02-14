@@ -29,21 +29,21 @@ public class WarPlanRamasserNouriture<AgentAdapterType extends MovableWarAgentAd
 		
 		setPrintTrace(true);
 		
-		WarAction<AgentAdapterType> actionChercheN = new WarActionChercherNouriture<AgentAdapterType>(getBrain(), 4);
+		WarAction<AgentAdapterType> actionChercheN = new WarActionChercherNouriture<AgentAdapterType>(getBrain());
 		addAction(actionChercheN);
 
-		WarAction<AgentAdapterType> actionRamenerN = new WarActionRaporterNouriture<AgentAdapterType>(getBrain(), 0);
+		WarAction<AgentAdapterType> actionRamenerN = new WarActionRaporterNouriture<AgentAdapterType>(getBrain());
 		addAction(actionRamenerN);
 		
 		WarConditionSettings condSet1 = new WarConditionSettings();
-		condSet1.Action = actionChercheN.getType(); //EnumAction.valueOf(actionChercheN.getName());
-		WarCondition<AgentAdapterType> condStopChercher = new WarConditionTimeOut<AgentAdapterType>("cond_back", getBrain(), condSet1);
+		condSet1.Time_out = getPlanSettings().Time_out; //A changer par un attribut check
+		WarCondition<AgentAdapterType> condStopChercher = new WarConditionTimeOut<AgentAdapterType>("cond_tO_R", getBrain(), condSet1);
 		actionChercheN.addCondition(condStopChercher);
 		condStopChercher.setDestination(actionRamenerN);
 		
 		WarConditionSettings condSet2 = new WarConditionSettings();
-		condSet2.Action = actionRamenerN.getType(); //EnumAction.valueOf(actionRamenerN.getName());
-		WarCondition<AgentAdapterType> condStopRamener = new WarConditionTimeOut<AgentAdapterType>("cond_seek", getBrain(), condSet2);
+		condSet2.Time_out = getPlanSettings().Time_out; //A changer par un attribut check
+		WarCondition<AgentAdapterType> condStopRamener = new WarConditionTimeOut<AgentAdapterType>("cond_tO_C", getBrain(), condSet2);
 		actionRamenerN.addCondition(condStopRamener);
 		condStopRamener.setDestination(actionChercheN);
 		

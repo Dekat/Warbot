@@ -6,37 +6,44 @@ import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.MovableWarAgentAdapter;
 import edu.warbot.communications.WarMessage;
 
 /**
  * Va chercher de la nouriture
- * @author Olivier
- *
  */
 public class WarActionChercherNouriture<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType> {
 	
-	private final int nbMaxElement;	
-
-	public WarActionChercherNouriture(AgentAdapterType brain, int nombreNuritureMax) {
+	
+	public WarActionChercherNouriture(AgentAdapterType brain) {
 		super(brain);
-		this.nbMaxElement = nombreNuritureMax;
 	}
 
 	public String executeAction(){
 		
-//		if(getAgent().isBagFull() | getAgent().getNbElementsInBag() >=this.nbMaxElement)
-//			setActionTerminate(true);
+		if(getAgent().isBagFull()){
+			getAgent().setDebugString("ActionChercherNourriture : bag full");
+			if(getAgent().isBlocked())
+				getAgent().setRandomHeading();
+			return MovableWarAgent.ACTION_MOVE;
+		}
 		
 		if(getAgent().isBlocked())
 			getAgent().setRandomHeading();
 
-		ArrayList<WarAgentPercept> foodPercepts = getAgent().getPerceptsResources();
+		ArrayList<WarAgentPercept> percepts = getAgent().getPercepts();
+
+		ArrayList<WarAgentPercept> foodPercepts = new ArrayList<>();
+		
+		for (WarAgentPercept p : percepts) {
+			if(p.getType().equals(WarAgentType.WarFood))
+				foodPercepts.add(p);
+		}
 		
 		//Si il ny a pas de nouriture dans le percept
 		if(foodPercepts.size() == 0){
 			
+			getAgent().setDebugString("ActionChercherNourriture : seek food");
 			WarMessage m = getMessageAboutFood();
 			if(m != null){
 				getAgent().setHeading(m.getAngle());
@@ -46,6 +53,7 @@ public class WarActionChercherNouriture<AgentAdapterType extends MovableWarAgent
 			return MovableWarAgent.ACTION_MOVE;
 				
 		}else{//Si il y a de la nouriture
+			getAgent().setDebugString("ActionChercherNourriture : find food");
             WarAgentPercept foodP = foodPercepts.get(0); //le 0 est le plus proche normalement
 			
 			//si il y a beaucoup de nourriture je previens mes alliés
