@@ -50,10 +50,12 @@ public abstract class WarAction<AgentAdapterType extends ControllableWarAgentAda
 	 * Méthode appelée avant chaque première exécution de l'action
 	 */
 	public void actionWillBegin(){
+		for (WarCondition<AgentAdapterType> warCondition : conditions) {
+			warCondition.conditionWillBegin();
+		}
 		getAgent().setDebugString(this.getClass().getSimpleName());
 	}
 
-	//A voir si ça marche (si ça renvoi bien le type spécifique
 	public EnumAction getType() {
 		return EnumAction.valueOf(getClass().getSimpleName());
 	}

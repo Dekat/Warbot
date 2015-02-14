@@ -79,4 +79,8 @@ public class ModelCondition {
 		return this.conditionType;
 	}
 
+	public String getConditionLoaderName() {
+		return Settings.getFullNameOf(typeName);
+	}
+
 }

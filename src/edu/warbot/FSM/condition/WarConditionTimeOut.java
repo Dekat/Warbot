@@ -23,8 +23,8 @@ public class WarConditionTimeOut<AgentAdapterType extends ControllableWarAgentAd
 	
 	@Override
 	public boolean isValide() {
-		timeOut++;
-		if(timeOut >= currentTime)
+		currentTime++;
+		if(currentTime > timeOut)
 			return true;
 		else
 			return false;

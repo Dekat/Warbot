@@ -8,24 +8,21 @@ import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
 public class WarPlanAttaquer extends WarPlan<WarRocketLauncherAdapter> {
 	
-//	WarAgentType agentType;
+	WarAgentType agentType;
 	
-//	public WarPlanAttaquer(WarRocketLauncherAdapter brain, WarAgentType agentType) {
 	public WarPlanAttaquer(WarRocketLauncherAdapter brain, WarPlanSettings planSettings) {
 		super("Plan Attaquer", brain, planSettings);
-//		this.agentType = agentType;
+		
+		if(getPlanSettings().Agent_type != null && getPlanSettings().Agent_type.length > 0)
+			this.agentType = getPlanSettings().Agent_type[0];
+		else
+			System.err.println("getPlanSettings().Agent_type_destination is null or does not containe value in " + this.getClass().getSimpleName());
+		
 	}
 
 	public void buildActionList() {
 		
 		setPrintTrace(true);
-		
-		WarAgentType agentType = null;
-		
-		if(getPlanSettings().Agent_type != null && getPlanSettings().Agent_type.length > 0)
-			agentType = getPlanSettings().Agent_type[0];
-		else
-			System.err.println("getPlanSettings().Agent_type_destination is null or does not containe value in " + this.getClass().getSimpleName());
 			
 		WarAction<WarRocketLauncherAdapter> actionAttaquer = new WarActionAttaquer(getBrain(), agentType);
 		
