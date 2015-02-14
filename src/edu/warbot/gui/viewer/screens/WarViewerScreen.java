@@ -22,7 +22,7 @@ import edu.warbot.gui.viewer.entities.WarViewerEntityFood;
 import edu.warbot.gui.viewer.entities.WarViewerEntityProjectile;
 import edu.warbot.gui.viewer.util.WarViewerKeyListener;
 
-public class WarViewerScreen implements Screen, Observer {
+public class WarViewerScreen implements Screen {
 
 	public static WarViewerScreen GAME_SCREEN;
 	
@@ -55,7 +55,7 @@ public class WarViewerScreen implements Screen, Observer {
 		
 		loadTextures();
 		
-		gameGdx.getGame().addObserver(this);
+//		gameGdx.getGame().addObserver(this);
 		
 		newTick = false;
 		
@@ -247,10 +247,10 @@ public class WarViewerScreen implements Screen, Observer {
 		this.showInitialsUnities = showInitialsUnities;
 	}
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		if ((Integer)arg1 == WarGame.NEW_TICK) {
-			newTick = true;
-		}
-	}
+//	@Override
+//	public void update(Observable arg0, Object arg1) {
+//		if ((Integer)arg1 == WarGame.NEW_TICK) {
+//			newTick = true;
+//		}
+//	}
 }

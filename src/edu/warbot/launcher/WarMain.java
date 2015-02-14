@@ -31,12 +31,13 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
+import edu.warbot.game.WarGameListener;
 import edu.warbot.game.WarGameMode;
 import edu.warbot.gui.launcher.LoadingDialog;
 import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.tools.WarIOTools;
 
-public class WarMain implements Observer {
+public class WarMain implements WarGameListener {
     private static final String CMD_NAME = "java WarMain";
     private static final String CMD_LOG_LEVEL = "--loglevel";
     private static final String CMD_NB_AGENT_OF_TYPE = "--nb";
@@ -111,22 +112,6 @@ public class WarMain implements Observer {
         }
     }
 
-
-    @Override
-	public void update(Observable o, Object arg) {
-		Integer reason = (Integer) arg;
-		if ((reason == WarGame.UPDATE_TEAM_REMOVED && game.getPlayerTeams().size() <= 1) ||
-				reason == WarGame.GAME_STOPPED) {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					endGame();
-				}
-			});
-		} else if (reason == WarGame.GAME_LAUNCHED) {
-			loadingDialog.dispose();
-		}
-	}
-	
 	public void startGame() {
 		loadingDialog = new LoadingDialog("Lancement de la simulation...");
 		loadingDialog.setVisible(true);
@@ -138,28 +123,8 @@ public class WarMain implements Observer {
         Shared.game = game;
 
         new WarLauncher().executeLauncher();
-        game.addObserver(this);
+        game.addWarGameListener(this);
     }
-	
-	public void endGame() {
-        if(launcherInterface != null)
-		    launcherInterface.displayGameResults(game);
-        else {
-            String finalTeams = "";
-            for(Team team : game.getPlayerTeams()) {
-                finalTeams += team.getName() + ", ";
-            }
-            finalTeams = finalTeams.substring(0, finalTeams.length() - 2);
-            if (game.getPlayerTeams().size() == 1) {
-                System.out.println("Victoire de : " + finalTeams);
-            } else {
-                System.out.println("Ex-Aequo entre les équipes : " + finalTeams);
-            }
-        }
-
-		game.deleteObserver(this);
-		settings.prepareForNewGame();
-	}
 	
 	@SuppressWarnings("unchecked")
 	public Map<String, Team> getTeamsFromDirectory() {
@@ -313,7 +278,7 @@ public class WarMain implements Observer {
 	}
 
 	public Map<String, Team> getAvailableTeams() {
-		return new HashMap<String, Team>(availableTeams);
+		return new HashMap<>(availableTeams);
 	}
 	
 	public static void main(String[] args) {
@@ -422,6 +387,42 @@ public class WarMain implements Observer {
                 "\t"+CMD_FOOD_APPEARANCE_RATE+"=RATE\t\t\tnew food will appear every RATE ticks\n" +
                 "\t"+CMD_GAME_MODE+"=MODE\t\t\tset MODE as game mode. MODE in " + Arrays.asList(WarGameMode.values()) + "\n" +
                 "\t"+CMD_HELP+"\t\t\t\t\tdisplay this help\n";
+    }
+
+    @Override
+    public void onNewTeamAdded(Team newTeam) {
+
+    }
+
+    @Override
+    public void onTeamRemoved(Team removedTeam) {
+
+    }
+
+    @Override
+    public void onGameStopped() {
+        if(launcherInterface != null)
+            launcherInterface.displayGameResults(game);
+        else { // Si la simulation a été lancée depuis la ligne de commande
+            String finalTeams = "";
+            for(Team team : game.getPlayerTeams()) {
+                finalTeams += team.getName() + ", ";
+            }
+            finalTeams = finalTeams.substring(0, finalTeams.length() - 2);
+            if (game.getPlayerTeams().size() == 1) {
+                System.out.println("Victoire de : " + finalTeams);
+            } else {
+                System.out.println("Ex-Aequo entre les équipes : " + finalTeams);
+            }
+        }
+
+        game.removeWarGameListener(this);
+        settings.prepareForNewGame();
+    }
+
+    @Override
+    public void onGameStarted() {
+        loadingDialog.dispose();
     }
 
     protected static class Shared {

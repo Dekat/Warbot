@@ -14,6 +14,8 @@ import edu.warbot.agents.percepts.PerceptsGetter;
 import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameMode;
+import edu.warbot.game.mode.AbstractGameMode;
+import edu.warbot.game.mode.endCondition.AbstractEndCondition;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.maps.DefaultWarMap;
 
@@ -21,6 +23,7 @@ public class WarGameSettings {
 	
 	private Map<WarAgentType, Integer> _nbAgentOfEachType;
 	private WarGameMode _gameMode;
+    private Object[] gameModeArguments;
 	private Level _defaultLogLevel;
 	private int _foodAppearanceRate;
 	private Class<? extends PerceptsGetter> _perceptsGetter;
@@ -30,9 +33,9 @@ public class WarGameSettings {
     private AbstractWarMap selectedMap;
 
 	public WarGameSettings() {
-		this._nbAgentOfEachType = new HashMap<WarAgentType, Integer>();
-		this.selectedTeams = new ArrayList<Team>();
-		
+		this._nbAgentOfEachType = new HashMap<>();
+		this.selectedTeams = new ArrayList<>();
+
 		restartParameters();
 	}
 	
@@ -41,10 +44,11 @@ public class WarGameSettings {
 			_nbAgentOfEachType.put(a, WarConfig.getNbAgentsAtStartOfType(a.toString()));
 		}
 		_gameMode = WarGameMode.Duel;
+        gameModeArguments = new Object[]{};
 		_defaultLogLevel = WarConfig.getLoggerLevel();
 		_foodAppearanceRate = WarConfig.getFoodAppearanceRate();
 		_perceptsGetter = WarConfig.getDefaultPerception();
-		_isEnabledEnhancedGraphism = false; // TODO add it to config file
+		_isEnabledEnhancedGraphism = false; // TODO set 3D as alternative viewer
         this.selectedMap = new DefaultWarMap();
 	}
 	
@@ -135,5 +139,13 @@ public class WarGameSettings {
 
     public void setSelectedMap(AbstractWarMap selectedMap) {
         this.selectedMap = selectedMap;
+    }
+
+    public void setGameModeArguments(Object[] gameModeArguments) {
+        this.gameModeArguments = gameModeArguments;
+    }
+
+    public Object[] getGameModeArguments() {
+        return gameModeArguments;
     }
 }

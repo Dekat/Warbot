@@ -1,6 +1,7 @@
 package edu.warbot.game;
 
 import java.awt.Color;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -8,9 +9,10 @@ import java.util.Observer;
 import java.util.logging.Level;
 
 import edu.warbot.agents.WarAgent;
+import edu.warbot.game.mode.AbstractGameMode;
+import edu.warbot.game.mode.endCondition.AbstractEndCondition;
 import edu.warbot.launcher.WarGameSettings;
 import edu.warbot.maps.AbstractWarMap;
-import edu.warbot.maps.DefaultWarMap;
 
 public class WarGame extends Observable implements Observer {
 
@@ -24,24 +26,27 @@ public class WarGame extends Observable implements Observer {
 		Color.MAGENTA 
 	};
 
-	public static final Integer UPDATE_TEAM_ADDED = 0;
-	public static final Integer UPDATE_TEAM_REMOVED = 1;
-	public static final Integer GAME_LAUNCHED = 3;
-	public static final Integer GAME_STOPPED = 4;
-	public static final Integer SIMULATION_CLOSED = 5;
-	public static final Integer NEW_TICK = 6;
+//	public static final Integer UPDATE_TEAM_ADDED = 0;
+//	public static final Integer UPDATE_TEAM_REMOVED = 1;
+//	public static final Integer GAME_LAUNCHED = 3;
+//	public static final Integer GAME_STOPPED = 4;
+//	public static final Integer NEW_TICK = 6;
 	
 	public static Integer FPS = 0;	
 	private double timeLastSecond = -1;
 	private Integer currentFPS = 0;
 
+    private List<WarGameListener> listeners;
+
 	private MotherNatureTeam _motherNature;
 	private List<Team> _playerTeams;
 	private AbstractWarMap _map;
 	private WarGameSettings settings;
-	
-	public WarGame(WarGameSettings settings) {
+    private AbstractGameMode gameMode;
+
+    public WarGame(WarGameSettings settings) {
 		this.settings = settings;
+        listeners = new ArrayList<>();
 		this._motherNature = new MotherNatureTeam(this);
 		this._playerTeams = settings.getSelectedTeams();
 		int colorCounter = 0;
@@ -51,10 +56,13 @@ public class WarGame extends Observable implements Observer {
 			colorCounter++;
 			t.addObserver(this);
 		}
-		
-		// Map creation
 		_map = settings.getSelectedMap();
-	}
+        try {
+            gameMode = settings.getGameMode().getGameModeClass().getConstructor(WarGame.class, Object[].class).newInstance(this, settings.getGameModeArguments());
+        } catch (InstantiationException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
 	
 	public void setLogLevel(Level l) {
 		for (Team t : _playerTeams) {
@@ -77,17 +85,21 @@ public class WarGame extends Observable implements Observer {
 		_playerTeams.add(newTeam);
 		
 		newTeam.addObserver(this);
-		setChanged();
-		notifyObservers(UPDATE_TEAM_ADDED);
+        for(WarGameListener listener : getListeners())
+            listener.onNewTeamAdded(newTeam);
+//		setChanged();
+//		notifyObservers(UPDATE_TEAM_ADDED);
 	}
 
 	public void removePlayerTeam(Team team) {
 		team.destroy();
 		_playerTeams.remove(team);
-		
 		team.deleteObserver(this);
-		setChanged();
-		notifyObservers(UPDATE_TEAM_REMOVED);
+
+        for(WarGameListener listener : getListeners())
+            listener.onTeamRemoved(team);
+//		setChanged();
+//		notifyObservers(UPDATE_TEAM_REMOVED);
 	}
 	
 	public Team getPlayerTeam(String teamName) {
@@ -99,7 +111,7 @@ public class WarGame extends Observable implements Observer {
 	}
 
 	public ArrayList<Team> getPlayerTeams() {
-		return new ArrayList<Team>(_playerTeams);
+		return new ArrayList<>(_playerTeams);
 	}
 	
 	public ArrayList<Team> getAllTeams() {
@@ -152,26 +164,30 @@ public class WarGame extends Observable implements Observer {
 	
 	public void doOnEachTick() {
 		calculeFPS();
-		setChanged();
-		notifyObservers(WarGame.NEW_TICK);
+//		setChanged();
+//		notifyObservers(WarGame.NEW_TICK);
 		for (Team t : _playerTeams)
 			t.doOnEachTick();
 		_motherNature.doOnEachTick();
+        gameMode.getEndCondition().doOnEachTick();
+
+        if(gameMode.getEndCondition().isGameEnded())
+            stopGame();
 	}
 
-	public void stopTheGame() {
-		setChanged();
-		notifyObservers(GAME_STOPPED);
-	}
-	
-	public void setSimulationClosed() {
-		setChanged();
-		notifyObservers(SIMULATION_CLOSED);
+	public void stopGame() {
+        for(WarGameListener listener : getListeners())
+            listener.onGameStopped();
+//        setChanged();
+//		notifyObservers(GAME_STOPPED);
 	}
 	
 	public void setGameStarted() {
-		setChanged();
-		notifyObservers(GAME_LAUNCHED);
+        for(WarGameListener listener : getListeners())
+            listener.onGameStarted();
+
+//        setChanged();
+//		notifyObservers(GAME_LAUNCHED);
 	}
 	
 	private void calculeFPS() {
@@ -186,4 +202,20 @@ public class WarGame extends Observable implements Observer {
 	public Integer getFPS() {
 		return FPS;
 	}
+
+    public AbstractGameMode getGameMode() {
+        return gameMode;
+    }
+
+    public void addWarGameListener(WarGameListener warGameListener) {
+        listeners.add(warGameListener);
+    }
+
+    public void removeWarGameListener(WarGameListener warGameListener) {
+        listeners.remove(warGameListener);
+    }
+
+    private List<WarGameListener> getListeners() {
+        return new ArrayList<>(listeners);
+    }
 }
