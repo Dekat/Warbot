@@ -42,7 +42,7 @@ public class WarKamikaze extends MovableWarAgent implements AgressiveActions, Ag
 	public String fire() {
 		logger.log(Level.FINER, this.toString() + " fired.");
 		launchAgent(new WarBomb(getTeam(), this));
-		killAgent(this);
+        kill();
 		return getBrain().action();
 	}
 

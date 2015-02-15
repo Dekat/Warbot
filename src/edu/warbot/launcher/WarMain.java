@@ -395,7 +395,7 @@ public class WarMain implements WarGameListener {
     }
 
     @Override
-    public void onTeamRemoved(Team removedTeam) {
+    public void onTeamLost(Team removedTeam) {
 
     }
 

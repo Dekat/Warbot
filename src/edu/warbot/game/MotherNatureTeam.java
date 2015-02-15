@@ -118,7 +118,7 @@ public class MotherNatureTeam extends Team {
 		String resourceToCreateClassName = WarFood.class.getPackage().getName() + "." + agentName;
 		WarResource a = (WarResource) Class.forName(resourceToCreateClassName).getConstructor(Team.class).newInstance(this);
 		
-		a.setLogLevel(getGame().getSettings().getLogLevel());
+//		a.setLogLevel(getGame().getSettings().getLogLevel());
 		
 		return a;
 	}

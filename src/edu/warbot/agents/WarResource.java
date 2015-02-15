@@ -22,8 +22,14 @@ public abstract class WarResource extends WarAgent {
 			randomLocation();
 		} while (isGoingToBeOutOfMap() || isGoingToBeOverAnOtherAgent());
 	}
-	
-	public String action() {
+
+    @Override
+    public void kill() {
+        killAgent(this);
+        getTeam().removeWarAgent(this);
+    }
+
+    public String action() {
 		return ACTION_DEFAULT;
 	}
 	

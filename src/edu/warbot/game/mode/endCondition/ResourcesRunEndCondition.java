@@ -16,7 +16,7 @@ public class ResourcesRunEndCondition extends AbstractEndCondition {
     }
 
     @Override
-    public void doOnEachTick() {
+    public void doAfterEachTick() {
         for (Team t : getGame().getPlayerTeams()) {
             int currentTeamResources = 0;
             for (ControllableWarAgent agent : t.getControllableAgents()) {
@@ -35,7 +35,7 @@ public class ResourcesRunEndCondition extends AbstractEndCondition {
         if(winner != null) {
             for (Team t : getGame().getPlayerTeams()) {
                 if(! t.equals(winner)) {
-                    getGame().removePlayerTeam(t);
+                    getGame().setTeamAsLost(t);
                 }
             }
             return true;

@@ -10,7 +10,7 @@ public abstract class AbstractEndCondition {
         this.game = game;
     }
 
-    public abstract void doOnEachTick();
+    public abstract void doAfterEachTick();
     public abstract boolean isGameEnded();
 
     protected WarGame getGame() {

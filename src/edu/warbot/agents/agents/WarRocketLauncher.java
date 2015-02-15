@@ -48,13 +48,13 @@ public class WarRocketLauncher extends MovableWarAgent implements AgressiveActio
 	}
 
 	@Override
-	protected void doOnEachTick() {
+	protected void doBeforeEachTick() {
 		_tickLeftBeforeReloaded--;
 		if (_tickLeftBeforeReloaded <= 0 && _reloading) {
 			_reloaded = true;
 			_reloading = false;
 		}
-		super.doOnEachTick();
+		super.doBeforeEachTick();
 	}
 	
 	@Override

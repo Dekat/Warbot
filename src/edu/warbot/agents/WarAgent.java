@@ -43,13 +43,15 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	@Override
 	protected void end() {
 		super.end();
-		if (this instanceof WarResource)
-			getTeam().removeWarAgent(this);
-		else
-			getTeam().setWarAgentAsDying(this);
+//		if (this instanceof WarResource)
+//			getTeam().removeWarAgent(this);
+//		else
+//			getTeam().setWarAgentAsDying(this);
 	}
 
-	protected void doOnEachTick() { }
+    public abstract void kill();
+
+    protected void doBeforeEachTick() { }
 
 	@Override
 	public AbstractAgent.ReturnCode requestRole(String group, String role) {
@@ -236,7 +238,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	}
 	
 	public double getDistanceFrom(WarAgent a) {
-		return WarMathTools.getDistanceBetweenTwoPoints(getX(), getY(), a.getX(), a.getY());
-//				- ((getHitboxMaxRadius() + getHitboxMinRadius()) / 2.) - ((a.getHitboxMaxRadius() + a.getHitboxMinRadius()) / 2.);
+		return WarMathTools.getDistanceBetweenTwoPoints(getX(), getY(), a.getX(), a.getY())
+				- ((getHitboxMaxRadius() + getHitboxMinRadius()) / 2.) - ((a.getHitboxMaxRadius() + a.getHitboxMinRadius()) / 2.);
 	}
 }

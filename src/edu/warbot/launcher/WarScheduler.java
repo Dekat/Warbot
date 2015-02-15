@@ -1,8 +1,5 @@
 package edu.warbot.launcher;
 
-import java.util.Observable;
-import java.util.Observer;
-
 import edu.warbot.game.WarGameListener;
 import madkit.action.KernelAction;
 import madkit.agr.LocalCommunity;
@@ -23,8 +20,9 @@ public class WarScheduler extends TKScheduler implements WarGameListener {
 	// Délai initial entre chaque tick. Evite que le jeu aille trop vite.
 	public static final int INITIAL_DELAY = 10;
 
-	private GenericBehaviorActivator<WarAgent> _warAgentDoOnEachTickActivator;
+	private GenericBehaviorActivator<WarAgent> _warAgentDoBeforeEachTickActivator;
 	private WarGame game;
+    private boolean isGameOver;
 	
 	public WarScheduler() {
 		this.game = Shared.getGame();
@@ -34,8 +32,8 @@ public class WarScheduler extends TKScheduler implements WarGameListener {
 	protected void activate() {
 		super.activate();
 
-		_warAgentDoOnEachTickActivator = new GenericBehaviorActivator<>(community, TKOrganization.TURTLES_GROUP, TKOrganization.TURTLE_ROLE, "doOnEachTick");
-		addActivator(_warAgentDoOnEachTickActivator);
+		_warAgentDoBeforeEachTickActivator = new GenericBehaviorActivator<>(community, TKOrganization.TURTLES_GROUP, TKOrganization.TURTLE_ROLE, "doBeforeEachTick");
+		addActivator(_warAgentDoBeforeEachTickActivator);
 
 		setDelay(INITIAL_DELAY);
 
@@ -44,49 +42,51 @@ public class WarScheduler extends TKScheduler implements WarGameListener {
 
 	@Override
 	public void doSimulationStep() {
-		if (logger != null) {
-			logger.finest("Doing simulation step " + getGVT());
-		}
+        if (! isGameOver) {
+            if (logger != null) {
+                logger.finest("Doing simulation step " + getGVT());
+            }
 
-		logger.finest("Activating --------> " + getPheroMaxReset());
-		getPheroMaxReset().execute();
-		logger.finest("Activating --------> " + getWarAgentDoOnEachTickActivator());
-		getWarAgentDoOnEachTickActivator().execute();
-		logger.finest("Activating --------> " + getTurtleActivator());
-		getTurtleActivator().execute();
-		logger.finest("Activating --------> " + getEnvironmentUpdateActivator());
-		getEnvironmentUpdateActivator().execute();
-		logger.finest("Activating --------> " + getViewerActivator());
-		getViewerActivator().execute();
+//		logger.finest("Activating --------> " + getPheroMaxReset());
+//		getPheroMaxReset().execute();
+            logger.finest("Activating --------> " + getWarAgentDoBeforeEachTickActivator());
+            getWarAgentDoBeforeEachTickActivator().execute();
+            logger.finest("Activating --------> " + getTurtleActivator());
+            getTurtleActivator().execute();
+//		logger.finest("Activating --------> " + getEnvironmentUpdateActivator());
+//		getEnvironmentUpdateActivator().execute();
+            logger.finest("Activating --------> " + getViewerActivator());
+            getViewerActivator().execute();
 
-		setGVT(getGVT() + 1);
+            setGVT(getGVT() + 1.0D);
 
-		// Apparition de WarResource
-		if(getGVT() % game.getSettings().getFoodAppearanceRate() == 0) {
-			game.getMotherNatureTeam().createAndLaunchNewResource(game.getMap(), this, WarAgentType.WarFood);
-		}
+            // Apparition de WarResource
+            if (getGVT() % game.getSettings().getFoodAppearanceRate() == 0) {
+                game.getMotherNatureTeam().createAndLaunchNewResource(game.getMap(), this, WarAgentType.WarFood);
+            }
 
-		game.doOnEachTick();
+            game.doAfterEachTick();
+        }
 	}
 
-	protected GenericBehaviorActivator<WarAgent> getWarAgentDoOnEachTickActivator() {
-		return _warAgentDoOnEachTickActivator;
+	protected GenericBehaviorActivator<WarAgent> getWarAgentDoBeforeEachTickActivator() {
+		return _warAgentDoBeforeEachTickActivator;
 	}
 
     @Override
     public void onNewTeamAdded(Team newTeam) {}
 
     @Override
-    public void onTeamRemoved(Team removedTeam) {}
+    public void onTeamLost(Team removedTeam) {}
 
     @Override
     public void onGameOver() {
         setSimulationState(SimulationState.PAUSED);
+        isGameOver = true;
     }
 
     @Override
     public void onGameStopped() {
-        System.out.println("scheduler game stopped");
         game.removeWarGameListener(this);
         sendMessage(
                 LocalCommunity.NAME,

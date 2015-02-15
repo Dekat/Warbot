@@ -4,13 +4,10 @@ import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 
 import edu.warbot.agents.WarAgent;
 import edu.warbot.game.mode.AbstractGameMode;
-import edu.warbot.game.mode.endCondition.AbstractEndCondition;
 import edu.warbot.launcher.WarGameSettings;
 import edu.warbot.maps.AbstractWarMap;
 
@@ -34,6 +31,7 @@ public class WarGame {
 
 	private MotherNatureTeam _motherNature;
 	private List<Team> _playerTeams;
+    private List<Team> loserTeams;
 	private AbstractWarMap _map;
 	private WarGameSettings settings;
     private AbstractGameMode gameMode;
@@ -43,12 +41,12 @@ public class WarGame {
         listeners = new ArrayList<>();
 		this._motherNature = new MotherNatureTeam(this);
 		this._playerTeams = settings.getSelectedTeams();
+        loserTeams = new ArrayList<>();
 		int colorCounter = 0;
 		for(Team t : _playerTeams) {
 			t.setColor(TEAM_COLORS[colorCounter]);
 			t.setGame(this);
 			colorCounter++;
-//			t.addTeamListener(this);
 		}
 		_map = settings.getSelectedMap();
         try {
@@ -78,18 +76,17 @@ public class WarGame {
 		Team newTeam = Team.duplicate(team, team.getName());
 		_playerTeams.add(newTeam);
 		
-//		newTeam.addTeamListener(this);
         for(WarGameListener listener : getListeners())
             listener.onNewTeamAdded(newTeam);
 	}
 
-	public void removePlayerTeam(Team team) {
-		team.destroy();
+	public void setTeamAsLost(Team team) {
 		_playerTeams.remove(team);
-//		team.removeTeamListener(this);
+        loserTeams.add(team);
+//        team.killAllAgents();
 
         for(WarGameListener listener : getListeners())
-            listener.onTeamRemoved(team);
+            listener.onTeamLost(team);
 	}
 	
 	public Team getPlayerTeam(String teamName) {
@@ -107,6 +104,7 @@ public class WarGame {
 	public ArrayList<Team> getAllTeams() {
 		ArrayList<Team> teams = getPlayerTeams();
 		teams.add(getMotherNatureTeam());
+        teams.addAll(loserTeams);
 		return teams;
 	}
 	
@@ -146,12 +144,19 @@ public class WarGame {
 		return settings;
 	}
 	
-	public void doOnEachTick() {
+	public void doAfterEachTick() {
 		calculeFPS();
 		for (Team t : _playerTeams)
-			t.doOnEachTick();
-		_motherNature.doOnEachTick();
-        gameMode.getEndCondition().doOnEachTick();
+			t.doAfterEachTick();
+		_motherNature.doAfterEachTick();
+        gameMode.getEndCondition().doAfterEachTick();
+
+        for(Team t : loserTeams) {
+            if (! t.hasLost()) {
+                t.setHasLost(true);
+                t.killAllAgents();
+            }
+        }
 
         if(gameMode.getEndCondition().isGameEnded())
             setGameOver();

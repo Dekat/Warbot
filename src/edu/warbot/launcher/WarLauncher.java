@@ -10,6 +10,7 @@ import java.util.logging.Level;
 
 import madkit.action.SchedulingAction;
 import madkit.kernel.Madkit;
+import madkit.kernel.MadkitOption;
 import madkit.message.SchedulingMessage;
 import turtlekit.agr.TKOrganization;
 import turtlekit.kernel.TKLauncher;
@@ -39,7 +40,12 @@ public class WarLauncher extends TKLauncher {
 	protected void createSimulationInstance() {
         WarGameSettings settings = Shared.getGame().getSettings();
 		setLogLevel(settings.getLogLevel());
-		
+        setMadkitProperty(Madkit.LevelOption.agentLogLevel, settings.getLogLevel().toString());
+        setMadkitProperty(Madkit.LevelOption.guiLogLevel, settings.getLogLevel().toString());
+        setMadkitProperty(Madkit.LevelOption.kernelLogLevel, settings.getLogLevel().toString());
+        setMadkitProperty(Madkit.LevelOption.madkitLogLevel, settings.getLogLevel().toString());
+        setMadkitProperty(Madkit.LevelOption.networkLogLevel, settings.getLogLevel().toString());
+
 		initProperties();
 		setMadkitProperty(TurtleKit.Option.startSimu, "false");
 		setMadkitProperty(TurtleKit.Option.envWidth, String.valueOf(((Double) Shared.getGame().getMap().getWidth()).intValue()));

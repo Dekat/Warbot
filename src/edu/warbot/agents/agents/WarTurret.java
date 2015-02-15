@@ -46,13 +46,13 @@ public class WarTurret extends ControllableWarAgent implements AgressiveActions,
 	}
 	
 	@Override
-	protected void doOnEachTick() {
+	protected void doBeforeEachTick() {
 		_tickLeftBeforeReloaded--;
 		if (_tickLeftBeforeReloaded <= 0 && _reloading) {
 			_reloaded = true;
 			_reloading = false;
 		}
-		super.doOnEachTick();
+		super.doBeforeEachTick();
 	}
 	
 	@Override

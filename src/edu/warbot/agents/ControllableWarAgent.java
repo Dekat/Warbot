@@ -21,7 +21,6 @@ import edu.warbot.game.Team;
 import edu.warbot.tools.geometry.CoordCartesian;
 import edu.warbot.tools.geometry.CoordPolar;
 import edu.warbot.tools.WarMathTools;
-import madkit.message.MessageFilter;
 
 public abstract class ControllableWarAgent extends AliveWarAgent implements ControllableActions, Controllable {
 
@@ -59,8 +58,8 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
 	}
 	
 	@Override
-	protected void doOnEachTick() {
-		super.doOnEachTick();
+	protected void doBeforeEachTick() {
+		super.doBeforeEachTick();
 		_perceptsGetter.setPerceptsOutdated(); // On indique au PerceptGetter qu'un nouveau tick est passé
         thisTickMessages = null;
 	}

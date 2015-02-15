@@ -38,8 +38,8 @@ public abstract class WarProjectile extends WarAgent implements MovableActions, 
 	}
 
 	@Override
-	protected void doOnEachTick() {
-		super.doOnEachTick();
+	protected void doBeforeEachTick() {
+		super.doBeforeEachTick();
 		_currentAutonomy--;
 		if (_currentAutonomy < 0)
 			explode();
@@ -57,7 +57,8 @@ public abstract class WarProjectile extends WarAgent implements MovableActions, 
 
 	private void explode() {
 		if (isAlive()) {
-			killAgent(this);
+//			killAgent(this);
+            kill();
 			// On va infliger des dégâts à tous les agents dans le radius de l'explosion
 			List<WarAgent> touchedAgents = getTeam().getGame().getAllAgentsInRadiusOf(this, _explosionRadius);
 			for (WarAgent agent : touchedAgents) {
@@ -70,7 +71,12 @@ public abstract class WarProjectile extends WarAgent implements MovableActions, 
 		}
 	}
 
-	protected boolean isGoingToCrossAnOtherAgent() {
+    @Override
+    public void kill() {
+        getTeam().setWarAgentAsDying(this);
+    }
+
+    protected boolean isGoingToCrossAnOtherAgent() {
 		for(WarAgent a : getTeam().getGame().getAllAgentsInRadiusOf(this, getHitboxMaxRadius() + getSpeed())) {
 			if (a.getID() != _sender.getID() && a.getID() != getID()) {
 				double currentStep = 0;

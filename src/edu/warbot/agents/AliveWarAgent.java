@@ -48,8 +48,14 @@ public abstract class AliveWarAgent extends WarAgent implements Alive, IdlerActi
         _health -= quantity;
         if (_health <= 0) {
             logger.finer(this.toString() + "killed.");
-            killAgent(this);
+//            System.out.println(killAgent(this));
+            kill();
         }
+    }
+
+    @Override
+    public void kill() {
+        getTeam().setWarAgentAsDying(this);
     }
 
     protected void init(int health) {

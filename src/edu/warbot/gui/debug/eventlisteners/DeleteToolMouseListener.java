@@ -34,7 +34,7 @@ public class DeleteToolMouseListener implements MouseListener {
 					"Suppression d'un agent",
 					JOptionPane.YES_NO_OPTION);
 			if (response == JOptionPane.YES_OPTION) {
-				agentToDelete.killAgent(agentToDelete);
+                agentToDelete.kill();
 
                 _debugToolBar.getViewer().getFrame().repaint();
 			}

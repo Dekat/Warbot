@@ -50,22 +50,21 @@ public abstract class PerceptsGetter {
 	public ArrayList<WarAgentPercept> getPercepts() {
         if (! perceptsAlreadyGetThisTick) {
             allPercepts = getAgentPercepts();
-            for(WarAgentPercept percept : allPercepts) {
-                if(getAgent().isEnemy(percept))
+            for (WarAgentPercept percept : allPercepts) {
+                if (getAgent().isEnemy(percept)) {
                     enemiesPercepts.add(percept);
-                else {
+                } else {
                     if (percept.getType().equals(WarAgentType.WarFood))
                         resourcesPercepts.add(percept);
                     else
                         alliesPercepts.add(percept);
                 }
             }
-
             perceptsAlreadyGetThisTick = true;
+            Collections.sort(alliesPercepts);
+            Collections.sort(enemiesPercepts);
+            Collections.sort(resourcesPercepts);
         }
-        Collections.sort(alliesPercepts);
-        Collections.sort(enemiesPercepts);
-        Collections.sort(resourcesPercepts);
         return allPercepts;
     }
 

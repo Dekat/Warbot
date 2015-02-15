@@ -421,11 +421,11 @@ public class WarViewer extends TKDefaultViewer {
             g2d.setColor(Color.GRAY);
             g2d.fill(GeometryTools.resize(game.getMap().getMapForbidArea(), cellSize));
 
-            // Affichage de Mère Nature (resources)
-            paintTeam(g2d, game.getMotherNatureTeam());
+//            // Affichage de Mère Nature (resources)
+//            paintTeam(g2d, game.getMotherNatureTeam());
 
             // Affichage des équipes
-            for (Team t : game.getPlayerTeams()) {
+            for (Team t : game.getAllTeams()) {
                 paintTeam(g2d, t);
             }
 

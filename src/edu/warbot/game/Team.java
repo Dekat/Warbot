@@ -47,6 +47,7 @@ public class Team {
 	private ArrayList<WarAgent> _dyingAgents;
 	private WarGame game;
 	private Model fsmModel;
+    private boolean hasLost;
 	
 	public Team(String nom) {
         this(nom, Color.WHITE, null, "", new ArrayList<ControllableWarAgent>(), new ArrayList<WarProjectile>(), new ArrayList<WarBuilding>(),
@@ -69,6 +70,7 @@ public class Team {
 		_dyingAgents = dyingAgents;
 
         listeners = new ArrayList<>();
+        hasLost = false;
 	}
 	
     public void setLogo(ImageIcon logo) {
@@ -238,11 +240,11 @@ public class Team {
 		return _nbUnitsLeft;
 	}
 	
-	public void destroy() {
+	public void killAllAgents() {
 		for (WarAgent a : getAllAgents())
 			a.killAgent(a);
 	}
-	
+
 	public static Team duplicate(Team t, String newName) {
 		return new Team(newName,
 				((t.getColor()==null)?null:(new Color(t.getColor().getRGB()))),
@@ -264,9 +266,11 @@ public class Team {
 			return teamName;
 	}
 
-	public void doOnEachTick() {
+	public void doAfterEachTick() {
 		for (int i = 0; i < _dyingAgents.size(); i++) {
 			WarAgent a = _dyingAgents.get(i);
+            if(a.getDyingStep() == 0)
+                a.killAgent(a);
 			a.incrementDyingStep();
 			if (a.getDyingStep() > MAX_DYING_STEP) {
 				_dyingAgents.remove(i);
@@ -294,8 +298,6 @@ public class Team {
 				.getConstructor(Team.class, brainControllerClass.getSuperclass())
 				.newInstance(this, brainControllerClass.newInstance());
 		
-		a.setLogLevel(getGame().getSettings().getLogLevel());
-
 		if(a.getBrain() instanceof WarFSMBrainController){
 			WarAgentType agentType = WarAgentType.valueOf(agentName);
 			System.out.println("Team : Instance of FSM brain found");
@@ -398,5 +400,13 @@ public class Team {
 
     private List<TeamListener> getListeners() {
         return listeners;
+    }
+
+    public void setHasLost(boolean hasLost) {
+        this.hasLost = hasLost;
+    }
+
+    public boolean hasLost() {
+        return hasLost;
     }
 }
