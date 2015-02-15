@@ -15,6 +15,7 @@ public class WarAgentPercept extends WarPercept implements Comparable<WarAgentPe
 	private WarAgentType _type;
 	private double _heading;
 	private int _health;
+    private int maxHealth;
 
 	public WarAgentPercept(ControllableWarAgent observer, WarAgent seenAgent) {
         super(observer);
@@ -27,6 +28,7 @@ public class WarAgentPercept extends WarPercept implements Comparable<WarAgentPe
 		
 		if (seenAgent instanceof AliveWarAgent) {
 			_health = ((AliveWarAgent) seenAgent).getHealth();
+            maxHealth = ((AliveWarAgent) seenAgent).getMaxHealth();
 		} else {
 			_health = 0;
 		}
@@ -59,8 +61,12 @@ public class WarAgentPercept extends WarPercept implements Comparable<WarAgentPe
 	public int getHealth() {
 		return _health;
 	}
-	
-	@Override
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    @Override
 	public String toString(){
 		return "AgentPercept : " + _type + " " + _id + " : team = " + _teamName + " : " + _angle + "° " + _distance;
 	}
