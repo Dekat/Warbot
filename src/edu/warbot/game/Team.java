@@ -339,7 +339,7 @@ public class Team extends Observable {
                     if(a.getCost() < ((AliveWarAgent) creatorAgent).getHealth()) {
                         ((AliveWarAgent) creatorAgent).launchAgent(a);
                         a.setPositionAroundOtherAgent(((AliveWarAgent) creatorAgent));
-                        ((ControllableWarAgent) creatorAgent).damage(a.getCost());
+                        ((AliveWarAgent) creatorAgent).damage(a.getCost());
                         ((AliveWarAgent) creatorAgent).getLogger().log(Level.FINER, creatorAgent.toString() + " create " + agentTypeToCreate);
                     } else {
                         ((AliveWarAgent) creatorAgent).getLogger().log(Level.FINER, creatorAgent.toString() + " can't create " + agentTypeToCreate + " : not enough health !");
@@ -376,7 +376,7 @@ public class Team extends Observable {
                         building.setHeading(((AliveWarAgent) builderAgent).getHeading());
 
                         // Cost
-                        ((ControllableWarAgent) builderAgent).damage(building.getCost());
+                        ((AliveWarAgent) builderAgent).damage(building.getCost());
                         ((AliveWarAgent) builderAgent).getLogger().log(Level.FINER, builderAgent.toString() + " built " + buildingTypeToBuild);
                     } else {
                         ((AliveWarAgent) builderAgent).getLogger().log(Level.FINER, builderAgent.toString() + " can't build " + buildingTypeToBuild + " : not enough health !");

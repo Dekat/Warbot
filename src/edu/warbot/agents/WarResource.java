@@ -11,7 +11,7 @@ public abstract class WarResource extends WarAgent {
 
 	public static final double MAX_DISTANCE_TAKE = WarConfig.getMaxDistanceTake();
 	
-	public WarResource(Shape hitbox, Team team) {
+	public WarResource(Hitbox hitbox, Team team) {
 		super(ACTION_DEFAULT, team, hitbox);
 	}
 

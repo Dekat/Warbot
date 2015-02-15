@@ -21,6 +21,7 @@ public class WarAgentInformationsPnl extends JPanel implements IWarAgentInformat
 	private InfoLabel _team;
 	private InfoLabel _heading;
 
+    private AliveWarAgentInformationsPnl _aliveAgent;
 	private ControllableWarAgentInformationsPnl _controllableAgent;
 	private MovableWarAgentInformationsPnl _movableAgent;
 	private CreatorWarAgentInformationsPnl _creatorAgent;
@@ -46,6 +47,8 @@ public class WarAgentInformationsPnl extends JPanel implements IWarAgentInformat
 		_heading = new InfoLabel("Heading");
 		add(_heading);
 
+        _aliveAgent = new AliveWarAgentInformationsPnl(_debugToolBar);
+        add(_aliveAgent);
 		_controllableAgent = new ControllableWarAgentInformationsPnl(_debugToolBar);
 		add(_controllableAgent);
 		_movableAgent = new MovableWarAgentInformationsPnl(_debugToolBar);
@@ -70,6 +73,7 @@ public class WarAgentInformationsPnl extends JPanel implements IWarAgentInformat
 			_team.setValue(a.getTeam().getName());
 			_heading.setValue(doubleFormatter.format(a.getHeading()));
 
+            _aliveAgent.update();
 			_controllableAgent.update();
 			_movableAgent.update();
 			_creatorAgent.update();

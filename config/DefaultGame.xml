@@ -32,20 +32,18 @@
 			   	-->
 			    InConePerceptsGetter
 			</DefaultPerception>
-			<NbResourcesAreasPerTeam>1</NbResourcesAreasPerTeam>
 			<RadiusResourcesAreas>40</RadiusResourcesAreas>
-			<MaxDistanceOfResourcesAreasFromOwnerTeam>300</MaxDistanceOfResourcesAreasFromOwnerTeam>
-			<OpenWorld>false</OpenWorld>
     	</DefaultStartParameters>
     </Simulation>
     <Game>
         <MaxDistanceGive>5</MaxDistanceGive>
         <MaxDistanceTake>5</MaxDistanceTake>
+        <MaxDistanceBuild>8</MaxDistanceBuild>
+        <RepairsMultiplier>6.0</RepairsMultiplier>
     </Game>
     <WarAgents>
         <Building>
             <WarBase>
-                <!--<HitboxRadius>4</HitboxRadius>-->
                 <AngleOfView>360</AngleOfView>
                 <DistanceOfView>80</DistanceOfView>
                 <Cost>12000</Cost>
@@ -57,16 +55,17 @@
                 </Hitbox>
             </WarBase>
             <Wall>
-                <!--<HitboxRadius>5</HitboxRadius>-->
+                <MaxHealth>15000</MaxHealth>
+                <Cost>500</Cost>
                 <Hitbox>
-                    <Shape>Square</Shape>
-                    <SideLength>5</SideLength>
+                    <Shape>Rectangle</Shape>
+                    <Height>10</Height>
+                    <Width>5</Width>
                 </Hitbox>
             </Wall>
         </Building>
         <Worker>
             <WarExplorer>
-                <!--<HitboxRadius>2</HitboxRadius>-->
                 <AngleOfView>180</AngleOfView>
                 <DistanceOfView>50</DistanceOfView>
                 <Cost>3000</Cost>
@@ -79,13 +78,13 @@
                 </Hitbox>
             </WarExplorer>
             <WarEngineer>
-                <!--<HitboxRadius>2</HitboxRadius>-->
                 <AngleOfView>150</AngleOfView>
                 <DistanceOfView>40</DistanceOfView>
                 <Cost>5000</Cost>
                 <MaxHealth>3000</MaxHealth>
                 <BagSize>4</BagSize>
                 <Speed>1.0</Speed>
+                <MaxRepairsPerTick>500</MaxRepairsPerTick>
                 <Hitbox>
                     <Shape>Triangle</Shape>
                     <Radius>2</Radius>
@@ -94,7 +93,6 @@
         </Worker>
         <Soldier>
             <WarRocketLauncher>
-                <!--<HitboxRadius>3</HitboxRadius>-->
                 <AngleOfView>120</AngleOfView>
                 <DistanceOfView>30</DistanceOfView>
                 <Cost>8000</Cost>
@@ -108,7 +106,6 @@
                 </Hitbox>
             </WarRocketLauncher>
             <WarKamikaze>
-                <!--<HitboxRadius>2</HitboxRadius>-->
                 <AngleOfView>150</AngleOfView>
                 <DistanceOfView>20</DistanceOfView>
                 <Cost>3000</Cost>
@@ -121,7 +118,6 @@
                 </Hitbox>
             </WarKamikaze>
             <WarTurret>
-                <!--<HitboxRadius>3</HitboxRadius>-->
                 <AngleOfView>180</AngleOfView>
                 <DistanceOfView>50</DistanceOfView>
                 <Cost>1500</Cost>
@@ -136,7 +132,6 @@
         </Soldier>
         <Projectile>
             <WarRocket>
-                <!--<HitboxRadius>1</HitboxRadius>-->
                 <Speed>3.0</Speed>
                 <ExplosionRadius>10</ExplosionRadius>
                 <Autonomy>20</Autonomy>
@@ -147,7 +142,6 @@
                 </Hitbox>
             </WarRocket>
             <WarBomb>
-                <!--<HitboxRadius>1</HitboxRadius>-->
                 <Speed>0.0</Speed>
                 <ExplosionRadius>50</ExplosionRadius>
                 <Autonomy>0</Autonomy>
@@ -158,7 +152,6 @@
                 </Hitbox>
             </WarBomb>
             <WarDeathRocket>
-                <!--<HitboxRadius>1</HitboxRadius>-->
                 <Speed>3.0</Speed>
                 <ExplosionRadius>25</ExplosionRadius>
                 <Autonomy>30</Autonomy>
@@ -171,7 +164,6 @@
         </Projectile>
         <Resource>
             <WarFood>
-                <!--<HitboxRadius>1</HitboxRadius>-->
                 <HealthGived>200</HealthGived>
                 <Hitbox>
                     <Shape>Square</Shape>

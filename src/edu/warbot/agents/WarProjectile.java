@@ -20,7 +20,7 @@ public abstract class WarProjectile extends WarAgent implements MovableActions, 
 	private WarAgent _sender;
 	private int _currentAutonomy;
 
-	public WarProjectile(String firstActionToDo, Team team, Shape hitbox, WarAgent sender, double speed, double explosionRadius, int damage, int autonomy) {
+	public WarProjectile(String firstActionToDo, Team team, Hitbox hitbox, WarAgent sender, double speed, double explosionRadius, int damage, int autonomy) {
 		super(firstActionToDo, team, hitbox);
 
 		this._speed = speed;
@@ -62,8 +62,8 @@ public abstract class WarProjectile extends WarAgent implements MovableActions, 
 			// On va infliger des dégâts à tous les agents dans le radius de l'explosion
 			List<WarAgent> touchedAgents = getTeam().getGame().getAllAgentsInRadiusOf(this, _explosionRadius);
 			for (WarAgent agent : touchedAgents) {
-				if (agent instanceof ControllableWarAgent) {
-					((ControllableWarAgent) agent).damage(_damage);
+				if (agent instanceof AliveWarAgent) {
+					((AliveWarAgent) agent).damage(_damage);
 				} else if (agent instanceof WarProjectile) {
 					((WarProjectile) agent).explode();
 				}

@@ -15,6 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
+import edu.warbot.agents.AliveWarAgent;
 import edu.warbot.launcher.SituationLoader;
 import madkit.action.SchedulingAction;
 import madkit.message.SchedulingMessage;
@@ -114,11 +115,12 @@ public class SaveSituationButton extends JButton implements ActionListener {
 						currentAgent.appendChild(WarXmlWriter.createTextElement(doc,
 								"Heading", String.valueOf(a.getHeading())));
 
-						if (a instanceof ControllableWarAgent) {
+                        if (a instanceof AliveWarAgent) {
+                            currentAgent.appendChild(WarXmlWriter.createTextElement(doc,
+                                    "Health", String.valueOf(((AliveWarAgent) a).getHealth())));
+                        } else if (a instanceof ControllableWarAgent) {
 							currentAgent.appendChild(WarXmlWriter.createTextElement(doc,
 									"ViewDirection", String.valueOf(((ControllableWarAgent) a).getViewDirection())));
-							currentAgent.appendChild(WarXmlWriter.createTextElement(doc,
-									"Health", String.valueOf(((ControllableWarAgent) a).getHealth())));
 							currentAgent.appendChild(WarXmlWriter.createTextElement(doc,
 									"NbElementsInBag", String.valueOf(((ControllableWarAgent) a).getNbElementsInBag())));
 						}

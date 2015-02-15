@@ -13,7 +13,7 @@ public abstract class AliveWarAgent extends WarAgent implements Alive, IdlerActi
     private int _health;
     private int _maxHealth;
 
-    public AliveWarAgent(String firstActionToDo, Team team, Shape hitbox, int cost, int maxHealth) {
+    public AliveWarAgent(String firstActionToDo, Team team, Hitbox hitbox, int cost, int maxHealth) {
         super(firstActionToDo, team, hitbox);
 
         _cost = cost;

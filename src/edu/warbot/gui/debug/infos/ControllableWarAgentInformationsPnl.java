@@ -14,7 +14,6 @@ public class ControllableWarAgentInformationsPnl extends JPanel implements IWarA
 
 	private InfoLabel _distanceOfView;
 	private InfoLabel _angleOfView;
-	private InfoLabel _health;
 	private InfoLabel _bag;
 	private InfoLabel _viewDirection;
 
@@ -30,8 +29,6 @@ public class ControllableWarAgentInformationsPnl extends JPanel implements IWarA
 		add(_distanceOfView);
 		_angleOfView = new InfoLabel("Angle de vue");
 		add(_angleOfView);
-		_health = new InfoLabel("Santé");
-		add(_health);
 		_bag = new InfoLabel("Sac");
 		add(_bag);
 	}
@@ -45,7 +42,6 @@ public class ControllableWarAgentInformationsPnl extends JPanel implements IWarA
 			_viewDirection.setValue(WarAgentInformationsPnl.doubleFormatter.format(a.getViewDirection()));
 			_distanceOfView.setValue(WarAgentInformationsPnl.doubleFormatter.format(a.getDistanceOfView()));
 			_angleOfView.setValue(WarAgentInformationsPnl.doubleFormatter.format(a.getAngleOfView()));
-			_health.setValue(a.getHealth() + " / " + a.getMaxHealth());
 			_bag.setValue(a.getNbElementsInBag() + " / " + a.getBagSize());
 		} else {
 			setVisible(false);
@@ -57,7 +53,6 @@ public class ControllableWarAgentInformationsPnl extends JPanel implements IWarA
 		_viewDirection.setValue("");
 		_distanceOfView.setValue("");
 		_angleOfView.setValue("");
-		_health.setValue("");
 		_bag.setValue("");
 	}
 

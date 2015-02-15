@@ -199,8 +199,6 @@ public class WarViewer extends TKDefaultViewer {
         boolean haveOneColorChanged = false;
 
         for(WarAgent agent : team.getAllAgents()) {
-            if (agent instanceof Wall)
-                System.out.println(agent.toString());
 
             // Si les couleurs ont été modifiées, on restaure les couleurs
             if (haveOneColorChanged) {

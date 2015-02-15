@@ -37,7 +37,7 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
 	private Color _debugStringColor;
     private ArrayList<WarMessage> thisTickMessages;
 
-	public ControllableWarAgent(String firstActionToDo, Team team, Shape hitbox, WarBrain<? extends ControllableWarAgentAdapter> brain, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize) {
+	public ControllableWarAgent(String firstActionToDo, Team team, Hitbox hitbox, WarBrain<? extends ControllableWarAgentAdapter> brain, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize) {
 		super(firstActionToDo, team, hitbox, cost, maxHealth);
 
 		_distanceOfView = distanceOfView;

@@ -24,13 +24,11 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 
     private static final int MAP_MARGINS = 2;
 
-	private Shape hitbox;
-    private double hitboxHeight;
-    private double hitboxWidth;
+	private Hitbox hitbox;
 	private Team _team;
 	private int _dyingStep;
 
-	public WarAgent(String firstActionToDo, Team team, Shape hitbox) {
+	public WarAgent(String firstActionToDo, Team team, Hitbox hitbox) {
 		super(firstActionToDo);
 		this._team = team;
         this.hitbox = hitbox;
@@ -90,7 +88,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 		return ! percept.getTeamName().equals(getTeamName());
 	}
 
-	public Shape getHitbox() {
+	public Hitbox getHitbox() {
 		return hitbox;
 	}
 
@@ -99,18 +97,15 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
     }
 
     public Area getActualFormAtPosition(double x, double y) {
-        Rectangle2D hitboxBounds = getHitbox().getBounds2D();
-        return new Area(GeometryTools.moveToAndRotateShape(getHitbox(), x - (hitboxBounds.getWidth()/2.), y - (hitboxBounds.getHeight()/2.), getHeading()));
+        return new Area(GeometryTools.moveToAndRotateShape(getHitbox().getShape(), x - (getHitbox().getWidth()/2.), y - (getHitbox().getHeight()/2.), getHeading()));
     }
 
     public double getHitboxMinRadius() {
-        Rectangle2D hitboxBounds = getHitbox().getBounds2D();
-        return (Math.min(hitboxBounds.getHeight(), hitboxBounds.getWidth()) / 2.);
+        return Math.min(getHitbox().getHeight(), getHitbox().getWidth()) / 2.;
     }
 
     public double getHitboxMaxRadius() {
-        Rectangle2D hitboxBounds = getHitbox().getBounds2D();
-        return (Math.max(hitboxBounds.getHeight(), hitboxBounds.getWidth()) / 2.);
+        return Math.max(getHitbox().getHeight(), getHitbox().getWidth()) / 2.;
     }
 
     public String toString() {
@@ -138,14 +133,13 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 
 	protected boolean isGoingToBeOverAnOtherAgent() {
 		CoordCartesian futurePosition = getPosition();
-		double searchAreaRadius = getHitboxMaxRadius() * 2.;
-        System.out.println(getHitboxMaxRadius());
+		double searchAreaRadius = getHitboxMaxRadius() * 4.;
         if (this instanceof MovableActions) {
 			searchAreaRadius += ((Movable) this).getSpeed();
 			futurePosition = WarMathTools.addTwoPoints(new CoordCartesian(getX(), getY()), new CoordPolar(((Movable) this).getSpeed(), getHeading()));
 		}
 		for(WarAgent a : getTeam().getGame().getAllAgentsInRadius(futurePosition.getX(), futurePosition.getY(), searchAreaRadius)) {
-			if (a.getID() != getID() && a instanceof ControllableWarAgent) {
+			if (a.getID() != getID() && a instanceof AliveWarAgent) {
 				if (this instanceof Movable) {
 					return isInCollisionWithAtPosition(futurePosition, a);
 				} else
@@ -211,10 +205,9 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
         }
 
         // Test de collision avec un autre agent
-        Rectangle2D hitboxBounds = getHitbox().getBounds2D();
-        double searchAreaRadius = Math.max(hitboxBounds.getHeight(), hitboxBounds.getWidth());
+        double searchAreaRadius = Math.max(getHitbox().getHeight(), getHitbox().getWidth());
         for(WarAgent a : getTeam().getGame().getAllAgentsInRadius(getX(), getY(), searchAreaRadius)) {
-            if (a.getID() != getID() && a instanceof ControllableWarAgent) {
+            if (a.getID() != getID() && a instanceof AliveWarAgent) {
                 if (isInCollisionWith(a)) {
                     agentPosition = getPosition();
                     CoordPolar moveAwayFromAgent = new CoordPolar(1, new Random().nextDouble() * 359);
@@ -245,7 +238,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	}
 	
 	public double getDistanceFrom(WarAgent a) {
-		return WarMathTools.getDistanceBetweenTwoPoints(getX(), getY(), a.getX(), a.getY())
-				- ((getHitboxMaxRadius() - getHitboxMinRadius()) / 2.) - ((a.getHitboxMaxRadius() - a.getHitboxMinRadius()) / 2.);
+		return WarMathTools.getDistanceBetweenTwoPoints(getX(), getY(), a.getX(), a.getY());
+//				- ((getHitboxMaxRadius() + getHitboxMinRadius()) / 2.) - ((a.getHitboxMaxRadius() + a.getHitboxMinRadius()) / 2.);
 	}
 }
