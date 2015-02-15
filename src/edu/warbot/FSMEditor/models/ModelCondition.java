@@ -8,7 +8,7 @@ public class ModelCondition {
 	
 	private String name;
 	private EnumCondition typeName;
-	private WarConditionSettings conditionGenericAttributs;
+	private WarConditionSettings conditionSettings;
 
 	ModelState modeleSource;
 	ModelState modeleDest;
@@ -20,7 +20,7 @@ public class ModelCondition {
 	public ModelCondition(String name, EnumCondition type, WarConditionSettings conditionSettings){
 		this.name = name;
 		this.typeName = type;
-		this.conditionGenericAttributs = conditionSettings;
+		this.conditionSettings = conditionSettings;
 	}
 	
 	public void setSource(ModelState modelState) {
@@ -68,7 +68,7 @@ public class ModelCondition {
 	}
 
 	public WarConditionSettings getConditionSettings() {
-		return this.conditionGenericAttributs;
+		return this.conditionSettings;
 	}
 
 	public void setConditionType(EnumCondition conditionType) {

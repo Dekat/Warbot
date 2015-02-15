@@ -36,7 +36,7 @@ public class Controleur {
 	}
 
 	private void createControleurBrains() {
-		controleursBrains = new ArrayList<>();
+//		controleursBrains = new ArrayList<>();
 		
 		for (ViewBrain viewBrain : this.view.getViewBrains()) {
 			this.controleursBrains.add(new ControleurBrain(viewBrain.getModel(), viewBrain));
@@ -47,9 +47,7 @@ public class Controleur {
 		model.update();
 		
 		//On donne le nouveau model à la vu
-		view.setModel(this.model);
-		//On lui dit de ce mettre à jour
-		view.update();
+		view.loadModel(this.model);
 		
 		//La vu connait son model (à ce niveau ca ne sert a rien mais ca ne gene rien non plus pour 'linstant on le laisse
 		model.setView(view);

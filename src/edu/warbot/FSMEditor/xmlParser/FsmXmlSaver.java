@@ -97,21 +97,11 @@ public class FsmXmlSaver extends FsmXmlParser{
 		String fieldValueString = null;
 		for (int i = 0; i < fields.length; i++) {
 			try {
-				//Pour les tableaux
-				if(fields[i].getType().isArray()){
-					if(fields[i].get(planSet) == null)
-						fieldValueString = "";
-					else{
-						Object[] fieldValues = (Object[]) fields[i].get(planSet);
-						fieldValueString = Arrays.toString(fieldValues);
-					}
 					
-				}else{ //Pour les valeurs simples
-					if(fields[i].get(planSet) == null)
-						fieldValueString = "";
-					else
-						fieldValueString = String.valueOf(fields[i].get(planSet));
-				}
+				if(fields[i].get(planSet) == null)
+					fieldValueString = "";
+				else
+					fieldValueString = String.valueOf(fields[i].get(planSet));
 					
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();

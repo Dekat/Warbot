@@ -4,30 +4,37 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
+import edu.warbot.FSMEditor.settings.EnumMethod;
+import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 
 public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType> {
 	
-	Integer attribut;
-	Integer reference;
-	String operand;
+	//Je veux que cette condition permet de faire par exemple : ma vie > 1200  et mon sac > 4 (mon sac isFull)
 	
-	String nameAtt;
-	Method methode;
+	EnumMethod methodName;
+	EnumOperand operand;
+	Integer reference;
+	
+//	String nameAtt;
+	Method method;
 	
 	public WarConditionAttributCheck(String name, AgentAdapterType brain, WarConditionSettings conditionSettings){
 		
 		super(name, brain, conditionSettings);
-		this.nameAtt = conditionSettings.Attribut_name;
-		this.operand = conditionSettings.Operateur;
 		this.reference = conditionSettings.Reference;
+		this.operand = conditionSettings.Operateur;
+		methodName = conditionSettings.Methode;
 		
 		
 		try {
-			this.methode = this.brain.getClass().getMethod(this.nameAtt);
+			this.method = this.brain.getClass().getMethod(this.methodName.name());
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
+			e.printStackTrace();
+		}catch (NullPointerException e) {
+			System.err.println("no suck method name for " + this.methodName);
 			e.printStackTrace();
 		}
 		
@@ -35,9 +42,9 @@ public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarA
 
 	@Override
 	public boolean isValide() {
-				
+		Integer currentValue = null;
 		try {
-			this.attribut = Integer.valueOf((String) methode.invoke(this.brain));
+			currentValue = (Integer)(method.invoke(this.brain));
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
@@ -46,19 +53,17 @@ public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarA
 			e.printStackTrace();
 		}
 		
-		//TODO faire des verifations de type
-		
 		switch (this.operand) {
-		case "<":
-			return (Integer)this.attribut < (Integer)this.reference;
-		case ">":
-			return (Integer)this.attribut > (Integer)this.reference;
-		case "==":
-			return (Integer)this.attribut == (Integer)this.reference;
-		case "<=":
-			return (Integer)this.attribut <= (Integer)this.reference;
-		case ">=":
-			return (Integer)this.attribut >= (Integer)this.reference;
+		case inf:
+			return (Integer)currentValue < (Integer)this.reference;
+		case sup:
+			return (Integer)currentValue > (Integer)this.reference;
+		case eg:
+			return currentValue == this.reference;
+		case infEg:
+			return (Integer)currentValue <= (Integer)this.reference;
+		case supEg:
+			return (Integer)currentValue >= (Integer)this.reference;
 		default:
 			System.err.println("FSM : unknown operateur " + this.operand);
 			return false;
@@ -66,7 +71,4 @@ public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarA
 			
 	}
 	
-	public static final String HEALTH = "getHealth";
-	public static final String NB_ELEMEN_IN_BAG = "getNbElementsInBag";
-
 }

@@ -85,7 +85,6 @@ public class FSMModelRebuilder {
 		ModelState state = mapStatesID.get(cond.getStateOutId());
 		if(state == null)
 			System.out.println("FSMRebuilder : WARNING no state found for ID " + cond.getStateOutId());
-//		state.addConditionOut(cond);
 		cond.setDestination(state);
 	}
 

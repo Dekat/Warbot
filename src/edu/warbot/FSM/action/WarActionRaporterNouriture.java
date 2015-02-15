@@ -31,9 +31,16 @@ public class WarActionRaporterNouriture<AgentAdapterType extends MovableWarAgent
 		if(getAgent().isBlocked())
 			getAgent().setRandomHeading();
 
-		ArrayList<WarAgentPercept> basePercepts = getAgent().getPerceptsAlliesByType(WarAgentType.WarBase);
+		ArrayList<WarAgentPercept> percepts = getAgent().getPercepts();
+
+		ArrayList<WarAgentPercept> basePercepts = new ArrayList<>();
 		
-		//Si je ne voit pas de base ou vois zero base
+		for (WarAgentPercept p : percepts) {
+			if(p.getType().equals(WarAgentType.WarBase))
+				basePercepts.add(p);
+		}
+		
+		//Si je ne voit pas de base
 		if(basePercepts == null | basePercepts.size() == 0){
 			
 			getAgent().setDebugString("Action RapporterNourriture : seek base");
@@ -61,9 +68,7 @@ public class WarActionRaporterNouriture<AgentAdapterType extends MovableWarAgent
 				getAgent().setIdNextAgentToGive(base.getID());
 				return MovableWarAgent.ACTION_GIVE;
 			}
-			
 		}
-		
 	}
 	
 	private WarMessage getMessageFromBase() {

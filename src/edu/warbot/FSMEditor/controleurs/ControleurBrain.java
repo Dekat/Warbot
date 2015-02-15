@@ -27,11 +27,11 @@ public class ControleurBrain {
 		this.viewBrain = view;
 		
 		placeListenerOnView();
-		placeListeerOnPanel();
+		placeListenerOnPanel();
 
 	}
 
-	private void placeListeerOnPanel() {
+	private void placeListenerOnPanel() {
 		MouseListenerPanelCenter mouseListener = new MouseListenerPanelCenter(this);
 		viewBrain.getViewEditor().addMouseListener(mouseListener);
 		viewBrain.getViewEditor().addMouseMotionListener(mouseListener);		
@@ -154,7 +154,6 @@ public class ControleurBrain {
 				
 				//Crée le nouveau modele condition
 				ModelCondition mc = new ModelCondition(d.getConditionName(), d.getConditionType(), condSett);
-//						modeleStateSource, modeleStateDest);
 				modeleStateSource.addConditionOut(mc);
 				mc.setDestination(modeleStateDest);
 				
@@ -186,7 +185,7 @@ public class ControleurBrain {
 	}
 
 	private void eventEditCond(){
-		String condSelec = this.viewBrain.getListeConditions().getSelectedValue();
+		String condSelec = this.viewBrain.getListeCondition().getSelectedValue();
 		
 		if(condSelec != null){
 			

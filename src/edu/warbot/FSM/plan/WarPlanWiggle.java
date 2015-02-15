@@ -17,7 +17,7 @@ public class WarPlanWiggle<AgentAdapterType extends MovableWarAgentAdapter> exte
 
 	public WarPlanWiggle(AgentAdapterType brain, WarPlanSettings planSettings) {
 		super("Plan Wiggle", brain, planSettings);
-		this.nombrePas = planSettings.Nombre_pas;
+		this.nombrePas = planSettings.Tik_number;
 	}
 
 	public void buildActionList() {

@@ -30,14 +30,15 @@ public class View extends JFrame {
 		createFrame();
 	}
 	
-	public void update(){
-		//On reconstruit la liste des vu
-//		modele.update(); necessaire ou pas ?
+	public void loadModel(Model model) {
+		this.modele = model;
+		
 		viewBrains.clear();
 		mainPanel.removeAll();
+		
 		createViewBrains();
 	}
-
+	
 	private void createViewBrains() {
 //		viewBrains = new ArrayList<>();
 //		mainPanel = new JTabbedPane();
@@ -49,6 +50,7 @@ public class View extends JFrame {
 			viewBrains.add(vb);
 			mainPanel.add(vb.getModel().getAgentTypeName(), vb);
 		}
+		
 	}
 
 	private void createFrame() {
@@ -60,7 +62,7 @@ public class View extends JFrame {
 		this.setMenuBar(getMainMenuBar());
 		
 		this.setContentPane(mainPanel);
-
+		
 		this.setVisible(true);
 		
 	}
@@ -87,9 +89,7 @@ public class View extends JFrame {
 	
 	/*** Accesseurs ***/
 	
-	public void setModel(Model model) {
-		this.modele = model;
-	}
+
 	
 	public MenuItem getMenuBarItemSave() {
 		return miSave;

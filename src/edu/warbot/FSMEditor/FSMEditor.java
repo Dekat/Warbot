@@ -18,9 +18,9 @@ public class FSMEditor {
 		
 		createBasicFSM(model);
 		
-		model.getModelBrain(WarAgentType.WarExplorer).addState(
-				new ModelState("State Ramasser nourriture", EnumPlan.WarPlanRamasserNouriture, null));
-		
+//		model.getModelBrain(WarAgentType.WarExplorer).addState(
+//				new ModelState("State Ramasser nourriture", EnumPlan.WarPlanRamasserNouriture, null));
+//		
 		/*
 		WarPlanSettings pSW = new WarPlanSettings();
 		pSW.Value = 100;

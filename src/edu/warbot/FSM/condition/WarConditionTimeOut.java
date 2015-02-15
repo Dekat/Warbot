@@ -13,7 +13,7 @@ public class WarConditionTimeOut<AgentAdapterType extends ControllableWarAgentAd
 			WarConditionSettings conditionSettings){
 		super(name, brain, conditionSettings);
 		
-		this.timeOut = conditionSettings.Time_out;
+		this.timeOut = conditionSettings.Tik_number;
 	}
 
 	@Override

@@ -127,12 +127,13 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 		
 		//Instancie le plan
 		WarCondition<AgentAdapterType> instanciateCond = null;
+		Class typeOfAdapter = null;
 		try {
 			
 			Class c = Class.forName(modelCond.getConditionLoaderName());
 
 			//Récupère le constructeur
-			Class typeOfAdapter = c.getConstructors()[0].getParameterTypes()[1];
+			typeOfAdapter = c.getConstructors()[0].getParameterTypes()[1];
 			
 			instanciateCond = (WarCondition<AgentAdapterType>) c
 					.getConstructor(String.class, typeOfAdapter, modelCond.getConditionSettings().getClass())
@@ -146,7 +147,8 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 			System.err.println("* Check attribut usage in subclass of previews and in " + modelCond.getConditionLoaderName());
 			
 			System.err.println("ERROR during instanciate WarCondition with class name " + modelCond.getConditionLoaderName() + " check name, constructor, classPath, etc...");
-			System.err.println("Objects send : Adapter : " + adapter.getClass() + " , WarPlanSettings : " + modelCond.getConditionLoaderName().getClass());
+			System.err.println("Objects send Type : Name : " + String.class + " Adapter : " + typeOfAdapter + " , WarConditionSettings : " + modelCond.getConditionLoaderName().getClass());
+			System.err.println("Objects send Object : Name : " + modelCond.getName() + " Adapter : " + adapter + " , WarPlanSettings : " + modelCond.getConditionLoaderName());
 			try {
 				System.err.println("Objects expected : Adapter : " + Class.forName(modelCond.getConditionLoaderName()).getConstructors()[0].getParameterTypes()[0] + " , WarPlanSettings : " + Class.forName(modelCond.getConditionLoaderName()).getConstructors()[0].getParameterTypes()[1]);
 			} catch (SecurityException | ClassNotFoundException e1) {

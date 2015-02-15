@@ -13,10 +13,7 @@ public class WarPlanAttaquer extends WarPlan<WarRocketLauncherAdapter> {
 	public WarPlanAttaquer(WarRocketLauncherAdapter brain, WarPlanSettings planSettings) {
 		super("Plan Attaquer", brain, planSettings);
 		
-		if(getPlanSettings().Agent_type != null && getPlanSettings().Agent_type.length > 0)
-			this.agentType = getPlanSettings().Agent_type[0];
-		else
-			System.err.println("getPlanSettings().Agent_type_destination is null or does not containe value in " + this.getClass().getSimpleName());
+		this.agentType = getPlanSettings().Agent_type;
 		
 	}
 

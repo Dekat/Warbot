@@ -1,31 +1,26 @@
 package edu.warbot.FSM.WarGenericSettings;
 
+import edu.warbot.FSMEditor.settings.EnumMethod;
 import edu.warbot.agents.enums.WarAgentType;
 
 /**
  * Les attributs doivent etre public !
  * 
- * ATTENTION : les attributs peuvent etre seulement de types : Boolean, Ineteger, String
- * Integer[], WarAgentType[], String[] (plus à venir)
+ * ATTENTION : les attributs peuvent etre de types : Boolean, Integer, String, EnumAction,
+ * WarAgentType, EnumMethod, EnumOperand
  */
 public class WarPlanSettings extends AbstractGenericAttributSettings{
+
+	public WarAgentType Agent_type;
 	
-	public Integer Value;
+	public Integer Number_agent;
 
-	public WarAgentType[] Agent_type;
+	public Integer Min_life;
 
-	public Integer[] Number_agent;
-
-	public Integer Value_reference;
-
-	public Integer Value_pourcentage;
-
-	public Integer Value_pourcentage_destination;
+	public Boolean Pourcentage;
 
 	public Boolean Offensif;
 	
-	public Integer Nombre_pas = 1000;
-	
-	public Integer Time_out = 1000;
+	public Integer Tik_number = 500;
 	
 }

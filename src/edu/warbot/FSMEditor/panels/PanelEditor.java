@@ -29,14 +29,11 @@ public class PanelEditor extends JPanel {
 		
 		//Crée les états
 		for (ModelState modelState : modelBrain.getStates()) {
-			PanelState ps = new PanelState(modelState);
-			panelSates.add(ps);
-			modelState.setViewState(ps);
+			addState(modelState);
 		}
 		//Crée les conditions
 		for (ModelCondition modelCond : modelBrain.getConditions()) {
-			PanelCondition pc = new PanelCondition(modelCond);
-			panelsCondition.add(pc);
+			addCondition(modelCond);
 		}	
 	}
 	
@@ -78,7 +75,9 @@ public class PanelEditor extends JPanel {
 	}
 
 	public void addState(ModelState modelState) {
-		panelSates.add(new PanelState(modelState));
+		PanelState ps = new PanelState(modelState);
+		modelState.setViewState(ps);
+		panelSates.add(ps);
 	}
 
 	public void addCondition(ModelCondition modelCondition) {

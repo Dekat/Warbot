@@ -18,7 +18,10 @@ import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.models.ModeleBrain;
+import edu.warbot.FSMEditor.settings.EnumAction;
 import edu.warbot.FSMEditor.settings.EnumCondition;
+import edu.warbot.FSMEditor.settings.EnumMethod;
+import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.FSMEditor.settings.EnumPlan;
 import edu.warbot.agents.enums.WarAgentType;
 /**
@@ -149,19 +152,30 @@ public class FsmXmlReader extends FsmXmlParser{
 		
 		for (int i = 0; i < fields.length; i++) {
 			try {
-				//Pour les attribtus simples
+
 				if (fields[i].getType().equals(Integer.class))
 					fields[i].set(settings,getFieldForInteger(fields[i], element));
+				
 				else if (fields[i].getType().equals(Boolean.class))
 					fields[i].set(settings,getFieldForBoolean(fields[i], element));
+				
 				else if (fields[i].getType().equals(String.class))
 					fields[i].set(settings,getFieldForString(fields[i], element));
-				else if (fields[i].getType().equals(Integer[].class))
-					fields[i].set(settings,getFieldForIntegerTab(fields[i], element));
-				else if (fields[i].getType().equals(String[].class))
-					fields[i].set(settings,getFieldForStringTab(fields[i], element));
-				else if (fields[i].getType().equals(WarAgentType[].class))
-					fields[i].set(settings,getFieldForAgentTypeTab(fields[i], element));
+				
+				else if (fields[i].getType().equals(WarAgentType.class))
+					fields[i].set(settings,getFieldForAgentType(fields[i], element));
+				
+				else if (fields[i].getType().equals(EnumAction.class))
+					fields[i].set(settings,getFieldForAction(fields[i], element));
+				
+				else if (fields[i].getType().equals(EnumOperand.class))
+					fields[i].set(settings,getFieldForOperand(fields[i], element));
+				
+				else if (fields[i].getType().equals(EnumMethod.class))
+					fields[i].set(settings,getFieldForMethod(fields[i], element));
+				
+				else
+					System.err.println("FsmXmlReader unknown type for field " + fields[i].getName());
 				
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
@@ -176,15 +190,14 @@ public class FsmXmlReader extends FsmXmlParser{
 		return settings;
 	}
 
-	private String[] parseStringTab(String stringTab) {
-		return stringTab.replaceAll("\\]", "").replaceAll("\\[", "").split(",");
-	}
-	
 	private String getField(Field field, Element elemPlanSetting){
 		try{
 			return elemPlanSetting.getChild(field.getName()).getValue();
 		}catch(NullPointerException e){
 			System.err.println("ERROR : Field " + field.getName() + " do not exist in xmlConfigurationFile but exist in GenericSettings");
+			return null;
+		}catch (IllegalArgumentException e) {
+			System.err.println("ERROR : Field " + field.getName() + elemPlanSetting.getChild(field.getName()).getValue());
 			return null;
 		}
 	}
@@ -219,62 +232,46 @@ public class FsmXmlReader extends FsmXmlParser{
 			return null;
 		}
 	}
-
-	private Integer[] getFieldForIntegerTab(Field field, Element elemPlanSetting) {
-		String fieldValue = getField(field, elemPlanSetting);
-		
-		if(fieldValue.isEmpty())
+	
+	private WarAgentType getFieldForAgentType(Field field, Element elemPlanSetting) {
+		try{
+			String s = getField(field, elemPlanSetting);
+			return WarAgentType.valueOf(s);
+		}catch(NumberFormatException e){
 			return null;
-		
-		String[] stringValues = parseStringTab(fieldValue);
-		
-		ArrayList<Integer> arrayInt = new ArrayList<>();
-		
-		for (int i = 0; i < stringValues.length; i++) {
-			try{
-				arrayInt.add(Integer.valueOf(stringValues[i]));
-			}catch(NumberFormatException e){
-				
-			}
-		}
-		
-		Integer valuesInteger[] = new Integer[arrayInt.size()];
-		return arrayInt.toArray(valuesInteger);
-//		return valuesInteger;
-	}
-
-	private String[] getFieldForStringTab(Field field, Element elemPlanSetting) {
-		String fieldValue = getField(field, elemPlanSetting);
-		
-		if(fieldValue.isEmpty())
+		}catch (IllegalArgumentException e) {
 			return null;
-		
-		String[] stringValues = parseStringTab(fieldValue);
-		
-		//Je fais des opération inutiles mais quand je fusionnerais cette méthode avec d'autre pour plus de généricité ça sera plus facile comme ça
-		String valuesInteger[] = new String[stringValues.length];
-		
-		for (int i = 0; i < stringValues.length; i++) {
-			valuesInteger[i] = String.valueOf(stringValues[i]);
 		}
-		return valuesInteger;
 	}
 	
-	private WarAgentType[] getFieldForAgentTypeTab(Field field, Element elemPlanSetting) {
-		String fieldValue = getField(field, elemPlanSetting);
-
-		if(fieldValue.isEmpty())
+	private EnumAction getFieldForAction(Field field, Element elemPlanSetting) {
+		try{
+			return EnumAction.valueOf(getField(field, elemPlanSetting));
+		}catch(NumberFormatException e){
 			return null;
-		
-		String[] stringValues = parseStringTab(fieldValue);
-		
-		//Je fais des opération inutiles mais quand je fusionnerais cette méthode avec d'autre pour plus de généricité ça sera plus facile comme ça
-		WarAgentType valuesInteger[] = new WarAgentType [stringValues.length];
-		
-		for (int i = 0; i < stringValues.length; i++) {
-			valuesInteger[i] = WarAgentType.valueOf(stringValues[i]);
+		}catch (IllegalArgumentException e) {
+			return null;
 		}
-		return valuesInteger;
+	}
+	
+	private EnumMethod getFieldForMethod(Field field, Element elemPlanSetting) {
+		try{
+			return EnumMethod.valueOf(getField(field, elemPlanSetting));
+		}catch(NumberFormatException e){
+			return null;
+		}catch (IllegalArgumentException e) {
+			return null;
+		}
+	}
+	
+	private EnumOperand getFieldForOperand(Field field, Element elemPlanSetting) {
+		try{
+			return EnumOperand.valueOf(getField(field, elemPlanSetting));
+		}catch(NumberFormatException e){
+			return null;
+		}catch (IllegalArgumentException e) {
+			return null;
+		}
 	}
 
 	private ArrayList<String> getConditionsOutID(Element element) {

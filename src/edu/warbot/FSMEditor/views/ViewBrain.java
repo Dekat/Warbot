@@ -7,8 +7,11 @@ import java.awt.GridLayout;
 import javax.swing.AbstractButton;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollBar;
 import javax.swing.JSeparator;
 import javax.swing.border.TitledBorder;
 
@@ -56,6 +59,23 @@ public class ViewBrain extends JPanel{
 		return p;
 	}
 
+	private Component getPanelState() {
+		JPanel panel = new JPanel(new VerticalLayout());
+		panel.setBorder(new TitledBorder("Gestion des états"));
+		
+		buttonAddSate = new JButton("Add State");
+		buttonEditState = new JButton("Edit State");
+		buttonDelSate = new JButton("Delete State");
+	
+		panel.add(buttonAddSate);
+		panel.add(new JSeparator());
+		panel.add(buttonEditState);
+		panel.add(new JSeparator());
+		panel.add(buttonDelSate);
+		
+		return panel;
+	}
+
 	private JPanel getPanelCondition() {
 		JPanel panel = new JPanel(new VerticalLayout());
 		panel.setBorder(new TitledBorder("Gestion des conditions"));
@@ -64,11 +84,15 @@ public class ViewBrain extends JPanel{
 		buttonEditCond = new JButton("Edit condition");
 		buttonDelCond = new JButton("Delete condition");
 		
-		listModeleCond = new DefaultListModel<String>();
+		listModeleCond = new DefaultListModel<>();
 		listModeleCond.addElement("None");
+		for (String s : modeleBrain.getConditionsName()) {
+			listModeleCond.addElement(s);
+		}
 		
-		listCond = new JList<String>(listModeleCond);
-		listCond.setVisibleRowCount(5); //TODO ici ca serait mieux si il affiche un truc de taille dynamique
+		listCond = new JList<>(listModeleCond);
+		listCond.add(new JScrollBar());
+		listCond.setVisibleRowCount(3); //TODO ici ca serait mieux si il affiche un truc de taille dynamique
 		
 		panel.add(buttonAddCond);
 		panel.add(new JSeparator());
@@ -81,29 +105,11 @@ public class ViewBrain extends JPanel{
 		return panel;
 	}
 
-	private Component getPanelState() {
-		JPanel panel = new JPanel(new VerticalLayout());
-		panel.setBorder(new TitledBorder("Gestion des états"));
-		
-		buttonAddSate = new JButton("Add State");
-		buttonEditState = new JButton("Edit State");
-		buttonDelSate = new JButton("Delete State");
-
-		panel.add(buttonAddSate);
-		panel.add(new JSeparator());
-		panel.add(buttonEditState);
-		panel.add(new JSeparator());
-		panel.add(buttonDelSate);
-		
-		return panel;
-	}
-
 	public void addState(ModelState state) {
 		this.panelEditor.addState(state);
 	}
 
 	public void addCondition(ModelCondition condition) {
-		
 		panelEditor.addCondition(condition);	
 		this.getListeModeleConditions().addElement(condition.getName());	
 	}
@@ -115,10 +121,6 @@ public class ViewBrain extends JPanel{
 	public ModeleBrain getModel(){
 		return this.modeleBrain;
 	}	
-
-	public JList<String> getListeConditions(){
-		return this.listCond;
-	}
 
 	public JList<String> getListeCondition() {
 		return this.listCond;
