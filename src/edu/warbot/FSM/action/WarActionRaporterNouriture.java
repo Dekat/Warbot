@@ -36,7 +36,7 @@ public class WarActionRaporterNouriture<AgentAdapterType extends MovableWarAgent
 		ArrayList<WarAgentPercept> basePercepts = new ArrayList<>();
 		
 		for (WarAgentPercept p : percepts) {
-			if(p.getType().equals(WarAgentType.WarBase))
+			if(p.getType().equals(WarAgentType.WarBase) & p.getTeamName().equals(getAgent().getTeamName()))
 				basePercepts.add(p);
 		}
 		

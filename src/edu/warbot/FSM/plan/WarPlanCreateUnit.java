@@ -35,7 +35,7 @@ public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 		this.minLife = getPlanSettings().Min_life;
 		
 		if(pourcentage)
-			minLife = WarBase.MAX_HEALTH*minLife;
+			minLife = (int) (WarBase.MAX_HEALTH*minLife/100);
 	}
 
 	public void buildActionList() {

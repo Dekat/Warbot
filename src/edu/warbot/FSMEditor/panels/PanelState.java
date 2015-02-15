@@ -16,10 +16,13 @@ public class PanelState extends AbstractPanel{
 	
 	public PanelState(ModelState m) {
 		this.modeleState = m;
-		position = new Point(new Random().nextInt(700), new Random().nextInt(500));
+		position = new Point(new Random().nextInt(600), new Random().nextInt(400));
 	}
 
 	public void paint(Graphics g){
+		
+		//Clear state
+		g.clearRect(position.x, position.y, size.width, size.height);
 		
 		if(this.isSelected)
 			g.setColor(Color.red);

@@ -6,6 +6,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.swing.JOptionPane;
+import javax.swing.Popup;
+
 import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
 import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
 import edu.warbot.FSMEditor.FSMModelRebuilder;
@@ -117,6 +120,35 @@ public class Controleur {
 		eventMenuBarItemLoad();
 		
 		printModelInformations(this.model);
+		
+		//Check if ID are unique
+		for (ModeleBrain modelBrain: this.model.getModelsBrains()) {
+			
+			//State ID
+			ArrayList<String> stateName = new ArrayList<>();
+			for (ModelState modState : modelBrain.getStates()) {
+				if(stateName.contains(modState.getName()))
+					JOptionPane.showMessageDialog(this.view,
+						    "States ID have to be unique !",
+						    "ID error",
+						    JOptionPane.ERROR_MESSAGE);
+				stateName.add(modState.getName());
+				
+			}
+			
+			//Cond ID
+			ArrayList<String> CondName = new ArrayList<>();
+			for (ModelCondition modCond : modelBrain.getConditions()) {
+				if(CondName.contains(modCond.getName()))
+					JOptionPane.showMessageDialog(this.view,
+						    "Conditions ID have to be unique !",
+						    "ID error",
+						    JOptionPane.ERROR_MESSAGE);
+				CondName.add(modCond.getName());
+				
+			}
+		}
+		
 		
 		System.out.println("Controleur : Your FSM seen to be valid, check it in console");
 		
