@@ -32,7 +32,7 @@ import edu.warbot.launcher.WarViewer;
  *
  */
 @SuppressWarnings("serial")
-public class WarToolBar extends JToolBar {
+public class WarToolBar extends JToolBar implements ActionListener {
 
 	private JButton _btnEndGame;
 	private JToggleButton _btnDisplayInfos;
@@ -75,12 +75,16 @@ public class WarToolBar extends JToolBar {
 		// Panel d'affichages
 		JPanel pnlDisplay = new JPanel();
 		_btnDisplayInfos = new JToggleButton("Informations");
+        _btnDisplayInfos.addActionListener(this);
 		pnlDisplay.add(_btnDisplayInfos);
 		_btnDisplayPercepts = new JToggleButton("Percepts");
+        _btnDisplayPercepts.addActionListener(this);
 		pnlDisplay.add(_btnDisplayPercepts);
 		_btnDisplayHealthBars = new JToggleButton("Santé");
+        _btnDisplayHealthBars.addActionListener(this);
 		pnlDisplay.add(_btnDisplayHealthBars);
 		_btnDisplayDebugMessages = new JToggleButton("Messages de debug");
+        _btnDisplayDebugMessages.addActionListener(this);
 		pnlDisplay.add(_btnDisplayDebugMessages);
 		pnlDisplay.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Affichage"));
 		add(pnlDisplay);
@@ -150,4 +154,8 @@ public class WarToolBar extends JToolBar {
 		return _viewer;
 	}
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        getViewer().getFrame().repaint();
+    }
 }
