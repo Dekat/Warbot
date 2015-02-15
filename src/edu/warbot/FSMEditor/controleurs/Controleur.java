@@ -43,7 +43,7 @@ public class Controleur {
 		}
 	}
 
-	public void rechargeModel() {
+	public void reloadModel() {
 		model.update();
 		
 		//On donne le nouveau model à la vu
@@ -120,17 +120,7 @@ public class Controleur {
 		
 		printModelInformations(this.model);
 		
-//		FSMInstancier fsmInstancier = new FSMInstancier(this.modele);
-		
-		//Crée un agent pour tester
-//		WarExplorerAdapter explorerAdapter = null;
-			//new WarExplorerAdapter(new WarExplorer(new Team("Team_debug_FSM"), brain));
-		
-//		WarFSM fsm = fsmInstancier.getBrainControleurForAgent(WarAgentType.WarExplorer, explorerAdapter);
-		
-//		fsm.initFSM();
-		
-		System.out.println("FSM generated successfull");
+		System.out.println("Controleur : Your FSM seen to be valid, check it in console");
 		
 	}
 	
@@ -141,12 +131,7 @@ public class Controleur {
 		FSMModelRebuilder rebuilder = new FSMModelRebuilder(this.model);
 		this.model = rebuilder.getRebuildModel();
 
-//		printModelInformations(this.model);
-
-//		System.out.println("print model load");
-//		printModelInformations(this.modele);
-		
-		this.rechargeModel();
+		this.reloadModel();
 		
 		System.out.println("Controleur : Configuration file imported successfull");
 	}

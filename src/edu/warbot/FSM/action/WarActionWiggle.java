@@ -33,6 +33,9 @@ public class WarActionWiggle<AgentAdapterType extends MovableWarAgentAdapter> ex
 			angle = angle + new Random().nextInt(30) - new Random().nextInt(30);
 			
 			getAgent().setHeading(angle);
+			
+			if(getAgent().isBlocked())
+				getAgent().setRandomHeading();
 		
 			getAgent().setDebugString(this.getClass().getSimpleName() + " MOVE");
 			return MovableWarAgent.ACTION_MOVE;

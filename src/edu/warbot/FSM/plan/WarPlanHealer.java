@@ -43,7 +43,7 @@ public class WarPlanHealer<AgentAdapterType extends MovableWarAgentAdapter> exte
 				this.pourcentageLifeAlly, healAlly);
 		addAction(actionHeal);
 		
-		WarAction<AgentAdapterType> actionFindFood = new WarActionChercherNouriture<AgentAdapterType>(getBrain(), WarExplorer.BAG_SIZE);
+		WarAction<AgentAdapterType> actionFindFood = new WarActionChercherNouriture<AgentAdapterType>(getBrain());
 		addAction(actionFindFood);
 		
 		WarConditionSettings condSet1 = new WarConditionSettings();
