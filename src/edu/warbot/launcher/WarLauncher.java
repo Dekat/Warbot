@@ -37,7 +37,8 @@ public class WarLauncher extends TKLauncher {
 
 	@Override
 	protected void createSimulationInstance() {
-		setLogLevel(Level.ALL);
+        WarGameSettings settings = Shared.getGame().getSettings();
+		setLogLevel(settings.getLogLevel());
 		
 		initProperties();
 		setMadkitProperty(TurtleKit.Option.startSimu, "false");
@@ -50,7 +51,6 @@ public class WarLauncher extends TKLauncher {
 
 		super.createSimulationInstance();
 
-		WarGameSettings settings = Shared.getGame().getSettings();
 		if (settings.getSituationLoader() == null)
 			launchAllAgents();
 		else

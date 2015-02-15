@@ -14,7 +14,7 @@ import edu.warbot.game.mode.endCondition.AbstractEndCondition;
 import edu.warbot.launcher.WarGameSettings;
 import edu.warbot.maps.AbstractWarMap;
 
-public class WarGame extends Observable implements Observer {
+public class WarGame {
 
 	public static final Color[] TEAM_COLORS = {
 		new Color(149, 149, 255), // Blue
@@ -26,12 +26,6 @@ public class WarGame extends Observable implements Observer {
 		Color.MAGENTA 
 	};
 
-//	public static final Integer UPDATE_TEAM_ADDED = 0;
-//	public static final Integer UPDATE_TEAM_REMOVED = 1;
-//	public static final Integer GAME_LAUNCHED = 3;
-//	public static final Integer GAME_STOPPED = 4;
-//	public static final Integer NEW_TICK = 6;
-	
 	public static Integer FPS = 0;	
 	private double timeLastSecond = -1;
 	private Integer currentFPS = 0;
@@ -54,7 +48,7 @@ public class WarGame extends Observable implements Observer {
 			t.setColor(TEAM_COLORS[colorCounter]);
 			t.setGame(this);
 			colorCounter++;
-			t.addObserver(this);
+//			t.addTeamListener(this);
 		}
 		_map = settings.getSelectedMap();
         try {
@@ -84,22 +78,18 @@ public class WarGame extends Observable implements Observer {
 		Team newTeam = Team.duplicate(team, team.getName());
 		_playerTeams.add(newTeam);
 		
-		newTeam.addObserver(this);
+//		newTeam.addTeamListener(this);
         for(WarGameListener listener : getListeners())
             listener.onNewTeamAdded(newTeam);
-//		setChanged();
-//		notifyObservers(UPDATE_TEAM_ADDED);
 	}
 
 	public void removePlayerTeam(Team team) {
 		team.destroy();
 		_playerTeams.remove(team);
-		team.deleteObserver(this);
+//		team.removeTeamListener(this);
 
         for(WarGameListener listener : getListeners())
             listener.onTeamRemoved(team);
-//		setChanged();
-//		notifyObservers(UPDATE_TEAM_REMOVED);
 	}
 	
 	public Team getPlayerTeam(String teamName) {
@@ -156,38 +146,30 @@ public class WarGame extends Observable implements Observer {
 		return settings;
 	}
 	
-	@Override
-	public void update(Observable o, Object arg) {
-		setChanged();
-		notifyObservers();
-	}
-	
 	public void doOnEachTick() {
 		calculeFPS();
-//		setChanged();
-//		notifyObservers(WarGame.NEW_TICK);
 		for (Team t : _playerTeams)
 			t.doOnEachTick();
 		_motherNature.doOnEachTick();
         gameMode.getEndCondition().doOnEachTick();
 
         if(gameMode.getEndCondition().isGameEnded())
-            stopGame();
+            setGameOver();
 	}
 
-	public void stopGame() {
+    public void setGameOver() {
+        for(WarGameListener listener : getListeners())
+            listener.onGameOver();
+    }
+
+    public void stopGame() {
         for(WarGameListener listener : getListeners())
             listener.onGameStopped();
-//        setChanged();
-//		notifyObservers(GAME_STOPPED);
 	}
 	
 	public void setGameStarted() {
         for(WarGameListener listener : getListeners())
             listener.onGameStarted();
-
-//        setChanged();
-//		notifyObservers(GAME_LAUNCHED);
 	}
 	
 	private void calculeFPS() {
@@ -218,4 +200,5 @@ public class WarGame extends Observable implements Observer {
     private List<WarGameListener> getListeners() {
         return new ArrayList<>(listeners);
     }
+
 }

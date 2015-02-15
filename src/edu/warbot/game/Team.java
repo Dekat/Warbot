@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Observable;
 import java.util.logging.Level;
 
@@ -27,12 +28,14 @@ import edu.warbot.tools.geometry.CoordCartesian;
 import edu.warbot.tools.geometry.CoordPolar;
 import edu.warbot.tools.WarMathTools;
 
-public class Team extends Observable {
+public class Team {
 	
 	public static int MAX_DYING_STEP = 5;
 	public static final String DEFAULT_GROUP_NAME = "defaultGroup-Warbot";
-	
-	private String _name;
+
+    private List<TeamListener> listeners;
+
+    private String _name;
 	private ImageIcon _teamLogo;
 	private Color _color;
 	private String _description;
@@ -46,18 +49,10 @@ public class Team extends Observable {
 	private Model fsmModel;
 	
 	public Team(String nom) {
-		_name = nom;
-		_color = Color.WHITE;
-		_teamLogo = null;
-		_description = "";
-		_controllableAgents = new ArrayList<>();
-		_projectiles = new ArrayList<>();
-        _buildings = new ArrayList<>();
-		_brainControllers = new HashMap<>();
-		_nbUnitsLeft = new HashMap<>();
+        this(nom, Color.WHITE, null, "", new ArrayList<ControllableWarAgent>(), new ArrayList<WarProjectile>(), new ArrayList<WarBuilding>(),
+                new HashMap<String, Class<? extends WarBrain>>(), new HashMap<WarAgentType, Integer>(), new ArrayList<WarAgent>());
 		for(WarAgentType type : WarAgentType.values())
 			_nbUnitsLeft.put(type, 0);
-		_dyingAgents = new ArrayList<>();
 	}
 	
 	public Team(String nom, Color color, ImageIcon logo, String description, ArrayList<ControllableWarAgent> controllableAgents, ArrayList<WarProjectile> projectiles, ArrayList<WarBuilding> buildings,
@@ -72,6 +67,8 @@ public class Team extends Observable {
 		_brainControllers = brainControllers;
 		_nbUnitsLeft = nbUnitsLeft;
 		_dyingAgents = dyingAgents;
+
+        listeners = new ArrayList<>();
 	}
 	
     public void setLogo(ImageIcon logo) {
@@ -120,9 +117,9 @@ public class Team extends Observable {
         else if (agent instanceof ControllableWarAgent)
             _controllableAgents.add((ControllableWarAgent) agent);
 		agent.getLogger().log(Level.FINEST, agent.toString() + " added to team " + this.getName());
-		
-		setChanged();
-		notifyObservers();
+
+        for(TeamListener listener : getListeners())
+            listener.onAgentAdded(agent);
 	}
 	
 	public ArrayList<ControllableWarAgent> getControllableAgents() {
@@ -146,9 +143,9 @@ public class Team extends Observable {
             _buildings.remove(agent);
 		else
 			_controllableAgents.remove(agent);
-		
-		setChanged();
-		notifyObservers();
+
+        for(TeamListener listener : getListeners())
+            listener.onAgentRemoved(agent);
 	}
 	
 	public void setWarAgentAsDying(WarAgent agent) {
@@ -391,4 +388,15 @@ public class Team extends Observable {
         }
     }
 
+    public void addTeamListener(TeamListener teamListener) {
+        listeners.add(teamListener);
+    }
+
+    public void removeTeamListener(TeamListener teamListener) {
+        listeners.remove(teamListener);
+    }
+
+    private List<TeamListener> getListeners() {
+        return listeners;
+    }
 }

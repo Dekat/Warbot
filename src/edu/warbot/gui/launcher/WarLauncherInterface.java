@@ -94,8 +94,8 @@ public class WarLauncherInterface extends JFrame {
 		pnlNbUnits.setLayout(new BoxLayout(pnlNbUnits, BoxLayout.Y_AXIS));
 		sliderNbAgents = new HashMap<>();
 
-		// Buildings, Soldiers et Workers
-		for(WarAgentType a : WarAgentType.getAgentsOfCategories(WarAgentCategory.Building, WarAgentCategory.Soldier, WarAgentCategory.Worker)) {
+        // Controllables
+		for(WarAgentType a : WarAgentType.getControllableAgentTypes()) {
 			NbWarAgentSlider slider = new NbWarAgentSlider("Nombre de " + a.toString(),
 					0, 30, WarConfig.getNbAgentsAtStartOfType(a.toString()), 1, 10);
 			sliderNbAgents.put(a, slider);
@@ -237,26 +237,7 @@ public class WarLauncherInterface extends JFrame {
 	}
 
 	public void displayGameResults(WarGame game) {
-		// JPanel d'affichage des équipes gagnantes (insérées dans le JOptionPane)
-		JPanel pnlResult = new JPanel(new BorderLayout());
-		JPanel pnlWinners = new JPanel(new FlowLayout());
-		for (Team t : game.getPlayerTeams())
-			pnlWinners.add(new JLabel(t.getName(), t.getImage(), JLabel.CENTER));
-		pnlResult.add(pnlWinners, BorderLayout.CENTER);
-
-		// On affiche le JDialog
-		// Cas où il y n'y a plus qu'une équipe en jeu
-		if (game.getPlayerTeams().size() == 1) {
-			// On la déclare vainqueur
-			pnlResult.add(new JLabel("Victoire de :"), BorderLayout.NORTH);
-		} else {
-			// Sinon il y a ex-aequo !
-			pnlResult.add(new JLabel("Ex-Aequo entre les équipes :"), BorderLayout.NORTH);
-		}
-		JOptionPane.showMessageDialog(this, pnlResult, "Fin du jeu !", JOptionPane.PLAIN_MESSAGE);
-
-		// On réaffiche l'interface du launcher
-		setVisible(true);
+        new GameResultsDialog(game);
 	}
 
 	public WarGameSettings getGameSettings() {

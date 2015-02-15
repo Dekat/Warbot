@@ -400,7 +400,7 @@ public class WarMain implements WarGameListener {
     }
 
     @Override
-    public void onGameStopped() {
+    public void onGameOver() {
         if(launcherInterface != null)
             launcherInterface.displayGameResults(game);
         else { // Si la simulation a été lancée depuis la ligne de commande
@@ -414,10 +414,15 @@ public class WarMain implements WarGameListener {
             } else {
                 System.out.println("Ex-Aequo entre les équipes : " + finalTeams);
             }
+            game.stopGame();
         }
+    }
 
+    @Override
+    public void onGameStopped() {
         game.removeWarGameListener(this);
         settings.prepareForNewGame();
+        launcherInterface.setVisible(true);
     }
 
     @Override

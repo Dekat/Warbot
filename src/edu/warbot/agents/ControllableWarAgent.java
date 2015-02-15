@@ -149,12 +149,12 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
 		return sendMessage(warMessage.getSenderID(), message, content);
 	}
 
-	@Override
-	public ArrayList<WarMessage> getMessages(MessageFilter messageFilter) {
+    @Override
+    public ArrayList<WarMessage> getMessages() {
         if(thisTickMessages == null) {
             thisTickMessages = new ArrayList<>();
             Message msg;
-            while ((msg = nextMessage(messageFilter)) != null) {
+            while ((msg = nextMessage()) != null) {
                 if (msg instanceof WarKernelMessage) {
                     WarMessage warMsg = new WarMessage((WarKernelMessage) msg, this);
                     logger.log(Level.FINER, this.toString() + " received message from " + warMsg.getSenderID());
@@ -163,12 +163,7 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
                 }
             }
         }
-		return thisTickMessages;
-	}
-
-    @Override
-    public ArrayList<WarMessage> getMessages() {
-        return getMessages(null);
+        return thisTickMessages;
     }
 
     public double getAngleOfView() {

@@ -80,7 +80,14 @@ public class WarScheduler extends TKScheduler implements WarGameListener {
     public void onTeamRemoved(Team removedTeam) {}
 
     @Override
+    public void onGameOver() {
+        setSimulationState(SimulationState.PAUSED);
+    }
+
+    @Override
     public void onGameStopped() {
+        System.out.println("scheduler game stopped");
+        game.removeWarGameListener(this);
         sendMessage(
                 LocalCommunity.NAME,
                 Groups.SYSTEM,

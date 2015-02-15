@@ -4,51 +4,64 @@ import java.util.ArrayList;
 
 public enum WarAgentType {
 	// Unités non agressives
-	WarExplorer (WarAgentCategory.Worker),
-	WarEngineer (WarAgentCategory.Worker),
+	WarExplorer (WarAgentCategory.Worker, true),
+	WarEngineer (WarAgentCategory.Worker, true),
 	
 	// Unités agressives
-	WarRocketLauncher (WarAgentCategory.Soldier),
-	WarKamikaze (WarAgentCategory.Soldier),
-	WarTurret (WarAgentCategory.Soldier),
+	WarRocketLauncher (WarAgentCategory.Soldier, true),
+	WarKamikaze (WarAgentCategory.Soldier, true),
+	WarTurret (WarAgentCategory.Soldier, true),
 	
 	// Bâtiments
-	WarBase (WarAgentCategory.Building),
-	Wall (WarAgentCategory.Building),
+	WarBase (WarAgentCategory.Building, true),
+	Wall (WarAgentCategory.Building, false),
 	
 	// Projectiles
-	WarRocket (WarAgentCategory.Projectile),
-	WarBomb (WarAgentCategory.Projectile),
-	WarDeathRocket (WarAgentCategory.Projectile),
+	WarRocket (WarAgentCategory.Projectile, false),
+	WarBomb (WarAgentCategory.Projectile, false),
+	WarDeathRocket (WarAgentCategory.Projectile, false),
 	
 	// Ressources
-	WarFood (WarAgentCategory.Resource)
+	WarFood (WarAgentCategory.Resource, false)
 	;
 	
 	private final WarAgentCategory _category;
+    private final boolean isControllable;
 	
-	private WarAgentType(WarAgentCategory category) {
+	private WarAgentType(WarAgentCategory category, boolean isControllable) {
 		_category = category;
+        this.isControllable = isControllable;
 	}
 	
 	public static WarAgentType[] getAgentsOfCategories(WarAgentCategory ... agentCategories) {
-		ArrayList<WarAgentType> tmpList = new ArrayList<>();
+		ArrayList<WarAgentType> agentTypes = new ArrayList<>();
 
 		for (WarAgentType agentType : WarAgentType.values()) {
 			for (WarAgentCategory category : agentCategories) {
 				if (agentType.getCategory() == category)
-					tmpList.add(agentType);
+					agentTypes.add(agentType);
 			}
 		}
 		
-		WarAgentType[] toReturn = new WarAgentType[tmpList.size()];
-		for (int i = 0; i < tmpList.size(); i++)
-			toReturn[i] = tmpList.get(i);
-		
-		return toReturn;
+		return agentTypes.toArray(new WarAgentType[]{});
 	}
-	
-	public WarAgentCategory getCategory() {
+
+    public static WarAgentType[] getControllableAgentTypes() {
+        ArrayList<WarAgentType> agentTypes = new ArrayList<>();
+
+        for (WarAgentType agentType : WarAgentType.values()) {
+            if (agentType.isControllable())
+                agentTypes.add(agentType);
+        }
+
+        return agentTypes.toArray(new WarAgentType[]{});
+    }
+
+    public WarAgentCategory getCategory() {
 		return _category;
 	}
+
+    public boolean isControllable() {
+        return isControllable;
+    }
 }

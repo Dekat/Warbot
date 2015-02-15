@@ -116,7 +116,7 @@ public class WarToolBar extends JToolBar {
 						new SchedulingMessage(SchedulingAction.PAUSE));
 				int confirmation = JOptionPane.showConfirmDialog(_viewer.getDisplayPane(), "Êtes-vous sûr de vouloir arrêter le combat ?", "Demande de confirmation", JOptionPane.YES_NO_OPTION);
 				if (confirmation == JOptionPane.YES_OPTION) {
-					getViewer().getGame().stopGame();
+					getViewer().getGame().setGameOver();
 				} else {
 					_viewer.sendMessage(_viewer.getCommunity(), TKOrganization.ENGINE_GROUP, TKOrganization.SCHEDULER_ROLE,
 							new SchedulingMessage(SchedulingAction.RUN));

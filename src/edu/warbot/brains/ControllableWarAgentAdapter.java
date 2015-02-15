@@ -50,11 +50,6 @@ public abstract class ControllableWarAgentAdapter extends WarAgentAdapter implem
 	}
 
     @Override
-    public ArrayList<WarMessage> getMessages(MessageFilter messageFilter) {
-        return getAgent().getMessages(messageFilter);
-    }
-
-    @Override
     public ArrayList<WarMessage> getMessages() {
     	return getAgent().getMessages();
     }

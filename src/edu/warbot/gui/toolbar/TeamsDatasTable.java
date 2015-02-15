@@ -37,8 +37,11 @@ public class TeamsDatasTable extends JTable implements WarGameListener {
 
     @Override
     public void onTeamRemoved(Team removedTeam) {
-        updateTeamsDataTable();
+//        updateTeamsDataTable();
     }
+
+    @Override
+    public void onGameOver() {}
 
     @Override
     public void onGameStopped() {}
