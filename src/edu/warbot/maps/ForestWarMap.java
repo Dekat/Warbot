@@ -1,12 +1,10 @@
 package edu.warbot.maps;
 
-import edu.warbot.tools.CoordCartesian;
-import edu.warbot.tools.GeometryTools;
-import edu.warbot.tools.WarCircle;
-import edu.warbot.tools.WarStar;
+import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.GeometryTools;
+import edu.warbot.tools.geometry.WarStar;
 
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class ForestWarMap extends AbstractWarMap {

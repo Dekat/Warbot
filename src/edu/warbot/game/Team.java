@@ -23,8 +23,8 @@ import edu.warbot.brains.capacities.Builder;
 import edu.warbot.brains.capacities.Creator;
 import edu.warbot.communications.WarKernelMessage;
 import edu.warbot.gui.launcher.WarLauncherInterface;
-import edu.warbot.tools.CoordCartesian;
-import edu.warbot.tools.CoordPolar;
+import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CoordPolar;
 import edu.warbot.tools.WarMathTools;
 
 public class Team extends Observable {

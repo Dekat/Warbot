@@ -5,16 +5,13 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JOptionPane;
 
-import madkit.action.SchedulingAction;
-import madkit.message.SchedulingMessage;
-import turtlekit.agr.TKOrganization;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.game.WarGame;
 import edu.warbot.gui.debug.DebugModeToolBar;
 import edu.warbot.gui.debug.DebugToolsPnl;
-import edu.warbot.tools.CoordCartesian;
-import edu.warbot.tools.CoordPolar;
+import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CoordPolar;
 
 public class AddToolMouseListener implements MouseListener {
 

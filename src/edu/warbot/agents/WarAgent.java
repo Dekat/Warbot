@@ -1,21 +1,19 @@
 package edu.warbot.agents;
 
-import java.awt.Shape;
 import java.awt.geom.Area;
-import java.awt.geom.Path2D;
-import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.tools.*;
+import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.GeometryTools;
+import edu.warbot.tools.geometry.WarCircle;
 import madkit.kernel.AbstractAgent;
 import turtlekit.kernel.Turtle;
 
-import com.badlogic.gdx.math.Circle;
-
 import edu.warbot.agents.actions.MovableActions;
-import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.capacities.CommonCapacities;
 import edu.warbot.brains.capacities.Movable;
 import edu.warbot.game.Team;
@@ -97,7 +95,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
     }
 
     public Area getActualFormAtPosition(double x, double y) {
-        return new Area(GeometryTools.moveToAndRotateShape(getHitbox().getShape(), x - (getHitbox().getWidth()/2.), y - (getHitbox().getHeight()/2.), getHeading()));
+        return new Area(GeometryTools.moveToAndRotateShape(getHitbox().getShape(), x - (getHitbox().getWidth() / 2.), y - (getHitbox().getHeight() / 2.), getHeading()));
     }
 
     public double getHitboxMinRadius() {

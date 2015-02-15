@@ -7,9 +7,8 @@ import edu.warbot.agents.percepts.WallPercept;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import madkit.kernel.AbstractAgent.ReturnCode;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.communications.WarMessage;
-import edu.warbot.tools.CoordPolar;
+import edu.warbot.tools.geometry.CoordPolar;
 
 public interface Controllable extends Alive {
 

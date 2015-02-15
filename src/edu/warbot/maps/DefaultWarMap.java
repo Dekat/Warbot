@@ -1,8 +1,6 @@
 package edu.warbot.maps;
 
-import java.awt.geom.Rectangle2D;
-
-import edu.warbot.tools.CoordCartesian;
+import edu.warbot.tools.geometry.CoordCartesian;
 
 public class DefaultWarMap extends AbstractWarMap {
 

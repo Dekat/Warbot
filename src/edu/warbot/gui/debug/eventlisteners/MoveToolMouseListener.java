@@ -4,13 +4,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import madkit.action.SchedulingAction;
-import madkit.message.SchedulingMessage;
-import turtlekit.agr.TKOrganization;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.game.WarGame;
 import edu.warbot.gui.debug.DebugModeToolBar;
-import edu.warbot.tools.CoordCartesian;
+import edu.warbot.tools.geometry.CoordCartesian;
 
 public class MoveToolMouseListener implements MouseListener {
 

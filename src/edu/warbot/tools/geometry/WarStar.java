@@ -1,4 +1,4 @@
-package edu.warbot.tools;
+package edu.warbot.tools.geometry;
 
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;

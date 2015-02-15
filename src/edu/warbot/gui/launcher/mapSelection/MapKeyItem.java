@@ -1,11 +1,9 @@
 package edu.warbot.gui.launcher.mapSelection;
 
-import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
 import edu.warbot.gui.PaintablePanel;
 import edu.warbot.gui.launcher.HiddenLongTextJLabel;
-import edu.warbot.tools.GeometryTools;
-import edu.warbot.tools.WarCircle;
+import edu.warbot.tools.geometry.WarCircle;
 
 import javax.swing.*;
 import java.awt.*;

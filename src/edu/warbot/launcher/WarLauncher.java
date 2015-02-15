@@ -12,7 +12,6 @@ import madkit.action.SchedulingAction;
 import madkit.kernel.Madkit;
 import madkit.message.SchedulingMessage;
 import turtlekit.agr.TKOrganization;
-import turtlekit.kernel.TKEnvironment;
 import turtlekit.kernel.TKLauncher;
 import turtlekit.kernel.TurtleKit;
 import edu.warbot.agents.WarAgent;
@@ -22,7 +21,7 @@ import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
 import edu.warbot.launcher.WarMain.Shared;
 import edu.warbot.maps.AbstractWarMap;
-import edu.warbot.tools.WarCircle;
+import edu.warbot.tools.geometry.WarCircle;
 
 public class WarLauncher extends TKLauncher {
 

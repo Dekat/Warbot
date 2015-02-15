@@ -10,11 +10,10 @@ import java.util.List;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.MotherNatureTeam;
 import edu.warbot.game.WarGame;
-import edu.warbot.tools.CoordCartesian;
-import edu.warbot.tools.CoordPolar;
-import edu.warbot.tools.GeometryTools;
+import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.GeometryTools;
 import edu.warbot.tools.WarMathTools;
 
 public abstract class PerceptsGetter {

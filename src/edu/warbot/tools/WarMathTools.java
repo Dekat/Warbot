@@ -4,6 +4,8 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Circle;
+import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CoordPolar;
 
 public class WarMathTools {
 

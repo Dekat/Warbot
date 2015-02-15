@@ -18,18 +18,14 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 import edu.warbot.agents.AliveWarAgent;
-import edu.warbot.agents.buildings.Wall;
-import edu.warbot.agents.percepts.WallPercept;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.tools.GeometryTools;
-import edu.warbot.tools.WarCircle;
-import edu.warbot.tools.WarStar;
+import edu.warbot.tools.geometry.GeometryTools;
+import edu.warbot.tools.geometry.WarStar;
 import turtlekit.viewer.TKDefaultViewer;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
 import edu.warbot.agents.actions.MovableActions;
-import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
 import edu.warbot.gui.MapExplorationListener;
@@ -37,7 +33,7 @@ import edu.warbot.gui.WarViewerEvolvedLauncher;
 import edu.warbot.gui.debug.DebugModeToolBar;
 import edu.warbot.gui.toolbar.WarToolBar;
 import edu.warbot.launcher.WarMain.Shared;
-import edu.warbot.tools.CoordCartesian;
+import edu.warbot.tools.geometry.CoordCartesian;
 
 @SuppressWarnings("serial")
 public class WarViewer extends TKDefaultViewer {

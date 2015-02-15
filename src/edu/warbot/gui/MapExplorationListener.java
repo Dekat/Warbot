@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JScrollPane;
 
 import edu.warbot.launcher.WarViewer;
-import edu.warbot.tools.CoordCartesian;
+import edu.warbot.tools.geometry.CoordCartesian;
 
 public class MapExplorationListener implements MouseMotionListener, MouseListener, AWTEventListener {
 

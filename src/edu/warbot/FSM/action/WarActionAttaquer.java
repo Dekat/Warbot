@@ -6,9 +6,8 @@ import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
-import edu.warbot.tools.CoordPolar;
+import edu.warbot.tools.geometry.CoordPolar;
 
 /**
  * @author Olivier

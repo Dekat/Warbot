@@ -1,8 +1,7 @@
 package edu.warbot.maps;
 
-import edu.warbot.tools.CoordCartesian;
+import edu.warbot.tools.geometry.CoordCartesian;
 
-import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 
 public class OneWayWarMap extends AbstractWarMap {

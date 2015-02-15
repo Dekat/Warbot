@@ -1,6 +1,6 @@
 package edu.warbot.maps;
 
-import edu.warbot.tools.CoordCartesian;
+import edu.warbot.tools.geometry.CoordCartesian;
 
 public class OpenWorldWarMap extends AbstractWarMap {
 

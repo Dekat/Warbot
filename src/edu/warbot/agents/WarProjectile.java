@@ -1,14 +1,13 @@
 package edu.warbot.agents;
 
-import java.awt.*;
 import java.util.List;
 import java.util.logging.Level;
 
 import edu.warbot.agents.actions.MovableActions;
 import edu.warbot.brains.capacities.Movable;
 import edu.warbot.game.Team;
-import edu.warbot.tools.CoordCartesian;
-import edu.warbot.tools.CoordPolar;
+import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CoordPolar;
 import edu.warbot.tools.WarMathTools;
 
 public abstract class WarProjectile extends WarAgent implements MovableActions, Movable {

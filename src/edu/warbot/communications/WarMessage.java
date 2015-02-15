@@ -2,8 +2,7 @@ package edu.warbot.communications;
 
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.tools.CoordCartesian;
-import edu.warbot.tools.WarMathTools;
+import edu.warbot.tools.geometry.CoordCartesian;
 
 /**
  * Est un adaptateur pour un WarKernelMessage. Permet à un utilisateur de ne pas accéder à toutes les méthodes de madkit.kernel.Message

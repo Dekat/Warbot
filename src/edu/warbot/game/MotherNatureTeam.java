@@ -13,9 +13,9 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.resources.WarFood;
 import edu.warbot.launcher.WarConfig;
 import edu.warbot.maps.AbstractWarMap;
-import edu.warbot.tools.CoordCartesian;
-import edu.warbot.tools.CoordPolar;
-import edu.warbot.tools.WarCircle;
+import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.WarCircle;
 import edu.warbot.tools.WarMathTools;
 
 public class MotherNatureTeam extends Team {
