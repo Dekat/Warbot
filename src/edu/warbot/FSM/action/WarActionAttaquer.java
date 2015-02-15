@@ -9,9 +9,6 @@ import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 import edu.warbot.tools.geometry.CoordPolar;
 
-/**
- * @author Olivier
- */
 public class WarActionAttaquer extends WarAction<WarRocketLauncherAdapter> {
 	
 	CoordPolar coordBase;
@@ -25,6 +22,7 @@ public class WarActionAttaquer extends WarAction<WarRocketLauncherAdapter> {
 	public String executeAction(){
 		
 		if(!getAgent().isReloaded() && !getAgent().isReloading()){
+			getAgent().setDebugString("ActionAttaquer : reloading");
 			return WarRocketLauncher.ACTION_RELOAD;
 		}
 		
@@ -33,19 +31,28 @@ public class WarActionAttaquer extends WarAction<WarRocketLauncherAdapter> {
 		// Je un agentType dans le percept
 		if(percept != null && percept.size() > 0){
 			
+			getAgent().setHeading(percept.get(0).getAngle());
+
 			if(getAgent().isReloaded()){
 				
-				getAgent().setHeading(percept.get(0).getAngle());
+				getAgent().setDebugString("ActionAttaquer : fire");
 				return WarRocketLauncher.ACTION_FIRE;
 			}else{
 				//placement mieux
 				
 				//en attendant 
-				return WarRocketLauncher.ACTION_IDLE;
+				getAgent().setDebugString("ActionAttaquer : waiting to reaload");
+				if(percept.get(0).getDistance() > 10)
+					return WarRocketLauncher.ACTION_MOVE;
+				else
+					return WarRocketLauncher.ACTION_IDLE;
 			}
 		}else{ //Si il ny a pas agentType dans le percept
 
-			return MovableWarAgent.ACTION_IDLE;
+			if(getAgent().isBlocked())
+				getAgent().setRandomHeading();
+			getAgent().setDebugString("ActionAttaquer : seek enemy");
+			return MovableWarAgent.ACTION_MOVE;
 
 		}
 		
