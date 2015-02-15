@@ -23,13 +23,10 @@ import edu.warbot.tools.CoordCartesian;
 import edu.warbot.tools.CoordPolar;
 import edu.warbot.tools.WarMathTools;
 
-public abstract class ControllableWarAgent extends WarAgent implements ControllableActions, Controllable {
+public abstract class ControllableWarAgent extends AliveWarAgent implements ControllableActions, Controllable {
 
 	private double _angleOfView;
 	private double _distanceOfView;
-	private int _cost;
-	private int _health;
-	private int _maxHealth;
 	private int _nbElementsInBag;
 	private int _bagSize;
 	private int _idNextAgentToGive;
@@ -41,13 +38,10 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
     private ArrayList<WarMessage> thisTickMessages;
 
 	public ControllableWarAgent(String firstActionToDo, Team team, Shape hitbox, WarBrain<? extends ControllableWarAgentAdapter> brain, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize) {
-		super(firstActionToDo, team, hitbox);
+		super(firstActionToDo, team, hitbox, cost, maxHealth);
 
 		_distanceOfView = distanceOfView;
 		_angleOfView = angleOfView;
-		_cost = cost;
-		_maxHealth = maxHealth;
-		_health = _maxHealth;
 		_bagSize = bagSize;
 		_nbElementsInBag = 0;
 		_viewDirection = 180 * new Random().nextDouble();
@@ -178,37 +172,6 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 	
 	public double getDistanceOfView() {
 		return _distanceOfView;
-	}
-
-	public int getCost() {
-		return _cost;
-	}
-
-	@Override
-	public int getHealth() {
-		return _health;
-	}
-
-	@Override
-	public int getMaxHealth() {
-		return _maxHealth;
-	}
-
-	public void heal(int quantity) {
-		logger.log(Level.FINEST, this.toString() + "healed of " + quantity + "life points.");
-		_health += quantity;
-		if (_health > getMaxHealth()) {
-			_health = getMaxHealth();
-		}
-	}
-
-	public void damage(int quantity) {
-		logger.finest(this.toString() + "damaged of " + quantity + "life points.");
-		_health -= quantity;
-		if (_health <= 0) {
-			logger.finer(this.toString() + "killed.");
-			killAgent(this);
-		}
 	}
 
 	@Override
@@ -392,7 +355,7 @@ public abstract class ControllableWarAgent extends WarAgent implements Controlla
 	}
 	
 	public void init(int health, int nbElementsInBag) {
-		_health = health;
+		super.init(health);
 		_nbElementsInBag = nbElementsInBag;
 	}
 }

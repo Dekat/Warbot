@@ -17,6 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
+import edu.warbot.agents.AliveWarAgent;
+import edu.warbot.agents.buildings.Wall;
 import edu.warbot.agents.percepts.WallPercept;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.tools.GeometryTools;
@@ -197,6 +199,9 @@ public class WarViewer extends TKDefaultViewer {
         boolean haveOneColorChanged = false;
 
         for(WarAgent agent : team.getAllAgents()) {
+            if (agent instanceof Wall)
+                System.out.println(agent.toString());
+
             // Si les couleurs ont été modifiées, on restaure les couleurs
             if (haveOneColorChanged) {
                 backgroundColor = team.getColor();
@@ -222,11 +227,14 @@ public class WarViewer extends TKDefaultViewer {
                 haveOneColorChanged = true;
             }
 
-            if (agent instanceof ControllableWarAgent) {
+            if (agent instanceof AliveWarAgent) {
                 if (wtb.isShowHealthBars())
-                    paintHealthBar(g2d, (ControllableWarAgent) agent);
+                    paintHealthBar(g2d, (AliveWarAgent) agent);
                 if (wtb.isShowInfos())
-                    paintInfos(g2d, (ControllableWarAgent) agent, backgroundColor);
+                    paintInfos(g2d, (AliveWarAgent) agent, backgroundColor);
+            }
+
+            if (agent instanceof ControllableWarAgent) {
                 if(wtb.isShowPercepts())
                     paintPerceptionArea(g2d, (ControllableWarAgent) agent, perceptsColor);
                 if (wtb.isShowDebugMessages() && !isCurrentAgentTheSelectedOne)
@@ -268,7 +276,7 @@ public class WarViewer extends TKDefaultViewer {
                 (int) (yPos + hitboxRadius * Math.sin(Math.toRadians(agent.getHeading()))));
     }
 
-    private void paintHealthBar(Graphics g, ControllableWarAgent agent) {
+    private void paintHealthBar(Graphics g, AliveWarAgent agent) {
         Color previousColor = g.getColor();
         double xPos = agent.getX() * cellSize;
         double yPos = agent.getY() * cellSize;
@@ -331,7 +339,7 @@ public class WarViewer extends TKDefaultViewer {
         return _autorModeToolBar;
     }
 
-    private void paintInfos(Graphics g, ControllableWarAgent agent, Color color) {
+    private void paintInfos(Graphics g, AliveWarAgent agent, Color color) {
         g.setColor(color);
         double xPos = agent.getX() * cellSize;
         double yPos = agent.getY() * cellSize;

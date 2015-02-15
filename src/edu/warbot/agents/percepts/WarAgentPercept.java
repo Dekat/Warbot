@@ -1,5 +1,6 @@
 package edu.warbot.agents.percepts;
 
+import edu.warbot.agents.AliveWarAgent;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
@@ -24,8 +25,8 @@ public class WarAgentPercept extends WarPercept implements Comparable<WarAgentPe
 		this._type = WarAgentType.valueOf(seenAgent.getClass().getSimpleName());
 		this._heading = seenAgent.getHeading();
 		
-		if (seenAgent instanceof ControllableWarAgent) {
-			_health = ((ControllableWarAgent) seenAgent).getHealth();
+		if (seenAgent instanceof AliveWarAgent) {
+			_health = ((AliveWarAgent) seenAgent).getHealth();
 		} else {
 			_health = 0;
 		}

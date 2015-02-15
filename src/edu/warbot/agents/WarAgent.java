@@ -25,6 +25,8 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
     private static final int MAP_MARGINS = 2;
 
 	private Shape hitbox;
+    private double hitboxHeight;
+    private double hitboxWidth;
 	private Team _team;
 	private int _dyingStep;
 
@@ -137,7 +139,8 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	protected boolean isGoingToBeOverAnOtherAgent() {
 		CoordCartesian futurePosition = getPosition();
 		double searchAreaRadius = getHitboxMaxRadius() * 2.;
-		if (this instanceof MovableActions) {
+        System.out.println(getHitboxMaxRadius());
+        if (this instanceof MovableActions) {
 			searchAreaRadius += ((Movable) this).getSpeed();
 			futurePosition = WarMathTools.addTwoPoints(new CoordCartesian(getX(), getY()), new CoordPolar(((Movable) this).getSpeed(), getHeading()));
 		}

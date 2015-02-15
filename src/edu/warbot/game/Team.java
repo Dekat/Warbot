@@ -13,16 +13,18 @@ import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSM.WarFSMBrainController;
 import edu.warbot.FSMEditor.FSMInstancier;
 import edu.warbot.FSMEditor.models.Model;
-import edu.warbot.agents.ControllableWarAgent;
-import edu.warbot.agents.WarAgent;
-import edu.warbot.agents.WarProjectile;
+import edu.warbot.agents.*;
 import edu.warbot.agents.agents.WarBase;
+import edu.warbot.agents.buildings.Wall;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.capacities.Builder;
 import edu.warbot.brains.capacities.Creator;
 import edu.warbot.communications.WarKernelMessage;
 import edu.warbot.gui.launcher.WarLauncherInterface;
+import edu.warbot.tools.CoordCartesian;
+import edu.warbot.tools.CoordPolar;
 import edu.warbot.tools.WarMathTools;
 
 public class Team extends Observable {
@@ -37,6 +39,7 @@ public class Team extends Observable {
 	private HashMap<String, Class<? extends WarBrain>> _brainControllers;
 	private ArrayList<ControllableWarAgent> _controllableAgents;
 	private ArrayList<WarProjectile> _projectiles;
+    private ArrayList<WarBuilding> _buildings;
 	private HashMap<WarAgentType, Integer> _nbUnitsLeft;
 	private ArrayList<WarAgent> _dyingAgents;
 	private WarGame game;
@@ -49,6 +52,7 @@ public class Team extends Observable {
 		_description = "";
 		_controllableAgents = new ArrayList<>();
 		_projectiles = new ArrayList<>();
+        _buildings = new ArrayList<>();
 		_brainControllers = new HashMap<>();
 		_nbUnitsLeft = new HashMap<>();
 		for(WarAgentType type : WarAgentType.values())
@@ -56,7 +60,7 @@ public class Team extends Observable {
 		_dyingAgents = new ArrayList<>();
 	}
 	
-	public Team(String nom, Color color, ImageIcon logo, String description, ArrayList<ControllableWarAgent> controllableAgents, ArrayList<WarProjectile> projectiles,
+	public Team(String nom, Color color, ImageIcon logo, String description, ArrayList<ControllableWarAgent> controllableAgents, ArrayList<WarProjectile> projectiles, ArrayList<WarBuilding> buildings,
 			HashMap<String, Class<? extends WarBrain>> brainControllers, HashMap<WarAgentType, Integer> nbUnitsLeft, ArrayList<WarAgent> dyingAgents) {
 		_name = nom;
 		_color = color;
@@ -64,6 +68,7 @@ public class Team extends Observable {
 		_description = description;
 		_controllableAgents = controllableAgents;
 		_projectiles = projectiles;
+        _buildings = buildings;
 		_brainControllers = brainControllers;
 		_nbUnitsLeft = nbUnitsLeft;
 		_dyingAgents = dyingAgents;
@@ -110,8 +115,10 @@ public class Team extends Observable {
 		_nbUnitsLeft.put(type, _nbUnitsLeft.get(type) + 1);
 		if (agent instanceof WarProjectile)
 			_projectiles.add((WarProjectile) agent);
-		else if (agent instanceof ControllableWarAgent)
-			_controllableAgents.add((ControllableWarAgent) agent);
+		else if (agent instanceof WarBuilding)
+			_buildings.add((WarBuilding) agent);
+        else if (agent instanceof ControllableWarAgent)
+            _controllableAgents.add((ControllableWarAgent) agent);
 		agent.getLogger().log(Level.FINEST, agent.toString() + " added to team " + this.getName());
 		
 		setChanged();
@@ -125,12 +132,18 @@ public class Team extends Observable {
 	public ArrayList<WarProjectile> getProjectiles() {
 		return _projectiles;
 	}
-	
-	public void removeWarAgent(WarAgent agent) {
+
+    public ArrayList<WarBuilding> getBuildings() {
+        return _buildings;
+    }
+
+    public void removeWarAgent(WarAgent agent) {
 		WarAgentType type = WarAgentType.valueOf(agent.getClass().getSimpleName());
 		_nbUnitsLeft.put(type, _nbUnitsLeft.get(type) - 1);
 		if (agent instanceof WarProjectile)
 			_projectiles.remove(agent);
+        else if (agent instanceof WarBuilding)
+            _buildings.remove(agent);
 		else
 			_controllableAgents.remove(agent);
 		
@@ -147,12 +160,14 @@ public class Team extends Observable {
 		ArrayList<WarAgent> toReturn = new ArrayList<>();
 		toReturn.addAll(_controllableAgents);
 		toReturn.addAll(_projectiles);
+        toReturn.addAll(_buildings);
 		return toReturn;
 	}
 	
 	public void removeAllAgents() {
 		_controllableAgents.clear();
 		_projectiles.clear();
+        _buildings.clear();
 		_dyingAgents.clear();
 		for(WarAgentType type : WarAgentType.values())
 			_nbUnitsLeft.put(type, 0);
@@ -203,7 +218,7 @@ public class Team extends Observable {
 	public ArrayList<WarAgent> getAllAgentsInRadius(double posX, double posY, double radius) {
 		ArrayList<WarAgent> toReturn = new ArrayList<>();
 		for (WarAgent a : getAllAgents()) {
-			if ((WarMathTools.getDistanceBetweenTwoPoints(posX, posY, a.getX(), a.getY()) - a.getHitboxMaxRadius()) <= radius) {
+			if ((WarMathTools.getDistanceBetweenTwoPoints(posX, posY, a.getX(), a.getY()) - a.getHitboxMinRadius()) <= radius) {
 				toReturn.add(a);
 			}
 		}
@@ -238,6 +253,7 @@ public class Team extends Observable {
 				t.getDescription(),
 				new ArrayList<>(t.getControllableAgents()),
 				new ArrayList<>(t.getProjectiles()),
+                new ArrayList<>(t.getBuildings()),
 				new HashMap<>(t.getAllBrainControllers()),
 				new HashMap<>(t.getAllNbUnitsLeft()),
 				new ArrayList<>(t.getDyingAgents())
@@ -305,7 +321,7 @@ public class Team extends Observable {
 		
 		return a;
 	}
-	
+
 	private Model getFSMModel() {
 		return this.fsmModel;
 	}
@@ -315,19 +331,21 @@ public class Team extends Observable {
 	}
 
 	public void createUnit(Creator creatorAgent, WarAgentType agentTypeToCreate) {
-		if (creatorAgent instanceof WarAgent) {
-			// TODO ajout des conditions de création
-			// TODO contrôler si la base n'est pas encerclée. Dans ce cas, elle ne pourra pas créer d'agent car il n'y aura pas de place.
-			((WarAgent) creatorAgent).getLogger().log(Level.FINEST, creatorAgent.toString() + " creating " + agentTypeToCreate);
-			try {
-				if (creatorAgent.isAbleToCreate(agentTypeToCreate)) {
-					WarAgent a = instantiateNewControllableWarAgent(agentTypeToCreate.toString());
-					((WarAgent) creatorAgent).launchAgent(a);
-					a.setPositionAroundOtherAgent(((WarAgent) creatorAgent));
-					((ControllableWarAgent) creatorAgent).damage(((ControllableWarAgent) a).getCost());
-					((WarAgent) creatorAgent).getLogger().log(Level.FINER, creatorAgent.toString() + " create " + agentTypeToCreate);
+		if (creatorAgent instanceof AliveWarAgent) {
+            try {
+                ((AliveWarAgent) creatorAgent).getLogger().log(Level.FINEST, creatorAgent.toString() + " creating " + agentTypeToCreate);
+                if (creatorAgent.isAbleToCreate(agentTypeToCreate)) {
+					ControllableWarAgent a = instantiateNewControllableWarAgent(agentTypeToCreate.toString());
+                    if(a.getCost() < ((AliveWarAgent) creatorAgent).getHealth()) {
+                        ((AliveWarAgent) creatorAgent).launchAgent(a);
+                        a.setPositionAroundOtherAgent(((AliveWarAgent) creatorAgent));
+                        ((ControllableWarAgent) creatorAgent).damage(a.getCost());
+                        ((AliveWarAgent) creatorAgent).getLogger().log(Level.FINER, creatorAgent.toString() + " create " + agentTypeToCreate);
+                    } else {
+                        ((AliveWarAgent) creatorAgent).getLogger().log(Level.FINER, creatorAgent.toString() + " can't create " + agentTypeToCreate + " : not enough health !");
+                    }
 				} else {
-					((WarAgent) creatorAgent).getLogger().log(Level.FINER, creatorAgent.toString() + " can't create " + agentTypeToCreate);
+					((AliveWarAgent) creatorAgent).getLogger().log(Level.FINER, creatorAgent.toString() + " isn't able to create " + agentTypeToCreate);
 				}
 			} catch (Exception e) {
 				System.err.println("Erreur lors de l'instanciation du brainController de l'agent " + agentTypeToCreate.toString());
@@ -335,4 +353,42 @@ public class Team extends Observable {
 			}
 		}
 	}
+
+    public void build(Builder builderAgent, WarAgentType buildingTypeToBuild) {
+        if (builderAgent instanceof AliveWarAgent) {
+            try {
+                ((AliveWarAgent) builderAgent).getLogger().log(Level.FINEST, builderAgent.toString() + " building " + buildingTypeToBuild);
+                if (builderAgent.isAbleToBuild(buildingTypeToBuild)) {
+                    // Instanciation
+                    String buildingToCreateClassName = Wall.class.getPackage().getName() + "." + buildingTypeToBuild.toString();
+                    WarBuilding building = (WarBuilding) Class.forName(buildingToCreateClassName)
+                            .getConstructor(Team.class)
+                            .newInstance(this);
+                    if(building.getCost() < ((AliveWarAgent) builderAgent).getHealth()) {
+                        ((AliveWarAgent) builderAgent).launchAgent(building);
+
+                        // Position
+                        CoordCartesian newBuildingPosition = WarMathTools.addTwoPoints(((AliveWarAgent) builderAgent).getPosition(), new CoordPolar(WarBuilding.MAX_DISTANCE_BUILD, ((AliveWarAgent) builderAgent).getHeading()));
+                        for (WarAgent agent : getAllAgentsInRadiusOf(building, building.getHitboxMaxRadius())) {
+                            agent.moveOutOfCollision();
+                        }
+                        building.setPosition(newBuildingPosition);
+                        building.setHeading(((AliveWarAgent) builderAgent).getHeading());
+
+                        // Cost
+                        ((ControllableWarAgent) builderAgent).damage(building.getCost());
+                        ((AliveWarAgent) builderAgent).getLogger().log(Level.FINER, builderAgent.toString() + " built " + buildingTypeToBuild);
+                    } else {
+                        ((AliveWarAgent) builderAgent).getLogger().log(Level.FINER, builderAgent.toString() + " can't build " + buildingTypeToBuild + " : not enough health !");
+                    }
+                } else {
+                    ((AliveWarAgent) builderAgent).getLogger().log(Level.FINER, builderAgent.toString() + " can't build " + buildingTypeToBuild);
+                }
+            } catch (Exception e) {
+                System.err.println("Erreur lors de l'instanciation du brainController de l'agent " + buildingTypeToBuild.toString());
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

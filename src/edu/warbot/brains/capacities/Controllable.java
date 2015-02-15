@@ -11,7 +11,7 @@ import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.tools.CoordPolar;
 
-public interface Controllable extends CommonCapacities {
+public interface Controllable extends Alive {
 
 	public ReturnCode sendMessage(int idAgent, String message, String ... content);
 	public void broadcastMessageToAll(String message, String ... content);
@@ -29,9 +29,6 @@ public interface Controllable extends CommonCapacities {
 	public void setViewDirection(double viewDirection);
 	public double getViewDirection();
 
-	public int getHealth();
-	public int getMaxHealth();
-	
 	public ArrayList<WarAgentPercept> getPerceptsAllies();
 	public ArrayList<WarAgentPercept> getPerceptsEnemies();
 	public ArrayList<WarAgentPercept> getPerceptsResources();

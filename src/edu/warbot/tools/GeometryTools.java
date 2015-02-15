@@ -107,5 +107,4 @@ public class GeometryTools {
 
         return points;
     }
-
 }

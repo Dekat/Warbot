@@ -36,6 +36,7 @@ public class WarConfig {
 	public static final String AGENT_CONFIG_BAG_SIZE = "BagSize";
 	public static final String AGENT_CONFIG_SPEED = "Speed";
 	public static final String AGENT_CONFIG_TICKS_TO_RELOAD = "TicksToReload";
+    public static final String AGENT_CONFIG_MAX_REPAIRS_PER_TICK = "MaxRepairsPerTick";
 	
 	public static final String PROJECTILE_CONFIG_EXPLOSION_RADIUS = "ExplosionRadius";
 	public static final String PROJECTILE_CONFIG_DAMAGE = "Damage";
@@ -77,6 +78,11 @@ public class WarConfig {
             case "Square":
                 double sideLength = Double.valueOf(shapeData.get("SideLength"));
                 hitbox = new Rectangle2D.Double(0, 0, sideLength, sideLength);
+                break;
+            case "Rectangle":
+                double height = Double.valueOf(shapeData.get("Height"));
+                double width = Double.valueOf(shapeData.get("Width"));
+                hitbox = new Rectangle2D.Double(0, 0, width, height);
                 break;
             case "Circle":
                 radius = Double.valueOf(shapeData.get("Radius"));
@@ -145,26 +151,22 @@ public class WarConfig {
 	public static int getMaxDistanceGive() {
 		return Integer.valueOf(WarXmlReader.getFirstStringResultOfXPath(_document, "/Warbot/Game/MaxDistanceGive"));
 	}
-	
-	public static int getFoodAppearanceRate() {
+
+    public static int getMaxDistanceBuild() {
+        return Integer.valueOf(WarXmlReader.getFirstStringResultOfXPath(_document, "/Warbot/Game/MaxDistanceBuild"));
+    }
+
+    public static double getRepairsMultiplier() {
+        return Double.valueOf(WarXmlReader.getFirstStringResultOfXPath(_document, "/Warbot/Game/RepairsMultiplier"));
+    }
+
+    public static int getFoodAppearanceRate() {
 		return Integer.valueOf(WarXmlReader.getFirstStringResultOfXPath(_document, "/Warbot/Simulation/DefaultStartParameters/FoodAppearanceRate"));
 	}
 	
-	public static int getNbResourcesAreasPerTeam() {
-		return Integer.valueOf(WarXmlReader.getFirstStringResultOfXPath(_document, "/Warbot/Simulation/DefaultStartParameters/NbResourcesAreasPerTeam"));
-	}	
-
 	public static double getRadiusResourcesAreas() {
 		return Double.valueOf(WarXmlReader.getFirstStringResultOfXPath(_document, "/Warbot/Simulation/DefaultStartParameters/RadiusResourcesAreas"));
 	}	
-
-	public static double getMaxDistanceOfResourcesAreasFromOwnerTeam() {
-		return Double.valueOf(WarXmlReader.getFirstStringResultOfXPath(_document, "/Warbot/Simulation/DefaultStartParameters/MaxDistanceOfResourcesAreasFromOwnerTeam"));
-	}
-
-	public static boolean isOpenWorld() {
-		return Boolean.valueOf(WarXmlReader.getFirstStringResultOfXPath(_document, "/Warbot/Simulation/DefaultStartParameters/OpenWorld"));
-	}
 
 	public static int getNbAgentsAtStartOfType(String agent) {
 		String result = WarXmlReader.getFirstStringResultOfXPath(_document, "/Warbot/Simulation/DefaultStartParameters/NbAgentsAtStart/" + agent);

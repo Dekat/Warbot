@@ -9,13 +9,17 @@ import edu.warbot.launcher.WarConfig;
 
 public class Wall extends WarBuilding {
 
-//	static {
-//		HashMap<String, String> data = WarConfig.getConfigOfWarAgent(WarAgentType.Wall);
-//		HITBOX_RADIUS = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_HITBOX_RADIUS));
-//	}
+    public static final int COST;
+    public static final int MAX_HEALTH;
 
-	public Wall(Team team, double hitboxRadius) {
-		super(team, WarConfig.getHitboxOfWarAgent(WarAgentType.Wall));
+    static {
+		HashMap<String, String> data = WarConfig.getConfigOfWarAgent(WarAgentType.Wall);
+        COST = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_COST));
+        MAX_HEALTH = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_MAX_HEALTH));
+	}
+
+	public Wall(Team team) {
+		super(team, WarConfig.getHitboxOfWarAgent(WarAgentType.Wall), COST, MAX_HEALTH);
 	}
 
 }
