@@ -15,7 +15,6 @@ public class WarMessage {
 
 	public WarMessage(WarKernelMessage kernelMsg, WarAgent receiver) {
 		_kernelMessage = kernelMsg;
-		//_angle = WarMathTools.getAngleBetweenTwoPoints(receiver.getX(), receiver.getY(), kernelMsg.getXSender(), kernelMsg.getYsender());
 		_angle = receiver.getPosition().getAngleToPoint(new CoordCartesian(kernelMsg.getXSender(), kernelMsg.getYsender()));
 		_distance = receiver.getDistanceFrom(kernelMsg.getMessageSender());
 	}

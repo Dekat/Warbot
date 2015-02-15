@@ -11,6 +11,7 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.capacities.Controllable;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.tools.geometry.CoordPolar;
+import madkit.message.MessageFilter;
 
 public abstract class ControllableWarAgentAdapter extends WarAgentAdapter implements Controllable {
 	
@@ -47,12 +48,17 @@ public abstract class ControllableWarAgentAdapter extends WarAgentAdapter implem
     public ReturnCode reply(WarMessage warMessage, String message, String ... content) {
     	return getAgent().reply(warMessage, message, content);
 	}
-    
-	@Override
+
+    @Override
+    public ArrayList<WarMessage> getMessages(MessageFilter messageFilter) {
+        return getAgent().getMessages(messageFilter);
+    }
+
+    @Override
     public ArrayList<WarMessage> getMessages() {
     	return getAgent().getMessages();
     }
-	
+
 	@Override
 	public void setIdNextAgentToGive(int idNextAgentToGive) {
 		getAgent().setIdNextAgentToGive(idNextAgentToGive);

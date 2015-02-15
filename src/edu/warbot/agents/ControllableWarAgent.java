@@ -21,6 +21,7 @@ import edu.warbot.game.Team;
 import edu.warbot.tools.geometry.CoordCartesian;
 import edu.warbot.tools.geometry.CoordPolar;
 import edu.warbot.tools.WarMathTools;
+import madkit.message.MessageFilter;
 
 public abstract class ControllableWarAgent extends AliveWarAgent implements ControllableActions, Controllable {
 
@@ -149,11 +150,11 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
 	}
 
 	@Override
-	public ArrayList<WarMessage> getMessages() {
+	public ArrayList<WarMessage> getMessages(MessageFilter messageFilter) {
         if(thisTickMessages == null) {
             thisTickMessages = new ArrayList<>();
             Message msg;
-            while ((msg = nextMessage()) != null) {
+            while ((msg = nextMessage(messageFilter)) != null) {
                 if (msg instanceof WarKernelMessage) {
                     WarMessage warMsg = new WarMessage((WarKernelMessage) msg, this);
                     logger.log(Level.FINER, this.toString() + " received message from " + warMsg.getSenderID());
@@ -165,7 +166,12 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
 		return thisTickMessages;
 	}
 
-	public double getAngleOfView() {
+    @Override
+    public ArrayList<WarMessage> getMessages() {
+        return getMessages(null);
+    }
+
+    public double getAngleOfView() {
 		return _angleOfView;
 	}
 	

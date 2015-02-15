@@ -9,6 +9,7 @@ import madkit.kernel.AbstractAgent.ReturnCode;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.tools.geometry.CoordPolar;
+import madkit.message.MessageFilter;
 
 public interface Controllable extends Alive {
 
@@ -17,8 +18,9 @@ public interface Controllable extends Alive {
     public ReturnCode broadcastMessageToAgentType(WarAgentType agentType, String message, String ... content);
     public ReturnCode broadcastMessage(String groupName, String roleName, String message, String ... content);
     public ReturnCode reply(WarMessage warMessage, String message, String ... content);
+    public ArrayList<WarMessage> getMessages(MessageFilter messageFilter);
     public ArrayList<WarMessage> getMessages();
-    
+
 	public void setIdNextAgentToGive(int idNextAgentToGive);
 	public int getBagSize();
 	public int getNbElementsInBag();
