@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -16,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.border.TitledBorder;
 
 import madkit.action.SchedulingAction;
 import madkit.message.SchedulingMessage;
@@ -32,8 +35,9 @@ import edu.warbot.launcher.WarViewer;
  *
  */
 @SuppressWarnings("serial")
-public class WarToolBar extends JToolBar {
+public class WarToolBar extends JToolBar implements ActionListener, CollapsiblePanel.CollapsiblePanelListener {
 
+    private CollapsiblePanel mainPanel;
 	private JButton _btnEndGame;
 	private JToggleButton _btnDisplayInfos;
 	private JToggleButton _btnDisplayPercepts;
@@ -50,40 +54,47 @@ public class WarToolBar extends JToolBar {
 	}
 
 	public void init(JFrame frame) {
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setPreferredSize(new Dimension(300, getPreferredSize().height));
-		setAlignmentX(CENTER_ALIGNMENT);
+        mainPanel = new CollapsiblePanel("Outils");
 
-		// Logo Warbot
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setAlignmentX(CENTER_ALIGNMENT);
+        mainPanel.setPreferredSize(new Dimension(400, mainPanel.getPreferredSize().height));
+        mainPanel.addCollapsiblePanelListener(this);
+
+        // Logo Warbot
 		JLabel lblLogo = new JLabel(GuiIconsLoader.getWarbotLogo());
 		lblLogo.setAlignmentX(CENTER_ALIGNMENT);
-		add(lblLogo);
+        mainPanel.add(lblLogo);
 
 		// Affichage des équipes
 		_teamsDataTable = new TeamsDatasTable(getViewer().getGame());
 		JScrollPane pnlTeams = new JScrollPane(_teamsDataTable);
 		pnlTeams.setPreferredSize(new Dimension(pnlTeams.getPreferredSize().width, 20 * 9));
-		add(pnlTeams);
+        mainPanel.add(pnlTeams);
 
 		// Panel de jeu
 		JPanel pnlGame = new JPanel();
 		pnlGame.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Gestion du jeu"));
 		_btnEndGame = new JButton("Mettre fin au jeu");
 		pnlGame.add(_btnEndGame);
-		add(pnlGame);
+        mainPanel.add(pnlGame);
 
 		// Panel d'affichages
 		JPanel pnlDisplay = new JPanel();
 		_btnDisplayInfos = new JToggleButton("Informations");
+        _btnDisplayInfos.addActionListener(this);
 		pnlDisplay.add(_btnDisplayInfos);
 		_btnDisplayPercepts = new JToggleButton("Percepts");
+        _btnDisplayPercepts.addActionListener(this);
 		pnlDisplay.add(_btnDisplayPercepts);
 		_btnDisplayHealthBars = new JToggleButton("Santé");
+        _btnDisplayHealthBars.addActionListener(this);
 		pnlDisplay.add(_btnDisplayHealthBars);
 		_btnDisplayDebugMessages = new JToggleButton("Messages de debug");
+        _btnDisplayDebugMessages.addActionListener(this);
 		pnlDisplay.add(_btnDisplayDebugMessages);
 		pnlDisplay.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Affichage"));
-		add(pnlDisplay);
+        mainPanel.add(pnlDisplay);
 
 		// Panel d'outils
 		JPanel pnlTools = new JPanel();
@@ -91,11 +102,12 @@ public class WarToolBar extends JToolBar {
 		_btnAutorMode = new JToggleButton("Mode debug");
 		pnlTools.add(_btnAutorMode);
 		pnlTools.add(new SaveSituationButton(this));
-		add(pnlTools);
+        mainPanel.add(pnlTools);
 
 		loadEvents();
 
-		frame.add(this, BorderLayout.EAST);
+        add(mainPanel);
+		frame.add(mainPanel, BorderLayout.EAST);
 	}
 
 	private void loadEvents() {
@@ -150,4 +162,19 @@ public class WarToolBar extends JToolBar {
 		return _viewer;
 	}
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        getViewer().getFrame().repaint();
+    }
+
+    @Override
+    public void onCollapse(CollapsiblePanel collapsiblePanel) {
+        mainPanel.setPreferredSize(new Dimension(30, mainPanel.getPreferredSize().height));
+    }
+
+    @Override
+    public void onUnfold(CollapsiblePanel collapsiblePanel) {
+        mainPanel.setPreferredSize(new Dimension(400, mainPanel.getPreferredSize().height));
+        getViewer().moveMapOffsetTo(getViewer().getMapOffsetX(), getViewer().getMapOffsetY());
+    }
 }

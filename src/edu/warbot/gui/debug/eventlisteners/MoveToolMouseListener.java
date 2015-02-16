@@ -38,10 +38,8 @@ public class MoveToolMouseListener implements MouseListener {
 		_debugToolBar.getViewer().setMapExplorationEventsEnabled(false);
 		
 		// On sélectionne l'agent sous le clique de souris
-		ArrayList<WarAgent> agents = game.getAllAgentsInRadius(
-				e.getX() / _debugToolBar.getViewer().getCellSize(),
-				e.getY() / _debugToolBar.getViewer().getCellSize(),
-				1);
+        CoordCartesian mouseClickPosition = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
+		ArrayList<WarAgent> agents = game.getAllAgentsInRadius(mouseClickPosition.getX(), mouseClickPosition.getY(), 3);
 		if (agents.size() > 0) {
 			_currentSelectedAgent = agents.get(0);
 		}
@@ -50,9 +48,7 @@ public class MoveToolMouseListener implements MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (_currentSelectedAgent != null) {
-			CoordCartesian newPos = new CoordCartesian(
-					e.getX() / _debugToolBar.getViewer().getCellSize(),
-					e.getY() / _debugToolBar.getViewer().getCellSize());
+			CoordCartesian newPos = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
 			newPos.normalize(0, game.getMap().getWidth() - 1, 0, game.getMap().getHeight() - 1);
 			_currentSelectedAgent.setPosition(newPos);
             _currentSelectedAgent.moveOutOfCollision();
