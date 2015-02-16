@@ -82,22 +82,60 @@ public class ControleurBrain {
 				eventDelCond();
 			}
 		});
-		viewBrain.getListeCondition().addListSelectionListener(new ListSelectionListener() {
+		viewBrain.jListCondition.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				eventListeConditionEdition(e);
+			}
+		});
+		viewBrain.jListState.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				eventListeStateEdition(e);
 			}
 		});
 		
 	}
 	
+	private void eventListeStateEdition(ListSelectionEvent e){
+		ModelState firtState = modeleBrain.getFirstState();
+		
+		if(firtState != null)
+			firtState.getViewState().setFirstState(false);
+		
+//		if(firtState != null)
+//			firtState.isSelected = false;
+		
+		
+		String stringCond = viewBrain.jListState.getSelectedValue();
+		ModelState modelState = this.getModelStateWithName(stringCond);
+
+		if(modelState != null){
+			modeleBrain.setFirstState(modelState);
+			modelState.getViewState().setFirstState(true);
+		}
+		
+		
+//		
+//		PanelState p = this.viewBrain.getViewEditor().getSelectedStates();
+//		
+//		panelCond.getModelState().setFirstState();
+//		
+//		viewBrain.getModel().getViewEditor().setSelectedCondition(panelCond);
+//
+//		if(panelCond != null){
+//			panelCond.isSelected = true;
+//		}
+		
+		this.viewBrain.getViewEditor().repaint();
+	}
+	
 	private void eventListeConditionEdition(ListSelectionEvent e){
 		
 		PanelCondition p = this.viewBrain.getViewEditor().getSelectedCondition();
+		
 		if(p != null)
 			p.isSelected = false;
 		
-		
-		String stringCond = viewBrain.getListeCondition().getSelectedValue();
+		String stringCond = viewBrain.jListCondition.getSelectedValue();
 		PanelCondition panelCond = this.getPanelConditionWithName(stringCond);
 		
 		viewBrain.getViewEditor().setSelectedCondition(panelCond);
@@ -143,22 +181,24 @@ public class ControleurBrain {
 	}
 	
 	private void eventDelState(){
-		if(this.viewBrain.getViewEditor().isOneStateSelected()){
-			
-			ArrayList<PanelState> panelToDelet = this.viewBrain.getViewEditor().getSelectedStates();
-			
-			if(panelToDelet != null && panelToDelet.size() == 1){
-			
-				deleteState(panelToDelet.get(0));
-				
-			}else{
-				JOptionPane.showMessageDialog(this.viewBrain,
-					    "One state must be selected",
-					    "Selection error",
-					    JOptionPane.INFORMATION_MESSAGE);
-			}
-		}
+		ArrayList<PanelState> panelToDelet = this.viewBrain.getViewEditor().getSelectedStates();
 		
+		if(panelToDelet != null && panelToDelet.size() == 1){
+		
+			deleteState(panelToDelet.get(0));
+			
+			repaint();
+			
+		}else{
+			JOptionPane.showMessageDialog(this.viewBrain,
+				    "One state must be selected",
+				    "Selection error",
+				    JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+	private void repaint() {
+		viewBrain.getViewEditor().repaint();		
 	}
 
 	private void eventAddCond(){
@@ -243,6 +283,14 @@ public class ControleurBrain {
 	private PanelCondition getPanelConditionWithName(String s){
 		for (PanelCondition p : this.viewBrain.getViewEditor().getPanelconditions()) {
 			if(p.getModele().getName().equals(s))
+				return p;
+		}
+		return null;
+	}
+	
+	private ModelState getModelStateWithName(String s){
+		for (ModelState p : this.modeleBrain.getStates()) {
+			if(p.getName().equals(s))
 				return p;
 		}
 		return null;

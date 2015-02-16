@@ -3,16 +3,22 @@ package edu.warbot.FSMEditor.views;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollBar;
 import javax.swing.JSeparator;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 
 import org.jfree.ui.tabbedui.VerticalLayout;
@@ -66,13 +72,25 @@ public class ViewBrain extends JPanel{
 		
 		buttonAddSate = new JButton("Add State");
 		buttonEditState = new JButton("Edit State");
-		buttonDelSate = new JButton("Delete State");
-	
+		buttonDelState = new JButton("Delete State");
+		
+		listModelState = new DefaultListModel<>();
+		jListState = new JList<>(listModelState);
+		jListState.setLayoutOrientation(JList.VERTICAL);
+		jListState.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		updateSelectedState();
+		
 		panel.add(buttonAddSate);
 		panel.add(new JSeparator());
 		panel.add(buttonEditState);
 		panel.add(new JSeparator());
-		panel.add(buttonDelSate);
+		panel.add(buttonDelState);
+		panel.add(new JSeparator());
+		panel.add(new JLabel("First state"));
+		panel.add(new JSeparator());
+		panel.add(jListState);
+		
 		
 		return panel;
 	}
@@ -88,8 +106,10 @@ public class ViewBrain extends JPanel{
 		listModeleCond = new DefaultListModel<>();
 		updateSelectedCondition();
 		
-		listCond = new JList<>(listModeleCond);
-		listCond.setVisibleRowCount(10); //TODO ici ca serait mieux si il affiche un truc de taille dynamique
+		jListCondition = new JList<>(listModeleCond);
+		jListCondition.setLayoutOrientation(JList.VERTICAL);
+		jListCondition.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//		listCond.setVisibleRowCount(10); //TODO ici ca serait mieux si il affiche un truc de taille dynamique
 		
 		panel.add(buttonAddCond);
 		panel.add(new JSeparator());
@@ -97,18 +117,19 @@ public class ViewBrain extends JPanel{
 		panel.add(new JSeparator());
 		panel.add(buttonDelCond);
 		panel.add(new JSeparator());
-		panel.add(listCond);
+		panel.add(jListCondition);
 		
 		return panel;
 	}
 
 	public void addState(ModelState state) {
-		this.panelEditor.addState(state);
+		panelEditor.addState(state);
+		listModelState.addElement(state.getName());
 	}
 
 	public void addCondition(ModelCondition condition) {
 		panelEditor.addCondition(condition);	
-		this.getListeModeleConditions().addElement(condition.getName());	
+		listModeleCond.addElement(condition.getName());	
 	}
 
 	public PanelEditor getViewEditor() {
@@ -119,14 +140,6 @@ public class ViewBrain extends JPanel{
 		return this.modeleBrain;
 	}	
 
-	public JList<String> getListeCondition() {
-		return this.listCond;
-	}
-
-	public DefaultListModel<String> getListeModeleConditions() {
-		return this.listModeleCond;
-	}
-	
 	/*** Accesseurs ***/
 	
 	public JButton getButtonAddState() {
@@ -134,7 +147,7 @@ public class ViewBrain extends JPanel{
 	}
 
 	public AbstractButton getButtonDelState() {
-		return this.buttonDelSate;
+		return this.buttonDelState;
 	}
 
 	public JButton getButtonEditState() {
@@ -154,15 +167,25 @@ public class ViewBrain extends JPanel{
 	}
 
 	/**** Attributs ***/
-	private JList<String> listCond;
+	public JList<String> jListCondition;
 	private DefaultListModel<String> listModeleCond;
+	
+	public JList<String> jListState;
+	private DefaultListModel<String> listModelState;
 	
 	private JButton buttonAddSate;
 	private JButton buttonEditState;
-	private JButton buttonDelSate;
+	private JButton buttonDelState;
 	private JButton buttonAddCond;
 	private JButton buttonEditCond;
 	private JButton buttonDelCond;
+
+	public void updateSelectedState() {
+		listModelState.clear();
+		for (ModelState s : modeleBrain.getStates()) {
+			listModelState.addElement(s.getName());
+		}
+	}
 
 	public void updateSelectedCondition() {
 		listModeleCond.clear();
@@ -179,6 +202,7 @@ public class ViewBrain extends JPanel{
 
 	public void removeState(PanelState panel) {
 		getViewEditor().removePanelState(panel);
+		updateSelectedState();
 		getViewEditor().unselectAllItems();
 	}
 

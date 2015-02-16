@@ -10,6 +10,8 @@ public class ModeleBrain {
 	
 	private WarAgentType agentType;
 	
+	private ModelState firstState;
+
 	private ArrayList<ModelState> sates = new ArrayList<>();
 	private ArrayList<ModelCondition> conditions = new ArrayList<>();
 	
@@ -51,13 +53,23 @@ public class ModeleBrain {
 
 	/**** Les modeles brains connaissent leurs vue ***/
 	ViewBrain viewBrain;
-	
+
 	public void setViewBrain(ViewBrain vb) {
 		this.viewBrain = vb;
 	}
 	
 	public ViewBrain getViewBrain(){
 		return viewBrain;
+	}
+
+	public void setFirstState(ModelState modelState) {
+//		this.firstState.setFirstState(false);
+		this.firstState = modelState;
+//		this.firstState.setFirstState(true);
+	}
+
+	public ModelState getFirstState() {
+		return firstState;
 	}
 
 }

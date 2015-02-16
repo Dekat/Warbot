@@ -24,8 +24,11 @@ public class PanelState extends AbstractPanel{
 		//Clear state
 		g.clearRect(position.x, position.y, size.width, size.height);
 		
+			
 		if(this.isSelected)
 			g.setColor(Color.red);
+		else if(isFirstState)
+			g.setColor(Color.GREEN);
 		else
 			g.setColor(Color.black);
 		
@@ -63,5 +66,10 @@ public class PanelState extends AbstractPanel{
 	Dimension size = new Dimension(100, 30);
 	
 	public boolean isSelected = false;
+	public boolean isFirstState = false;
+
+	public void setFirstState(boolean b) {
+		isFirstState = b;
+	}
 
 }
