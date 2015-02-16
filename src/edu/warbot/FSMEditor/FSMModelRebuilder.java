@@ -76,7 +76,7 @@ public class FSMModelRebuilder {
 			//On récupère la conditions dans la liste d'association et on l'ajoute au modele
 			ModelCondition modCond = mapConditionsID.get(currentConditionID);
 			if(modCond == null)
-				System.out.println("FSMRebuilder : WARNING no condition found for ID " + currentConditionID);
+				System.err.println("FSMRebuilder : ERROR no condition found for ID " + currentConditionID);
 			state.addConditionOut(modCond);
 		}
 	}
@@ -84,8 +84,7 @@ public class FSMModelRebuilder {
 	private void rebuildCondition(ModelCondition cond, HashMap<String, ModelState> mapStatesID) {
 		ModelState state = mapStatesID.get(cond.getStateOutId());
 		if(state == null)
-			System.out.println("FSMRebuilder : WARNING no state found for ID " + cond.getStateOutId());
-//		state.addConditionOut(cond);
+			System.err.println("FSMRebuilder : ERROR no state found for ID " + cond.getStateOutId());
 		cond.setDestination(state);
 	}
 

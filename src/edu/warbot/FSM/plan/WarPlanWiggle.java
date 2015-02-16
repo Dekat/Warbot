@@ -1,6 +1,6 @@
 package edu.warbot.FSM.plan;
 
-import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
+import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionWiggle;
 import edu.warbot.brains.MovableWarAgentAdapter;
@@ -15,9 +15,9 @@ public class WarPlanWiggle<AgentAdapterType extends MovableWarAgentAdapter> exte
 	
 	private Integer nombrePas;
 
-	public WarPlanWiggle(AgentAdapterType brain, WarPlanSettings planSettings) {
+	public WarPlanWiggle(AgentAdapterType brain, PlanSettings planSettings) {
 		super("Plan Wiggle", brain, planSettings);
-		this.nombrePas = planSettings.Nombre_pas;
+		this.nombrePas = planSettings.Tik_number;
 	}
 
 	public void buildActionList() {

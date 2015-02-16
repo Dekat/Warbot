@@ -2,7 +2,8 @@ package edu.warbot.FSM.condition;
 
 import java.util.ArrayList;
 
-import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
+import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.percepts.WarPercept;
@@ -12,7 +13,7 @@ public class WarConditionPerceptAttributCheck<AgentAdapterType extends Controlla
 	
 	int attribut;
 	int reference;
-	String operand;
+	EnumOperand operand;
 	
 	String nameAtt;
 	
@@ -20,23 +21,11 @@ public class WarConditionPerceptAttributCheck<AgentAdapterType extends Controlla
 	WarAgentType agentType;
 	boolean oneOf;
 	
-//	/**
-//	 *
-//	 * @param brain
-//	 * @param nameAtt
-//	 * @param operand
-//	 * @param ref
-//	 * @param poucentage
-//	 * @param enemy = true, ally = false
-//	 * @param agentType null for all
-//	 * @param oneOf oneOf = true, all = false
-//	 */
-	
 	public WarConditionPerceptAttributCheck(String name, AgentAdapterType brain, 
-			WarConditionSettings conditionSettings){
+			ConditionSettings conditionSettings){
 		
 		super(name, brain, conditionSettings);
-		this.nameAtt = conditionSettings.Attribut_name;
+//		this.nameAtt = conditionSettings.Reference;
 		this.operand = conditionSettings.Operateur;
 		this.reference = conditionSettings.Reference;
 		
@@ -82,19 +71,19 @@ public class WarConditionPerceptAttributCheck<AgentAdapterType extends Controlla
 		// Fait les verifications
 		boolean allAttValid = true;
 		switch (this.operand) {
-		case "<":
+		case inf:
 			for (Integer att : listeAttriuts) {
 				if(!(att < this.reference))
 					allAttValid = false;
 			}
 			return allAttValid;
-		case ">":
+		case sup:
 			for (Integer att : listeAttriuts) {
 				if(!(att > this.reference))
 					allAttValid = false;
 			}
 			return allAttValid;
-		case "==":
+		case eg:
 			for (Integer att : listeAttriuts) {
 				if(!(att == this.reference))
 					allAttValid = false;

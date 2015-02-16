@@ -29,14 +29,11 @@ public class PanelEditor extends JPanel {
 		
 		//Crée les états
 		for (ModelState modelState : modelBrain.getStates()) {
-			PanelState ps = new PanelState(modelState);
-			panelSates.add(ps);
-			modelState.setViewState(ps);
+			addState(modelState);
 		}
 		//Crée les conditions
 		for (ModelCondition modelCond : modelBrain.getConditions()) {
-			PanelCondition pc = new PanelCondition(modelCond);
-			panelsCondition.add(pc);
+			addCondition(modelCond);
 		}	
 	}
 	
@@ -78,7 +75,9 @@ public class PanelEditor extends JPanel {
 	}
 
 	public void addState(ModelState modelState) {
-		panelSates.add(new PanelState(modelState));
+		PanelState ps = new PanelState(modelState);
+		modelState.setViewState(ps);
+		panelSates.add(ps);
 	}
 
 	public void addCondition(ModelCondition modelCondition) {
@@ -86,11 +85,15 @@ public class PanelEditor extends JPanel {
 		panelsCondition.add(pc);
 	}
 
-	public void setNoItemSelected() {
+	public void unselectAllItems() {
 		for(PanelState p : this.selectedState){
-			if(p.isSelected)
-				p.isSelected = false;
+			p.isSelected = false;
 		}
+		
+		if(selectedCondition != null)
+			this.selectedCondition.isSelected = false;
+		
+		this.selectedCondition = null;
 		this.selectedState.clear();
 	}
 
@@ -101,6 +104,10 @@ public class PanelEditor extends JPanel {
 			System.out.println(this.getClass() + "no item selected");
 			return null;
 		}
+	}
+	
+	public ArrayList<PanelState> getSelectedStates(){
+		return selectedState;
 	}
 
 	public PanelState getSecondeSelectedState() {
@@ -121,18 +128,21 @@ public class PanelEditor extends JPanel {
 	}
 
 	private ArrayList<PanelState> selectedState = new ArrayList<>();
+	private PanelCondition selectedCondition;
 
 	public void removePanelState(PanelState p){
 		this.panelSates.remove(p);
-		//TODO rebuild la listes des panels ?  			
+	}
+	
+	public PanelCondition getSelectedCondition() {
+		return selectedCondition;
+	}
+	
+	public void setSelectedCondition(PanelCondition panelCondition) {
+		this.selectedCondition = panelCondition;
 	}
 
-	public ArrayList<PanelCondition> getPanelcondition() {
+	public ArrayList<PanelCondition> getPanelconditions() {
 		return this.panelsCondition;
-	}
-
-	public void createState(ModelState modelState) {
-		// TODO Auto-generated method stub
-		
 	}
 }

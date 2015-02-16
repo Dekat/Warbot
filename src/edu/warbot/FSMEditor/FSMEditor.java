@@ -1,7 +1,7 @@
 package edu.warbot.FSMEditor;
 
-import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
-import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
+import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSMEditor.controleurs.Controleur;
 import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModelCondition;
@@ -18,9 +18,9 @@ public class FSMEditor {
 		
 		createBasicFSM(model);
 		
-		model.getModelBrain(WarAgentType.WarExplorer).addState(
-				new ModelState("State Ramasser nourriture", EnumPlan.WarPlanRamasserNouriture, null));
-		
+//		model.getModelBrain(WarAgentType.WarExplorer).addState(
+//				new ModelState("State Ramasser nourriture", EnumPlan.WarPlanRamasserNouriture, null));
+//		
 		/*
 		WarPlanSettings pSW = new WarPlanSettings();
 		pSW.Value = 100;

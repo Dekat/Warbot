@@ -79,24 +79,14 @@ public class MouseListenerPanelCenter implements MouseListener, MouseMotionListe
 
 
 	private void unselectAllItems() {
-		this.controleur.viewBrain.getViewEditor().setNoItemSelected();		
+		this.controleur.viewBrain.getViewEditor().unselectAllItems();		
 	}
 
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		this.isDragging = false;
-			
-		//this.putSelectedItem(e);
-	
-		//this.controleur.view.getPanelCenter().repaint();
 	}
-
-	private void putSelectedItem(MouseEvent e) {
-		this.selectedState.setPosition(new Point(e.getX() - this.positionClick.x
-				,e.getY() - this.positionClick.y));
-	}
-
 
 	@Override
 	public void mouseDragged(MouseEvent e) {

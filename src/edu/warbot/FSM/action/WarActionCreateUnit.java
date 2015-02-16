@@ -27,15 +27,19 @@ public class WarActionCreateUnit extends WarAction<WarBaseAdapter> {
 	public String executeAction(){
 		
 		if(nbCreate == nbToCreate){
+			getAgent().setDebugString("ActionCreateUnit : all unit created");
 			return MovableWarAgent.ACTION_IDLE;
 		}
 		
-		if(!getAgent().isBagEmpty() && getAgent().getHealth() < this.minLife)
+		if(!getAgent().isBagEmpty() && getAgent().getHealth() < this.minLife){
+			getAgent().setDebugString("ActionCreateUnit : eat to restor life");
 			return WarBase.ACTION_EAT;
+		}
 		
 		if(getAgent().getHealth() >= minLife){
 			getAgent().setNextAgentToCreate(agentType);
 			nbCreate++;
+			getAgent().setDebugString("ActionCreateUnit : create " + this.agentType);
 			return WarBase.ACTION_CREATE;
 		}
 		

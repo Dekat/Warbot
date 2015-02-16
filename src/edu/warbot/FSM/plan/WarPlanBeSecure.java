@@ -1,6 +1,6 @@
 package edu.warbot.FSM.plan;
 
-import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
+import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionFuire;
 import edu.warbot.agents.agents.WarExplorer;
@@ -17,7 +17,7 @@ import edu.warbot.brains.MovableWarAgentAdapter;
 
 public class WarPlanBeSecure<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
 	
-	public WarPlanBeSecure(AgentAdapterType brain, WarPlanSettings planSettings) {
+	public WarPlanBeSecure(AgentAdapterType brain, PlanSettings planSettings) {
 		super("PlanBeSecure", brain, planSettings);
 	}
 

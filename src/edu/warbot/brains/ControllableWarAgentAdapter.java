@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import edu.warbot.agents.percepts.WallPercept;
 import edu.warbot.agents.percepts.WarAgentPercept;
+import edu.warbot.agents.resources.WarFood;
 import madkit.kernel.AbstractAgent.ReturnCode;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
@@ -77,6 +78,14 @@ public abstract class ControllableWarAgentAdapter extends WarAgentAdapter implem
 	@Override
 	public boolean isBagFull() {
 		return getAgent().isBagFull();
+	}
+	
+	public boolean isFullLife() {
+		return getHealth() + WarFood.HEALTH_GIVEN > getMaxHealth();
+	}
+	
+	public boolean isLowLife() {
+		return getHealth() < getMaxHealth() * 0.1;
 	}
 
 	@Override

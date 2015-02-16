@@ -1,6 +1,6 @@
 package edu.warbot.FSM.condition;
 
-import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 
 public class WarConditionTimeOut<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType>{
@@ -10,10 +10,10 @@ public class WarConditionTimeOut<AgentAdapterType extends ControllableWarAgentAd
 	Integer currentTime = 0;
 	
 	public WarConditionTimeOut(String name, AgentAdapterType brain, 
-			WarConditionSettings conditionSettings){
+			ConditionSettings conditionSettings){
 		super(name, brain, conditionSettings);
 		
-		this.timeOut = conditionSettings.Time_out;
+		this.timeOut = conditionSettings.Tik_number;
 	}
 
 	@Override

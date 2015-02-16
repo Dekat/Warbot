@@ -1,6 +1,6 @@
 package edu.warbot.FSM.plan;
 
-import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
+import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionAttaquer;
 import edu.warbot.agents.enums.WarAgentType;
@@ -10,13 +10,10 @@ public class WarPlanAttaquer extends WarPlan<WarRocketLauncherAdapter> {
 	
 	WarAgentType agentType;
 	
-	public WarPlanAttaquer(WarRocketLauncherAdapter brain, WarPlanSettings planSettings) {
+	public WarPlanAttaquer(WarRocketLauncherAdapter brain, PlanSettings planSettings) {
 		super("Plan Attaquer", brain, planSettings);
 		
-		if(getPlanSettings().Agent_type != null && getPlanSettings().Agent_type.length > 0)
-			this.agentType = getPlanSettings().Agent_type[0];
-		else
-			System.err.println("getPlanSettings().Agent_type_destination is null or does not containe value in " + this.getClass().getSimpleName());
+		this.agentType = getPlanSettings().Agent_type;
 		
 	}
 

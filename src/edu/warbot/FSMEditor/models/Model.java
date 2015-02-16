@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
-import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
+import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSMEditor.views.View;
 import edu.warbot.agents.enums.WarAgentType;
 
@@ -68,7 +68,7 @@ public class Model {
 				}
 				
 				//Afichage des parametres du plan
-				WarPlanSettings planSet = modState.getPlanSettings();
+				PlanSettings planSet = modState.getPlanSettings();
 				Field field[] = planSet.getClass().getDeclaredFields();
 				System.out.println("\tPlan settings : ");
 				for (int i = 0; i < field.length; i++) {
@@ -98,7 +98,7 @@ public class Model {
 				System.out.println("\tEtat destination objet : Name=" + modCond.getStateDestination().getName());
 				
 				//Affichage des conditions settings
-				WarConditionSettings condSet = modCond.getConditionSettings();
+				ConditionSettings condSet = modCond.getConditionSettings();
 				Field field[] = condSet.getClass().getDeclaredFields();
 				System.out.println("\tCondition settings : ");
 				for (int i = 0; i < field.length; i++) {

@@ -1,14 +1,13 @@
 package edu.warbot.FSMEditor.models;
 
-import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumCondition;
 import edu.warbot.FSMEditor.settings.Settings;
 
 public class ModelCondition {
 	
 	private String name;
-	private EnumCondition typeName;
-	private WarConditionSettings conditionGenericAttributs;
+	private ConditionSettings conditionSettings;
 
 	ModelState modeleSource;
 	ModelState modeleDest;
@@ -17,10 +16,10 @@ public class ModelCondition {
 	
 	EnumCondition conditionType;
 	
-	public ModelCondition(String name, EnumCondition type, WarConditionSettings conditionSettings){
+	public ModelCondition(String name, EnumCondition type, ConditionSettings conditionSettings){
 		this.name = name;
-		this.typeName = type;
-		this.conditionGenericAttributs = conditionSettings;
+		this.conditionType = type;
+		this.conditionSettings = conditionSettings;
 	}
 	
 	public void setSource(ModelState modelState) {
@@ -44,11 +43,7 @@ public class ModelCondition {
 	}
 
 	public EnumCondition getType() {
-		return typeName;
-	}
-	
-	public String getTypeLoaderName() {
-		return Settings.getFullNameOf(typeName);
+		return conditionType;
 	}
 	
 	public ModelState getStateDestination(){
@@ -67,8 +62,8 @@ public class ModelCondition {
 		this.stateOutId = stateOutId;
 	}
 
-	public WarConditionSettings getConditionSettings() {
-		return this.conditionGenericAttributs;
+	public ConditionSettings getConditionSettings() {
+		return this.conditionSettings;
 	}
 
 	public void setConditionType(EnumCondition conditionType) {
@@ -80,7 +75,11 @@ public class ModelCondition {
 	}
 
 	public String getConditionLoaderName() {
-		return Settings.getFullNameOf(typeName);
+		return Settings.getFullNameOf(conditionType);
+	}
+
+	public void setConditionSettings(ConditionSettings conditionSettings) {
+		this.conditionSettings = conditionSettings;
 	}
 
 }

@@ -10,8 +10,8 @@ import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
-import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
-import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
+import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.models.ModelCondition;
@@ -88,30 +88,20 @@ public class FsmXmlSaver extends FsmXmlParser{
 	private Element getContentPlanSettings(ModelState state) {
 		Element elemPlanSetting = new Element(PlanSettings);
 		
-		WarPlanSettings planSet = state.getPlanSettings();
+		PlanSettings planSet = state.getPlanSettings();
 		if(planSet == null)
-			planSet = new WarPlanSettings();
+			planSet = new PlanSettings();
 		
 		Field[] fields = planSet.getClass().getDeclaredFields();
 		
 		String fieldValueString = null;
 		for (int i = 0; i < fields.length; i++) {
 			try {
-				//Pour les tableaux
-				if(fields[i].getType().isArray()){
-					if(fields[i].get(planSet) == null)
-						fieldValueString = "";
-					else{
-						Object[] fieldValues = (Object[]) fields[i].get(planSet);
-						fieldValueString = Arrays.toString(fieldValues);
-					}
 					
-				}else{ //Pour les valeurs simples
-					if(fields[i].get(planSet) == null)
-						fieldValueString = "";
-					else
-						fieldValueString = String.valueOf(fields[i].get(planSet));
-				}
+				if(fields[i].get(planSet) == null)
+					fieldValueString = "";
+				else
+					fieldValueString = String.valueOf(fields[i].get(planSet));
 					
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
@@ -141,9 +131,9 @@ public class FsmXmlSaver extends FsmXmlParser{
 	private Element getContentConditionSettings(ModelCondition modelCond) {
 		Element elemCondSetting = new Element(ConditionSettings);
 		
-		WarConditionSettings planSet = modelCond.getConditionSettings();
+		ConditionSettings planSet = modelCond.getConditionSettings();
 		if(planSet == null)
-			planSet = new WarConditionSettings();
+			planSet = new ConditionSettings();
 		
 		Field[] fields = planSet.getClass().getDeclaredFields();
 		

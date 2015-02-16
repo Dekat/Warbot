@@ -11,8 +11,8 @@ public class Settings {
 
 	//Je sais pas encore si il faut faire un enum et comment !
 	public static final String[] ATTRIBUTES = {
-			edu.warbot.FSM.condition.WarConditionAttributCheck.HEALTH,
-			edu.warbot.FSM.condition.WarConditionAttributCheck.NB_ELEMEN_IN_BAG };
+			edu.warbot.FSM.condition.WarConditionBooleanCheck.HEALTH,
+			edu.warbot.FSM.condition.WarConditionBooleanCheck.NB_ELEMEN_IN_BAG };
 
 	public static String getFullNameOf(EnumPlan plan) {
 		return FSM_CLASS_PATH_PLAN + plan;
