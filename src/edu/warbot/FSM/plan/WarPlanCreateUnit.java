@@ -7,10 +7,6 @@ import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.adapters.WarBaseAdapter;
 
-/**
- * Desciption du plan et de ces actions
- * ATTENTION ce plan est bas� sur la size bag d'un explorer et la vie max d'un explorer
- */
 public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 	
 	Integer nombreAgent;

@@ -4,13 +4,14 @@ import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionSendMessage;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.brains.ControllableWarAgentAdapter;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
-public class WarPlanSendMessage extends WarPlan<WarRocketLauncherAdapter> {
+public class WarPlanSendMessage<AgentAdapterType extends ControllableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
 	
 	WarAgentType agentType;
 	
-	public WarPlanSendMessage(WarRocketLauncherAdapter brain, PlanSettings planSettings) {
+	public WarPlanSendMessage(AgentAdapterType brain, PlanSettings planSettings) {
 		super("Plan Attaquer", brain, planSettings);
 	}
 
@@ -18,8 +19,8 @@ public class WarPlanSendMessage extends WarPlan<WarRocketLauncherAdapter> {
 		
 		setPrintTrace(true);
 			
-		WarAction<WarRocketLauncherAdapter> actionMsg = 
-				new WarActionSendMessage(getBrain(), getPlanSettings().Agent_type, getPlanSettings().Message);
+		WarAction<AgentAdapterType> actionMsg = 
+				new WarActionSendMessage<>(getBrain(), getPlanSettings().Agent_type, getPlanSettings().Message);
 		
 		addAction(actionMsg);
 		

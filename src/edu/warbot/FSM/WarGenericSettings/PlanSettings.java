@@ -11,15 +11,15 @@ import edu.warbot.agents.enums.WarAgentType;
  */
 public class PlanSettings extends AbstractGenericAttributSettings{
 
-	public WarAgentType Agent_type;
+	public WarAgentType Agent_type = WarAgentType.WarExplorer;;
 	
-	public Integer Number_agent;
+	public Integer Number_agent = 1;
 
-	public Integer Min_life;
+	public Integer Min_life = 30;
 	
 	public EnumMessage Message;
 
-	public Boolean Pourcentage;
+	public Boolean Pourcentage = true;
 
 	public Boolean Offensif;
 	

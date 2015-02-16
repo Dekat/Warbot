@@ -17,7 +17,7 @@ import edu.warbot.brains.MovableWarAgentAdapter;
 public class WarPlanHealAlly<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
 	
 	public WarPlanHealAlly(AgentAdapterType brain, PlanSettings planSettings) {
-		super("Plan healer", brain, planSettings);
+		super("Plan heal ally", brain, planSettings);
 	}
 
 	public void buildActionList() {

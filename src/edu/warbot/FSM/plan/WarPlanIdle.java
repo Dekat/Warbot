@@ -21,7 +21,7 @@ public class WarPlanIdle<AgentAdapterType extends ControllableWarAgentAdapter> e
 		
 		setPrintTrace(true);
 		
-		WarAction<AgentAdapterType> actionAttaquer = new WarActionIdle<AgentAdapterType>(getBrain(), nombreTik);
+		WarAction<AgentAdapterType> actionAttaquer = new WarActionIdle<>(getBrain(), nombreTik);
 		
 		addAction(actionAttaquer);
 		

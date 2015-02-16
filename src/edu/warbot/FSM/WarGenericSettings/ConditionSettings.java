@@ -23,7 +23,7 @@ public class ConditionSettings extends AbstractGenericAttributSettings{
 
 	public EnumMessage Message;
 
-	public WarAgentType Agent_type;
+	public WarAgentType Agent_type = WarAgentType.WarExplorer;
 
 	public Boolean Enemie = false;
 

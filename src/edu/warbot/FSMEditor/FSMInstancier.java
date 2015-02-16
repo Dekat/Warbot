@@ -147,10 +147,12 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 			System.err.println("* Check attribut usage in subclass of previews and in " + modelCond.getConditionLoaderName());
 			
 			System.err.println("ERROR during instanciate WarCondition with class name " + modelCond.getConditionLoaderName() + " check name, constructor, classPath, etc...");
-			System.err.println("Objects send Type : Name : " + String.class + " Adapter : " + typeOfAdapter + " , WarConditionSettings : " + modelCond.getConditionLoaderName().getClass());
-			System.err.println("Objects send Object : Name : " + modelCond.getName() + " Adapter : " + adapter + " , WarPlanSettings : " + modelCond.getConditionLoaderName());
+			System.err.println("Objects send Type : Name : " + String.class + ", Adapter : " + typeOfAdapter + ", WarConditionSettings : " + modelCond.getConditionSettings().getClass());
+			System.err.println("Objects send Object : Name : " + modelCond.getName() + ", Adapter : " + adapter + ", WarConditionSettings : " + modelCond.getConditionLoaderName());
 			try {
-				System.err.println("Objects expected : Adapter : " + Class.forName(modelCond.getConditionLoaderName()).getConstructors()[0].getParameterTypes()[0] + " , WarPlanSettings : " + Class.forName(modelCond.getConditionLoaderName()).getConstructors()[0].getParameterTypes()[1]);
+				System.err.println("Objects expected Type : Name : " + Class.forName(modelCond.getConditionLoaderName()).getConstructors()[0].getParameterTypes()[0] + 
+						", Adapter : " + Class.forName(modelCond.getConditionLoaderName()).getConstructors()[0].getParameterTypes()[1] + 
+						", WarPlanSettings : " + Class.forName(modelCond.getConditionLoaderName()).getConstructors()[0].getParameterTypes()[2]);
 			} catch (SecurityException | ClassNotFoundException e1) {
 				e1.printStackTrace();
 			}
@@ -191,14 +193,16 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 		} catch (NoSuchMethodException | SecurityException
 				| ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
-			System.err.println("*** ERROR in dynamic instanciation of generated model check everything:");
-			System.err.println("* Check constructor in WarPlan, WarCondition, WarReflexe");
+			System.err.println("*** ERROR in dynamic instanciation of generated model check everything :");
+			System.err.println("* Check constructor in WarPlan");
 			System.err.println("* Check attribut usage in subclass of previews and in " + modelState.getPlanLoaderName());
 			
 			System.err.println("ERROR during instanciate WarPlan with class name " + modelState.getPlanLoaderName() + " check name, constructor, classPath, etc...");
-			System.err.println("Objects send : Adapter : " + adapter.getClass() + " , WarPlanSettings : " + modelState.getPlanSettings().getClass());
+			System.err.println("Objects send type : Adapter : " + adapter.getClass() + ", WarPlanSettings : " + modelState.getPlanSettings().getClass());
+			System.err.println("Objects send instance : Adapter : " + adapter + ", WarPlanSettings : " + modelState.getPlanSettings());
 			try {
-				System.err.println("Objects expected : Adapter : " + Class.forName(modelState.getPlanLoaderName()).getConstructors()[0].getParameterTypes()[0] + " , WarPlanSettings : " + Class.forName(modelState.getPlanLoaderName()).getConstructors()[0].getParameterTypes()[1]);
+				System.err.println("Objects expected : Adapter : " + Class.forName(modelState.getPlanLoaderName()).getConstructors()[0].getParameterTypes()[0] 
+						+ ", WarPlanSettings : " + Class.forName(modelState.getPlanLoaderName()).getConstructors()[0].getParameterTypes()[1]);
 			} catch (SecurityException | ClassNotFoundException e1) {
 				e1.printStackTrace();
 			}
