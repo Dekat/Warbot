@@ -1,15 +1,14 @@
 package edu.warbot.brains.capacities;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
+import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WallPercept;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import madkit.kernel.AbstractAgent.ReturnCode;
-import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.tools.geometry.CoordPolar;
-import madkit.message.MessageFilter;
+import madkit.kernel.AbstractAgent.ReturnCode;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 public interface Controllable extends Alive {
 

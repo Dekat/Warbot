@@ -4,7 +4,6 @@ import edu.warbot.agents.actions.IdlerActions;
 import edu.warbot.brains.capacities.Alive;
 import edu.warbot.game.Team;
 
-import java.awt.*;
 import java.util.logging.Level;
 
 public abstract class AliveWarAgent extends WarAgent implements Alive, IdlerActions {

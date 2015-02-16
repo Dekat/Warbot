@@ -1,11 +1,11 @@
 package edu.warbot.FSM.plan;
 
-import java.util.ArrayList;
-
 import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.brains.ControllableWarAgentAdapter;
+
+import java.util.ArrayList;
 
 public abstract class WarPlan<AgentAdapterType extends ControllableWarAgentAdapter> {
 

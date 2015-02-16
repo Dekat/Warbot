@@ -1,13 +1,8 @@
 package edu.warbot.FSM.plan;
 
-import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
 import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionCreateUnit;
-import edu.warbot.FSM.condition.WarCondition;
-import edu.warbot.FSM.condition.WarConditionTimeOut;
-import edu.warbot.FSMEditor.settings.EnumAction;
-import edu.warbot.FSMEditor.settings.Settings;
 import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.adapters.WarBaseAdapter;

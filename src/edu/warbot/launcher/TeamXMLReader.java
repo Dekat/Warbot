@@ -1,18 +1,15 @@
 package edu.warbot.launcher;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
-
+import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
+import edu.warbot.tools.WarXmlReader;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import edu.warbot.FSMEditor.xmlParser.FsmXmlParser;
-import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
-import edu.warbot.tools.WarXmlReader;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 
 /**
  * Classe servant à la lecture du document XML définit par l'utilisateur, contenant les informations sur son équipe.

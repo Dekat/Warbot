@@ -1,12 +1,9 @@
 package edu.warbot.FSMEditor.panels;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.util.Random;
-
 import edu.warbot.FSMEditor.models.ModelState;
+
+import java.awt.*;
+import java.util.Random;
 
 public class PanelState extends AbstractPanel{
 

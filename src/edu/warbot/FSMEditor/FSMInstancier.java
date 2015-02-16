@@ -1,8 +1,5 @@
 package edu.warbot.FSMEditor;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-
 import edu.warbot.FSM.WarEtat;
 import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSM.condition.WarCondition;
@@ -13,6 +10,9 @@ import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.ControllableWarAgentAdapter;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 
 /**
  * Permet de générer et d'instanicer un objet de type FSM grâce à un modele de FSM

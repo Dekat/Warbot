@@ -1,12 +1,12 @@
 package edu.warbot.maps;
 
+import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.WarCircle;
+
 import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-
-import edu.warbot.tools.geometry.CoordCartesian;
-import edu.warbot.tools.geometry.WarCircle;
 
 public abstract class AbstractWarMap {
 

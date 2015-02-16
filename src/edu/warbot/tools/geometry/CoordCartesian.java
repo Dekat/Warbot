@@ -1,6 +1,6 @@
 package edu.warbot.tools.geometry;
 
-import java.awt.Point;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Random;
 

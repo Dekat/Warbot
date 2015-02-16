@@ -1,6 +1,6 @@
 package edu.warbot.gui.debug.infos;
 
-import javax.swing.JLabel;
+import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class InfoLabel extends JLabel {

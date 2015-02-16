@@ -1,9 +1,7 @@
 package edu.warbot.FSM.action;
 
 import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
-
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;

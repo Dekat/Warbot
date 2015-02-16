@@ -3,7 +3,6 @@ package edu.warbot.gui.viewer.entities;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import edu.warbot.gui.viewer.WarViewerObject;
 import edu.warbot.gui.viewer.screens.WarViewerScreen;
 

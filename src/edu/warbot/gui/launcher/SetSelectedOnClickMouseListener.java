@@ -1,9 +1,8 @@
 package edu.warbot.gui.launcher;
 
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-import javax.swing.AbstractButton;
 
 public class SetSelectedOnClickMouseListener implements MouseListener {
 

@@ -1,21 +1,11 @@
 package edu.warbot.launcher;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-
-import javax.swing.*;
-
 import edu.warbot.agents.AliveWarAgent;
-import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.tools.geometry.GeometryTools;
-import edu.warbot.tools.geometry.WarStar;
-import turtlekit.viewer.AbstractGridViewer;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
 import edu.warbot.agents.actions.MovableActions;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
 import edu.warbot.gui.MapExplorationListener;
@@ -24,6 +14,15 @@ import edu.warbot.gui.debug.DebugModeToolBar;
 import edu.warbot.gui.toolbar.WarToolBar;
 import edu.warbot.launcher.WarMain.Shared;
 import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.GeometryTools;
+import edu.warbot.tools.geometry.WarStar;
+import turtlekit.viewer.AbstractGridViewer;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Point2D;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 @SuppressWarnings("serial")
 public class WarViewer extends AbstractGridViewer {

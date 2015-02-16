@@ -1,13 +1,12 @@
 package edu.warbot.gui;
 
 
-import javax.swing.JPanel;
-
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.backends.lwjgl.LwjglCanvas;
-
 import edu.warbot.game.WarGame;
 import edu.warbot.gui.viewer.WarViewerGdx;
+
+import javax.swing.*;
 
 
 public class WarViewerEvolvedLauncher {

@@ -1,12 +1,10 @@
 package edu.warbot.gui.viewer.util;
 
 
-
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-
 import edu.warbot.gui.viewer.screens.WarViewerScreen;
 
 public class WarViewerKeyListener implements InputProcessor {

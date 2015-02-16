@@ -1,6 +1,6 @@
 package edu.warbot.FSMEditor.panels;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class AbstractPanel extends JPanel{
 

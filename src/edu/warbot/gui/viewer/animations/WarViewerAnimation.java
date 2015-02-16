@@ -3,7 +3,6 @@ package edu.warbot.gui.viewer.animations;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import edu.warbot.gui.viewer.WarViewerObject;
 
 public abstract class WarViewerAnimation implements WarViewerObject {

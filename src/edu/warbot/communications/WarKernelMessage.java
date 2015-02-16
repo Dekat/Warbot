@@ -1,9 +1,9 @@
 package edu.warbot.communications;
 
-import madkit.kernel.Message;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.Team;
+import madkit.kernel.Message;
 
 /**
  * Contient toutes les données sur l'émetteur d'un message et sur le contenu du message

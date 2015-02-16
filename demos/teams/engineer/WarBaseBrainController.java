@@ -1,15 +1,14 @@
 package teams.engineer;
 
-import java.util.ArrayList;
-
 import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.agents.WarEngineer;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarBaseAdapter;
 import edu.warbot.communications.WarMessage;
+
+import java.util.ArrayList;
 
 public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
 

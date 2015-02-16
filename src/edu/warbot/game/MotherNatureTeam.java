@@ -1,11 +1,5 @@
 package edu.warbot.game;
 
-import java.awt.Color;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Random;
-
-import madkit.kernel.Agent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarResource;
 import edu.warbot.agents.enums.WarAgentCategory;
@@ -13,10 +7,16 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.resources.WarFood;
 import edu.warbot.launcher.WarConfig;
 import edu.warbot.maps.AbstractWarMap;
+import edu.warbot.tools.WarMathTools;
 import edu.warbot.tools.geometry.CoordCartesian;
 import edu.warbot.tools.geometry.CoordPolar;
 import edu.warbot.tools.geometry.WarCircle;
-import edu.warbot.tools.WarMathTools;
+import madkit.kernel.Agent;
+
+import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class MotherNatureTeam extends Team {
 

@@ -1,9 +1,9 @@
 package edu.warbot.FSM.action;
 
-import java.util.Random;
-
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.brains.MovableWarAgentAdapter;
+
+import java.util.Random;
 
 /**
  * Description de l'action : wiggle pendant un certains nombre de pas

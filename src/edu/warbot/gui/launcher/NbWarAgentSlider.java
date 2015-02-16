@@ -1,16 +1,9 @@
 package edu.warbot.gui.launcher;
 
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 
 @SuppressWarnings("serial")
 public class NbWarAgentSlider extends JPanel {

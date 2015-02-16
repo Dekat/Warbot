@@ -1,9 +1,5 @@
 package edu.warbot.agents;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.logging.Level;
-
 import edu.warbot.agents.actions.MovableActions;
 import edu.warbot.agents.actions.PickerActions;
 import edu.warbot.brains.MovableWarAgentAdapter;
@@ -11,6 +7,9 @@ import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Movable;
 import edu.warbot.brains.capacities.Picker;
 import edu.warbot.game.Team;
+
+import java.util.ArrayList;
+import java.util.logging.Level;
 
 public abstract class MovableWarAgent extends ControllableWarAgent implements PickerActions, Picker, MovableActions, Movable {
 

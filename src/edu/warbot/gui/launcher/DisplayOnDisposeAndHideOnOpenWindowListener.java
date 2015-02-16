@@ -1,6 +1,6 @@
 package edu.warbot.gui.launcher;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 

@@ -1,20 +1,13 @@
 package edu.warbot.FSMEditor.dialogues;
 
-import java.awt.GridLayout;
-import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-
 import edu.warbot.FSM.WarGenericSettings.PlanSettings;
-import edu.warbot.FSMEditor.controleurs.ControleurBrain;
 import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.settings.EnumPlan;
 import edu.warbot.FSMEditor.views.ViewBrain;
+
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
 
 public class DialogueStateSetting extends AbstractDialogue {
 

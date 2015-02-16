@@ -3,8 +3,6 @@ package edu.warbot.agents;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
 
-import java.awt.*;
-
 public abstract class WarResource extends WarAgent {
 
 	private static final String ACTION_DEFAULT = "action";

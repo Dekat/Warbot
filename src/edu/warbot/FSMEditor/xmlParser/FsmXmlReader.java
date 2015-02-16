@@ -27,6 +27,7 @@ import edu.warbot.FSMEditor.settings.EnumMethod;
 import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.FSMEditor.settings.EnumPlan;
 import edu.warbot.agents.enums.WarAgentType;
+
 /**
  * Permet de lire un fichier de configuration au format de XML et de type FSM
  * Prend en parametre du constructeur le nom du fichier de confuguration de la FSM (par default "XMLConfiguration.xml")

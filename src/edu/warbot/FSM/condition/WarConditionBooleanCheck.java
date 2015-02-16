@@ -1,11 +1,11 @@
 package edu.warbot.FSM.condition;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumMethod;
 import edu.warbot.brains.ControllableWarAgentAdapter;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class WarConditionBooleanCheck<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType> {
 	

@@ -1,12 +1,9 @@
 package edu.warbot.gui.toolbar;
 
-import java.awt.Color;
-import java.awt.Component;
-
-import javax.swing.BorderFactory;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.*;
 
 @SuppressWarnings("serial")
 public class HeaderCellRenderer extends DefaultTableCellRenderer {

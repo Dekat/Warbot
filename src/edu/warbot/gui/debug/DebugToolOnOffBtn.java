@@ -1,14 +1,12 @@
 package edu.warbot.gui.debug;
 
-import java.awt.Dimension;
-import java.awt.event.MouseListener;
+import edu.warbot.gui.GuiIconsLoader;
 
-import javax.swing.BorderFactory;
-import javax.swing.JToggleButton;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import edu.warbot.gui.GuiIconsLoader;
+import java.awt.*;
+import java.awt.event.MouseListener;
 
 @SuppressWarnings("serial")
 public class DebugToolOnOffBtn extends JToggleButton implements ChangeListener {

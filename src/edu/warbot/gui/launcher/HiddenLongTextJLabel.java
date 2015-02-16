@@ -1,6 +1,6 @@
 package edu.warbot.gui.launcher;
 
-import javax.swing.JLabel;
+import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class HiddenLongTextJLabel extends JLabel {

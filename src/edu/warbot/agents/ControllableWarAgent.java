@@ -1,16 +1,10 @@
 package edu.warbot.agents;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.logging.Level;
-
-import edu.warbot.agents.percepts.WallPercept;
-import edu.warbot.agents.percepts.WarAgentPercept;
-import madkit.kernel.Message;
 import edu.warbot.agents.actions.ControllableActions;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.PerceptsGetter;
+import edu.warbot.agents.percepts.WallPercept;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.resources.WarFood;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 import edu.warbot.brains.WarBrain;
@@ -18,9 +12,15 @@ import edu.warbot.brains.capacities.Controllable;
 import edu.warbot.communications.WarKernelMessage;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.game.Team;
+import edu.warbot.tools.WarMathTools;
 import edu.warbot.tools.geometry.CoordCartesian;
 import edu.warbot.tools.geometry.CoordPolar;
-import edu.warbot.tools.WarMathTools;
+import madkit.kernel.Message;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.logging.Level;
 
 public abstract class ControllableWarAgent extends AliveWarAgent implements ControllableActions, Controllable {
 

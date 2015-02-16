@@ -1,16 +1,10 @@
 package edu.warbot.FSMEditor.panels;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.geom.Arc2D;
-import java.awt.geom.Path2D;
-import java.awt.geom.QuadCurve2D;
-import java.util.Random;
-
 import edu.warbot.FSMEditor.models.ModelCondition;
+
+import java.awt.*;
+import java.awt.geom.Path2D;
+import java.util.Random;
 
 public class PanelCondition extends AbstractPanel{
 

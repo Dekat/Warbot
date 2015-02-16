@@ -1,13 +1,13 @@
 package edu.warbot.agents.agents;
 
-import java.util.HashMap;
-
 import edu.warbot.agents.CreatorWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarBaseAdapter;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
+
+import java.util.HashMap;
 
 public class WarBase extends CreatorWarAgent {
 

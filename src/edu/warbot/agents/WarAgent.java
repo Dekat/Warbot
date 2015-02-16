@@ -1,11 +1,12 @@
 package edu.warbot.agents;
 
-import java.awt.geom.Area;
-import java.util.Random;
-
+import edu.warbot.agents.actions.MovableActions;
 import edu.warbot.agents.percepts.WarAgentPercept;
+import edu.warbot.brains.capacities.CommonCapacities;
+import edu.warbot.brains.capacities.Movable;
+import edu.warbot.game.Team;
 import edu.warbot.maps.AbstractWarMap;
-import edu.warbot.tools.*;
+import edu.warbot.tools.WarMathTools;
 import edu.warbot.tools.geometry.CoordCartesian;
 import edu.warbot.tools.geometry.CoordPolar;
 import edu.warbot.tools.geometry.GeometryTools;
@@ -13,10 +14,8 @@ import edu.warbot.tools.geometry.WarCircle;
 import madkit.kernel.AbstractAgent;
 import turtlekit.kernel.Turtle;
 
-import edu.warbot.agents.actions.MovableActions;
-import edu.warbot.brains.capacities.CommonCapacities;
-import edu.warbot.brains.capacities.Movable;
-import edu.warbot.game.Team;
+import java.awt.geom.Area;
+import java.util.Random;
 
 public abstract class WarAgent extends Turtle implements CommonCapacities {
 

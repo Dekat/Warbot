@@ -8,7 +8,6 @@ import edu.warbot.FSM.action.WarActionHealAlly;
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.condition.WarConditionTimeOut;
 import edu.warbot.FSMEditor.settings.EnumMethod;
-import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.MovableWarAgentAdapter;
 
 /**

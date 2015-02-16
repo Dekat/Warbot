@@ -1,6 +1,11 @@
 package edu.warbot.launcher;
 
+import edu.warbot.agents.WarAgent;
+import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.game.Team;
+import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameListener;
+import edu.warbot.launcher.WarMain.Shared;
 import madkit.action.KernelAction;
 import madkit.agr.LocalCommunity;
 import madkit.agr.LocalCommunity.Groups;
@@ -9,11 +14,6 @@ import madkit.message.KernelMessage;
 import madkit.simulation.activator.GenericBehaviorActivator;
 import turtlekit.agr.TKOrganization;
 import turtlekit.kernel.TKScheduler;
-import edu.warbot.agents.WarAgent;
-import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.Team;
-import edu.warbot.game.WarGame;
-import edu.warbot.launcher.WarMain.Shared;
 
 public class WarScheduler extends TKScheduler implements WarGameListener {
 

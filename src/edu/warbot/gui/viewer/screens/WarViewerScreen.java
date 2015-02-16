@@ -1,18 +1,12 @@
 package edu.warbot.gui.viewer.screens;
 
 
-import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import edu.warbot.game.WarGame;
 import edu.warbot.gui.viewer.WarViewerGdx;
 import edu.warbot.gui.viewer.WarViewerMap;
 import edu.warbot.gui.viewer.WarViewerWorld;
@@ -21,6 +15,8 @@ import edu.warbot.gui.viewer.entities.WarViewerEntityControllable;
 import edu.warbot.gui.viewer.entities.WarViewerEntityFood;
 import edu.warbot.gui.viewer.entities.WarViewerEntityProjectile;
 import edu.warbot.gui.viewer.util.WarViewerKeyListener;
+
+import java.util.HashMap;
 
 public class WarViewerScreen implements Screen {
 

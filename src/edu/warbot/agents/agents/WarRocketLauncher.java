@@ -1,8 +1,5 @@
 package edu.warbot.agents.agents;
 
-import java.util.HashMap;
-import java.util.logging.Level;
-
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.actions.AgressiveActions;
 import edu.warbot.agents.enums.WarAgentType;
@@ -12,6 +9,9 @@ import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
+
+import java.util.HashMap;
+import java.util.logging.Level;
 
 public class WarRocketLauncher extends MovableWarAgent implements AgressiveActions, Agressive {
 

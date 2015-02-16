@@ -7,10 +7,7 @@ import edu.warbot.FSM.action.WarActionChercherNouriture;
 import edu.warbot.FSM.action.WarActionRaporterNouriture;
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.condition.WarConditionBooleanCheck;
-import edu.warbot.FSM.condition.WarConditionTimeOut;
-import edu.warbot.FSMEditor.settings.EnumAction;
 import edu.warbot.FSMEditor.settings.EnumMethod;
-import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.MovableWarAgentAdapter;
 
 /**

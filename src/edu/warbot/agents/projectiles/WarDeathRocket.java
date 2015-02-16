@@ -1,12 +1,12 @@
 package edu.warbot.agents.projectiles;
 
-import java.util.HashMap;
-
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
+
+import java.util.HashMap;
 
 public class WarDeathRocket extends WarProjectile {
 	

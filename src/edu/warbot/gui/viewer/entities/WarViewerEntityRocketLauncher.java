@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.gui.viewer.screens.WarViewerScreen;

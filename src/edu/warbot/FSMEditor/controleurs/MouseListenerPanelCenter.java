@@ -1,11 +1,11 @@
 package edu.warbot.FSMEditor.controleurs;
 
-import java.awt.Point;
+import edu.warbot.FSMEditor.panels.PanelState;
+
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
-import edu.warbot.FSMEditor.panels.PanelState;
 
 public class MouseListenerPanelCenter implements MouseListener, MouseMotionListener {
 

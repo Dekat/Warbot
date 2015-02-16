@@ -1,13 +1,10 @@
 package edu.warbot.gui.toolbar;
 
-import java.util.Observable;
-import java.util.Observer;
-
-import javax.swing.JTable;
-
 import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameListener;
+
+import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class TeamsDatasTable extends JTable implements WarGameListener {

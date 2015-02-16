@@ -1,13 +1,10 @@
 package edu.warbot.agents.agents;
 
-import java.util.HashMap;
-
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarBuilding;
 import edu.warbot.agents.actions.BuilderActions;
 import edu.warbot.agents.actions.CreatorActions;
-import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarEngineerAdapter;
@@ -15,6 +12,8 @@ import edu.warbot.brains.capacities.Builder;
 import edu.warbot.brains.capacities.Creator;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
+
+import java.util.HashMap;
 
 public class WarEngineer extends MovableWarAgent implements CreatorActions, Creator, BuilderActions, Builder {
 	

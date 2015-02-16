@@ -1,13 +1,12 @@
 package edu.warbot.FSM.action;
 
-import java.util.ArrayList;
-
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.MovableWarAgentAdapter;
 import edu.warbot.communications.WarMessage;
+
+import java.util.ArrayList;
 
 /**
  * Raporte la nouriture
