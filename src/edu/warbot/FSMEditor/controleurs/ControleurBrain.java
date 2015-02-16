@@ -70,14 +70,18 @@ public class ControleurBrain {
 				eventDelState();
 			}
 		});
-		
 		viewBrain.getButtonEditCond().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				eventEditCond();
 			}
 		});
-		
+		viewBrain.getButtonDelCond().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				eventDelCond();
+			}
+		});
 		viewBrain.getListeCondition().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				eventListeConditionEdition(e);
@@ -145,15 +149,7 @@ public class ControleurBrain {
 			
 			if(panelToDelet != null && panelToDelet.size() == 1){
 			
-				PanelState p = panelToDelet.get(0);
-				
-				//ATTENTION : supprimer le modele avant le panel puisque on utilise le panel pour acceder au modele
-				this.modeleBrain.removeState(p.getModelState());
-				this.viewBrain.getViewEditor().removePanelState(p);
-				
-				this.viewBrain.getViewEditor().unselectAllItems();
-				
-				viewBrain.getViewEditor().repaint();
+				deleteState(panelToDelet.get(0));
 				
 			}else{
 				JOptionPane.showMessageDialog(this.viewBrain,
@@ -231,6 +227,19 @@ public class ControleurBrain {
 		}
 	}
 	
+	private void eventDelCond(){
+		PanelCondition panelCondition = viewBrain.getViewEditor().getSelectedCondition();
+		
+		if(panelCondition == null){
+			JOptionPane.showMessageDialog(this.viewBrain,
+				    "One condition must be selected",
+				    "Selection error",
+				    JOptionPane.INFORMATION_MESSAGE);
+		}else{
+			deleteCondition(panelCondition);
+		}
+	}
+	
 	private PanelCondition getPanelConditionWithName(String s){
 		for (PanelCondition p : this.viewBrain.getViewEditor().getPanelconditions()) {
 			if(p.getModele().getName().equals(s))
@@ -249,6 +258,12 @@ public class ControleurBrain {
 	}
 
 
+	public void deleteState(PanelState panelState) {
+		modeleBrain.removeState(panelState.getModelState());
+		
+		viewBrain.removeState(panelState);
+	}
+
 	public void addCondition(ModelCondition condition) {
 
 		//Dit au modele d'ajouter la nouvelle condition
@@ -257,6 +272,12 @@ public class ControleurBrain {
 		//Dit à la vu d'ajouter la nouvelle condition
 		this.viewBrain.addCondition(condition);
 		
+	}
+
+	public void deleteCondition(PanelCondition panel) {
+		this.modeleBrain.removeCondition(panel.getModele());
+		
+		this.viewBrain.removeCondition(panel);
 	}
 	
 

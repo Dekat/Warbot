@@ -145,4 +145,8 @@ public class PanelEditor extends JPanel {
 	public ArrayList<PanelCondition> getPanelconditions() {
 		return this.panelsCondition;
 	}
+
+	public void removePanelCondition(PanelCondition panel) {
+		this.panelsCondition.remove(panel);
+	}
 }

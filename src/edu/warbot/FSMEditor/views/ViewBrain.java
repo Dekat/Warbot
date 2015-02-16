@@ -149,6 +149,10 @@ public class ViewBrain extends JPanel{
 		return this.buttonEditCond;
 	}
 
+	public JButton getButtonDelCond() {
+		return buttonDelCond;
+	}
+
 	/**** Attributs ***/
 	private JList<String> listCond;
 	private DefaultListModel<String> listModeleCond;
@@ -165,6 +169,17 @@ public class ViewBrain extends JPanel{
 		for (ModelCondition c : modeleBrain.getConditions()) {
 			listModeleCond.addElement(c.getName());
 		}
+	}
+
+	public void removeCondition(PanelCondition panel) {
+		getViewEditor().removePanelCondition(panel);
+		updateSelectedCondition();
+		getViewEditor().unselectAllItems();		
+	}
+
+	public void removeState(PanelState panel) {
+		getViewEditor().removePanelState(panel);
+		getViewEditor().unselectAllItems();
 	}
 
 

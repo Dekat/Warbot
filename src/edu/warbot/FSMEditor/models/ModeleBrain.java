@@ -30,20 +30,11 @@ public class ModeleBrain {
 	}
 
 	public void removeState(ModelState m) {
-		//On supprime toutes les conditions de l'état source
-		this.conditions.removeAll(m.getConditionsOut());
-		
-		//on parcours toutes les condtions pour voir si il yen a qui vont jusqua l'�tat qui va etre suppr
-		ArrayList<ModelCondition> toDelet = new ArrayList<>();
-		for (ModelCondition cond: this.conditions) {
-			if(cond.getStateDestination().equals(m)){
-				toDelet.add(cond);
-			}
-		}
-		
-		this.conditions.removeAll(toDelet);
-		
 		this.sates.remove(m);
+	}
+
+	public void removeCondition(ModelCondition modele) {
+		conditions.remove(modele);
 	}
 
 	public ArrayList<ModelCondition> getConditions() {

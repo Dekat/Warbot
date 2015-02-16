@@ -114,10 +114,12 @@ public class Controleur {
 	
 	public void eventMenuBarItemTest() {
 		//Sauvegarde le model
-		eventMenuBarItemSave();
+//		eventMenuBarItemSave();
 
 		//Charge le model
-		eventMenuBarItemLoad();
+//		eventMenuBarItemLoad();
+		
+		boolean isValid = true;
 		
 		printModelInformations(this.model);
 		
@@ -127,11 +129,13 @@ public class Controleur {
 			//State ID
 			ArrayList<String> stateName = new ArrayList<>();
 			for (ModelState modState : modelBrain.getStates()) {
-				if(stateName.contains(modState.getName()))
+				if(stateName.contains(modState.getName())){
 					JOptionPane.showMessageDialog(this.view,
 						    "States ID have to be unique !",
 						    "ID error",
 						    JOptionPane.ERROR_MESSAGE);
+					isValid = false;
+				}
 				stateName.add(modState.getName());
 				
 			}
@@ -139,16 +143,65 @@ public class Controleur {
 			//Cond ID
 			ArrayList<String> CondName = new ArrayList<>();
 			for (ModelCondition modCond : modelBrain.getConditions()) {
-				if(CondName.contains(modCond.getName()))
+				if(CondName.contains(modCond.getName())){
 					JOptionPane.showMessageDialog(this.view,
 						    "Conditions ID have to be unique !",
 						    "ID error",
 						    JOptionPane.ERROR_MESSAGE);
+					isValid = false;
+				}
 				CondName.add(modCond.getName());
 				
 			}
 		}
 		
+		//Check if declared ID exist
+		for (ModeleBrain modelBrain: this.model.getModelsBrains()) {
+			
+			//State ID
+			ArrayList<String> stateName = new ArrayList<>();
+			ArrayList<String> condOutID = new ArrayList<>();
+			for (ModelState modState : modelBrain.getStates()) {
+				stateName.add(modState.getName());
+				for (ModelCondition string : modState.getConditionsOut()) {
+					condOutID.add(string.getName());
+				}
+			}
+			
+			//Cond ID
+			ArrayList<String> CondName = new ArrayList<>();
+			ArrayList<String> stateOutID = new ArrayList<>();
+			for (ModelCondition modCond : modelBrain.getConditions()) {
+				stateOutID.add(modCond.getStateDestination().getName());
+				CondName.add(modCond.getName());
+			}
+
+			for (String string : stateOutID) {
+				if(! stateName.contains(string)){
+					JOptionPane.showMessageDialog(this.view,
+						    "Condition with state out " + string + " have no associated state",
+						    "ID error",
+						    JOptionPane.ERROR_MESSAGE);
+					isValid = false;
+				}
+			}
+			
+			for (String string : condOutID) {
+				if(! CondName.contains(string)){
+					JOptionPane.showMessageDialog(this.view,
+						    "State with condition out " + string + " have no associated condition",
+						    "ID error",
+						    JOptionPane.ERROR_MESSAGE);
+					isValid = false;
+				}
+			}
+		}
+
+		if(isValid)
+			JOptionPane.showMessageDialog(this.view,
+				    "Your FSM seen to be corect",
+				    "Succes",
+				    JOptionPane.INFORMATION_MESSAGE);
 		
 		System.out.println("Controleur : Your FSM seen to be valid, check it in console");
 		
