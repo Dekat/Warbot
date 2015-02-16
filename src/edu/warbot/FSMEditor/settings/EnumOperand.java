@@ -1,7 +1,7 @@
 package edu.warbot.FSMEditor.settings;
 
 public enum EnumOperand {
-	eg,
+	egal,
 	dif,
 	sup,
 	inf,

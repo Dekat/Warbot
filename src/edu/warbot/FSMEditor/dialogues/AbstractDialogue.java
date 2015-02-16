@@ -15,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -29,6 +30,7 @@ import edu.warbot.FSM.WarGenericSettings.AbstractGenericAttributSettings;
 import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.settings.EnumAction;
+import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.FSMEditor.settings.EnumMethod;
 import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.FSMEditor.views.ViewBrain;
@@ -61,7 +63,7 @@ public abstract class AbstractDialogue extends JDialog{
 	
 	public void createDialog(){
 		this.setTitle("General settings");
-		this.setSize(new Dimension(450, 400));
+		this.setSize(new Dimension(350, 400));
 
 		JPanel panel = new JPanel(new BorderLayout());
 		this.setContentPane(panel);
@@ -142,6 +144,9 @@ public abstract class AbstractDialogue extends JDialog{
 			
 		}else if (field.getType().equals(EnumAction.class)) {
 			panel.add(component = getComponentForAction(field));
+
+		}else if (field.getType().equals(EnumMessage.class)) {
+			panel.add(component = getComponentForMessage(field));
 			
 		}else if (field.getType().equals(EnumOperand.class)) {
 			panel.add(component = getComponentForOperand(field));
@@ -213,19 +218,63 @@ public abstract class AbstractDialogue extends JDialog{
 	}
 	
 	private JComboBox<WarAgentType> getComponentForAgentType(Field field) {
-		return new JComboBox<WarAgentType>(WarAgentType.values());
+		JComboBox<WarAgentType> cb = new JComboBox<WarAgentType>(WarAgentType.values());
+		try {
+			cb.setSelectedItem(field.get(this.genericSettings));
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return cb;
 	}
 	
 	private JComboBox<EnumOperand> getComponentForOperand(Field field) {
-		return new JComboBox<>(EnumOperand.values());
+		JComboBox<EnumOperand> cb = new JComboBox<>(EnumOperand.values());
+		try {
+			cb.setSelectedItem(field.get(this.genericSettings));
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return cb;
 	}
 	
 	private JComboBox<EnumMethod> getComponentForMethod(Field field) {
-		return new JComboBox<>(EnumMethod.values());
+		JComboBox<EnumMethod> cb = new JComboBox<>(EnumMethod.values());
+		try {
+			cb.setSelectedItem(field.get(this.genericSettings));
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return cb;
 	}
 	
 	private JComboBox<EnumAction> getComponentForAction(Field field) {
-		return new JComboBox<>(EnumAction.values());
+		JComboBox<EnumAction> cb = new JComboBox<>(EnumAction.values());
+		try {
+			cb.setSelectedItem(field.get(this.genericSettings));
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return cb;
+	}
+	
+	private JComboBox<EnumMessage> getComponentForMessage(Field field) {
+		JComboBox<EnumMessage> cb = new JComboBox<>(EnumMessage.values());
+		try {
+			cb.setSelectedItem(field.get(this.genericSettings));
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return cb;
 	}
 
 	private JLabel getLabelForField(Field field) {
@@ -265,8 +314,14 @@ public abstract class AbstractDialogue extends JDialog{
 			}else if(field.getType().equals(EnumMethod.class)){
 				setFieldForMethod(field, dynamicComp);
 				
-			}else
+			}else if(field.getType().equals(EnumMessage.class)){
+				setFieldForMessage(field, dynamicComp);
+				
+			}else{
 				System.err.println("Field " + field.getName() + " : " + field.getType() + " is not availlable for save dynamic interface");
+				JOptionPane.showMessageDialog(null, 
+						"Field with name <" + field.getName() + "> and type <" + field.getType().getSimpleName() + "> is not availlable for save dynamic interface", "Attribut error", JOptionPane.WARNING_MESSAGE);
+			}
 		}
 	}
 	
@@ -293,7 +348,7 @@ public abstract class AbstractDialogue extends JDialog{
 	private void setFieldForAgentType(Field field, JComponent comp) {
 		WarAgentType at = null;
 		try{
-			at = (WarAgentType) ((JComboBox<WarAgentType>)comp).getSelectedItem();
+			at = (WarAgentType)((JComboBox<WarAgentType>)comp).getSelectedItem();
 		} catch (NumberFormatException e) {
 			at = null;
 		}
@@ -314,6 +369,16 @@ public abstract class AbstractDialogue extends JDialog{
 		EnumMethod at = null;
 		try{
 			at = (EnumMethod) ((JComboBox<EnumMethod>)comp).getSelectedItem();
+		} catch (NumberFormatException e) {
+			at = null;
+		}
+		setField(field, at);
+	}
+	
+	private void setFieldForMessage(Field field, JComponent comp) {
+		EnumMessage at = null;
+		try{
+			at = (EnumMessage) ((JComboBox<EnumMessage>)comp).getSelectedItem();
 		} catch (NumberFormatException e) {
 			at = null;
 		}

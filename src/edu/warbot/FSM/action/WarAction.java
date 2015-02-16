@@ -56,8 +56,4 @@ public abstract class WarAction<AgentAdapterType extends ControllableWarAgentAda
 		getAgent().setDebugString(this.getClass().getSimpleName());
 	}
 
-	public EnumAction getType() {
-		return EnumAction.valueOf(getClass().getSimpleName());
-	}
-
 }

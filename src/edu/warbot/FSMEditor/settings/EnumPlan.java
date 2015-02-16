@@ -1,14 +1,15 @@
 package edu.warbot.FSMEditor.settings;
 
-
 public enum EnumPlan {
 	WarPlanAttaquer,
 	WarPlanBeSecure,
 	WarPlanCreateUnit,
 	WarPlanDefendre,
-	WarPlanHealer,
+	WarPlanHealAlly,
+	WarPlanHealMe,
 	WarPlanIdle,
+	WarPlanPatrouiller,
 	WarPlanRamasserNouriture,
-	WarPlanWiggle,
-	WarPlanPatrouiller
+	WarPlanSendMessage,
+	WarPlanWiggle
 }

@@ -4,7 +4,7 @@ public enum EnumCondition {
 	WarConditionTimeOut,
 	WarConditionAttributCheck,
 	WarConditionBooleanCheck,
-	WarConditionMessageChecker,
-	FWarConditionPerceptAttributCheck,
-	WarConditionPerceptCounter
+	WarConditionMessageCheck,
+//	FWarConditionPerceptAttributCheck,
+//	WarConditionPerceptCounter
 }

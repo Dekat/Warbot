@@ -2,6 +2,8 @@ package edu.warbot.FSM.action;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import edu.warbot.FSM.WarFSMMessage;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.agents.WarRocketLauncher;
@@ -13,7 +15,6 @@ import edu.warbot.tools.geometry.CoordPolar;
 
 /**
  * Cherche la base enemy
- * @author Olivier
  *
  */
 public class WarActionChercherBase extends WarAction<WarRocketLauncherAdapter> {
@@ -22,6 +23,7 @@ public class WarActionChercherBase extends WarAction<WarRocketLauncherAdapter> {
 	
 	public WarActionChercherBase(WarRocketLauncherAdapter brain) {
 		super(brain);
+		JOptionPane.showMessageDialog(null, "Attention l'action ChercherBase n'a pas étée vérifiée et risque de ne pas fonctionner", "Waring not terminated action", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override

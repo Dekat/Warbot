@@ -1,5 +1,6 @@
 package edu.warbot.FSM.WarGenericSettings;
 
+import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.FSMEditor.settings.EnumMethod;
 import edu.warbot.agents.enums.WarAgentType;
 
@@ -16,6 +17,8 @@ public class PlanSettings extends AbstractGenericAttributSettings{
 	public Integer Number_agent;
 
 	public Integer Min_life;
+	
+	public EnumMessage Message;
 
 	public Boolean Pourcentage;
 

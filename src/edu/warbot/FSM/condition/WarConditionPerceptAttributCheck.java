@@ -83,7 +83,7 @@ public class WarConditionPerceptAttributCheck<AgentAdapterType extends Controlla
 					allAttValid = false;
 			}
 			return allAttValid;
-		case eg:
+		case egal:
 			for (Integer att : listeAttriuts) {
 				if(!(att == this.reference))
 					allAttValid = false;

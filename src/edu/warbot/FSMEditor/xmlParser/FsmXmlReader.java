@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -20,6 +22,7 @@ import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.settings.EnumAction;
 import edu.warbot.FSMEditor.settings.EnumCondition;
+import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.FSMEditor.settings.EnumMethod;
 import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.FSMEditor.settings.EnumPlan;
@@ -49,11 +52,15 @@ public class FsmXmlReader extends FsmXmlParser{
 		} catch (JDOMException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("File not found " + fileName);
+			System.err.println("FsmXmlReader : File not found " + fileName);
 			e.printStackTrace();
 		}
 		
-		readConfigDocument(doc);
+		try{
+			readConfigDocument(doc);
+		}catch(NullPointerException e){
+			JOptionPane.showMessageDialog(null, "Error while reading XML", "Xml error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	public FsmXmlReader(InputStream inputStream) {
@@ -177,16 +184,16 @@ public class FsmXmlReader extends FsmXmlParser{
 				else if (fields[i].getType().equals(EnumMethod.class))
 					fields[i].set(settings,getFieldForMethod(fields[i], element));
 				
-				else
-					System.err.println("FsmXmlReader unknown type for field " + fields[i].getName());
+				else if (fields[i].getType().equals(EnumMessage.class))
+					fields[i].set(settings,getFieldForMessage(fields[i], element));
 				
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}catch (NullPointerException e) {
-				e.printStackTrace();
-				System.err.println("ERREUR le champ " + fields[i].getName() + " n'existe pas");
+				JOptionPane.showMessageDialog(null, "Some configuration has changed for field name <" + fields[i].getName() + ">\nCondfiguration file loading may fail.", "Configuration loading warning", JOptionPane.WARNING_MESSAGE);
+				System.err.println("FsmXmlReader unknown type for field " + fields[i].getName());
 			}
 		}
 		
@@ -250,6 +257,16 @@ public class FsmXmlReader extends FsmXmlParser{
 	private EnumAction getFieldForAction(Field field, Element elemPlanSetting) {
 		try{
 			return EnumAction.valueOf(getField(field, elemPlanSetting));
+		}catch(NumberFormatException e){
+			return null;
+		}catch (IllegalArgumentException e) {
+			return null;
+		}
+	}
+	
+	private EnumMessage getFieldForMessage(Field field, Element elemPlanSetting) {
+		try{
+			return EnumMessage.valueOf(getField(field, elemPlanSetting));
 		}catch(NumberFormatException e){
 			return null;
 		}catch (IllegalArgumentException e) {

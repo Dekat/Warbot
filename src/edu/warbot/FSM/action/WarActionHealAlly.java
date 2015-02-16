@@ -14,8 +14,11 @@ import edu.warbot.brains.MovableWarAgentAdapter;
 
 public class WarActionHealAlly<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType>{
 
-	public WarActionHealAlly(AgentAdapterType brain) {
+	private WarAgentType agentType;
+
+	public WarActionHealAlly(AgentAdapterType brain, WarAgentType agentType) {
 		super(brain);
+		this.agentType = agentType;
 	}
 	
 	public String executeAction(){
@@ -29,7 +32,8 @@ public class WarActionHealAlly<AgentAdapterType extends MovableWarAgentAdapter> 
 		
 		for (WarAgentPercept p : percept) {
 				
-			if(p.getHealth() + WarFood.HEALTH_GIVEN < p.getMaxHealth() ){
+			if(p.getType().equals(agentType) && 
+					p.getHealth() + WarFood.HEALTH_GIVEN < p.getMaxHealth() ){
 
 				if(p.getDistance() < MovableWarAgent.MAX_DISTANCE_GIVE){
 					getAgent().setDebugString("ActionHealAlly : ally healed" + p.getType());

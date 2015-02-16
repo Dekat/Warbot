@@ -7,7 +7,6 @@ import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
 /**
  * Réalise l'action WarActionDefendre 
- * @author Olivier
  */
 public class WarPlanDefendre extends WarPlan<WarRocketLauncherAdapter> {
 	

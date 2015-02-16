@@ -1,5 +1,8 @@
 package edu.warbot.FSM.plan;
 
+/**
+ * Me heal
+ */
 import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionHealMe;

@@ -6,19 +6,13 @@ import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionChercherNouriture;
 import edu.warbot.FSM.action.WarActionHealAlly;
 import edu.warbot.FSM.condition.WarCondition;
-import edu.warbot.FSM.condition.WarConditionAttributCheck;
 import edu.warbot.FSM.condition.WarConditionTimeOut;
-import edu.warbot.FSM.condition.WarConditionBooleanCheck;
-import edu.warbot.FSMEditor.settings.EnumAction;
 import edu.warbot.FSMEditor.settings.EnumMethod;
-import edu.warbot.FSMEditor.settings.EnumOperand;
-import edu.warbot.agents.agents.WarExplorer;
+import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.MovableWarAgentAdapter;
 
 /**
- * Desciption du plan et de ces actions
- * ATTENTION ce plan est basé sur la size bag d'un explorer et la la vie max d'un explorer
- * @author Olivier
+ * Heal les alliés
  *
  */
 public class WarPlanHealAlly<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
@@ -31,7 +25,8 @@ public class WarPlanHealAlly<AgentAdapterType extends MovableWarAgentAdapter> ex
 		
 		setPrintTrace(true);
 		
-		WarAction<AgentAdapterType> actionHeal = new WarActionHealAlly<>(getBrain());
+		WarAction<AgentAdapterType> actionHeal = 
+				new WarActionHealAlly<>(getBrain(), getPlanSettings().Agent_type);
 		addAction(actionHeal);
 		
 		WarAction<AgentAdapterType> actionFindFood = new WarActionChercherNouriture<>(getBrain());

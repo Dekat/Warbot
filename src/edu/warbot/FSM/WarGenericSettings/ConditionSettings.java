@@ -1,5 +1,6 @@
 package edu.warbot.FSM.WarGenericSettings;
 
+import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.FSMEditor.settings.EnumMethod;
 import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.agents.enums.WarAgentType;
@@ -20,7 +21,7 @@ public class ConditionSettings extends AbstractGenericAttributSettings{
 
 	public Boolean Pourcentage;
 
-	public String Message;
+	public EnumMessage Message;
 
 	public WarAgentType Agent_type;
 

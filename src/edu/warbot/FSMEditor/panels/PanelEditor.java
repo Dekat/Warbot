@@ -1,6 +1,8 @@
 package edu.warbot.FSMEditor.panels;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -41,6 +43,12 @@ public class PanelEditor extends JPanel {
 	}
 	
 	public void paintComponent(Graphics g) {
+		
+		//Antialiasing
+		RenderingHints rh = new RenderingHints(
+	             RenderingHints.KEY_TEXT_ANTIALIASING,
+	             RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		((Graphics2D)g).setRenderingHints(rh);
 
 		g.clearRect(0, 0, this.getWidth(), this.getHeight());
 

@@ -2,24 +2,25 @@ package edu.warbot.FSM.action;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.agents.resources.WarFood;
 import edu.warbot.brains.MovableWarAgentAdapter;
 
 /**
  * Description de l'action
- * @author Olivier
- *
  */
+
 public class WarActionFuire<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType>{
 	
 	private int lifeBeforStopFuire;
 
 	public WarActionFuire(AgentAdapterType brain, int lifeBeforStopFuire, int pourcentage) {
 		super(brain, "ActionFuire");
+		JOptionPane.showMessageDialog(null, "Attention l'action Fuire n'a pas étée vérifiée et risque de ne pas fonctionner", "Waring not terminated action", JOptionPane.INFORMATION_MESSAGE);
 		this.lifeBeforStopFuire = lifeBeforStopFuire * pourcentage/100;
 	}
 	
@@ -27,9 +28,6 @@ public class WarActionFuire<AgentAdapterType extends MovableWarAgentAdapter> ext
 		
 		if(getAgent().isBlocked())
 			getAgent().setRandomHeading();
-		
-//		if(getAgent().getHealth() >= this.lifeBeforStopFuire)
-//			setActionTerminate(true);
 		
 		//Si je n'ai pas denemie autour de moi j'ai terminé
 		ArrayList<WarAgentPercept> percept = getAgent().getPerceptsEnemiesByType(WarAgentType.WarRocketLauncher);

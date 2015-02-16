@@ -7,7 +7,6 @@ import edu.warbot.brains.ControllableWarAgentAdapter;
 
 /**
  * Reste sans bougé
- * @author Olivier
  */
 public class WarPlanIdle<AgentAdapterType extends ControllableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
 	

@@ -59,7 +59,7 @@ public class WarConditionPerceptCounter<AgentAdapterType extends ControllableWar
 			return nbPercept < this.reference;
 		case sup:
 			return nbPercept > this.reference;
-		case eg:
+		case egal:
 			return nbPercept == this.reference;
 		default:
 			System.err.println("FSM : unknown operateur " + this.operand + this.getClass());

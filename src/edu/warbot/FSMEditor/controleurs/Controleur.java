@@ -116,6 +116,8 @@ public class Controleur {
 		
 		fsmSaver.saveFSM(model, FsmXmlReader.xmlConfigurationDefaultFilename);
 		System.out.println("Controleur : Configuration file exported successfull");
+		
+		JOptionPane.showMessageDialog(null, "Save sucessfull", "Sucess", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void eventMenuBarItemTest() {

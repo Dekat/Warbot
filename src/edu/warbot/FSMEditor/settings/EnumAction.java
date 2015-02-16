@@ -11,5 +11,6 @@ public enum EnumAction {
 	WarActionHeal,
 	WarActionIdle,
 	WarActionRaporterNouriture,
+	WarActionSendMessage,
 	WarActionWiggle
 }

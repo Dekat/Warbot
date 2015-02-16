@@ -3,6 +3,8 @@ package edu.warbot.FSM.condition;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import javax.swing.JOptionPane;
+
 import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumMethod;
 import edu.warbot.FSMEditor.settings.EnumOperand;
@@ -10,18 +12,18 @@ import edu.warbot.brains.ControllableWarAgentAdapter;
 
 public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType> {
 	
-	//Je veux que cette condition permet de faire par exemple : ma vie > 1200  et mon sac > 4 (mon sac isFull)
 	
 	EnumMethod methodName;
 	EnumOperand operand;
 	Integer reference;
 	
-//	String nameAtt;
 	Method method;
 	
 	public WarConditionAttributCheck(String name, AgentAdapterType brain, ConditionSettings conditionSettings){
-		
 		super(name, brain, conditionSettings);
+
+		JOptionPane.showMessageDialog(null, "Attention la condition <Attributcheck> n'a pas été vérifié et risque de ne pas fonctionner", "Waring not terminated condition", JOptionPane.WARNING_MESSAGE);
+		
 		this.reference = conditionSettings.Reference;
 		this.operand = conditionSettings.Operateur;
 		methodName = conditionSettings.Methode;
@@ -58,7 +60,7 @@ public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarA
 			return (Integer)currentValue < (Integer)this.reference;
 		case sup:
 			return (Integer)currentValue > (Integer)this.reference;
-		case eg:
+		case egal:
 			return currentValue == this.reference;
 		case infEg:
 			return (Integer)currentValue <= (Integer)this.reference;

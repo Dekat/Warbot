@@ -8,20 +8,16 @@ import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
 public class WarPlanAttaquer extends WarPlan<WarRocketLauncherAdapter> {
 	
-	WarAgentType agentType;
-	
 	public WarPlanAttaquer(WarRocketLauncherAdapter brain, PlanSettings planSettings) {
 		super("Plan Attaquer", brain, planSettings);
-		
-		this.agentType = getPlanSettings().Agent_type;
-		
 	}
 
 	public void buildActionList() {
 		
 		setPrintTrace(true);
 			
-		WarAction<WarRocketLauncherAdapter> actionAttaquer = new WarActionAttaquer(getBrain(), agentType);
+		WarAction<WarRocketLauncherAdapter> actionAttaquer = 
+				new WarActionAttaquer(getBrain(), getPlanSettings().Agent_type);
 		
 		addAction(actionAttaquer);
 		

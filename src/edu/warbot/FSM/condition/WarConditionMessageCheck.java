@@ -5,17 +5,15 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 import edu.warbot.communications.WarMessage;
 
-public class WarConditionMessageChecker<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType>{
+public class WarConditionMessageCheck<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType>{
 	
 	WarAgentType agentType;
 	String message;
 
-	public WarConditionMessageChecker(String name, AgentAdapterType brain,
-			ConditionSettings conditionSettings){
-//			WarAgentType agentType, String message) {
+	public WarConditionMessageCheck(String name, AgentAdapterType brain, ConditionSettings conditionSettings){
 		super(name, brain, conditionSettings);
 		
-		this.message = conditionSettings.Message;
+		this.message = conditionSettings.Message.name();
 		this.agentType = conditionSettings.Agent_type;
 	}
 
