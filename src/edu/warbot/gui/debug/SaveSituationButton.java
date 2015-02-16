@@ -1,36 +1,31 @@
 package edu.warbot.gui.debug;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
+import edu.warbot.agents.AliveWarAgent;
+import edu.warbot.agents.ControllableWarAgent;
+import edu.warbot.agents.WarAgent;
+import edu.warbot.agents.WarProjectile;
+import edu.warbot.game.Team;
+import edu.warbot.game.WarGame;
+import edu.warbot.gui.toolbar.WarToolBar;
+import edu.warbot.launcher.SituationLoader;
+import edu.warbot.tools.WarXmlWriter;
+import madkit.action.SchedulingAction;
+import madkit.message.SchedulingMessage;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import turtlekit.agr.TKOrganization;
 
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
-
-import edu.warbot.agents.AliveWarAgent;
-import edu.warbot.launcher.SituationLoader;
-import madkit.action.SchedulingAction;
-import madkit.message.SchedulingMessage;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import turtlekit.agr.TKOrganization;
-import edu.warbot.agents.ControllableWarAgent;
-import edu.warbot.agents.WarAgent;
-import edu.warbot.agents.WarProjectile;
-import edu.warbot.game.WarGame;
-import edu.warbot.game.Team;
-import edu.warbot.gui.toolbar.WarToolBar;
-import edu.warbot.tools.WarXmlWriter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class SaveSituationButton extends JButton implements ActionListener {

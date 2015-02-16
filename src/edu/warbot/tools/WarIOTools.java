@@ -1,12 +1,11 @@
 package edu.warbot.tools;
 
+import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import javax.swing.ImageIcon;
 
 public class WarIOTools {
 

@@ -1,16 +1,5 @@
 package edu.warbot.FSMEditor.xmlParser;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
-
 import edu.warbot.FSM.WarGenericSettings.AbstractGenericAttributSettings;
 import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
 import edu.warbot.FSM.WarGenericSettings.PlanSettings;
@@ -18,12 +7,18 @@ import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.models.ModeleBrain;
-import edu.warbot.FSMEditor.settings.EnumAction;
-import edu.warbot.FSMEditor.settings.EnumCondition;
-import edu.warbot.FSMEditor.settings.EnumMethod;
-import edu.warbot.FSMEditor.settings.EnumOperand;
-import edu.warbot.FSMEditor.settings.EnumPlan;
+import edu.warbot.FSMEditor.settings.*;
 import edu.warbot.agents.enums.WarAgentType;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 /**
  * Permet de lire un fichier de configuration au format de XML et de type FSM
  * Prend en parametre du constructeur le nom du fichier de confuguration de la FSM (par default "XMLConfiguration.xml")

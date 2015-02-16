@@ -1,7 +1,6 @@
 package edu.warbot.gui.debug.infos;
 
 import edu.warbot.agents.AliveWarAgent;
-import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.gui.debug.DebugModeToolBar;
 
 import javax.swing.*;

@@ -1,20 +1,16 @@
 package edu.warbot.gui.toolbar;
 
-import java.awt.Color;
-import java.awt.Image;
-import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
-
-import javax.swing.ImageIcon;
-import javax.swing.table.AbstractTableModel;
-
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.game.Team;
 import edu.warbot.game.TeamListener;
 import edu.warbot.game.WarGame;
-import edu.warbot.game.Team;
+
+import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import java.awt.*;
+import java.util.ArrayList;
 
 @SuppressWarnings("serial")
 public class TeamsDatasTableModel extends AbstractTableModel implements TeamListener {

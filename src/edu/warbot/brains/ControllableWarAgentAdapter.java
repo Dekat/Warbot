@@ -1,18 +1,17 @@
 package edu.warbot.brains;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
+import edu.warbot.agents.ControllableWarAgent;
+import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WallPercept;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.resources.WarFood;
-import madkit.kernel.AbstractAgent.ReturnCode;
-import edu.warbot.agents.ControllableWarAgent;
-import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.capacities.Controllable;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.tools.geometry.CoordPolar;
-import madkit.message.MessageFilter;
+import madkit.kernel.AbstractAgent.ReturnCode;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 public abstract class ControllableWarAgentAdapter extends WarAgentAdapter implements Controllable {
 	

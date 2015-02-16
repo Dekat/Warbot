@@ -1,15 +1,13 @@
 package edu.warbot.gui.debug.eventlisteners;
 
+import edu.warbot.gui.launcher.WarLauncherInterface;
+import edu.warbot.launcher.SituationLoader;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
-
-import edu.warbot.gui.debug.DebugModeToolBar;
-import edu.warbot.gui.launcher.WarLauncherInterface;
-import edu.warbot.launcher.SituationLoader;
 
 public class LoadSituationActionListener implements ActionListener {
 

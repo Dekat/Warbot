@@ -1,7 +1,5 @@
 package edu.warbot.FSM.action;
 
-import java.util.ArrayList;
-
 import edu.warbot.FSM.WarFSMMessage;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.agents.WarRocketLauncher;
@@ -11,6 +9,8 @@ import edu.warbot.agents.projectiles.WarRocket;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.tools.geometry.CoordPolar;
+
+import java.util.ArrayList;
 
 public class WarActionDefendre extends WarAction<WarRocketLauncherAdapter> {
 	

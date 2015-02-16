@@ -1,12 +1,7 @@
 package edu.warbot.agents;
 
-import edu.warbot.agents.actions.ControllableActions;
-import edu.warbot.agents.actions.IdlerActions;
-import edu.warbot.brains.capacities.Builder;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarConfig;
-
-import java.awt.*;
 
 public abstract class WarBuilding extends AliveWarAgent {
 

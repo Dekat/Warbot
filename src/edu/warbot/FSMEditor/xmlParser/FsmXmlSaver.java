@@ -1,21 +1,20 @@
 package edu.warbot.FSMEditor.xmlParser;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Arrays;
-
+import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.PlanSettings;
+import edu.warbot.FSMEditor.models.Model;
+import edu.warbot.FSMEditor.models.ModelCondition;
+import edu.warbot.FSMEditor.models.ModelState;
+import edu.warbot.FSMEditor.models.ModeleBrain;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
-import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
-import edu.warbot.FSM.WarGenericSettings.PlanSettings;
-import edu.warbot.FSMEditor.models.Model;
-import edu.warbot.FSMEditor.models.ModeleBrain;
-import edu.warbot.FSMEditor.models.ModelCondition;
-import edu.warbot.FSMEditor.models.ModelState;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 
 public class FsmXmlSaver extends FsmXmlParser{
 	

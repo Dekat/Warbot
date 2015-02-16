@@ -4,15 +4,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
 import edu.warbot.gui.viewer.WarViewerObject;
-import edu.warbot.gui.viewer.entities.WarViewerEntityBase;
-import edu.warbot.gui.viewer.entities.WarViewerEntityControllable;
-import edu.warbot.gui.viewer.entities.WarViewerEntityEngineer;
-import edu.warbot.gui.viewer.entities.WarViewerEntityExplorer;
-import edu.warbot.gui.viewer.entities.WarViewerEntityKamikaze;
-import edu.warbot.gui.viewer.entities.WarViewerEntityRocketLauncher;
-import edu.warbot.gui.viewer.entities.WarViewerEntityTurret;
+import edu.warbot.gui.viewer.entities.*;
 import edu.warbot.gui.viewer.screens.WarViewerScreen;
 
 public class WarViewerEntityUnityInfo implements WarViewerObject {

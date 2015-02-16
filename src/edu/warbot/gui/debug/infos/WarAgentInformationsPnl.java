@@ -1,14 +1,10 @@
 package edu.warbot.gui.debug.infos;
 
-import java.awt.Color;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import edu.warbot.agents.WarAgent;
 import edu.warbot.gui.debug.DebugModeToolBar;
+
+import javax.swing.*;
+import java.awt.*;
 
 @SuppressWarnings("serial")
 public class WarAgentInformationsPnl extends JPanel implements IWarAgentInformationsPnl {

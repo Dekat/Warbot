@@ -1,20 +1,20 @@
 package edu.warbot.agents.percepts;
 
+import edu.warbot.agents.ControllableWarAgent;
+import edu.warbot.agents.WarAgent;
+import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.game.WarGame;
+import edu.warbot.tools.WarMathTools;
+import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CoordPolar;
+import edu.warbot.tools.geometry.GeometryTools;
+
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-
-import edu.warbot.agents.ControllableWarAgent;
-import edu.warbot.agents.WarAgent;
-import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.game.WarGame;
-import edu.warbot.tools.geometry.CoordCartesian;
-import edu.warbot.tools.geometry.CoordPolar;
-import edu.warbot.tools.geometry.GeometryTools;
-import edu.warbot.tools.WarMathTools;
 
 public abstract class PerceptsGetter {
 

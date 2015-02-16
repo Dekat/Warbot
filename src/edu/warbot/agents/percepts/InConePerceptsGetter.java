@@ -1,13 +1,10 @@
 package edu.warbot.agents.percepts;
 
+import edu.warbot.agents.ControllableWarAgent;
+import edu.warbot.game.WarGame;
+
 import java.awt.*;
 import java.awt.geom.Arc2D;
-import java.awt.geom.Area;
-import java.util.ArrayList;
-
-import edu.warbot.agents.ControllableWarAgent;
-import edu.warbot.agents.WarAgent;
-import edu.warbot.game.WarGame;
 
 public class InConePerceptsGetter extends PerceptsGetter {
 

@@ -1,7 +1,6 @@
 package edu.warbot.brains.capacities;
 
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.agents.percepts.WarPercept;
 import madkit.kernel.AbstractAgent;
 
 public interface CommonCapacities {

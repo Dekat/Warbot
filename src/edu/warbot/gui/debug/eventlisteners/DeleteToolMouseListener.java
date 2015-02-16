@@ -1,17 +1,13 @@
 package edu.warbot.gui.debug.eventlisteners;
 
+import edu.warbot.agents.WarAgent;
+import edu.warbot.gui.debug.DebugModeToolBar;
+import edu.warbot.tools.geometry.CoordCartesian;
+
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
-
-import edu.warbot.tools.geometry.CoordCartesian;
-import madkit.action.SchedulingAction;
-import madkit.message.SchedulingMessage;
-import turtlekit.agr.TKOrganization;
-import edu.warbot.agents.WarAgent;
-import edu.warbot.gui.debug.DebugModeToolBar;
 
 public class DeleteToolMouseListener implements MouseListener {
 

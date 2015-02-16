@@ -1,10 +1,10 @@
 package edu.warbot.agents.percepts;
 
-import java.awt.*;
-
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.game.WarGame;
 import edu.warbot.tools.geometry.WarCircle;
+
+import java.awt.*;
 
 public class InRadiusPerceptsGetter extends PerceptsGetter {
 

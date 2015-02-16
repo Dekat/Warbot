@@ -1,6 +1,5 @@
 package edu.warbot.FSM.WarGenericSettings;
 
-import edu.warbot.FSMEditor.settings.EnumMethod;
 import edu.warbot.agents.enums.WarAgentType;
 
 /**

@@ -1,13 +1,13 @@
 package edu.warbot.FSM.action;
 
-import java.util.ArrayList;
-
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 import edu.warbot.tools.geometry.CoordPolar;
+
+import java.util.ArrayList;
 
 public class WarActionAttaquer extends WarAction<WarRocketLauncherAdapter> {
 	

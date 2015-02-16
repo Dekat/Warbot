@@ -1,12 +1,11 @@
 package edu.warbot.gui;
 
+import edu.warbot.launcher.WarViewer;
+import edu.warbot.tools.geometry.CoordCartesian;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-
-import edu.warbot.launcher.WarViewer;
-import edu.warbot.tools.WarMathTools;
-import edu.warbot.tools.geometry.CoordCartesian;
 
 public class MapExplorationListener implements MouseMotionListener, MouseListener, AWTEventListener, MouseWheelListener {
 

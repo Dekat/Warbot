@@ -1,23 +1,17 @@
 package edu.warbot.gui.debug;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.util.HashMap;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JPanel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.gui.debug.eventlisteners.AddToolMouseListener;
 import edu.warbot.gui.debug.eventlisteners.DeleteToolMouseListener;
 import edu.warbot.gui.debug.eventlisteners.InfosToolMouseListener;
 import edu.warbot.gui.debug.eventlisteners.MoveToolMouseListener;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.util.HashMap;
 
 @SuppressWarnings("serial")
 public class DebugToolsPnl extends JPanel {

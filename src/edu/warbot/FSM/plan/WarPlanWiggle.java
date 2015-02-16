@@ -4,7 +4,6 @@ import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionWiggle;
 import edu.warbot.brains.MovableWarAgentAdapter;
-import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
 /**
  * Avance de manière perdu

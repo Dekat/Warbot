@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import edu.warbot.gui.viewer.WarViewerObject;
 import edu.warbot.gui.viewer.entities.WarViewerEntityControllable;
 import edu.warbot.gui.viewer.screens.WarViewerScreen;

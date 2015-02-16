@@ -2,28 +2,13 @@ package edu.warbot.gui.viewer;
 
 
 import com.badlogic.gdx.utils.Array;
-
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
-import edu.warbot.agents.agents.WarBase;
-import edu.warbot.agents.agents.WarEngineer;
-import edu.warbot.agents.agents.WarExplorer;
-import edu.warbot.agents.agents.WarKamikaze;
-import edu.warbot.agents.agents.WarRocketLauncher;
-import edu.warbot.agents.agents.WarTurret;
-import edu.warbot.game.WarGame;
+import edu.warbot.agents.agents.*;
 import edu.warbot.game.Team;
+import edu.warbot.game.WarGame;
 import edu.warbot.gui.viewer.animations.WarViewerAnimationExplosion;
-import edu.warbot.gui.viewer.entities.WarViewerEntity;
-import edu.warbot.gui.viewer.entities.WarViewerEntityBase;
-import edu.warbot.gui.viewer.entities.WarViewerEntityControllable;
-import edu.warbot.gui.viewer.entities.WarViewerEntityEngineer;
-import edu.warbot.gui.viewer.entities.WarViewerEntityExplorer;
-import edu.warbot.gui.viewer.entities.WarViewerEntityFood;
-import edu.warbot.gui.viewer.entities.WarViewerEntityKamikaze;
-import edu.warbot.gui.viewer.entities.WarViewerEntityProjectile;
-import edu.warbot.gui.viewer.entities.WarViewerEntityRocketLauncher;
-import edu.warbot.gui.viewer.entities.WarViewerEntityTurret;
+import edu.warbot.gui.viewer.entities.*;
 
 public class WarViewerWorld {
 	

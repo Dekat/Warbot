@@ -1,24 +1,13 @@
 package edu.warbot.FSMEditor.views;
 
-import java.awt.Dimension;
-import java.awt.Menu;
-import java.awt.MenuBar;
-import java.awt.MenuItem;
-import java.awt.MenuShortcut;
+import edu.warbot.FSMEditor.models.Model;
+import edu.warbot.FSMEditor.models.ModeleBrain;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-
-import javax.swing.AbstractButton;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JTabbedPane;
-import javax.swing.KeyStroke;
-
-import edu.warbot.FSMEditor.models.Model;
-import edu.warbot.FSMEditor.models.ModeleBrain;
 
 public class View extends JFrame {
 

@@ -6,7 +6,6 @@ import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionAttaquer;
 import edu.warbot.FSM.action.WarActionChercherBase;
 import edu.warbot.FSM.condition.WarCondition;
-import edu.warbot.FSM.condition.WarConditionBooleanCheck;
 import edu.warbot.FSM.condition.WarConditionPerceptCounter;
 import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.agents.enums.WarAgentType;

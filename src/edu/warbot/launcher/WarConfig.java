@@ -1,5 +1,18 @@
 package edu.warbot.launcher;
 
+import edu.warbot.agents.Hitbox;
+import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.agents.percepts.InRadiusPerceptsGetter;
+import edu.warbot.agents.percepts.PerceptsGetter;
+import edu.warbot.tools.WarMathTools;
+import edu.warbot.tools.WarXmlReader;
+import edu.warbot.tools.geometry.CoordCartesian;
+import edu.warbot.tools.geometry.CoordPolar;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
@@ -8,21 +21,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Level;
-
-import javax.swing.JOptionPane;
-import javax.xml.parsers.ParserConfigurationException;
-
-import edu.warbot.agents.Hitbox;
-import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.tools.geometry.CoordCartesian;
-import edu.warbot.tools.geometry.CoordPolar;
-import edu.warbot.tools.WarMathTools;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-import edu.warbot.agents.percepts.InRadiusPerceptsGetter;
-import edu.warbot.agents.percepts.PerceptsGetter;
-import edu.warbot.tools.WarXmlReader;
 
 
 public class WarConfig {

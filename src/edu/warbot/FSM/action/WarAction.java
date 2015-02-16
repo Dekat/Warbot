@@ -1,10 +1,10 @@
 package edu.warbot.FSM.action;
 
-import java.util.ArrayList;
-
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSMEditor.settings.EnumAction;
 import edu.warbot.brains.ControllableWarAgentAdapter;
+
+import java.util.ArrayList;
 
 public abstract class WarAction<AgentAdapterType extends ControllableWarAgentAdapter> {
 	

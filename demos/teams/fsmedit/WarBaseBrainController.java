@@ -1,16 +1,6 @@
 package teams.fsmedit;
 
-import edu.warbot.FSM.WarEtat;
 import edu.warbot.FSM.WarFSM;
-import edu.warbot.FSM.WarFSMMessage;
-import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
-import edu.warbot.FSM.condition.WarCondition;
-import edu.warbot.FSM.condition.WarConditionPerceptCounter;
-import edu.warbot.FSM.plan.WarPlanCreateUnit;
-import edu.warbot.FSM.reflexe.WarReflexeAnswerMessage;
-import edu.warbot.FSM.reflexe.WarReflexeWarnWithCondition;
-import edu.warbot.agents.agents.WarBase;
-import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarBaseAdapter;
 

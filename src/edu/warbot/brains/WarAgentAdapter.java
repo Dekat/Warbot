@@ -1,10 +1,9 @@
 package edu.warbot.brains;
 
-import edu.warbot.agents.percepts.WarAgentPercept;
-import madkit.kernel.AbstractAgent.ReturnCode;
 import edu.warbot.agents.WarAgent;
-import edu.warbot.agents.percepts.WarPercept;
+import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.brains.capacities.CommonCapacities;
+import madkit.kernel.AbstractAgent.ReturnCode;
 
 public abstract class WarAgentAdapter implements CommonCapacities {
 	

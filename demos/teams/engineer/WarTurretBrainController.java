@@ -1,12 +1,11 @@
 package teams.engineer;
 
-import java.util.ArrayList;
-
 import edu.warbot.agents.agents.WarTurret;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarTurretAdapter;
+
+import java.util.ArrayList;
 
 public class WarTurretBrainController extends WarBrain<WarTurretAdapter> {
 	

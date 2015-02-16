@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.agents.WarTurret;
 import edu.warbot.gui.viewer.WarViewerObject;

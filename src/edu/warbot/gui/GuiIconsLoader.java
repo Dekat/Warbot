@@ -1,8 +1,7 @@
 package edu.warbot.gui;
 
+import javax.swing.*;
 import java.io.File;
-
-import javax.swing.ImageIcon;
 
 public class GuiIconsLoader {
 

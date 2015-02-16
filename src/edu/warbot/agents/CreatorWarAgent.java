@@ -7,8 +7,6 @@ import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Creator;
 import edu.warbot.game.Team;
 
-import java.awt.*;
-
 public abstract class CreatorWarAgent extends ControllableWarAgent implements CreatorActions, Creator {
 
 	private WarAgentType _nextAgentToCreate;

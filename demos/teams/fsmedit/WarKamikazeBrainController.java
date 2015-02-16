@@ -1,12 +1,11 @@
 package teams.fsmedit;
 
-import java.util.ArrayList;
-
 import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarKamikazeAdapter;
+
+import java.util.ArrayList;
 
 public class WarKamikazeBrainController extends WarBrain<WarKamikazeAdapter> {
 	

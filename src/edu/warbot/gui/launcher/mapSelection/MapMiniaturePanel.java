@@ -3,9 +3,7 @@ package edu.warbot.gui.launcher.mapSelection;
 import edu.warbot.maps.AbstractWarMap;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
-import java.util.HashMap;
 
 public class MapMiniaturePanel extends JPanel {
 

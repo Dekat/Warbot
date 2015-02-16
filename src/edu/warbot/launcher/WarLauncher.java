@@ -1,18 +1,5 @@
 package edu.warbot.launcher;
 
-import static turtlekit.kernel.TurtleKit.Option.launcher;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-
-import madkit.action.SchedulingAction;
-import madkit.kernel.Madkit;
-import madkit.message.SchedulingMessage;
-import turtlekit.agr.TKOrganization;
-import turtlekit.kernel.TKLauncher;
-import turtlekit.kernel.TurtleKit;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.MotherNatureTeam;
@@ -21,6 +8,19 @@ import edu.warbot.game.WarGame;
 import edu.warbot.launcher.WarMain.Shared;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.tools.geometry.WarCircle;
+import madkit.action.SchedulingAction;
+import madkit.kernel.Madkit;
+import madkit.message.SchedulingMessage;
+import turtlekit.agr.TKOrganization;
+import turtlekit.kernel.TKLauncher;
+import turtlekit.kernel.TurtleKit;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+
+import static turtlekit.kernel.TurtleKit.Option.launcher;
 
 public class WarLauncher extends TKLauncher {
 

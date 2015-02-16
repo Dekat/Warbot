@@ -1,21 +1,12 @@
 package edu.warbot.gui.debug;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.MouseListener;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
-
-import madkit.action.SchedulingAction;
-import madkit.message.SchedulingMessage;
-import turtlekit.agr.TKOrganization;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.gui.debug.infos.WarAgentInformationsPnl;
 import edu.warbot.launcher.WarViewer;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseListener;
 
 @SuppressWarnings("serial")
 public class DebugModeToolBar extends JToolBar {

@@ -1,18 +1,16 @@
 package edu.warbot.gui.viewer.entities;
 
 
-
-import java.awt.Point;
-
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.gui.viewer.animations.WarViewerAnimationExplosion;
 import edu.warbot.gui.viewer.entities.info.WarViewerEntityFoodIndicator;
 import edu.warbot.gui.viewer.entities.info.WarViewerEntityHealthBar;
 import edu.warbot.gui.viewer.entities.info.WarViewerEntityUnityInfo;
+
+import java.awt.*;
 
 public abstract class WarViewerEntityControllable extends WarViewerEntity {
 	

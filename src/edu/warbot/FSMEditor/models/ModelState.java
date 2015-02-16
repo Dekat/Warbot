@@ -1,11 +1,11 @@
 package edu.warbot.FSMEditor.models;
 
-import java.util.ArrayList;
-
 import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSMEditor.panels.PanelState;
 import edu.warbot.FSMEditor.settings.EnumPlan;
 import edu.warbot.FSMEditor.settings.Settings;
+
+import java.util.ArrayList;
 
 public class ModelState {
 	

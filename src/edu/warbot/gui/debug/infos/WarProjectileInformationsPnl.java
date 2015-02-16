@@ -1,11 +1,9 @@
 package edu.warbot.gui.debug.infos;
 
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import edu.warbot.agents.WarProjectile;
 import edu.warbot.gui.debug.DebugModeToolBar;
+
+import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class WarProjectileInformationsPnl extends JPanel  implements IWarAgentInformationsPnl {

@@ -1,13 +1,11 @@
 package edu.warbot.gui.debug;
 
-import java.awt.Dimension;
-import java.awt.Font;
+import edu.warbot.agents.enums.WarAgentType;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JToggleButton;
-
-import edu.warbot.agents.enums.WarAgentType;
 
 @SuppressWarnings("serial")
 public class WarAgentSelectButton extends JToggleButton implements ActionListener {

@@ -1,15 +1,15 @@
 package edu.warbot.game;
 
-import java.awt.Color;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-
 import edu.warbot.agents.WarAgent;
 import edu.warbot.game.mode.AbstractGameMode;
 import edu.warbot.launcher.WarGameSettings;
 import edu.warbot.maps.AbstractWarMap;
+
+import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 
 public class WarGame {
 

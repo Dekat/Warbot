@@ -1,12 +1,12 @@
 package edu.warbot.gui.debug.eventlisteners;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
-
 import edu.warbot.agents.WarAgent;
 import edu.warbot.gui.debug.DebugModeToolBar;
 import edu.warbot.tools.geometry.CoordCartesian;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public class InfosToolMouseListener implements MouseListener {
 

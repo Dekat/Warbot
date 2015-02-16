@@ -1,10 +1,9 @@
 package edu.warbot.FSMEditor.models;
 
-import java.util.ArrayList;
-import java.util.Vector;
-
 import edu.warbot.FSMEditor.views.ViewBrain;
 import edu.warbot.agents.enums.WarAgentType;
+
+import java.util.ArrayList;
 
 public class ModeleBrain {
 	
