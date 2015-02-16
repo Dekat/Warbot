@@ -21,7 +21,8 @@ public class WarConditionMessageCheck<AgentAdapterType extends ControllableWarAg
 	@Override
 	public boolean isValide() {
 		for (WarMessage m : getBrain().getMessages()) {
-			if(m.getMessage().equals(this.message.name()) && m.getSenderType().equals(agentType)){
+			if(m.getMessage().equals(this.message.name()) 
+					&& m.getSenderType().equals(agentType)){
 				return true;
 			}
 		}

@@ -21,7 +21,6 @@ public class WarFSMBrainController extends WarBrain<WarExplorerAdapter>{
 			return fsm.executeFSM();
 		}catch(NullPointerException e){
 			e.printStackTrace();
-			System.out.println(e.getCause());
 			JOptionPane.showMessageDialog(null, 
 					"Error FSM use incorrect settings, please check <GenericSettings>, <settings> in the editor, "
 					+ "your Xml configuration file for FSM and attrbiut you use inside the editor ! "
