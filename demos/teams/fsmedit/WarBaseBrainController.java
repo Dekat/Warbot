@@ -3,7 +3,7 @@ package teams.fsmedit;
 import edu.warbot.FSM.WarEtat;
 import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSM.WarFSMMessage;
-import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
+import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.condition.WarConditionPerceptCounter;
 import edu.warbot.FSM.plan.WarPlanCreateUnit;
