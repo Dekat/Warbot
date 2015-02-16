@@ -1,27 +1,17 @@
 package edu.warbot.launcher;
 
 import java.awt.*;
-import java.awt.event.AWTEventListener;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.geom.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import edu.warbot.agents.AliveWarAgent;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.tools.geometry.GeometryTools;
 import edu.warbot.tools.geometry.WarStar;
-import turtlekit.viewer.TKDefaultViewer;
+import turtlekit.viewer.AbstractGridViewer;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
@@ -36,32 +26,29 @@ import edu.warbot.launcher.WarMain.Shared;
 import edu.warbot.tools.geometry.CoordCartesian;
 
 @SuppressWarnings("serial")
-public class WarViewer extends TKDefaultViewer {
+public class WarViewer extends AbstractGridViewer {
 
-    // Définit le niveau de zoom initial
-    public static final int CELL_SIZE = 1;
+    public static final int DEFAULT_CELL_SIZE = 1;
 
-    private static final int _healthBarDefaultSize = 10;
-    private static final int _spaceBetweenAgentAndHealthBar = 2;
+    private static final int healthBarDefaultSize = 10;
+    private static final int spaceBetweenAgentAndHealthBar = 2;
 
     private WarToolBar wtb;
-    private DebugModeToolBar _autorModeToolBar;
+    private DebugModeToolBar autorModeToolBar;
 
-    private MouseListener _mapExploremMouseListener;
+    private MapExplorationListener mapExplorationMouseListener;
 
-    //private Graphics _mapDisplay;
-    private ArrayList<Shape> _explosions;
-
-    private ArrayList<Integer> _agentsIDsSeenBySelectedAgent;
+    private ArrayList<Shape> explosions;
+    private ArrayList<Integer> agentsIDsSeenBySelectedAgent;
 
     private JTabbedPane tabs;
-
     private SwingView swingView;
     private JScrollPane scrollPane;
 
     private JPanel gdxContainer;
 
     private int width, height;
+    private double mapOffsetX, mapOffsetY;
 
     private boolean loadGdx;
 
@@ -71,9 +58,9 @@ public class WarViewer extends TKDefaultViewer {
         super();
         this.game = Shared.getGame();
         wtb = new WarToolBar(this);
-        _autorModeToolBar = new DebugModeToolBar(this);
-        _explosions = new ArrayList<>();
-        _agentsIDsSeenBySelectedAgent = new ArrayList<>();
+        autorModeToolBar = new DebugModeToolBar(this);
+        explosions = new ArrayList<>();
+        agentsIDsSeenBySelectedAgent = new ArrayList<>();
 
         loadGdx = game.getSettings().isEnabledEnhancedGraphism();
     }
@@ -83,11 +70,11 @@ public class WarViewer extends TKDefaultViewer {
         super.setupFrame(frame);
         width = getWidth();
         height = getHeight();
+        mapOffsetX = (frame.getWidth() - width) / 2.;
+        mapOffsetY = (frame.getHeight() - height) / 2.;
         wtb.init(frame);
-        _autorModeToolBar.init(frame);
-        setCellSize(CELL_SIZE);
-        ((JScrollPane) getDisplayPane()).getHorizontalScrollBar().setUnitIncrement(10);
-        ((JScrollPane) getDisplayPane()).getVerticalScrollBar().setUnitIncrement(10);
+        autorModeToolBar.init(frame);
+        setCellSize(DEFAULT_CELL_SIZE);
         swingView = new SwingView(game);
         swingView.setSize(new Dimension(width, height));
 
@@ -96,13 +83,12 @@ public class WarViewer extends TKDefaultViewer {
         frame.remove(getDisplayPane());
 
         scrollPane = new JScrollPane(swingView);
-        scrollPane.addMouseWheelListener(new MouseWheelListener() {
-
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                updateSize(e.getPoint(),e.getWheelRotation());
-            }
-        });
+//        scrollPane.addMouseWheelListener(new MouseWheelListener() {
+//            @Override
+//            public void mouseWheelMoved(MouseWheelEvent e) {
+//                updateSize(e.getPoint(),e.getWheelRotation());
+//            }
+//        });
 
         tabs = new JTabbedPane();
         tabs.addTab("Vue standard", scrollPane);
@@ -111,7 +97,7 @@ public class WarViewer extends TKDefaultViewer {
 
         frame.add(tabs, BorderLayout.CENTER);
 
-        _mapExploremMouseListener = new MapExplorationListener(this);
+        mapExplorationMouseListener = new MapExplorationListener(this);
         setMapExplorationEventsEnabled(true);
 
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -136,8 +122,8 @@ public class WarViewer extends TKDefaultViewer {
 
     private void updateSize(Point point, int wheelRotation) {
         final int i = point.x / cellSize;
-        int offX = (int) i * wheelRotation;
-        int offY = (int) (point.y / cellSize) * wheelRotation;
+        int offX = i * wheelRotation;
+        int offY = (point.y / cellSize) * wheelRotation;
         cellSize -= wheelRotation;
         if (cellSize < 1)
             cellSize = 1;
@@ -184,6 +170,16 @@ public class WarViewer extends TKDefaultViewer {
         // effectue dans SwingView.paintComponent
     }
 
+    @Override
+    public JToolBar getToolBar() {
+        return new JToolBar();
+    }
+
+    //    @Override
+//    public JComponent getDisplayPane() {
+//        return this;
+//    }
+
     private void paintTeam(Graphics g, Team team) {
         Graphics2D g2d = (Graphics2D) g;
 
@@ -204,9 +200,9 @@ public class WarViewer extends TKDefaultViewer {
                 haveOneColorChanged = false;
             }
 
-            if (_autorModeToolBar.isVisible()) {
-                if (_autorModeToolBar.getSelectedAgent() != null) {
-                    if (agent.getID() == _autorModeToolBar.getSelectedAgent().getID()) {
+            if (autorModeToolBar.isVisible()) {
+                if (autorModeToolBar.getSelectedAgent() != null) {
+                    if (agent.getID() == autorModeToolBar.getSelectedAgent().getID()) {
                         borderColor = Color.GRAY;
                         backgroundColor = Color.WHITE;
                         isCurrentAgentTheSelectedOne = true;
@@ -216,7 +212,7 @@ public class WarViewer extends TKDefaultViewer {
             }
 
             // Si l'agent courant est vu par l'agent sélectionné
-            if (_agentsIDsSeenBySelectedAgent.contains(agent.getID())) {
+            if (agentsIDsSeenBySelectedAgent.contains(agent.getID())) {
                 borderColor = Color.YELLOW;
                 haveOneColorChanged = true;
             }
@@ -246,17 +242,17 @@ public class WarViewer extends TKDefaultViewer {
             }
         }
 
-        if (_autorModeToolBar.getSelectedAgent() != null) {
-            if (_autorModeToolBar.getSelectedAgent() instanceof ControllableWarAgent)
-                paintDebugMessage(g2d, (ControllableWarAgent) _autorModeToolBar.getSelectedAgent());
+        if (autorModeToolBar.getSelectedAgent() != null) {
+            if (autorModeToolBar.getSelectedAgent() instanceof ControllableWarAgent)
+                paintDebugMessage(g2d, (ControllableWarAgent) autorModeToolBar.getSelectedAgent());
         }
 
         // Affichage des agents mourants
         for (WarAgent a : team.getDyingAgents()) {
             if (a instanceof WarProjectile)
-                _explosions.add(createExplosionShape(a.getPosition(), (int) (((WarProjectile)a).getExplosionRadius() - Team.MAX_DYING_STEP + a.getDyingStep())));
+                explosions.add(createExplosionShape(a.getPosition(), (int) (((WarProjectile)a).getExplosionRadius() - Team.MAX_DYING_STEP + a.getDyingStep())));
             else
-                _explosions.add(createExplosionShape(a.getPosition(), (int) ((a.getDyingStep() + a.getHitboxMinRadius()) * 2)));
+                explosions.add(createExplosionShape(a.getPosition(), (int) ((a.getDyingStep() + a.getHitboxMinRadius()) * 2)));
         }
     }
 
@@ -276,10 +272,10 @@ public class WarViewer extends TKDefaultViewer {
         double yPos = agent.getY() * cellSize;
         double hitboxRadius = agent.getHitboxMinRadius() * cellSize;
         int healthBarHeight = 3 * cellSize;
-        double healthBarWidth = _healthBarDefaultSize * cellSize;
+        double healthBarWidth = healthBarDefaultSize * cellSize;
         int healthWidth = (int) (healthBarWidth * (Double.valueOf(agent.getHealth()) / Double.valueOf(agent.getMaxHealth())));
         double xBarPos = xPos - (healthBarWidth / 2);
-        double yBarPos = yPos - hitboxRadius - healthBarHeight - (_spaceBetweenAgentAndHealthBar * cellSize);
+        double yBarPos = yPos - hitboxRadius - healthBarHeight - (spaceBetweenAgentAndHealthBar * cellSize);
 
         if (agent.getHealth() <= (agent.getMaxHealth() * 0.25))
             g.setColor(Color.RED);
@@ -330,7 +326,7 @@ public class WarViewer extends TKDefaultViewer {
     }
 
     public DebugModeToolBar getAutorModeToolBar() {
-        return _autorModeToolBar;
+        return autorModeToolBar;
     }
 
     private void paintInfos(Graphics g, AliveWarAgent agent, Color color) {
@@ -369,13 +365,15 @@ public class WarViewer extends TKDefaultViewer {
 
     public void setMapExplorationEventsEnabled(boolean bool) {
         if (bool) {
-            Toolkit.getDefaultToolkit().addAWTEventListener((AWTEventListener) _mapExploremMouseListener, AWTEvent.KEY_EVENT_MASK);
-            swingView.addMouseListener(_mapExploremMouseListener);
-            swingView.addMouseMotionListener((MouseMotionListener) _mapExploremMouseListener);
+            Toolkit.getDefaultToolkit().addAWTEventListener(mapExplorationMouseListener, AWTEvent.KEY_EVENT_MASK);
+            swingView.addMouseListener(mapExplorationMouseListener);
+            swingView.addMouseMotionListener(mapExplorationMouseListener);
+            swingView.addMouseWheelListener(mapExplorationMouseListener);
         } else {
-            Toolkit.getDefaultToolkit().removeAWTEventListener((AWTEventListener) _mapExploremMouseListener);
-            swingView.removeMouseListener(_mapExploremMouseListener);
-            swingView.removeMouseMotionListener((MouseMotionListener) _mapExploremMouseListener);
+            Toolkit.getDefaultToolkit().removeAWTEventListener(mapExplorationMouseListener);
+            swingView.removeMouseListener(mapExplorationMouseListener);
+            swingView.removeMouseMotionListener(mapExplorationMouseListener);
+            swingView.removeMouseWheelListener(mapExplorationMouseListener);
         }
     }
 
@@ -402,18 +400,19 @@ public class WarViewer extends TKDefaultViewer {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.translate(mapOffsetX, mapOffsetY);
 
             //affichage du nombre de FPS
             g2d.drawString("TPS : " + game.getFPS().toString(), 1, 11);
 
-            if (_autorModeToolBar.getSelectedAgent() != null) {
+            if (autorModeToolBar.getSelectedAgent() != null) {
                 // Update de l'affichage des infos sur l'unité sélectionnée
-                _autorModeToolBar.getAgentInformationsPanel().update();
+                autorModeToolBar.getAgentInformationsPanel().update();
                 // On récupère la liste des agents vus par l'agent sélectionné
-                WarAgent selectedAgent = _autorModeToolBar.getSelectedAgent();
+                WarAgent selectedAgent = autorModeToolBar.getSelectedAgent();
                 if (selectedAgent instanceof ControllableWarAgent) {
                     for(WarAgentPercept p : ((ControllableWarAgent) selectedAgent).getPercepts())
-                        _agentsIDsSeenBySelectedAgent.add(p.getID());
+                        agentsIDsSeenBySelectedAgent.add(p.getID());
                 }
             }
 
@@ -421,28 +420,55 @@ public class WarViewer extends TKDefaultViewer {
             g2d.setColor(Color.GRAY);
             g2d.fill(GeometryTools.resize(game.getMap().getMapForbidArea(), cellSize));
 
-//            // Affichage de Mère Nature (resources)
-//            paintTeam(g2d, game.getMotherNatureTeam());
-
             // Affichage des équipes
             for (Team t : game.getAllTeams()) {
                 paintTeam(g2d, t);
             }
 
             // Affichage des explosions
-            for (Shape s : _explosions)
+            for (Shape s : explosions)
                 paintExplosionShape(g2d, s);
-            _explosions.clear();
+            explosions.clear();
 
             g2d.setColor(Color.RED);
             g2d.drawRect(0, 0, width * cellSize, height * cellSize);
 
-            _agentsIDsSeenBySelectedAgent.clear();
+            agentsIDsSeenBySelectedAgent.clear();
         }
 
     }
 
     public WarGame getGame() {
         return game;
+    }
+
+    public void moveMapOffsetTo(double newOffsetX, double newOffsetY) {
+        this.mapOffsetX = Math.max(Math.min(newOffsetX, swingView.getWidth() - 200), 200 - getDisplayedMapWidth());
+        this.mapOffsetY = Math.max(Math.min(newOffsetY, swingView.getHeight() - 200), 200 - getDisplayedMapHeight());
+        getFrame().repaint();
+    }
+
+    public double getMapOffsetX() {
+        return mapOffsetX;
+    }
+
+    public double getMapOffsetY() {
+        return mapOffsetY;
+    }
+
+    public double getDisplayedMapWidth() {
+        return width * cellSize;
+    }
+
+    public double getDisplayedMapHeight() {
+        return height * cellSize;
+    }
+
+    public CoordCartesian convertClickPositionToMapPosition(double clicX, double clicY) {
+        return new CoordCartesian((clicX - getMapOffsetX()) / cellSize, (clicY - getMapOffsetY()) / cellSize);
+    }
+
+    public CoordCartesian convertMapPositionToDisplayPosition(double mapX, double mapY) {
+        return new CoordCartesian((mapX * cellSize) + getMapOffsetX(), (mapY * cellSize) + getMapOffsetY());
     }
 }

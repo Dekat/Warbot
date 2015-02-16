@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import edu.warbot.tools.geometry.CoordCartesian;
 import madkit.action.SchedulingAction;
 import madkit.message.SchedulingMessage;
 import turtlekit.agr.TKOrganization;
@@ -23,10 +24,8 @@ public class DeleteToolMouseListener implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// On sélectionne l'agent sous le clique de souris
-		ArrayList<WarAgent> agents = _debugToolBar.getViewer().getGame().getAllAgentsInRadius(
-				e.getX() / _debugToolBar.getViewer().getCellSize(),
-				e.getY() / _debugToolBar.getViewer().getCellSize(),
-				1);
+        CoordCartesian mouseClickPosition = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
+		ArrayList<WarAgent> agents = _debugToolBar.getViewer().getGame().getAllAgentsInRadius(mouseClickPosition.getX(), mouseClickPosition.getY(), 3);
 		if (agents.size() > 0) {
 			WarAgent agentToDelete = agents.get(0);
 			int response = JOptionPane.showConfirmDialog(_debugToolBar,

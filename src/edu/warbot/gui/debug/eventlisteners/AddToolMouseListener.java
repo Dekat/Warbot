@@ -48,8 +48,7 @@ public class AddToolMouseListener implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		_debugToolBar.getViewer().setMapExplorationEventsEnabled(false);
 		if (_toolsPnl.getSelectedWarAgentTypeToCreate() != null) {
-			_clickedPos = new CoordCartesian(e.getX() / _debugToolBar.getViewer().getCellSize(),
-					e.getY() / _debugToolBar.getViewer().getCellSize());
+			_clickedPos = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
 		} else {
 			JOptionPane.showMessageDialog(_debugToolBar, "Veuillez sélectionner un type d'agent.", "Création d'un agent impossible", JOptionPane.ERROR_MESSAGE);
 		}
@@ -65,8 +64,7 @@ public class AddToolMouseListener implements MouseListener {
 					a.setPosition(_clickedPos);
                     a.moveOutOfCollision();
 				} else {
-					CoordCartesian mouseClickPosition = new CoordCartesian(e.getX() / _debugToolBar.getViewer().getCellSize(),
-							e.getY() / _debugToolBar.getViewer().getCellSize());
+					CoordCartesian mouseClickPosition = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
 					CoordPolar movement = new CoordCartesian(mouseClickPosition.getX() - _clickedPos.getX(), mouseClickPosition.getY() - _clickedPos.getY()).toPolar();
 					String[] choices = game.getPlayerTeamNames();
 					if (_lastSelectedTeam == null)

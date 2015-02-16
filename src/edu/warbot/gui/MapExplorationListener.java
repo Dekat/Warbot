@@ -1,41 +1,37 @@
 package edu.warbot.gui;
 
-import java.awt.AWTEvent;
-import java.awt.event.AWTEventListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 
-import javax.swing.JScrollPane;
-
 import edu.warbot.launcher.WarViewer;
+import edu.warbot.tools.WarMathTools;
 import edu.warbot.tools.geometry.CoordCartesian;
 
-public class MapExplorationListener implements MouseMotionListener, MouseListener, AWTEventListener {
+public class MapExplorationListener implements MouseMotionListener, MouseListener, AWTEventListener, MouseWheelListener {
 
-	private WarViewer _viewer;
+    private static final int MOVE_KEY_INCREMENT = 20;
+    private static final int MAX_CELL_SIZE = 10;
+    private static final int MIN_CELL_SIZE = 1;
+
+	private WarViewer viewer;
 
 	private ArrayList<Integer> _keyEventsCodes;
-	private CoordCartesian _oldMouseDragPosition;
+    private CoordCartesian oldMouseDragPosition;
+    private CoordCartesian oldViewerPosition;
 
 	public MapExplorationListener(WarViewer viewer) {
-		_viewer = viewer;
+		this.viewer = viewer;
 
 		_keyEventsCodes = new ArrayList<>();
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		JScrollPane pnl =  _viewer.getScrollPane();
-
 		CoordCartesian movement = new CoordCartesian(
-				_oldMouseDragPosition.getX() - e.getX(),
-				_oldMouseDragPosition.getY() - e.getY());
-		
-		pnl.getHorizontalScrollBar().setValue(pnl.getHorizontalScrollBar().getValue() + (int) movement.getX());
-		pnl.getVerticalScrollBar().setValue(pnl.getVerticalScrollBar().getValue() + (int) movement.getY());
+				e.getX() - oldMouseDragPosition.getX(),
+                e.getY() - oldMouseDragPosition.getY());
+		viewer.moveMapOffsetTo(movement.getX() + oldViewerPosition.getX(), movement.getY() + oldViewerPosition.getY());
 	}
 
 	@Override
@@ -48,29 +44,26 @@ public class MapExplorationListener implements MouseMotionListener, MouseListene
 
 		for (Integer keyCode : _keyEventsCodes) {
 			CoordCartesian newViewPos = null;
-			JScrollPane pnl =  _viewer.getScrollPane();
-			CoordCartesian currentPos = new CoordCartesian(pnl.getHorizontalScrollBar().getValue(),
-					pnl.getVerticalScrollBar().getValue());
 
 			if (keyCode == KeyEvent.VK_UP)
 				newViewPos = new CoordCartesian(
-						currentPos.getX(),
-						currentPos.getY() - pnl.getVerticalScrollBar().getUnitIncrement());
+                        viewer.getMapOffsetX(),
+                        viewer.getMapOffsetY() + MOVE_KEY_INCREMENT);
 			else if (keyCode == KeyEvent.VK_DOWN)
 				newViewPos = new CoordCartesian(
-						currentPos.getX(),
-						currentPos.getY() + pnl.getVerticalScrollBar().getUnitIncrement());
+                        viewer.getMapOffsetX(),
+                        viewer.getMapOffsetY() - MOVE_KEY_INCREMENT);
 			else if (keyCode == KeyEvent.VK_LEFT)
 				newViewPos = new CoordCartesian(
-						currentPos.getX() - pnl.getHorizontalScrollBar().getUnitIncrement(),
-						currentPos.getY());
+                        viewer.getMapOffsetX() + MOVE_KEY_INCREMENT,
+                        viewer.getMapOffsetY());
 			else if (keyCode == KeyEvent.VK_RIGHT)
 				newViewPos = new CoordCartesian(
-						currentPos.getX() + pnl.getHorizontalScrollBar().getUnitIncrement(),
-						currentPos.getY());
+                        viewer.getMapOffsetX() - MOVE_KEY_INCREMENT,
+                        viewer.getMapOffsetY());
 
-			if (newViewPos != null) 
-				pnl.getViewport().setViewPosition(newViewPos.toPoint());
+            if (newViewPos != null)
+				viewer.moveMapOffsetTo(newViewPos.getX(), newViewPos.getY());
 		}
 	}
 
@@ -103,11 +96,27 @@ public class MapExplorationListener implements MouseMotionListener, MouseListene
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		_oldMouseDragPosition = new CoordCartesian(e.getX(),e.getY());
+		oldMouseDragPosition = new CoordCartesian(e.getX(),e.getY());
+        oldViewerPosition = new CoordCartesian(viewer.getMapOffsetX(), viewer.getMapOffsetY());
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 	}
 
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        int newCellSize = viewer.getCellSize();
+        newCellSize -= e.getWheelRotation();
+        newCellSize = Math.max(MIN_CELL_SIZE, newCellSize);
+        newCellSize = Math.min(MAX_CELL_SIZE, newCellSize);
+
+        CoordCartesian inMapClickPosition = viewer.convertClickPositionToMapPosition(e.getX(), e.getY());
+
+        viewer.setCellSize(newCellSize);
+
+        CoordCartesian inMapClickNewPosition = viewer.convertClickPositionToMapPosition(e.getX(), e.getY());
+        viewer.moveMapOffsetTo(viewer.getMapOffsetX() - ((inMapClickPosition.getX() - inMapClickNewPosition.getX()) * newCellSize),
+                viewer.getMapOffsetY() - ((inMapClickPosition.getY() - inMapClickNewPosition.getY()) * newCellSize));
+    }
 }
