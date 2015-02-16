@@ -10,8 +10,8 @@ import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
-import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
-import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
+import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.models.ModelCondition;
@@ -88,9 +88,9 @@ public class FsmXmlSaver extends FsmXmlParser{
 	private Element getContentPlanSettings(ModelState state) {
 		Element elemPlanSetting = new Element(PlanSettings);
 		
-		WarPlanSettings planSet = state.getPlanSettings();
+		PlanSettings planSet = state.getPlanSettings();
 		if(planSet == null)
-			planSet = new WarPlanSettings();
+			planSet = new PlanSettings();
 		
 		Field[] fields = planSet.getClass().getDeclaredFields();
 		
@@ -131,9 +131,9 @@ public class FsmXmlSaver extends FsmXmlParser{
 	private Element getContentConditionSettings(ModelCondition modelCond) {
 		Element elemCondSetting = new Element(ConditionSettings);
 		
-		WarConditionSettings planSet = modelCond.getConditionSettings();
+		ConditionSettings planSet = modelCond.getConditionSettings();
 		if(planSet == null)
-			planSet = new WarConditionSettings();
+			planSet = new ConditionSettings();
 		
 		Field[] fields = planSet.getClass().getDeclaredFields();
 		

@@ -26,7 +26,7 @@ import org.jfree.ui.tabbedui.VerticalLayout;
 import com.sun.javafx.binding.SelectBinding.AsBoolean;
 
 import edu.warbot.FSM.WarGenericSettings.AbstractGenericAttributSettings;
-import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.settings.EnumAction;
 import edu.warbot.FSMEditor.settings.EnumMethod;

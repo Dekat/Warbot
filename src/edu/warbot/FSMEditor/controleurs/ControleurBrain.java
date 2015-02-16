@@ -2,12 +2,16 @@ package edu.warbot.FSMEditor.controleurs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
-import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
+import com.badlogic.gdx.math.Plane.PlaneSide;
+
+import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSMEditor.dialogues.DialogueCondSetting;
 import edu.warbot.FSMEditor.dialogues.DialogueStateSetting;
 import edu.warbot.FSMEditor.models.ModelCondition;
@@ -83,14 +87,17 @@ public class ControleurBrain {
 	}
 	
 	private void eventListeConditionEdition(ListSelectionEvent e){
-		//Deselctionne tous les elements
-		for (PanelCondition p : this.viewBrain.getViewEditor().getPanelcondition()) {
+		
+		PanelCondition p = this.viewBrain.getViewEditor().getSelectedCondition();
+		if(p != null)
 			p.isSelected = false;
-		}
+		
 		
 		String stringCond = viewBrain.getListeCondition().getSelectedValue();
 		PanelCondition panelCond = this.getPanelConditionWithName(stringCond);
 		
+		viewBrain.getViewEditor().setSelectedCondition(panelCond);
+
 		if(panelCond != null){
 			panelCond.isSelected = true;
 		}
@@ -99,7 +106,7 @@ public class ControleurBrain {
 	}
 	
 	private void eventAddState(){
-		WarPlanSettings planSetting = new WarPlanSettings();
+		PlanSettings planSetting = new PlanSettings();
 		
 		DialogueStateSetting d = new DialogueStateSetting(this.viewBrain, planSetting);
 		d.createDialog();
@@ -131,12 +138,39 @@ public class ControleurBrain {
 		}
 	}
 	
+	private void eventDelState(){
+		if(this.viewBrain.getViewEditor().isOneStateSelected()){
+			
+			ArrayList<PanelState> panelToDelet = this.viewBrain.getViewEditor().getSelectedStates();
+			
+			if(panelToDelet != null && panelToDelet.size() == 1){
+			
+				PanelState p = panelToDelet.get(0);
+				
+				//ATTENTION : supprimer le modele avant le panel puisque on utilise le panel pour acceder au modele
+				this.modeleBrain.removeState(p.getModelState());
+				this.viewBrain.getViewEditor().removePanelState(p);
+				
+				this.viewBrain.getViewEditor().unselectAllItems();
+				
+				viewBrain.getViewEditor().repaint();
+				
+			}else{
+				JOptionPane.showMessageDialog(this.viewBrain,
+					    "One state must be selected",
+					    "Selection error",
+					    JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+		
+	}
+
 	private void eventAddCond(){
 		
 		if(this.viewBrain.getViewEditor().isTwoStatesSelected()){
 			
-			WarConditionSettings condSett = new WarConditionSettings();
-
+			ConditionSettings condSett = new ConditionSettings();
+	
 			DialogueCondSetting d = new DialogueCondSetting(this.viewBrain, condSett);
 			d.createDialog();
 			
@@ -160,51 +194,45 @@ public class ControleurBrain {
 				addCondition(mc);
 			}
 			
-			
 		}else{
-			System.out.println("Pour ajouter une condition deux etats doivent �tre selectionn�s");
+			JOptionPane.showMessageDialog(this.viewBrain,
+				    "Two conditions must be selected",
+				    "Selection error",
+				    JOptionPane.INFORMATION_MESSAGE);
 		}
 		
 		viewBrain.getViewEditor().repaint();
 	}
-	
-	private void eventDelState(){
-		if(this.viewBrain.getViewEditor().isOneStateSelected()){
-			
-			PanelState panelToDelet = this.viewBrain.getViewEditor().getFirstSelectedState();
-			
-			//ATTENTION : supprimer le modele avant le panel puisque on utilise le panel pour acceder au modele
-			this.modeleBrain.removeState(panelToDelet.getModelState());
-			this.viewBrain.getViewEditor().removePanelState(panelToDelet);
-			
-			this.viewBrain.getViewEditor().setNoItemSelected();
-			
-			viewBrain.getViewEditor().repaint();
-		}
-		
-	}
 
 	private void eventEditCond(){
-		String condSelec = this.viewBrain.getListeCondition().getSelectedValue();
 		
-		if(condSelec != null){
+		PanelCondition panelCondition = viewBrain.getViewEditor().getSelectedCondition();
+		
+		if(panelCondition == null){
+			JOptionPane.showMessageDialog(this.viewBrain,
+				    "One condition must be selected",
+				    "Selection error",
+				    JOptionPane.INFORMATION_MESSAGE);
+		}else{
 			
-			ModelCondition modeleCond;
+			ModelCondition modelCond = panelCondition.getModele();
+				
+			DialogueCondSetting dialogCondSetting = 
+					new DialogueCondSetting(this.viewBrain, modelCond);
+			dialogCondSetting.createDialog();
 			
-			for (ModelCondition modeleC : this.modeleBrain.getConditions()) {
-				if(modeleC.getName().equals(condSelec)){
-					modeleCond = modeleC;
-					break;
-				}
+			if(dialogCondSetting.isValideComponent()){
+				modelCond.setName(dialogCondSetting.getConditionName());
+				modelCond.setConditionType(dialogCondSetting.getConditionType());
+				modelCond.setConditionSettings(dialogCondSetting.getConditionSettings());
 			}
-			
-//			if(condSelec.equals(Settings.WarConditionActionTerminate)){
-//			}
+				
+			viewBrain.updateSelectedCondition();
 		}
 	}
 	
 	private PanelCondition getPanelConditionWithName(String s){
-		for (PanelCondition p : this.viewBrain.getViewEditor().getPanelcondition()) {
+		for (PanelCondition p : this.viewBrain.getViewEditor().getPanelconditions()) {
 			if(p.getModele().getName().equals(s))
 				return p;
 		}

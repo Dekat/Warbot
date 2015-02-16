@@ -2,7 +2,7 @@ package edu.warbot.FSM.condition;
 
 import java.util.ArrayList;
 
-import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
@@ -22,7 +22,7 @@ public class WarConditionPerceptAttributCheck<AgentAdapterType extends Controlla
 	boolean oneOf;
 	
 	public WarConditionPerceptAttributCheck(String name, AgentAdapterType brain, 
-			WarConditionSettings conditionSettings){
+			ConditionSettings conditionSettings){
 		
 		super(name, brain, conditionSettings);
 //		this.nameAtt = conditionSettings.Reference;

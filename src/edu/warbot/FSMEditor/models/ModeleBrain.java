@@ -50,14 +50,6 @@ public class ModeleBrain {
 		return this.conditions;
 	}
 
-	public Vector<String> getConditionsName() {
-		Vector<String> res = new Vector<>();
-		for (ModelCondition m : this.conditions) {
-			res.add(m.getName());
-		}
-		return res;
-	}
-
 	public String getAgentTypeName() {
 		return this.agentType.toString();
 	}

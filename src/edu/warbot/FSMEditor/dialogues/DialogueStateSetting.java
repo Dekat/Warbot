@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
+import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSMEditor.controleurs.ControleurBrain;
 import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.settings.EnumPlan;
@@ -27,11 +27,11 @@ public class DialogueStateSetting extends AbstractDialogue {
 		this.comboxPlan.setSelectedItem(modelState.getPlanName());
 	}
 
-	public DialogueStateSetting(ViewBrain viewBrain, WarPlanSettings planSettings) {
+	public DialogueStateSetting(ViewBrain viewBrain, PlanSettings planSettings) {
 		super(viewBrain, planSettings);
 		
 		if(genericSettings == null)
-			genericSettings = new WarPlanSettings();
+			genericSettings = new PlanSettings();
 	}
 	
 	@Override
@@ -58,8 +58,8 @@ public class DialogueStateSetting extends AbstractDialogue {
 		return !this.fieldName.getText().isEmpty();
 	}
 
-	public WarPlanSettings getPlanSettings(){
-		return (WarPlanSettings)genericSettings;
+	public PlanSettings getPlanSettings(){
+		return (PlanSettings)genericSettings;
 	}
 	
 	public String getStateName() {

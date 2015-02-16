@@ -12,8 +12,8 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 import edu.warbot.FSM.WarGenericSettings.AbstractGenericAttributSettings;
-import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
-import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
+import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
@@ -114,8 +114,8 @@ public class FsmXmlReader extends FsmXmlParser{
 		
 		ArrayList<String> condID = getConditionsOutID(state.getChild(ConditionsOutID));
 		
-		WarPlanSettings warPlanSetting = 
-				(WarPlanSettings) getWarGenericSettings(WarPlanSettings.class, state.getChild(PlanSettings));
+		PlanSettings warPlanSetting = 
+				(PlanSettings) getWarGenericSettings(PlanSettings.class, state.getChild(PlanSettings));
 		
 		ModelState modeleState = new ModelState(name, EnumPlan.valueOf(plan), warPlanSetting);
 		modeleState.setConditionsOutID(condID);
@@ -129,9 +129,9 @@ public class FsmXmlReader extends FsmXmlParser{
 
 		String stateOutID = cond.getChild(StateOutID).getValue();
 		
-		WarConditionSettings warConditionSetting = 
-				(WarConditionSettings) getWarGenericSettings(WarConditionSettings.class, cond.getChild(ConditionSettings));
-		
+		ConditionSettings warConditionSetting = 
+				(ConditionSettings) getWarGenericSettings(ConditionSettings.class, cond.getChild(ConditionSettings));
+
 		ModelCondition modeleCond = new ModelCondition(name, EnumCondition.valueOf(type), warConditionSetting);
 		modeleCond.setStateOutId(stateOutID);
 		

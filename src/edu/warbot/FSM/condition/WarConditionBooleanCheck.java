@@ -3,7 +3,7 @@ package edu.warbot.FSM.condition;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumMethod;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 
@@ -12,7 +12,7 @@ public class WarConditionBooleanCheck<AgentAdapterType extends ControllableWarAg
 	EnumMethod methodName;
 	Method method;
 	
-	public WarConditionBooleanCheck(String name, AgentAdapterType brain, WarConditionSettings conditionSettings){
+	public WarConditionBooleanCheck(String name, AgentAdapterType brain, ConditionSettings conditionSettings){
 		
 		super(name, brain, conditionSettings);
 		methodName = conditionSettings.Methode;

@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.settings.EnumCondition;
 import edu.warbot.FSMEditor.views.ViewBrain;
@@ -25,11 +25,11 @@ public class DialogueCondSetting extends AbstractDialogue{
 		this.comboTypeCond.setSelectedItem(modelCondition.getConditionType());
 	}
 	
-	public DialogueCondSetting(ViewBrain f, WarConditionSettings conditionsSettings) {
+	public DialogueCondSetting(ViewBrain f, ConditionSettings conditionsSettings) {
 		super(f, conditionsSettings);
 		
 		if(genericSettings == null)
-			genericSettings = new WarConditionSettings();
+			genericSettings = new ConditionSettings();
 	}
 	
 	@Override
@@ -58,10 +58,6 @@ public class DialogueCondSetting extends AbstractDialogue{
 	}
 	
 
-	public WarConditionSettings getConditionSettings(){
-		return (WarConditionSettings)genericSettings;
-	}
-	
 	public String getConditionName(){
 		return this.fieldName.getText();
 	}
@@ -70,7 +66,11 @@ public class DialogueCondSetting extends AbstractDialogue{
 		return (EnumCondition) comboTypeCond.getSelectedItem();
 	}
 	
+	public ConditionSettings getConditionSettings(){
+		return (ConditionSettings)genericSettings;
+	}
+
 	JTextField fieldName = new JTextField(DEFAULT_CONDITION_NAME);
-	JComboBox<EnumCondition> comboTypeCond = new JComboBox<EnumCondition>(EnumCondition.values());
+	JComboBox<EnumCondition> comboTypeCond = new JComboBox<>(EnumCondition.values());
 	
 }

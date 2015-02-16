@@ -20,6 +20,7 @@ import org.jfree.ui.tabbedui.VerticalLayout;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.models.ModeleBrain;
+import edu.warbot.FSMEditor.panels.PanelCondition;
 import edu.warbot.FSMEditor.panels.PanelEditor;
 import edu.warbot.FSMEditor.panels.PanelState;
 
@@ -27,7 +28,7 @@ public class ViewBrain extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 
-	ModeleBrain modeleBrain;
+	private ModeleBrain modeleBrain;
 	
 	private PanelEditor panelEditor;
 
@@ -85,14 +86,10 @@ public class ViewBrain extends JPanel{
 		buttonDelCond = new JButton("Delete condition");
 		
 		listModeleCond = new DefaultListModel<>();
-		listModeleCond.addElement("None");
-		for (String s : modeleBrain.getConditionsName()) {
-			listModeleCond.addElement(s);
-		}
+		updateSelectedCondition();
 		
 		listCond = new JList<>(listModeleCond);
-		listCond.add(new JScrollBar());
-		listCond.setVisibleRowCount(3); //TODO ici ca serait mieux si il affiche un truc de taille dynamique
+		listCond.setVisibleRowCount(10); //TODO ici ca serait mieux si il affiche un truc de taille dynamique
 		
 		panel.add(buttonAddCond);
 		panel.add(new JSeparator());
@@ -129,7 +126,7 @@ public class ViewBrain extends JPanel{
 	public DefaultListModel<String> getListeModeleConditions() {
 		return this.listModeleCond;
 	}
-
+	
 	/*** Accesseurs ***/
 	
 	public JButton getButtonAddState() {
@@ -162,6 +159,13 @@ public class ViewBrain extends JPanel{
 	private JButton buttonAddCond;
 	private JButton buttonEditCond;
 	private JButton buttonDelCond;
+
+	public void updateSelectedCondition() {
+		listModeleCond.clear();
+		for (ModelCondition c : modeleBrain.getConditions()) {
+			listModeleCond.addElement(c.getName());
+		}
+	}
 
 
 }

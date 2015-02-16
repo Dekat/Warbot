@@ -10,7 +10,7 @@ import edu.warbot.agents.enums.WarAgentType;
  * ATTENTION : les attributs peuvent etre de types : Boolean, Integer, String, EnumAction,
  * WarAgentType, EnumMethod, EnumOperand
  */
-public class WarConditionSettings extends AbstractGenericAttributSettings{
+public class ConditionSettings extends AbstractGenericAttributSettings{
 	
 	public EnumMethod Methode;
 

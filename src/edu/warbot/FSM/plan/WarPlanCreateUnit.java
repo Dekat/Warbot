@@ -1,7 +1,7 @@
 package edu.warbot.FSM.plan;
 
-import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
-import edu.warbot.FSM.WarGenericSettings.WarPlanSettings;
+import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionCreateUnit;
 import edu.warbot.FSM.condition.WarCondition;
@@ -24,7 +24,7 @@ public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 	int minLife;
 	boolean pourcentage;
 	
-	public WarPlanCreateUnit(WarBaseAdapter brain, WarPlanSettings planSettings ) {
+	public WarPlanCreateUnit(WarBaseAdapter brain, PlanSettings planSettings ) {
 		super("Plan healer", brain, planSettings);
 		
 		this.agentType = getPlanSettings().Agent_type;

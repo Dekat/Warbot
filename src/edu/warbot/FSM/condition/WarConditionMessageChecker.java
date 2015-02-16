@@ -1,6 +1,6 @@
 package edu.warbot.FSM.condition;
 
-import edu.warbot.FSM.WarGenericSettings.WarConditionSettings;
+import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 import edu.warbot.communications.WarMessage;
@@ -11,7 +11,7 @@ public class WarConditionMessageChecker<AgentAdapterType extends ControllableWar
 	String message;
 
 	public WarConditionMessageChecker(String name, AgentAdapterType brain,
-			WarConditionSettings conditionSettings){
+			ConditionSettings conditionSettings){
 //			WarAgentType agentType, String message) {
 		super(name, brain, conditionSettings);
 		
