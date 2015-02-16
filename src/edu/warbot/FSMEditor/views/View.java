@@ -4,10 +4,18 @@ import java.awt.Dimension;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
+import java.awt.MenuShortcut;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import javax.swing.AbstractButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 
 import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModeleBrain;
@@ -59,7 +67,7 @@ public class View extends JFrame {
 		this.setSize(new Dimension(800, 600));
 		this.setLocationRelativeTo(null);
 		
-		this.setMenuBar(getMainMenuBar());
+		this.setJMenuBar(getMainMenuBar());
 		
 		this.setContentPane(mainPanel);
 		
@@ -67,42 +75,59 @@ public class View extends JFrame {
 		
 	}
 	
-	private MenuBar getMainMenuBar() {
-		MenuBar mb = new MenuBar();
+	private JMenuBar getMainMenuBar() {
+		JMenuBar mb = new JMenuBar();
 
-		miSave = new MenuItem("Save");
-		miLoad = new MenuItem("Load");
-		miSaveJar = new MenuItem("Test validity");
+		miSave = new JMenuItem("Save");
+		miOpen = new JMenuItem("Open");
+		miTest = new JMenuItem("Test validity");
+		miPrint = new JMenuItem("Print");
+		
+		miSave.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 
-		Menu mSave = new Menu("Save");
-		Menu mLoad = new Menu("Load");
+		miOpen.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		
-		mSave.add(miSave);
-		mSave.add(miSaveJar);
-		mLoad.add(miLoad);
+		miTest.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_T, ActionEvent.CTRL_MASK));
+
+		miPrint.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_P, ActionEvent.CTRL_MASK));
+
+		JMenu mFile = new JMenu("File");
+		JMenu mTest = new JMenu("Test");
 		
-		mb.add(mSave);
-		mb.add(mLoad);
+		mFile.add(miSave);
+		mFile.add(miOpen);
+		
+		mTest.add(miTest);
+		mTest.add(miPrint);
+		
+		mb.add(mFile);
+		mb.add(mTest);
 		
 		return mb;
 	}
 	
 	/*** Accesseurs ***/
 	
-
-	
-	public MenuItem getMenuBarItemSave() {
+	public JMenuItem getMenuBarItemSave() {
 		return miSave;
 	}
 
-	public MenuItem getMenuBarItemLoad() {
-		return miLoad;
+	public JMenuItem getMenuBarItemLoad() {
+		return miOpen;
 	}
 	
-	public MenuItem getMenuBarItemSaveJar() {
-		return miSaveJar;
+	public JMenuItem getMenuBarItemTest() {
+		return miTest;
 	}
 	
+	public JMenuItem getMenuBarItemPrint() {
+		return miPrint;
+	}
+
 	public ArrayList<ViewBrain> getViewBrains() {
 		return this.viewBrains;
 	}
@@ -114,9 +139,10 @@ public class View extends JFrame {
 
 	/*** Attributs ***/
 	
-	private MenuItem miSave;
-	private MenuItem miLoad;
-	private MenuItem miSaveJar;
+	private JMenuItem miSave;
+	private JMenuItem miOpen;
+	private JMenuItem miTest;
+	private JMenuItem miPrint;
 
 
 

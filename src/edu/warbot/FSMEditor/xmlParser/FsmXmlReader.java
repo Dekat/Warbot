@@ -29,7 +29,6 @@ import edu.warbot.agents.enums.WarAgentType;
  * Prend en parametre du constructeur le nom du fichier de confuguration de la FSM (par default "XMLConfiguration.xml")
  * Permet de créer un modele de FSM à partir du fichier de configuration
  * Utiliser la méthode getGeneratedFSMModel() pour récupérer le modèle crée
- * @author Olivier
  *
  */
 public class FsmXmlReader extends FsmXmlParser{
@@ -96,7 +95,11 @@ public class FsmXmlReader extends FsmXmlParser{
 	}
 
 	private void createStates(Element states, ModeleBrain modeleBrain) {
-		for (Element state : states.getChildren()) {
+		String first = states.getChild(FirstState).getValue();
+		
+		modeleBrain.setFirstStateID(first);
+		
+		for (Element state : states.getChildren(State)) {
 			createState(state, modeleBrain);
 		}
 	}

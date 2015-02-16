@@ -1,6 +1,5 @@
 package edu.warbot.FSMEditor;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
@@ -8,13 +7,12 @@ import edu.warbot.FSM.WarEtat;
 import edu.warbot.FSM.WarFSM;
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.plan.WarPlan;
+import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
-import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.ControllableWarAgentAdapter;
-import edu.warbot.brains.adapters.WarExplorerAdapter;
 
 /**
  * Permet de générer et d'instanicer un objet de type FSM grâce à un modele de FSM
@@ -74,6 +72,8 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 			//Ajoute l'état dans la hashMap d'état
 			hashMapState.put(warState.getName(), warState);
 		}
+		//Remet l'état de départ
+		fsm.setFirstEtat(hashMapState.get(modelBrain.getFirstState().getName()));
 		
 		//On ajoute ensuite les conditions
 		for (ModelCondition modelCond : modelBrain.getConditions()) {

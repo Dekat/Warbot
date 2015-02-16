@@ -59,6 +59,7 @@ public class FSMModelRebuilder {
 		
 		/*** Remplace les ID par des pointeurs ***/
 		//Pour chaque état
+		brain.setFirstState(mapStatesID.get(brain.getFirstStateID()));
 		for (ModelState state : brain.getStates()) {
 			rebuildState(state, mapConditionsID);
 		}

@@ -31,6 +31,9 @@ public class PanelEditor extends JPanel {
 		for (ModelState modelState : modelBrain.getStates()) {
 			addState(modelState);
 		}
+		if(modelBrain.getFirstState() != null)
+			modelBrain.getFirstState().getViewState().setFirstState(true);
+		
 		//Crée les conditions
 		for (ModelCondition modelCond : modelBrain.getConditions()) {
 			addCondition(modelCond);
@@ -40,8 +43,6 @@ public class PanelEditor extends JPanel {
 	public void paintComponent(Graphics g) {
 
 		g.clearRect(0, 0, this.getWidth(), this.getHeight());
-
-		g.drawRect(0, 0, this.getSize().width, this.getSize().height);
 
 		paintConditions(g);
 		paintState(g);
@@ -119,16 +120,9 @@ public class PanelEditor extends JPanel {
 		}
 	}
 
-	public boolean isOneStateSelected() {
-		return this.selectedState.size() == 1;
-	}
-
 	public boolean isTwoStatesSelected() {
 		return this.selectedState.size() == 2;
 	}
-
-	private ArrayList<PanelState> selectedState = new ArrayList<>();
-	private PanelCondition selectedCondition;
 
 	public void removePanelState(PanelState p){
 		this.panelSates.remove(p);
@@ -149,4 +143,8 @@ public class PanelEditor extends JPanel {
 	public void removePanelCondition(PanelCondition panel) {
 		this.panelsCondition.remove(panel);
 	}
+
+	private ArrayList<PanelState> selectedState = new ArrayList<>();
+
+	private PanelCondition selectedCondition;
 }

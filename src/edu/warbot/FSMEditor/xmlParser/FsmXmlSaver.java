@@ -57,11 +57,20 @@ public class FsmXmlSaver extends FsmXmlParser{
 
 	private Element getContentStatesForBrain(ModeleBrain brain) {
 		Element states = new Element(States);
+		states.addContent(getContentForFirstState(brain));
+				
 		
 		for (ModelState currentState : brain.getStates()) {
 			states.addContent(getContentForState(currentState));
 		}
 		return states;
+	}
+
+	private Element getContentForFirstState(ModeleBrain brain) {
+		Element elem = new Element(FirstState);
+		if(brain.getFirstState() != null)
+			elem.setText(brain.getFirstState().getName());
+		return elem;
 	}
 
 	private Element getContentConditionForBrain(ModeleBrain brain) {

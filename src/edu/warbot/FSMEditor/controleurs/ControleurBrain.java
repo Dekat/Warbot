@@ -101,10 +101,6 @@ public class ControleurBrain {
 		if(firtState != null)
 			firtState.getViewState().setFirstState(false);
 		
-//		if(firtState != null)
-//			firtState.isSelected = false;
-		
-		
 		String stringCond = viewBrain.jListState.getSelectedValue();
 		ModelState modelState = this.getModelStateWithName(stringCond);
 
@@ -112,18 +108,6 @@ public class ControleurBrain {
 			modeleBrain.setFirstState(modelState);
 			modelState.getViewState().setFirstState(true);
 		}
-		
-		
-//		
-//		PanelState p = this.viewBrain.getViewEditor().getSelectedStates();
-//		
-//		panelCond.getModelState().setFirstState();
-//		
-//		viewBrain.getModel().getViewEditor().setSelectedCondition(panelCond);
-//
-//		if(panelCond != null){
-//			panelCond.isSelected = true;
-//		}
 		
 		this.viewBrain.getViewEditor().repaint();
 	}
@@ -164,19 +148,28 @@ public class ControleurBrain {
 	}
 	
 	private void eventEditState(){
-		ModelState modelState = 
-				this.viewBrain.getViewEditor().getFirstSelectedState().getModelState();
+		ArrayList<PanelState> panelStates = this.viewBrain.getViewEditor().getSelectedStates();
 		
-		DialogueStateSetting d = new DialogueStateSetting(this.viewBrain, modelState);
-		d.createDialog();
+		if(panelStates != null && panelStates.size() == 1){
 		
-		if(d.isValideComponent()){
+			ModelState modelState = panelStates.get(0).getModelState();
 			
-			modelState.setName(d.getStateName());
-			modelState.setPlanName(d.getPlanName());
-			modelState.setPlanSettings(d.getPlanSettings());
+			DialogueStateSetting d = new DialogueStateSetting(this.viewBrain, modelState);
+			d.createDialog();
 			
-			viewBrain.getViewEditor().repaint();
+			if(d.isValideComponent()){
+				
+				modelState.setName(d.getStateName());
+				modelState.setPlanName(d.getPlanName());
+				modelState.setPlanSettings(d.getPlanSettings());
+				
+				viewBrain.getViewEditor().repaint();
+			}
+		}else{
+			JOptionPane.showMessageDialog(this.viewBrain,
+				    "One state must be selected",
+				    "Selection error",
+				    JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	

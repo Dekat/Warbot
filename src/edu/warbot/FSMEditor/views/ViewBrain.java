@@ -3,21 +3,14 @@ package edu.warbot.FSMEditor.views;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
-import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollBar;
 import javax.swing.JSeparator;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 

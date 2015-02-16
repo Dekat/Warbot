@@ -21,9 +21,7 @@ public class PanelState extends AbstractPanel{
 
 	public void paint(Graphics g){
 		
-		//Clear state
 		g.clearRect(position.x, position.y, size.width, size.height);
-		
 			
 		if(this.isSelected)
 			g.setColor(Color.red);

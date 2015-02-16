@@ -97,10 +97,16 @@ public class Controleur {
 				eventMenuBarItemLoad();
 			}
 		});
-		view.getMenuBarItemSaveJar().addActionListener(new ActionListener() {
+		view.getMenuBarItemTest().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				eventMenuBarItemTest();
+			}
+		});
+		view.getMenuBarItemPrint().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				eventMenuBarItemPrint();
 			}
 		});
 	}
@@ -205,6 +211,18 @@ public class Controleur {
 		
 		System.out.println("Controleur : Your FSM seen to be valid, check it in console");
 		
+	}
+	
+	public void eventMenuBarItemPrint(){
+		try{
+			printModelInformations(this.model);
+		}catch(NullPointerException e){
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(this.view,
+				    "Error during analysing model !",
+				    "Print error",
+				    JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	public void eventMenuBarItemLoad(){

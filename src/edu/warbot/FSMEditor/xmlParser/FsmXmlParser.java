@@ -14,6 +14,7 @@ public class FsmXmlParser {
 	public static final String AgentType = "WarAgentType";
 	
 	public static final String States = "States";
+	public static final String FirstState = "FirstState";
 	public static final String State = "State";
 	public static final String ConditionsOutID = "ConditionsOutID";
 	public static final String ConditionOutID = "ConditionOutID";

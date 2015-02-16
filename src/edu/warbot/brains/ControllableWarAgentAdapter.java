@@ -80,10 +80,17 @@ public abstract class ControllableWarAgentAdapter extends WarAgentAdapter implem
 		return getAgent().isBagFull();
 	}
 	
+	/**
+	 * @return if life over maximum agent life minus one unity of food
+	 * Exemple : MAX_EXPLORER_LIFE - FOOD_GAIN
+	 */
 	public boolean isFullLife() {
 		return getHealth() + WarFood.HEALTH_GIVEN > getMaxHealth();
 	}
 	
+	/**
+	 * @return if life is under 10%
+	 */
 	public boolean isLowLife() {
 		return getHealth() < getMaxHealth() * 0.1;
 	}
