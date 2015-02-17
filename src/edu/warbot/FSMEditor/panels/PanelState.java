@@ -18,6 +18,9 @@ public class PanelState extends AbstractPanel{
 
 	public void paint(Graphics g){
 		
+		String msgName = this.modeleState.getName();
+		String msgPlan = this.modeleState.getPlanName().name();
+		
 		g.clearRect(position.x, position.y, size.width, size.height);
 			
 		if(this.isSelected)
@@ -27,15 +30,29 @@ public class PanelState extends AbstractPanel{
 		else
 			g.setColor(Color.black);
 		
-		g.drawRect(position.x, position.y, size.width, size.height);
+		int padding = 2;
 		
+		Font font = new Font("Arial", Font.PLAIN, 10);
+//		g.setFont(font);
 		
-		g.drawString(this.modeleState.getName(), position.x + 1, position.y + 11);
+	    FontMetrics metrics = g.getFontMetrics(g.getFont());
+	    Dimension speechBubbleSizeName = new Dimension(metrics.stringWidth(msgName) + (2 * padding), metrics.getHeight() + (2 * padding));
+        Dimension speechBubbleSizePlan = new Dimension(metrics.stringWidth(msgPlan) + (2 * padding), metrics.getHeight() + (2 * padding));
+
+        Dimension speechBubbleSizeMax = new Dimension();
+        speechBubbleSizeMax.width = Math.max(speechBubbleSizeName.width, speechBubbleSizePlan.width);
+        speechBubbleSizeMax.height = Math.max(speechBubbleSizeName.height, speechBubbleSizePlan.height);
 		
-		g.drawLine(position.x, position.y + size.height/2
-				, position.x + size.width - 1, position.y + size.height/2);
+        g.drawRect(position.x, position.y, speechBubbleSizeMax.width, size.height);
+
+//        g.drawRect(position.x, position.y, size.width, size.height);
 		
-		g.drawString(this.modeleState.getPlanName().name(), position.x + 1, position.y + size.height/2 + 11);
+        g.drawLine(position.x, position.y + size.height/2
+        		,position.x + speechBubbleSizeMax.width - 1, position.y + size.height/2);
+		
+		g.drawString(this.modeleState.getName(), position.x + 1, position.y + 12);
+		
+		g.drawString(this.modeleState.getPlanName().name(), position.x + 2, position.y + size.height/2 + 12);
 		
 		
 	}
