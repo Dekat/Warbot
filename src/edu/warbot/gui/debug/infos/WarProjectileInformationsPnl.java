@@ -1,13 +1,14 @@
 package edu.warbot.gui.debug.infos;
 
 import edu.warbot.agents.WarProjectile;
-import edu.warbot.gui.debug.DebugModeToolBar;
+import edu.warbot.gui.debug.DebugToolsPnl;
 
 import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class WarProjectileInformationsPnl extends JPanel  implements IWarAgentInformationsPnl {
-	private DebugModeToolBar _debugToolBar;
+
+	private DebugToolsPnl debugToolsPnl;
 	
 	private InfoLabel _explosionRadius;
 	private InfoLabel _damage;
@@ -16,10 +17,10 @@ public class WarProjectileInformationsPnl extends JPanel  implements IWarAgentIn
 	private InfoLabel _currentAutonomy;
 	private InfoLabel _sender;
 	
-	public WarProjectileInformationsPnl(DebugModeToolBar debugToolBar) {
+	public WarProjectileInformationsPnl(DebugToolsPnl debugToolsPnl) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		_debugToolBar = debugToolBar;
+		this.debugToolsPnl = debugToolsPnl;
 		
 		add(new JLabel(" "));
 		_explosionRadius = new InfoLabel("Rayon d'explosion");
@@ -38,9 +39,9 @@ public class WarProjectileInformationsPnl extends JPanel  implements IWarAgentIn
 	
 	@Override
 	public void update() {
-		if (_debugToolBar.getSelectedAgent() instanceof WarProjectile) {
+		if (debugToolsPnl.getSelectedAgent() instanceof WarProjectile) {
 			setVisible(true);
-			WarProjectile a = (WarProjectile) _debugToolBar.getSelectedAgent();
+			WarProjectile a = (WarProjectile) debugToolsPnl.getSelectedAgent();
 	
 			_explosionRadius.setValue(doubleFormatter.format(a.getExplosionRadius()));
 			_damage.setValue(String.valueOf(a.getDamage()));

@@ -1,28 +1,24 @@
 package edu.warbot.gui.debug;
 
-import edu.warbot.agents.WarAgent;
-import edu.warbot.gui.debug.infos.WarAgentInformationsPnl;
 import edu.warbot.launcher.WarViewer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 @SuppressWarnings("serial")
 public class DebugModeToolBar extends JToolBar {
 
-	private WarAgent _selectedAgent;
-
 	private WarViewer _viewer;
 	private DebugToolsPnl _debugToolsPnl;
-	private WarAgentInformationsPnl _agentInfosPnl;
 
-	private MouseListener _currentMouseListener;
+	private MouseListener _currentViewMouseListener;
 
 	public DebugModeToolBar(WarViewer viewer) {
 		super();
 		_viewer = viewer;
-		_currentMouseListener = null;
+		_currentViewMouseListener = null;
 
 		setLayout(new BorderLayout());
 		setAlignmentY(CENTER_ALIGNMENT);
@@ -35,11 +31,8 @@ public class DebugModeToolBar extends JToolBar {
 		JPanel pnlCenter = new JPanel();
 		pnlCenter.setLayout(new BorderLayout());
 		_debugToolsPnl = new DebugToolsPnl(this);
-		pnlCenter.add(_debugToolsPnl, BorderLayout.NORTH);
-
-		_agentInfosPnl = new WarAgentInformationsPnl(this);
-		pnlCenter.add(_agentInfosPnl, BorderLayout.CENTER);
-		add(pnlCenter, BorderLayout.CENTER);
+		pnlCenter.add(_debugToolsPnl, BorderLayout.CENTER);
+        add(pnlCenter, BorderLayout.CENTER);
 	}
 
 	public void init(JFrame frame) {
@@ -51,33 +44,21 @@ public class DebugModeToolBar extends JToolBar {
 		return _debugToolsPnl;
 	}
 
-	public WarAgent getSelectedAgent() {
-		return _selectedAgent;
-	}
-
 	@Override
 	public void setVisible(boolean aFlag) {
 		super.setVisible(aFlag);
 		if (aFlag) { // Si on affiche le panel
-			_agentInfosPnl.update();
-			if (_currentMouseListener == null)
+			_debugToolsPnl.getAgentInformationsPanel().update();
+			if (_currentViewMouseListener == null)
 				_debugToolsPnl.getInfoToolBtn().setSelected(true);
-			else
-				_viewer.getSwingView().addMouseListener(_currentMouseListener);
+			else {
+                addCurrentMouseListener();
+            }
 		} else {
-			setSelectedAgent(null);;
-			if (_currentMouseListener != null) {
-				_viewer.getSwingView().removeMouseListener(_currentMouseListener);
+			_debugToolsPnl.setSelectedAgent(null);
+			if (_currentViewMouseListener != null) {
+                removeCurrentMouseListener();
 			}
-		}
-	}
-
-	public void setSelectedAgent(WarAgent agent) {
-		if (_selectedAgent != agent) {
-			_selectedAgent = agent;
-			_agentInfosPnl.update();
-
-            getViewer().getFrame().repaint();
 		}
 	}
 
@@ -85,15 +66,24 @@ public class DebugModeToolBar extends JToolBar {
 		return _viewer;
 	}
 
-	public WarAgentInformationsPnl getAgentInformationsPanel() {
-		return _agentInfosPnl;
+	public void setNewMouseListener(MouseListener newMouseListener) {
+		if (_currentViewMouseListener != null)
+			removeCurrentMouseListener();
+		_currentViewMouseListener = newMouseListener;
+        _debugToolsPnl.setSelectedAgent(null);
+        addCurrentMouseListener();
 	}
 
-	public void setNewMouseListener(MouseListener newMouseListener) {
-		if (_currentMouseListener != null)
-			_viewer.getSwingView().removeMouseListener(_currentMouseListener);
-		_currentMouseListener = newMouseListener;
-		setSelectedAgent(null);
-		_viewer.getSwingView().addMouseListener(_currentMouseListener);
-	}
+    private void addCurrentMouseListener() {
+        _viewer.getSwingView().addMouseListener(_currentViewMouseListener);
+        if (_currentViewMouseListener instanceof MouseMotionListener)
+            _viewer.getSwingView().addMouseMotionListener((MouseMotionListener) _currentViewMouseListener);
+    }
+
+    private void removeCurrentMouseListener() {
+        _viewer.getSwingView().removeMouseListener(_currentViewMouseListener);
+        if (_currentViewMouseListener instanceof MouseMotionListener)
+            _viewer.getSwingView().removeMouseMotionListener((MouseMotionListener) _currentViewMouseListener);
+    }
+
 }

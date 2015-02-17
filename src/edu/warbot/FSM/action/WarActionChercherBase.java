@@ -1,9 +1,5 @@
 package edu.warbot.FSM.action;
 
-import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
-
 import edu.warbot.FSM.WarFSMMessage;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.agents.WarRocketLauncher;
@@ -12,6 +8,9 @@ import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.tools.geometry.CoordPolar;
+
+import javax.swing.*;
+import java.util.ArrayList;
 
 /**
  * Cherche la base enemy

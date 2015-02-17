@@ -13,6 +13,8 @@ import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
+import javax.swing.*;
+
 /**
  * Plan avancé ne marche pas encore !
  * Pattrouiller de manière deffensive va chercher la base enemie

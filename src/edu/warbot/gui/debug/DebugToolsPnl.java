@@ -1,46 +1,51 @@
 package edu.warbot.gui.debug;
 
+import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
+import edu.warbot.game.Team;
 import edu.warbot.gui.debug.eventlisteners.AddToolMouseListener;
 import edu.warbot.gui.debug.eventlisteners.DeleteToolMouseListener;
 import edu.warbot.gui.debug.eventlisteners.InfosToolMouseListener;
 import edu.warbot.gui.debug.eventlisteners.MoveToolMouseListener;
+import edu.warbot.gui.debug.infos.WarAgentInformationsPnl;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.util.HashMap;
 
 @SuppressWarnings("serial")
 public class DebugToolsPnl extends JPanel {
 
 	private DebugModeToolBar _debugToolBar;
-	
-	private HashMap<String, WarAgentSelectButton> _agentSelectButtons;
-	private WarAgentType _selectedWarAgentTypeToCreate;
-	
+    private WarAgent _selectedAgent;
+
+    private WarAgentType _selectedWarAgentTypeToCreate;
+    private Team selectedTeamForNextCreatedAgent;
+
 	private DebugToolOnOffBtn _infoTool;
 	private DebugToolOnOffBtn _addTool;
 	private DebugToolOnOffBtn _deleteTool;
 	private DebugToolOnOffBtn _moveTool;
-	
-	private JPanel _pnlSelectAgent;
-	
-	public DebugToolsPnl(DebugModeToolBar debugToolBar) {
+
+    private JPanel pnlCenter;
+	private JPanel _pnlSelectAgentAndTeam;
+    private WarAgentInformationsPnl _agentInfosPnl;
+
+    public DebugToolsPnl(DebugModeToolBar debugToolBar) {
 		super();
 		_selectedWarAgentTypeToCreate = null;
 		_debugToolBar = debugToolBar;
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		
+        setLayout(new BorderLayout());
+
 		JPanel pnlBattlegroundTools = new JPanel();
 		pnlBattlegroundTools.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		ButtonGroup groupBattleGroundTools = new ButtonGroup();
 		
 		_infoTool = new DebugToolOnOffBtn("infos.png", "infos_s.png",
 				"Obtenir des informations sur un agent",
-				'i', _debugToolBar, new InfosToolMouseListener(_debugToolBar));
+				'i', _debugToolBar, new InfosToolMouseListener(this));
 		pnlBattlegroundTools.add(_infoTool);
 		groupBattleGroundTools.add(_infoTool);
 		
@@ -62,37 +67,69 @@ public class DebugToolsPnl extends JPanel {
 		pnlBattlegroundTools.add(_moveTool);
 		groupBattleGroundTools.add(_moveTool);
 		
-		add(pnlBattlegroundTools);
+		add(pnlBattlegroundTools, BorderLayout.NORTH);
 		
 		
-		_pnlSelectAgent = new JPanel();
-		_pnlSelectAgent.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-		_pnlSelectAgent.setLayout(new FlowLayout());
-		_pnlSelectAgent.setPreferredSize(new Dimension(200, 300));
-		_agentSelectButtons = new HashMap<>();
-		ButtonGroup groupSelectAgentToCreate = new ButtonGroup();
-		WarAgentType[] typesWhichCanBeCreate = WarAgentType.getAgentsOfCategories(WarAgentCategory.Building,
-				WarAgentCategory.Soldier, WarAgentCategory.Worker, WarAgentCategory.Resource); 
-		for (WarAgentType type : typesWhichCanBeCreate) {
-			WarAgentSelectButton btn = new WarAgentSelectButton(type, _debugToolBar);
-			_agentSelectButtons.put(type.toString(), btn);
-			_pnlSelectAgent.add(btn);
-			groupSelectAgentToCreate.add(btn);
-		}
-		_pnlSelectAgent.setVisible(false);
-		add(_pnlSelectAgent);
-		
+		_pnlSelectAgentAndTeam = new JPanel(new BorderLayout());
+        JPanel pnlSelectAgent = new JPanel();
+        pnlSelectAgent.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        pnlSelectAgent.setLayout(new FlowLayout());
+        pnlSelectAgent.setPreferredSize(new Dimension(200, 300));
+        ButtonGroup groupSelectAgentToCreate = new ButtonGroup();
+        WarAgentType[] typesWhichCanBeCreate = WarAgentType.getAgentsOfCategories(WarAgentCategory.Building,
+                WarAgentCategory.Soldier, WarAgentCategory.Worker, WarAgentCategory.Resource);
+        for (WarAgentType type : typesWhichCanBeCreate) {
+            WarAgentSelectButton btn = new WarAgentSelectButton(type, _debugToolBar);
+            pnlSelectAgent.add(btn);
+            groupSelectAgentToCreate.add(btn);
+        }
+        _pnlSelectAgentAndTeam.add(pnlSelectAgent, BorderLayout.CENTER);
+        JPanel pnlSelectTeam = new JPanel();
+        pnlSelectTeam.setLayout(new FlowLayout());
+        pnlSelectTeam.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        ButtonGroup groupSelectTeam = new ButtonGroup();
+        for(Team team : _debugToolBar.getViewer().getGame().getPlayerTeams()) {
+            WarTeamSelectButton teamSelectButton = new WarTeamSelectButton(team, _debugToolBar);
+            pnlSelectTeam.add(teamSelectButton);
+            groupSelectTeam.add(teamSelectButton);
+        }
+        _pnlSelectAgentAndTeam.add(pnlSelectTeam, BorderLayout.NORTH);
+
+        _agentInfosPnl = new WarAgentInformationsPnl(this);
+
+        pnlCenter = new JPanel();
+        add(pnlCenter, BorderLayout.CENTER);
+
 		loadEvents();
 	}
 	
 	private void loadEvents() {
 		_addTool.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				_pnlSelectAgent.setVisible(_addTool.isSelected());
-			}
-		});
-	}
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if(_addTool.isSelected()) {
+                    pnlCenter.add(_pnlSelectAgentAndTeam, BorderLayout.CENTER);
+                } else {
+                    pnlCenter.remove(_pnlSelectAgentAndTeam);
+                }
+                revalidate();
+                repaint();
+            }
+        });
+        _infoTool.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if(_infoTool.isSelected()) {
+                    pnlCenter.add(_agentInfosPnl, BorderLayout.CENTER);
+                } else {
+                    pnlCenter.remove(_agentInfosPnl);
+                }
+                revalidate();
+                repaint();
+            }
+        });
+
+    }
 	
 	public WarAgentType getSelectedWarAgentTypeToCreate() {
 		return _selectedWarAgentTypeToCreate;
@@ -101,8 +138,37 @@ public class DebugToolsPnl extends JPanel {
 	public void setSelectedWarAgentTypeToCreate(WarAgentType agentType) {
 		_selectedWarAgentTypeToCreate = agentType;
 	}
-	
-	public DebugToolOnOffBtn getInfoToolBtn() {
+
+    public void setSelectedTeamForNextCreatedAgent(Team selectedTeamForNextCreatedAgent) {
+        this.selectedTeamForNextCreatedAgent = selectedTeamForNextCreatedAgent;
+    }
+
+    public Team getSelectedTeamForNextCreatedAgent() {
+        return selectedTeamForNextCreatedAgent;
+    }
+
+    public DebugToolOnOffBtn getInfoToolBtn() {
 		return _infoTool;
 	}
+
+    public WarAgentInformationsPnl getAgentInformationsPanel() {
+        return _agentInfosPnl;
+    }
+
+    public WarAgent getSelectedAgent() {
+        return _selectedAgent;
+    }
+
+    public void setSelectedAgent(WarAgent agent) {
+        if (_selectedAgent != agent) {
+            _selectedAgent = agent;
+            _agentInfosPnl.update();
+
+            _debugToolBar.getViewer().getFrame().repaint();
+        }
+    }
+
+    public DebugModeToolBar getDebugToolBar() {
+        return _debugToolBar;
+    }
 }

@@ -3,7 +3,6 @@ package edu.warbot.FSM.plan;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionAttaquer;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
-import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
 public class WarPlanAttaquer extends WarPlan<WarRocketLauncherAdapter> {

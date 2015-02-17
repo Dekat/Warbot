@@ -1,20 +1,21 @@
 package edu.warbot.gui.debug.infos;
 
 import edu.warbot.agents.MovableWarAgent;
-import edu.warbot.gui.debug.DebugModeToolBar;
+import edu.warbot.gui.debug.DebugToolsPnl;
 
 import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class MovableWarAgentInformationsPnl extends JPanel implements IWarAgentInformationsPnl {
-	private DebugModeToolBar _debugToolBar;
+
+	private DebugToolsPnl debugToolsPnl;
 	
 	private InfoLabel _speed;
 	
-	public MovableWarAgentInformationsPnl(DebugModeToolBar debugToolBar) {
+	public MovableWarAgentInformationsPnl(DebugToolsPnl debugToolsPnl) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		_debugToolBar = debugToolBar;
+		this.debugToolsPnl = debugToolsPnl;
 		
 		add(new JLabel(" "));
 		_speed = new InfoLabel("Vitesse");
@@ -23,9 +24,9 @@ public class MovableWarAgentInformationsPnl extends JPanel implements IWarAgentI
 	
 	@Override
 	public void update() {
-		if (_debugToolBar.getSelectedAgent() instanceof MovableWarAgent) {
+		if (debugToolsPnl.getSelectedAgent() instanceof MovableWarAgent) {
 			setVisible(true);
-			MovableWarAgent a = (MovableWarAgent) _debugToolBar.getSelectedAgent();
+			MovableWarAgent a = (MovableWarAgent) debugToolsPnl.getSelectedAgent();
 
 			_speed.setValue(doubleFormatter.format(a.getSpeed()));
 		} else {

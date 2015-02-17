@@ -101,6 +101,10 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
 		return getBrain().action();
 	}
 
+    public void forcePerceptsUpdate() {
+        _perceptsGetter.forcePerceptsUpdate();
+    }
+
 	public WarBrain<? extends ControllableWarAgentAdapter> getBrain() {
 		return _brain;
 	}
