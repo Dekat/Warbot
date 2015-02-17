@@ -1,6 +1,6 @@
 package edu.warbot.FSM.condition;
 
-import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
+import edu.warbot.FSM.genericSettings.ConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
@@ -8,7 +8,7 @@ import edu.warbot.brains.ControllableWarAgentAdapter;
 
 import java.util.ArrayList;
 
-public class WarConditionPerceptAttributCheck<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType> {
+public class WarConditionPerceptBooleanCheck<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType> {
 	
 	int attribut;
 	int reference;
@@ -20,7 +20,7 @@ public class WarConditionPerceptAttributCheck<AgentAdapterType extends Controlla
 	WarAgentType agentType;
 	boolean oneOf;
 	
-	public WarConditionPerceptAttributCheck(String name, AgentAdapterType brain, 
+	public WarConditionPerceptBooleanCheck(String name, AgentAdapterType brain, 
 			ConditionSettings conditionSettings){
 		
 		super(name, brain, conditionSettings);
@@ -97,7 +97,7 @@ public class WarConditionPerceptAttributCheck<AgentAdapterType extends Controlla
 	}
 	
 	private Integer getAttribut(WarAgentPercept p, String att) {
-		if(att.equals(WarConditionPerceptAttributCheck.HEALTH))
+		if(att.equals(WarConditionPerceptBooleanCheck.HEALTH))
 			return p.getHealth();
 		else{
 			System.out.println("Attribut not known " + this.getClass());

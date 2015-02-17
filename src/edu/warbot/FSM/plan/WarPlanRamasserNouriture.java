@@ -1,12 +1,12 @@
 package edu.warbot.FSM.plan;
 
-import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
-import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionChercherNouriture;
 import edu.warbot.FSM.action.WarActionRaporterNouriture;
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.condition.WarConditionBooleanCheck;
+import edu.warbot.FSM.genericSettings.ConditionSettings;
+import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.FSMEditor.settings.EnumMethod;
 import edu.warbot.brains.MovableWarAgentAdapter;
 

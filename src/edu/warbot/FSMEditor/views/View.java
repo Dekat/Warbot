@@ -70,6 +70,7 @@ public class View extends JFrame {
 		miSave = new JMenuItem("Save");
 		miOpen = new JMenuItem("Open");
 		miTest = new JMenuItem("Test validity");
+		miClean = new JMenuItem("Clean fsm");
 		miPrint = new JMenuItem("Print");
 		
 		miSave.setAccelerator(KeyStroke.getKeyStroke(
@@ -84,6 +85,9 @@ public class View extends JFrame {
 		miPrint.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_P, ActionEvent.CTRL_MASK));
 
+		miClean.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+
 		JMenu mFile = new JMenu("File");
 		JMenu mTest = new JMenu("Test");
 		
@@ -91,6 +95,7 @@ public class View extends JFrame {
 		mFile.add(miOpen);
 		
 		mTest.add(miTest);
+		mTest.add(miClean);
 		mTest.add(miPrint);
 		
 		mb.add(mFile);
@@ -131,6 +136,7 @@ public class View extends JFrame {
 	private JMenuItem miSave;
 	private JMenuItem miOpen;
 	private JMenuItem miTest;
+	public JMenuItem miClean;
 	private JMenuItem miPrint;
 
 

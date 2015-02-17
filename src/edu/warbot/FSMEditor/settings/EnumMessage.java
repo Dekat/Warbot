@@ -10,5 +10,6 @@ public enum EnumMessage {
 	explorer_Here,
 	RL_here,
 	base_attacked,
-	we_attack
+	we_attack,
+	food_here
 }

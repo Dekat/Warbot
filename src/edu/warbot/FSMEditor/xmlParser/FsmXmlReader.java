@@ -13,9 +13,9 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
-import edu.warbot.FSM.WarGenericSettings.AbstractGenericAttributSettings;
-import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
-import edu.warbot.FSM.WarGenericSettings.PlanSettings;
+import edu.warbot.FSM.genericSettings.AbstractGenericAttributSettings;
+import edu.warbot.FSM.genericSettings.ConditionSettings;
+import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;

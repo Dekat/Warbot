@@ -3,9 +3,9 @@ package edu.warbot.FSM.plan;
 /**
  * Me heal
  */
-import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionHealMe;
+import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.brains.MovableWarAgentAdapter;
 
 public class WarPlanHealMe<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {

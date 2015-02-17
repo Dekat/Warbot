@@ -22,9 +22,8 @@ public class WarFSMBrainController extends WarBrain<WarExplorerAdapter>{
 		}catch(NullPointerException e){
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, 
-					"Error FSM use incorrect settings, please check <GenericSettings>, <settings> in the editor, "
-					+ "your Xml configuration file for FSM and attrbiut you use inside the editor ! "
-					+ "Game will crash soon", "FSM intern error caused by wrong configuration", JOptionPane.INFORMATION_MESSAGE);
+					"Error FSM use incorrect settings, please check <GenericSettings>, <settings> in the editor, and your settings in the Editor"
+					, "FSM intern error caused by wrong configuration", JOptionPane.INFORMATION_MESSAGE);
 			return null;
 		}
 	}

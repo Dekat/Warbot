@@ -1,8 +1,10 @@
 package edu.warbot.FSM.plan;
 
-import edu.warbot.FSM.WarGenericSettings.PlanSettings;
+import javax.swing.JOptionPane;
+
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionCreateUnit;
+import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.adapters.WarBaseAdapter;
@@ -18,12 +20,27 @@ public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 	public WarPlanCreateUnit(WarBaseAdapter brain, PlanSettings planSettings ) {
 		super("Plan healer", brain, planSettings);
 		
-		this.agentType = getPlanSettings().Agent_type;
-		this.nombreAgent = getPlanSettings().Number_agent;
+		if(getPlanSettings().Agent_type != null)
+			this.agentType = getPlanSettings().Agent_type;
+		else
+			JOptionPane.showMessageDialog(null, "You must chose <Agent_type> for plan <WarPlanCreateUnit>", "Missing attribut", JOptionPane.ERROR_MESSAGE);
 		
-		this.pourcentage = getPlanSettings().Pourcentage;
+		if(getPlanSettings().Number_agent != null)
+			this.nombreAgent = getPlanSettings().Number_agent;
+		else
+			this.nombreAgent = 1;
 		
-		this.minLife = getPlanSettings().Min_life;
+		if(getPlanSettings().Pourcentage != null)
+			this.pourcentage = getPlanSettings().Pourcentage;
+		else
+			this.pourcentage = false;
+		
+		if(getPlanSettings().Min_life != null)
+			this.minLife = getPlanSettings().Min_life;
+		else{
+			this.minLife = 30;
+			this.pourcentage = true;
+		}
 		
 		if(pourcentage)
 			minLife = (int) (WarBase.MAX_HEALTH*minLife/100);

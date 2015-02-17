@@ -20,7 +20,7 @@ public class WarActionSendMessage<AgentAdapterType extends ControllableWarAgentA
 		
 		getAgent().broadcastMessageToAgentType(this.agentType, message.name(), "");
 		
-		return MovableWarAgent.ACTION_MOVE;
+		return MovableWarAgent.ACTION_IDLE;
 		
 	}
 

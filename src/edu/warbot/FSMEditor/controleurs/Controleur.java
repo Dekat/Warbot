@@ -1,7 +1,7 @@
 package edu.warbot.FSMEditor.controleurs;
 
-import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
-import edu.warbot.FSM.WarGenericSettings.PlanSettings;
+import edu.warbot.FSM.genericSettings.ConditionSettings;
+import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.FSMEditor.FSMModelRebuilder;
 import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModelCondition;
@@ -14,6 +14,7 @@ import edu.warbot.FSMEditor.xmlParser.FsmXmlSaver;
 import edu.warbot.agents.enums.WarAgentType;
 
 import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Field;
@@ -107,9 +108,85 @@ public class Controleur {
 				eventMenuBarItemPrint();
 			}
 		});
+		view.miClean.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				eventMenuBarItemClean();
+			}
+		});
+	}
+	
+	public void eventMenuBarItemClean() {
+		//delete no unique IDs
+		for (ModeleBrain modelBrain: this.model.getModelsBrains()) {
+			
+			//Check no null pointeur
+			ArrayList<ModelState> states = modelBrain.getStates();
+			for (ModelState modState : states) {
+				if(modState == null)
+					modelBrain.removeState(modState);
+				if(modState.getConditionsOut() == null){
+					modelBrain.removeState(modState);
+				}
+			}
+			//Check no null pointeur
+			ArrayList<ModelCondition> condition = modelBrain.getConditions();
+			for (ModelCondition modcond :condition) {
+				if(modcond == null)
+					modelBrain.removeCondition(modcond);
+				if(modcond.getStateDestination() == null){
+					modelBrain.removeCondition(modcond);
+				}
+				if(modcond.getStateSource() == null){
+					modelBrain.removeCondition(modcond);
+				}
+			}
+			
+			//Delete non unique name
+			
+			//State
+			ArrayList<ModelState> realStates = new ArrayList<>();
+			for (ModelState modState : modelBrain.getStates()) {
+				realStates.add(modState);
+			}
+			
+			//Cond
+			ArrayList<ModelCondition> realConds = new ArrayList<>();
+			for (ModelCondition modCond: modelBrain.getConditions()) {
+				realConds.add(modCond);
+			}
+			
+			for (ModelState modelState : realStates) {
+				for (ModelState modelState2 : realStates) {
+					if(!modelState.equals(modelState2) && modelState.getName().equals(modelState2.getName())){
+						modelBrain.removeState(modelState2);
+					}
+				}
+			}
+			
+			//Cond ID
+			ArrayList<ModelCondition> conds = new ArrayList<>();
+			for (ModelCondition modCond: modelBrain.getConditions()) {
+				conds.add(modCond);
+			}
+			
+			for (ModelCondition cond1 : conds) {
+				for (ModelCondition cond2 : conds) {
+					if(!cond1.equals(cond2) && cond1.getName().equals(cond2.getName())) {
+						modelBrain.removeCondition(cond2);
+					}
+				}
+			}
+		}
+		JOptionPane.showMessageDialog(null, "FSM clean sucessfull", "Sucess", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void eventMenuBarItemSave() {
+		int op = JOptionPane.showConfirmDialog(null, "Want you to test validity before save ?", "Test validity", JOptionPane.YES_NO_OPTION);
+		
+		if(op == JOptionPane.OK_OPTION)
+			eventMenuBarItemTest();
+		
 		FsmXmlSaver fsmSaver = new FsmXmlSaver();
 		
 		fsmSaver.saveFSM(model, FsmXmlReader.xmlConfigurationDefaultFilename);
@@ -127,17 +204,48 @@ public class Controleur {
 		
 		boolean isValid = true;
 		
-		printModelInformations(this.model);
+		try{
+			printModelInformations(this.model);
+		}catch(NullPointerException e){
+			JOptionPane.showMessageDialog(null, "Error while checking fsm. Check it manualy", "Checking error", JOptionPane.ERROR_MESSAGE);
+		}
 		
-		//Check if ID are unique
+		
+		
+		//For eatch brains
 		for (ModeleBrain modelBrain: this.model.getModelsBrains()) {
+			
+			//Check no null pointeur
+			for (ModelState modState : modelBrain.getStates()) {
+				if(modState.getConditionsOut() == null){
+					JOptionPane.showMessageDialog(this.view,
+						    "Warning state <" + modState.getName() + "> have no conditions !",
+						    "Warning",
+						    JOptionPane.WARNING_MESSAGE);
+				}
+			}
+			//Check no null pointeur
+			for (ModelCondition modcond : modelBrain.getConditions()) {
+				if(modcond.getStateDestination() == null){
+					JOptionPane.showMessageDialog(this.view,
+						    "Error condition <" + modcond.getName() + "> have no destination !",
+						    "Error",
+						    JOptionPane.ERROR_MESSAGE);
+				}
+				if(modcond.getStateSource() == null){
+					JOptionPane.showMessageDialog(this.view,
+						    "Error condition <" + modcond.getName() + "> have no source !",
+						    "Error",
+						    JOptionPane.ERROR_MESSAGE);
+				}
+			}
 			
 			//State ID
 			ArrayList<String> stateName = new ArrayList<>();
 			for (ModelState modState : modelBrain.getStates()) {
 				if(stateName.contains(modState.getName())){
 					JOptionPane.showMessageDialog(this.view,
-						    "States ID have to be unique !",
+						    "States ID <" + modState.getName() + "> have to be unique !",
 						    "ID error",
 						    JOptionPane.ERROR_MESSAGE);
 					isValid = false;
@@ -151,7 +259,7 @@ public class Controleur {
 			for (ModelCondition modCond : modelBrain.getConditions()) {
 				if(CondName.contains(modCond.getName())){
 					JOptionPane.showMessageDialog(this.view,
-						    "Conditions ID have to be unique !",
+						    "Conditions ID <" + modCond.getName() + "> have to be unique !",
 						    "ID error",
 						    JOptionPane.ERROR_MESSAGE);
 					isValid = false;
@@ -169,8 +277,8 @@ public class Controleur {
 			ArrayList<String> condOutID = new ArrayList<>();
 			for (ModelState modState : modelBrain.getStates()) {
 				stateName.add(modState.getName());
-				for (ModelCondition string : modState.getConditionsOut()) {
-					condOutID.add(string.getName());
+				for (String string : modState.getConditionsOutID()) {
+					condOutID.add(string);
 				}
 			}
 			
@@ -178,14 +286,14 @@ public class Controleur {
 			ArrayList<String> CondName = new ArrayList<>();
 			ArrayList<String> stateOutID = new ArrayList<>();
 			for (ModelCondition modCond : modelBrain.getConditions()) {
-				stateOutID.add(modCond.getStateDestination().getName());
+				stateOutID.add(modCond.getStateOutId());
 				CondName.add(modCond.getName());
 			}
 
 			for (String string : stateOutID) {
 				if(! stateName.contains(string)){
 					JOptionPane.showMessageDialog(this.view,
-						    "Condition with state out " + string + " have no associated state",
+						    "Condition with state out ID " + string + " have no associated state",
 						    "ID error",
 						    JOptionPane.ERROR_MESSAGE);
 					isValid = false;
@@ -195,7 +303,7 @@ public class Controleur {
 			for (String string : condOutID) {
 				if(! CondName.contains(string)){
 					JOptionPane.showMessageDialog(this.view,
-						    "State with condition out " + string + " have no associated condition",
+						    "State with condition out ID " + string + " have no associated condition",
 						    "ID error",
 						    JOptionPane.ERROR_MESSAGE);
 					isValid = false;

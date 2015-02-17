@@ -22,7 +22,7 @@ import javax.swing.border.TitledBorder;
 
 import org.jfree.ui.tabbedui.VerticalLayout;
 
-import edu.warbot.FSM.WarGenericSettings.AbstractGenericAttributSettings;
+import edu.warbot.FSM.genericSettings.AbstractGenericAttributSettings;
 import edu.warbot.FSMEditor.settings.EnumAction;
 import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.FSMEditor.settings.EnumMethod;

@@ -1,11 +1,13 @@
 package edu.warbot.FSMEditor.models;
 
-import edu.warbot.FSM.WarGenericSettings.PlanSettings;
+import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.FSMEditor.panels.PanelState;
 import edu.warbot.FSMEditor.settings.EnumPlan;
 import edu.warbot.FSMEditor.settings.Settings;
 
 import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
 
 public class ModelState {
 	
@@ -29,7 +31,14 @@ public class ModelState {
 		this.conditionsOut.add(mc);
 		
 //		if(mc.getStateSource() == null /*| !mc.getStateSource().equals(this)*/)
-		mc.setSource(this);
+		try{
+			mc.setSource(this);
+		}catch(NullPointerException e){
+			JOptionPane.showMessageDialog(null, "Erro while creating fsm."
+					+ "\nState with name <" + this.name + "> can't have source condition."
+					+ "\nCheck your fsm."
+					, "Loading error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	public void addConditionIn(ModelCondition condition) {
@@ -94,6 +103,11 @@ public class ModelState {
 	
 	public PanelState getViewState(){
 		return viewState;
+	}
+
+	public void removeConditionOut(ModelCondition modCond) {
+		this.conditionsOut.remove(modCond);
+		this.conditionsOutID.remove(modCond.getName());
 	}
 
 }

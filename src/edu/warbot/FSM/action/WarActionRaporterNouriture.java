@@ -1,5 +1,6 @@
 package edu.warbot.FSM.action;
 
+import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
@@ -39,22 +40,8 @@ public class WarActionRaporterNouriture<AgentAdapterType extends MovableWarAgent
 				basePercepts.add(p);
 		}
 		
-		//Si je ne voit pas de base
-		if(basePercepts == null | basePercepts.size() == 0){
-			
-			getAgent().setDebugString("Action RapporterNourriture : seek base");
-			
-			WarMessage m = this.getMessageFromBase();
-			//Si j'ai un message de la base je vais vers elle
-			if(m != null)
-				getAgent().setHeading(m.getAngle());
-			
-			//j'envoi un message a la base pour savoir où elle est
-			//getBrain().broadcastMessageDefaultRole(WarBase., "whereAreYou", null);
-			
-			return MovableWarAgent.ACTION_MOVE;
-			
-		}else{//si je vois une base
+		//Si je vois la base
+		if(basePercepts != null & basePercepts.size() > 0){
 			
 			getAgent().setDebugString("Action RapporterNourriture : base found");
 			
@@ -67,6 +54,20 @@ public class WarActionRaporterNouriture<AgentAdapterType extends MovableWarAgent
 				getAgent().setIdNextAgentToGive(base.getID());
 				return MovableWarAgent.ACTION_GIVE;
 			}
+			
+		}else{
+			
+			getAgent().setDebugString("Action RapporterNourriture : seek base");
+			
+			WarMessage m = this.getMessageFromBase();
+			//Si j'ai un message de la base je vais vers elle
+			if(m != null){
+				getAgent().setHeading(m.getAngle());
+				getAgent().setDebugString("Action RapporterNourriture : msg from base");
+				return MovableWarAgent.ACTION_MOVE;
+			}
+			
+			return MovableWarAgent.ACTION_MOVE;
 		}
 	}
 	
@@ -76,7 +77,7 @@ public class WarActionRaporterNouriture<AgentAdapterType extends MovableWarAgent
 				return m;
 		}
 		
-		getAgent().broadcastMessageToAgentType(WarAgentType.WarBase, "whereAreYou", "");
+		getAgent().broadcastMessageToAgentType(WarAgentType.WarBase, EnumMessage.where_is_base.name(), "");
 		return null;
 	}
 

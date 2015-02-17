@@ -19,9 +19,8 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 		System.out.println("*** Initialisation de la FSM ***");
 		System.out.println("La FSM contient " + this.listeEtat.size() + " états");
 		
-		if(this.listeEtat.size() < 1){
+		if(this.listeEtat.size() == 0){
 			System.err.println("ERREUR La FSM doit contenir au moins 1 état !");
-			System.exit(0);
 		}
 		
 		if(firstEtat == null){

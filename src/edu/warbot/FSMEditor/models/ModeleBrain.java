@@ -33,11 +33,31 @@ public class ModeleBrain {
 	}
 
 	public void removeState(ModelState m) {
+		for (ModelCondition modelCondition : m.getConditionsOut()) {
+			modelCondition.setSource(null);
+		}
+
+		for (ModelCondition modelCondition : conditions) {
+			if(modelCondition.getStateDestination().equals(m)){
+				modelCondition.setDestination(null);
+				modelCondition.setStateOutId(null);
+			}
+			
+		}
+		
 		this.sates.remove(m);
 	}
 
-	public void removeCondition(ModelCondition modele) {
-		conditions.remove(modele);
+	public void removeCondition(ModelCondition modeleCond) {
+		//Supprime la condition en tant que condition de sortie des états
+		for (ModelState modelS : sates) {
+			if(modelS.getConditionsOut().contains(modeleCond))
+				modelS.removeConditionOut(modeleCond);
+		}
+
+		//Supprime la condition
+		conditions.remove(modeleCond);
+		
 	}
 
 	public ArrayList<ModelCondition> getConditions() {

@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.geom.Path2D;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 public class PanelCondition extends AbstractPanel{
 
 	private static final long serialVersionUID = 1L;
@@ -18,8 +20,13 @@ public class PanelCondition extends AbstractPanel{
 	public PanelCondition(ModelCondition m) {
 		this.modele = m;
 		
-		panelSource = modele.getStateSource().getViewState();
-		panelDest = modele.getStateDestination().getViewState();
+		try{
+			panelSource = modele.getStateSource().getViewState();
+			panelDest = modele.getStateDestination().getViewState();
+		}catch(NullPointerException e){
+			JOptionPane.showMessageDialog(null, "Error while loading FSM conditions"
+					+ "\n check your FSM conditions", "Loading error", JOptionPane.ERROR_MESSAGE);
+		}
 		
 		ctrlPoint = new Point(new Random().nextInt(100), new Random().nextInt(75));
 		
@@ -36,14 +43,27 @@ public class PanelCondition extends AbstractPanel{
 			g.setStroke(new BasicStroke(1));
 		}
 		
-		this.positionDep = panelSource.position;
-		this.positionArr = panelDest.position;
+		try{
+			this.positionDep = panelSource.position;
+			this.positionArr = panelDest.position;
+			this.dimSrc = panelSource.size;
+			this.dimDest = panelDest.size;
+		}catch(NullPointerException e){
+			if(this.panelSource == null){
+				this.positionDep = new Point(0, 0);
+				this.dimSrc = new Dimension(0, 0);
+			}
+			if(this.positionArr == null){
+				this.positionArr = new Point(0, 0);
+				this.dimDest = new Dimension(0, 0);
+			}
+		}
 
-		int depx = (int) (positionDep.x + panelSource.size.getWidth()/2);
-		int depy = (int) (positionDep.y + panelSource.size.getHeight()/2);
+		int depx = (int) (positionDep.x + dimSrc.getWidth()/2);
+		int depy = (int) (positionDep.y + dimSrc.getHeight()/2);
 
-		int arrx = (int) (positionArr.x + panelDest.size.getWidth()/2);
-		int arry = (int) (positionArr.y + panelDest.size.getHeight()/2);
+		int arrx = (int) (positionArr.x + dimDest.getWidth()/2);
+		int arry = (int) (positionArr.y + dimDest.getHeight()/2);
 
 		g.drawLine(depx, depy, arrx, arry);	
 //		drawLine(g, Depx, Depy, Arrx, Arry);
@@ -99,8 +119,11 @@ public class PanelCondition extends AbstractPanel{
 		return this.modele;
 	}
 
-	Point positionDep = new Point();
-	Point positionArr = new Point();
+	Point positionDep = new Point(0, 0);
+	Point positionArr = new Point(0, 0);
+
+	Dimension dimSrc = new Dimension(0, 0);
+	Dimension dimDest = new Dimension(0, 0);
 	
 	private Point ctrlPoint = new Point();
 

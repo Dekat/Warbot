@@ -5,6 +5,6 @@ public enum EnumCondition {
 	WarConditionAttributCheck,
 	WarConditionBooleanCheck,
 	WarConditionMessageCheck,
-//	FWarConditionPerceptAttributCheck,
-//	WarConditionPerceptCounter
+//	WarConditionPerceptBooleanCheck,
+	WarConditionPerceptCounter
 }
