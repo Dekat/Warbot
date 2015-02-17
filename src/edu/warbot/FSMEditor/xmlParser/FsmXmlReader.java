@@ -1,25 +1,27 @@
 package edu.warbot.FSMEditor.xmlParser;
 
-import edu.warbot.FSM.WarGenericSettings.AbstractGenericAttributSettings;
-import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
-import edu.warbot.FSM.WarGenericSettings.PlanSettings;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+
+import edu.warbot.FSM.genericSettings.AbstractGenericAttributSettings;
+import edu.warbot.FSM.genericSettings.ConditionSettings;
+import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.settings.*;
 import edu.warbot.agents.enums.WarAgentType;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
-
-import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 /**
  * Permet de lire un fichier de configuration au format de XML et de type FSM

@@ -1,4 +1,4 @@
-package edu.warbot.FSM.WarGenericSettings;
+package edu.warbot.FSM.genericSettings;
 
 public class AbstractGenericAttributSettings {
 

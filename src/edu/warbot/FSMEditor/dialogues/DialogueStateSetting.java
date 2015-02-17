@@ -1,12 +1,13 @@
 package edu.warbot.FSMEditor.dialogues;
 
-import edu.warbot.FSM.WarGenericSettings.PlanSettings;
+import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.settings.EnumPlan;
 import edu.warbot.FSMEditor.views.ViewBrain;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+
 import java.awt.*;
 
 public class DialogueStateSetting extends AbstractDialogue {

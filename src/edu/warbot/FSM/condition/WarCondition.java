@@ -1,8 +1,8 @@
 package edu.warbot.FSM.condition;
 
 import edu.warbot.FSM.WarEtat;
-import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
 import edu.warbot.FSM.action.WarAction;
+import edu.warbot.FSM.genericSettings.ConditionSettings;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 
 public abstract class WarCondition<AgentAdapterType extends ControllableWarAgentAdapter> {
@@ -41,7 +41,6 @@ public abstract class WarCondition<AgentAdapterType extends ControllableWarAgent
 	public void init() {
 		if(this.etatDestination == null & this.actionDestination == null){
 			System.err.println("ERREUR une condition doit obligatoirement avoir un état ou une action destination <" + this.toString() + ">");
-			System.exit(0);
 		}
 		
 		if(this.etatDestination == null){

@@ -1,8 +1,8 @@
 package edu.warbot.FSM.plan;
 
-import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionSendMessage;
+import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 

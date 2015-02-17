@@ -4,7 +4,5 @@ public enum EnumOperand {
 	egal,
 	dif,
 	sup,
-	inf,
-	infEg,
-	supEg
+	inf
 }

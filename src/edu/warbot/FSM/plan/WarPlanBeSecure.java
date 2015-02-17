@@ -1,8 +1,10 @@
 package edu.warbot.FSM.plan;
 
-import edu.warbot.FSM.WarGenericSettings.PlanSettings;
+import javax.swing.JOptionPane;
+
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionFuire;
+import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.brains.MovableWarAgentAdapter;
 

@@ -1,8 +1,8 @@
 package edu.warbot.FSM.plan;
 
-import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionAttaquer;
+import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
 public class WarPlanAttaquer extends WarPlan<WarRocketLauncherAdapter> {

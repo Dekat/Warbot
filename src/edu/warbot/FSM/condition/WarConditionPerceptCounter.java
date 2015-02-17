@@ -1,6 +1,6 @@
 package edu.warbot.FSM.condition;
 
-import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
+import edu.warbot.FSM.genericSettings.ConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
@@ -22,10 +22,22 @@ public class WarConditionPerceptCounter<AgentAdapterType extends ControllableWar
 		super(name, brain, conditionSettings);
 		
 		this.agentType = conditionSettings.Agent_type;
-		this.operand = conditionSettings.Operateur;
-		this.reference = conditionSettings.Reference;
 		
-		this.enemy = conditionSettings.Enemie;
+		if(conditionSettings.Operateur != null)
+			this.operand = conditionSettings.Operateur;
+		else
+			this.operand = EnumOperand.egal;
+					
+		if(conditionSettings.Reference != null)
+			this.reference = conditionSettings.Reference;
+		else
+			this.reference = 1;
+		
+		if(conditionSettings.Enemie != null)
+			this.enemy = conditionSettings.Enemie;
+		else
+			enemy = true;
+		
 	}
 	
 	@Override
@@ -61,6 +73,8 @@ public class WarConditionPerceptCounter<AgentAdapterType extends ControllableWar
 			return nbPercept > this.reference;
 		case egal:
 			return nbPercept == this.reference;
+		case dif:
+			return nbPercept != this.reference;
 		default:
 			System.err.println("FSM : unknown operateur " + this.operand + this.getClass());
 			return false;

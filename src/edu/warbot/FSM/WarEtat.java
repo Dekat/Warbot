@@ -34,7 +34,6 @@ public class WarEtat<AgentAdapterType extends ControllableWarAgentAdapter> {
 		
 		if(this.plan == null){
 			System.err.println("WarEtat : ERREUR : un état doit obligatoirement contenir un plan <" + this.nom + ">");
-			System.exit(0);
 		}
 		
 		if(this.conditions.size() < 1)

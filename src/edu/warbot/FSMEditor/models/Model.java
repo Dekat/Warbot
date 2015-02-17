@@ -1,7 +1,7 @@
 package edu.warbot.FSMEditor.models;
 
-import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
-import edu.warbot.FSM.WarGenericSettings.PlanSettings;
+import edu.warbot.FSM.genericSettings.ConditionSettings;
+import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.FSMEditor.views.View;
 import edu.warbot.agents.enums.WarAgentType;
 

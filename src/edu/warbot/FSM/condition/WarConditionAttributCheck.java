@@ -1,13 +1,14 @@
 package edu.warbot.FSM.condition;
 
-import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import javax.swing.JOptionPane;
+
+import edu.warbot.FSM.genericSettings.ConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumMethod;
 import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.brains.ControllableWarAgentAdapter;
-
-import javax.swing.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType> {
 	
@@ -25,7 +26,7 @@ public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarA
 		
 		this.reference = conditionSettings.Reference;
 		this.operand = conditionSettings.Operateur;
-		methodName = conditionSettings.Methode;
+		this.methodName = conditionSettings.Methode;
 		
 		
 		try {
@@ -56,15 +57,13 @@ public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarA
 		
 		switch (this.operand) {
 		case inf:
-			return (Integer)currentValue < (Integer)this.reference;
+			return currentValue < this.reference;
 		case sup:
-			return (Integer)currentValue > (Integer)this.reference;
+			return currentValue > this.reference;
 		case egal:
 			return currentValue == this.reference;
-		case infEg:
-			return (Integer)currentValue <= (Integer)this.reference;
-		case supEg:
-			return (Integer)currentValue >= (Integer)this.reference;
+		case dif:
+			return currentValue != this.reference;
 		default:
 			System.err.println("FSM : unknown operateur " + this.operand);
 			return false;

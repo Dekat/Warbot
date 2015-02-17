@@ -14,6 +14,8 @@ import edu.warbot.brains.ControllableWarAgentAdapter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
+import javax.swing.JOptionPane;
+
 /**
  * Permet de générer et d'instanicer un objet de type FSM grâce à un modele de FSM
  * Prend en parametre un modele de FSM
@@ -128,9 +130,10 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 		//Instancie le plan
 		WarCondition<AgentAdapterType> instanciateCond = null;
 		Class typeOfAdapter = null;
+		Class c = null;
 		try {
 			
-			Class c = Class.forName(modelCond.getConditionLoaderName());
+			c = Class.forName(modelCond.getConditionLoaderName());
 
 			//Récupère le constructeur
 			typeOfAdapter = c.getConstructors()[0].getParameterTypes()[1];
@@ -156,6 +159,12 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 			} catch (SecurityException | ClassNotFoundException e1) {
 				e1.printStackTrace();
 			}
+			
+			if(modelCond.getConditionLoaderName() != null)
+				JOptionPane.showMessageDialog(null, "Error during dynamic instanciation of condition <" + modelCond.getConditionLoaderName() + "> \nPlease check attribut of this condition, attribut in the editor, and generic type of the condition", "Instanciation error", JOptionPane.ERROR_MESSAGE);
+			else
+				JOptionPane.showMessageDialog(null, "Error during dynamic instanciation of condition. Condition have no loader name", "Internal error", JOptionPane.ERROR_MESSAGE);
+			
 		}
 		
 		return instanciateCond;
@@ -206,6 +215,12 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 			} catch (SecurityException | ClassNotFoundException e1) {
 				e1.printStackTrace();
 			}
+			
+			if(modelState.getPlanLoaderName() != null)
+				JOptionPane.showMessageDialog(null, "Error during dynamic instanciation of plan <" + modelState.getPlanLoaderName() + "> \nPlease check attribut of this plan, attribut in the editor, and generic type of the plan", "Instanciation error", JOptionPane.ERROR_MESSAGE);
+			else
+				JOptionPane.showMessageDialog(null, "Error during dynamic instanciation of plan. Condition have no loader name", "Internal error", JOptionPane.ERROR_MESSAGE);
+		
 		}
 		
 		return instanciatePlan;

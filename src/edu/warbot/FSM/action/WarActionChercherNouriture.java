@@ -1,5 +1,6 @@
 package edu.warbot.FSM.action;
 
+import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
@@ -46,6 +47,7 @@ public class WarActionChercherNouriture<AgentAdapterType extends MovableWarAgent
 			getAgent().setDebugString("ActionChercherNourriture : seek food");
 			WarMessage m = getMessageAboutFood();
 			if(m != null){
+				getAgent().setDebugString("ActionChercherNourriture : msg about food");
 				getAgent().setHeading(m.getAngle());
 			}
 			
@@ -58,7 +60,7 @@ public class WarActionChercherNouriture<AgentAdapterType extends MovableWarAgent
 			
 			//si il y a beaucoup de nourriture je previens mes alliés
 			if(foodPercepts.size() > 1)
-				getAgent().broadcastMessageToAgentType(WarAgentType.WarExplorer, "foodHere", "");
+				getAgent().broadcastMessageToAgentType(WarAgentType.WarExplorer, EnumMessage.food_here.name(), "");
 			
 			if(foodP.getDistance() > ControllableWarAgent.MAX_DISTANCE_GIVE){
 				getAgent().setHeading(foodP.getAngle());
@@ -72,7 +74,7 @@ public class WarActionChercherNouriture<AgentAdapterType extends MovableWarAgent
 
 	private WarMessage getMessageAboutFood() {
 		for (WarMessage m : getAgent().getMessages()) {
-			if(m.getMessage().equals("foodHere"))
+			if(m.getMessage().equals(EnumMessage.food_here.name()))
 				return m;
 		}
 		return null;
