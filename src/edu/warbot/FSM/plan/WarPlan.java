@@ -2,7 +2,7 @@ package edu.warbot.FSM.plan;
 
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.condition.WarCondition;
-import edu.warbot.FSM.genericSettings.PlanSettings;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 
 import java.util.ArrayList;
@@ -15,9 +15,9 @@ public abstract class WarPlan<AgentAdapterType extends ControllableWarAgentAdapt
 	
 	private String nom;
 	private AgentAdapterType brain;
-	private PlanSettings planSettings;
+	private GenericPlanSettings planSettings;
 
-	public WarPlan(String nomPlan, AgentAdapterType brain, PlanSettings planSettings){
+	public WarPlan(String nomPlan, AgentAdapterType brain, GenericPlanSettings planSettings){
 		this.nom = nomPlan;
 		this.brain = brain;
 		this.planSettings = planSettings;
@@ -135,7 +135,7 @@ public abstract class WarPlan<AgentAdapterType extends ControllableWarAgentAdapt
 		return this.actions;
 	}
 	
-	public PlanSettings getPlanSettings(){
+	public GenericPlanSettings getPlanSettings(){
 		return planSettings;
 	}
 	

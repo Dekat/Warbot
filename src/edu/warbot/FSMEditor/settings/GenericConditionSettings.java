@@ -1,8 +1,5 @@
-package edu.warbot.FSM.genericSettings;
+package edu.warbot.FSMEditor.settings;
 
-import edu.warbot.FSMEditor.settings.EnumMessage;
-import edu.warbot.FSMEditor.settings.EnumMethod;
-import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.agents.enums.WarAgentType;
 
 /**
@@ -12,7 +9,7 @@ import edu.warbot.agents.enums.WarAgentType;
  * Boolean, Integer, String, EnumAction,
  * WarAgentType, EnumMethod, EnumOperand, EnumMessage
  */
-public class ConditionSettings extends AbstractGenericAttributSettings{
+public class GenericConditionSettings extends AbstractGenericSettings{
 	
 	public EnumMethod Methode;
 

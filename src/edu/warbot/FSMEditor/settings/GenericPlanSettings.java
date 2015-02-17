@@ -1,6 +1,5 @@
-package edu.warbot.FSM.genericSettings;
+package edu.warbot.FSMEditor.settings;
 
-import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.agents.enums.WarAgentType;
 
 /**
@@ -11,7 +10,7 @@ import edu.warbot.agents.enums.WarAgentType;
  * WarAgentType, EnumMethod, EnumOperand, EnumMessage
  */
 
-public class PlanSettings extends AbstractGenericAttributSettings{
+public class GenericPlanSettings extends AbstractGenericSettings{
 
 	public WarAgentType Agent_type = WarAgentType.WarExplorer;;
 	

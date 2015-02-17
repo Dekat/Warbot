@@ -1,7 +1,7 @@
 package edu.warbot.FSMEditor.dialogues;
 
-import edu.warbot.FSM.genericSettings.ConditionSettings;
 import edu.warbot.FSMEditor.models.ModelCondition;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumCondition;
 import edu.warbot.FSMEditor.views.ViewBrain;
 
@@ -22,11 +22,11 @@ public class DialogueCondSetting extends AbstractDialogue{
 		this.comboTypeCond.setSelectedItem(modelCondition.getConditionType());
 	}
 	
-	public DialogueCondSetting(ViewBrain f, ConditionSettings conditionsSettings) {
+	public DialogueCondSetting(ViewBrain f, GenericConditionSettings conditionsSettings) {
 		super(f, conditionsSettings);
 		
 		if(genericSettings == null)
-			genericSettings = new ConditionSettings();
+			genericSettings = new GenericConditionSettings();
 	}
 	
 	@Override
@@ -63,8 +63,8 @@ public class DialogueCondSetting extends AbstractDialogue{
 		return (EnumCondition) comboTypeCond.getSelectedItem();
 	}
 	
-	public ConditionSettings getConditionSettings(){
-		return (ConditionSettings)genericSettings;
+	public GenericConditionSettings getConditionSettings(){
+		return (GenericConditionSettings)genericSettings;
 	}
 
 	JTextField fieldName = new JTextField(DEFAULT_CONDITION_NAME);

@@ -1,8 +1,8 @@
 package edu.warbot.FSMEditor.dialogues;
 
-import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.settings.EnumPlan;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.FSMEditor.views.ViewBrain;
 
 import javax.swing.*;
@@ -21,11 +21,11 @@ public class DialogueStateSetting extends AbstractDialogue {
 		this.comboxPlan.setSelectedItem(modelState.getPlanName());
 	}
 
-	public DialogueStateSetting(ViewBrain viewBrain, PlanSettings planSettings) {
+	public DialogueStateSetting(ViewBrain viewBrain, GenericPlanSettings planSettings) {
 		super(viewBrain, planSettings);
 		
 		if(genericSettings == null)
-			genericSettings = new PlanSettings();
+			genericSettings = new GenericPlanSettings();
 	}
 	
 	@Override
@@ -52,8 +52,8 @@ public class DialogueStateSetting extends AbstractDialogue {
 		return !this.fieldName.getText().isEmpty();
 	}
 
-	public PlanSettings getPlanSettings(){
-		return (PlanSettings)genericSettings;
+	public GenericPlanSettings getPlanSettings(){
+		return (GenericPlanSettings)genericSettings;
 	}
 	
 	public String getStateName() {

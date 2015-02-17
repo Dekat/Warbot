@@ -5,9 +5,9 @@ import edu.warbot.FSM.action.WarActionChercherNouriture;
 import edu.warbot.FSM.action.WarActionRaporterNouriture;
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.condition.WarConditionBooleanCheck;
-import edu.warbot.FSM.genericSettings.ConditionSettings;
-import edu.warbot.FSM.genericSettings.PlanSettings;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumMethod;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.brains.MovableWarAgentAdapter;
 
 /**
@@ -20,7 +20,7 @@ import edu.warbot.brains.MovableWarAgentAdapter;
  */
 public class WarPlanRamasserNouriture<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
 	
-	public WarPlanRamasserNouriture(AgentAdapterType brain, PlanSettings planSettings) {
+	public WarPlanRamasserNouriture(AgentAdapterType brain, GenericPlanSettings planSettings) {
 		super("Plan Rammaser Nouriture", brain, planSettings);
 	}
 
@@ -34,13 +34,13 @@ public class WarPlanRamasserNouriture<AgentAdapterType extends MovableWarAgentAd
 		WarAction<AgentAdapterType> actionRamenerN = new WarActionRaporterNouriture<AgentAdapterType>(getBrain());
 		addAction(actionRamenerN);
 		
-		ConditionSettings condSet1 = new ConditionSettings();
+		GenericConditionSettings condSet1 = new GenericConditionSettings();
 		condSet1.Methode = EnumMethod.isBagFull;
 		WarCondition<AgentAdapterType> condStopChercher = new WarConditionBooleanCheck<AgentAdapterType>("cond_tO_R", getBrain(), condSet1);
 		actionChercheN.addCondition(condStopChercher);
 		condStopChercher.setDestination(actionRamenerN);
 		
-		ConditionSettings condSet2 = new ConditionSettings();
+		GenericConditionSettings condSet2 = new GenericConditionSettings();
 		condSet2.Methode = EnumMethod.isBagEmpty;
 		WarCondition<AgentAdapterType> condStopRamener = new WarConditionBooleanCheck<AgentAdapterType>("cond_tO_C", getBrain(), condSet2);
 		actionRamenerN.addCondition(condStopRamener);

@@ -2,19 +2,19 @@ package edu.warbot.FSM.condition;
 
 import edu.warbot.FSM.WarEtat;
 import edu.warbot.FSM.action.WarAction;
-import edu.warbot.FSM.genericSettings.ConditionSettings;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 
 public abstract class WarCondition<AgentAdapterType extends ControllableWarAgentAdapter> {
 	
 	String name;
 	AgentAdapterType brain;
-	ConditionSettings conditionSettings;
+	GenericConditionSettings conditionSettings;
 	
 	private WarEtat<AgentAdapterType> etatDestination;
 	private WarAction<AgentAdapterType> actionDestination;
 	
-	public WarCondition(String name, AgentAdapterType brain, ConditionSettings conditionSettings){
+	public WarCondition(String name, AgentAdapterType brain, GenericConditionSettings conditionSettings){
 		this.name = name;
 		this.brain = brain;
 		this.conditionSettings = conditionSettings;
@@ -62,11 +62,11 @@ public abstract class WarCondition<AgentAdapterType extends ControllableWarAgent
 		return this.brain;
 	}
 	
-	public ConditionSettings getConditionSettings(){
+	public GenericConditionSettings getConditionSettings(){
 		return conditionSettings;
 	}
 	
-	public void setConditionSettings(ConditionSettings condSettings){
+	public void setConditionSettings(GenericConditionSettings condSettings){
 		this.conditionSettings = condSettings;
 	}
 	

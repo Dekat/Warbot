@@ -7,9 +7,9 @@ import edu.warbot.FSM.action.WarActionAttaquer;
 import edu.warbot.FSM.action.WarActionChercherBase;
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.condition.WarConditionPerceptCounter;
-import edu.warbot.FSM.genericSettings.ConditionSettings;
-import edu.warbot.FSM.genericSettings.PlanSettings;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumOperand;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
@@ -24,7 +24,7 @@ public class WarPlanPatrouiller extends WarPlan<WarRocketLauncherAdapter> {
 	
 	boolean offensif;
 	
-	public WarPlanPatrouiller(WarRocketLauncherAdapter brain, PlanSettings planSettings) {
+	public WarPlanPatrouiller(WarRocketLauncherAdapter brain, GenericPlanSettings planSettings) {
 		super("Plan Patrouiller", brain, planSettings);
 		JOptionPane.showMessageDialog(null, "Attention le plan Patrouillé n'est pas terminé et risque de ne pas fonctionner", "Waring not terminated plan", JOptionPane.INFORMATION_MESSAGE);
 		this.offensif = getPlanSettings().Offensif;
@@ -41,7 +41,7 @@ public class WarPlanPatrouiller extends WarPlan<WarRocketLauncherAdapter> {
 			WarAction<WarRocketLauncherAdapter> actionKillEnemy = new WarActionAttaquer(getBrain(), WarAgentType.WarRocketLauncher);
 			addAction(actionKillEnemy);
 		
-			ConditionSettings condSet1 = new ConditionSettings();
+			GenericConditionSettings condSet1 = new GenericConditionSettings();
 			condSet1.Agent_type = WarAgentType.WarRocketLauncher;
 			condSet1.Pourcentage = true;
 			condSet1.Operateur = EnumOperand.sup;
@@ -51,7 +51,7 @@ public class WarPlanPatrouiller extends WarPlan<WarRocketLauncherAdapter> {
 			actionSeekBase.addCondition(condSeekToKill);
 			condSeekToKill.setDestination(actionKillEnemy);
 		
-			ConditionSettings condSet2 = new ConditionSettings();
+			GenericConditionSettings condSet2 = new GenericConditionSettings();
 			condSet2.Agent_type = WarAgentType.WarRocketLauncher;
 			condSet2.Pourcentage = true;
 			condSet2.Operateur = EnumOperand.egal;

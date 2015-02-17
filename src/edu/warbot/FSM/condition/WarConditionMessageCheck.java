@@ -2,7 +2,7 @@ package edu.warbot.FSM.condition;
 
 import javax.swing.JOptionPane;
 
-import edu.warbot.FSM.genericSettings.ConditionSettings;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.ControllableWarAgentAdapter;
@@ -13,7 +13,7 @@ public class WarConditionMessageCheck<AgentAdapterType extends ControllableWarAg
 	WarAgentType agentType;
 	EnumMessage message;
 
-	public WarConditionMessageCheck(String name, AgentAdapterType brain, ConditionSettings conditionSettings){
+	public WarConditionMessageCheck(String name, AgentAdapterType brain, GenericConditionSettings conditionSettings){
 		super(name, brain, conditionSettings);
 		
 		if(conditionSettings.Message != null)

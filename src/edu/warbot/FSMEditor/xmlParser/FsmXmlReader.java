@@ -13,19 +13,19 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
-import edu.warbot.FSM.genericSettings.AbstractGenericAttributSettings;
-import edu.warbot.FSM.genericSettings.ConditionSettings;
-import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.models.ModeleBrain;
+import edu.warbot.FSMEditor.settings.AbstractGenericSettings;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumAction;
 import edu.warbot.FSMEditor.settings.EnumCondition;
 import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.FSMEditor.settings.EnumMethod;
 import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.FSMEditor.settings.EnumPlan;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.agents.enums.WarAgentType;
 
 /**
@@ -125,8 +125,8 @@ public class FsmXmlReader extends FsmXmlParser{
 		
 		ArrayList<String> condID = getConditionsOutID(state.getChild(ConditionsOutID));
 		
-		PlanSettings warPlanSetting = 
-				(PlanSettings) getWarGenericSettings(PlanSettings.class, state.getChild(PlanSettings));
+		GenericPlanSettings warPlanSetting = 
+				(GenericPlanSettings) getWarGenericSettings(GenericPlanSettings.class, state.getChild(PlanSettings));
 		
 		ModelState modeleState = new ModelState(name, EnumPlan.valueOf(plan), warPlanSetting);
 		modeleState.setConditionsOutID(condID);
@@ -140,8 +140,8 @@ public class FsmXmlReader extends FsmXmlParser{
 
 		String stateOutID = cond.getChild(StateOutID).getValue();
 		
-		ConditionSettings warConditionSetting = 
-				(ConditionSettings) getWarGenericSettings(ConditionSettings.class, cond.getChild(ConditionSettings));
+		GenericConditionSettings warConditionSetting = 
+				(GenericConditionSettings) getWarGenericSettings(GenericConditionSettings.class, cond.getChild(ConditionSettings));
 
 		ModelCondition modeleCond = new ModelCondition(name, EnumCondition.valueOf(type), warConditionSetting);
 		modeleCond.setStateOutId(stateOutID);
@@ -149,10 +149,10 @@ public class FsmXmlReader extends FsmXmlParser{
 		modeleBrain.addCondition(modeleCond);		
 	}
 	
-	private AbstractGenericAttributSettings getWarGenericSettings(Class classSetting, Element element){
-		AbstractGenericAttributSettings settings = null;
+	private AbstractGenericSettings getWarGenericSettings(Class classSetting, Element element){
+		AbstractGenericSettings settings = null;
 		try {
-			settings = (AbstractGenericAttributSettings) classSetting.newInstance();
+			settings = (AbstractGenericSettings) classSetting.newInstance();
 		} catch (InstantiationException e1) {
 			e1.printStackTrace();
 		} catch (IllegalAccessException e1) {

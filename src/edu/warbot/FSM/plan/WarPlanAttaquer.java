@@ -2,13 +2,13 @@ package edu.warbot.FSM.plan;
 
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionAttaquer;
-import edu.warbot.FSM.genericSettings.PlanSettings;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
 public class WarPlanAttaquer extends WarPlan<WarRocketLauncherAdapter> {
 	
-	public WarPlanAttaquer(WarRocketLauncherAdapter brain, PlanSettings planSettings) {
+	public WarPlanAttaquer(WarRocketLauncherAdapter brain, GenericPlanSettings planSettings) {
 		super("Plan Attaquer", brain, planSettings);
 	}
 

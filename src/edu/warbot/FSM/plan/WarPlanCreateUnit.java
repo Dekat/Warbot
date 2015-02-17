@@ -4,7 +4,7 @@ import javax.swing.JOptionPane;
 
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionCreateUnit;
-import edu.warbot.FSM.genericSettings.PlanSettings;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.adapters.WarBaseAdapter;
@@ -17,7 +17,7 @@ public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 	int minLife;
 	boolean pourcentage;
 	
-	public WarPlanCreateUnit(WarBaseAdapter brain, PlanSettings planSettings ) {
+	public WarPlanCreateUnit(WarBaseAdapter brain, GenericPlanSettings planSettings ) {
 		super("Plan healer", brain, planSettings);
 		
 		if(getPlanSettings().Agent_type != null)

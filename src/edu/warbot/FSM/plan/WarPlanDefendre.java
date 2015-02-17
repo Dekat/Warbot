@@ -2,7 +2,7 @@ package edu.warbot.FSM.plan;
 
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionDefendre;
-import edu.warbot.FSM.genericSettings.PlanSettings;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
 /**
@@ -10,7 +10,7 @@ import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
  */
 public class WarPlanDefendre extends WarPlan<WarRocketLauncherAdapter> {
 	
-	public WarPlanDefendre(WarRocketLauncherAdapter brain, PlanSettings planSettings) {
+	public WarPlanDefendre(WarRocketLauncherAdapter brain, GenericPlanSettings planSettings) {
 		super("Plan Defendre", brain, planSettings);
 	}
 

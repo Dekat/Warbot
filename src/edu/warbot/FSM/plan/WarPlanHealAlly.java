@@ -5,9 +5,9 @@ import edu.warbot.FSM.action.WarActionChercherNouriture;
 import edu.warbot.FSM.action.WarActionHealAlly;
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.condition.WarConditionTimeOut;
-import edu.warbot.FSM.genericSettings.ConditionSettings;
-import edu.warbot.FSM.genericSettings.PlanSettings;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumMethod;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.brains.MovableWarAgentAdapter;
 
 /**
@@ -16,7 +16,7 @@ import edu.warbot.brains.MovableWarAgentAdapter;
  */
 public class WarPlanHealAlly<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
 	
-	public WarPlanHealAlly(AgentAdapterType brain, PlanSettings planSettings) {
+	public WarPlanHealAlly(AgentAdapterType brain, GenericPlanSettings planSettings) {
 		super("Plan heal ally", brain, planSettings);
 	}
 
@@ -31,14 +31,14 @@ public class WarPlanHealAlly<AgentAdapterType extends MovableWarAgentAdapter> ex
 		WarAction<AgentAdapterType> actionFindFood = new WarActionChercherNouriture<>(getBrain());
 		addAction(actionFindFood);
 		
-		ConditionSettings condSet1 = new ConditionSettings();
+		GenericConditionSettings condSet1 = new GenericConditionSettings();
 		condSet1.Methode = EnumMethod.isBagEmpty; 
 		WarCondition<AgentAdapterType> condhealToFind = 
 				new WarConditionTimeOut<>("cond_heal", getBrain(), condSet1);
 		actionHeal.addCondition(condhealToFind);
 		condhealToFind.setDestination(actionFindFood);
 		
-		ConditionSettings condSet2 = new ConditionSettings();
+		GenericConditionSettings condSet2 = new GenericConditionSettings();
 		condSet2.Methode = EnumMethod.isBagFull;
 		WarCondition<AgentAdapterType> condFindToHeal = 
 				new WarConditionTimeOut<>("cond_food", getBrain(), condSet2);

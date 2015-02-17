@@ -1,6 +1,6 @@
 package edu.warbot.FSM.condition;
 
-import edu.warbot.FSM.genericSettings.ConditionSettings;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
@@ -21,7 +21,7 @@ public class WarConditionPerceptBooleanCheck<AgentAdapterType extends Controllab
 	boolean oneOf;
 	
 	public WarConditionPerceptBooleanCheck(String name, AgentAdapterType brain, 
-			ConditionSettings conditionSettings){
+			GenericConditionSettings conditionSettings){
 		
 		super(name, brain, conditionSettings);
 //		this.nameAtt = conditionSettings.Reference;

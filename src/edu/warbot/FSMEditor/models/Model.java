@@ -1,7 +1,7 @@
 package edu.warbot.FSMEditor.models;
 
-import edu.warbot.FSM.genericSettings.ConditionSettings;
-import edu.warbot.FSM.genericSettings.PlanSettings;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.FSMEditor.views.View;
 import edu.warbot.agents.enums.WarAgentType;
 
@@ -68,7 +68,7 @@ public class Model {
 				}
 				
 				//Afichage des parametres du plan
-				PlanSettings planSet = modState.getPlanSettings();
+				GenericPlanSettings planSet = modState.getPlanSettings();
 				Field field[] = planSet.getClass().getDeclaredFields();
 				System.out.println("\tPlan settings : ");
 				for (int i = 0; i < field.length; i++) {
@@ -98,7 +98,7 @@ public class Model {
 				System.out.println("\tEtat destination objet : Name=" + modCond.getStateDestination().getName());
 				
 				//Affichage des conditions settings
-				ConditionSettings condSet = modCond.getConditionSettings();
+				GenericConditionSettings condSet = modCond.getConditionSettings();
 				Field field[] = condSet.getClass().getDeclaredFields();
 				System.out.println("\tCondition settings : ");
 				for (int i = 0; i < field.length; i++) {

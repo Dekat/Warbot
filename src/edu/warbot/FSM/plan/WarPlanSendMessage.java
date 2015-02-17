@@ -2,7 +2,7 @@ package edu.warbot.FSM.plan;
 
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionSendMessage;
-import edu.warbot.FSM.genericSettings.PlanSettings;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 
@@ -10,7 +10,7 @@ public class WarPlanSendMessage<AgentAdapterType extends ControllableWarAgentAda
 	
 	WarAgentType agentType;
 	
-	public WarPlanSendMessage(AgentAdapterType brain, PlanSettings planSettings) {
+	public WarPlanSendMessage(AgentAdapterType brain, GenericPlanSettings planSettings) {
 		super("Plan Attaquer", brain, planSettings);
 	}
 

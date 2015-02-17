@@ -1,7 +1,5 @@
 package edu.warbot.FSMEditor.controleurs;
 
-import edu.warbot.FSM.genericSettings.ConditionSettings;
-import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.FSMEditor.dialogues.DialogueCondSetting;
 import edu.warbot.FSMEditor.dialogues.DialogueStateSetting;
 import edu.warbot.FSMEditor.models.ModelCondition;
@@ -9,6 +7,8 @@ import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.panels.PanelCondition;
 import edu.warbot.FSMEditor.panels.PanelState;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.FSMEditor.views.ViewBrain;
 
 import javax.swing.*;
@@ -130,7 +130,7 @@ public class ControleurBrain {
 	}
 	
 	private void eventAddState(){
-		PlanSettings planSetting = new PlanSettings();
+		GenericPlanSettings planSetting = new GenericPlanSettings();
 		
 		DialogueStateSetting d = new DialogueStateSetting(this.viewBrain, planSetting);
 		d.createDialog();
@@ -196,7 +196,7 @@ public class ControleurBrain {
 		
 		if(this.viewBrain.getViewEditor().isTwoStatesSelected()){
 			
-			ConditionSettings condSett = new ConditionSettings();
+			GenericConditionSettings condSett = new GenericConditionSettings();
 	
 			DialogueCondSetting d = new DialogueCondSetting(this.viewBrain, condSett);
 			d.createDialog();

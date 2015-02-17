@@ -2,7 +2,7 @@ package edu.warbot.FSM.plan;
 
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionIdle;
-import edu.warbot.FSM.genericSettings.PlanSettings;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 
 /**
@@ -12,7 +12,7 @@ public class WarPlanIdle<AgentAdapterType extends ControllableWarAgentAdapter> e
 	
 	private Integer nombreTik;
 
-	public WarPlanIdle(AgentAdapterType brain, PlanSettings planSettings) {
+	public WarPlanIdle(AgentAdapterType brain, GenericPlanSettings planSettings) {
 		super("Plan Idle", brain, planSettings);
 		
 		if(getPlanSettings().Tik_number != null)

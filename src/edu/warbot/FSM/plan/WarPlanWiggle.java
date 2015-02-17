@@ -2,7 +2,7 @@ package edu.warbot.FSM.plan;
 
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionWiggle;
-import edu.warbot.FSM.genericSettings.PlanSettings;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.brains.MovableWarAgentAdapter;
 
 /**
@@ -13,7 +13,7 @@ public class WarPlanWiggle<AgentAdapterType extends MovableWarAgentAdapter> exte
 	
 	private Integer nombreTik;
 
-	public WarPlanWiggle(AgentAdapterType brain, PlanSettings planSettings) {
+	public WarPlanWiggle(AgentAdapterType brain, GenericPlanSettings planSettings) {
 		super("Plan Wiggle", brain, planSettings);
 		
 		if(getPlanSettings().Tik_number != null)

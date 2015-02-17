@@ -22,7 +22,7 @@ import javax.swing.border.TitledBorder;
 
 import org.jfree.ui.tabbedui.VerticalLayout;
 
-import edu.warbot.FSM.genericSettings.AbstractGenericAttributSettings;
+import edu.warbot.FSMEditor.settings.AbstractGenericSettings;
 import edu.warbot.FSMEditor.settings.EnumAction;
 import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.FSMEditor.settings.EnumMethod;
@@ -37,7 +37,7 @@ public abstract class AbstractDialogue extends JDialog{
 	public static String DEFAULT_CONDITION_NAME = "Condition_";
 	public static String DEFAULT_STATE_NAME = "State_";
 	
-	AbstractGenericAttributSettings genericSettings;
+	AbstractGenericSettings genericSettings;
 	HashMap<Field, JComponent> mapFieldComp = new HashMap<>();
 
 	boolean isValide = false;
@@ -50,7 +50,7 @@ public abstract class AbstractDialogue extends JDialog{
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 	
-	public AbstractDialogue(ViewBrain f, AbstractGenericAttributSettings genericSettings) {
+	public AbstractDialogue(ViewBrain f, AbstractGenericSettings genericSettings) {
 		this();
 		this.genericSettings = genericSettings;
 	}

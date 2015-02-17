@@ -1,6 +1,6 @@
 package edu.warbot.FSM.condition;
 
-import edu.warbot.FSM.genericSettings.ConditionSettings;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumMethod;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 
@@ -14,7 +14,7 @@ public class WarConditionBooleanCheck<AgentAdapterType extends ControllableWarAg
 	EnumMethod methodName;
 	Method method;
 	
-	public WarConditionBooleanCheck(String name, AgentAdapterType brain, ConditionSettings conditionSettings){
+	public WarConditionBooleanCheck(String name, AgentAdapterType brain, GenericConditionSettings conditionSettings){
 		
 		super(name, brain, conditionSettings);
 		

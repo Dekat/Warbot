@@ -1,12 +1,12 @@
 package edu.warbot.FSMEditor.controleurs;
 
-import edu.warbot.FSM.genericSettings.ConditionSettings;
-import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.FSMEditor.FSMModelRebuilder;
 import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.models.ModeleBrain;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.FSMEditor.views.View;
 import edu.warbot.FSMEditor.views.ViewBrain;
 import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
@@ -362,7 +362,7 @@ public class Controleur {
 				}
 				
 				//Afichage des parametres du plan
-				PlanSettings planSet = modState.getPlanSettings();
+				GenericPlanSettings planSet = modState.getPlanSettings();
 				Field field[] = planSet.getClass().
 						getDeclaredFields();
 				System.out.println("\tPlan settings : ");
@@ -393,7 +393,7 @@ public class Controleur {
 				System.out.println("\tEtat destination objet : Name=" + modCond.getStateDestination().getName());
 				
 				//Affichage des conditions settings
-				ConditionSettings condSet = modCond.getConditionSettings();
+				GenericConditionSettings condSet = modCond.getConditionSettings();
 				Field field[] = condSet.getClass().getDeclaredFields();
 				System.out.println("\tCondition settings : ");
 				for (int i = 0; i < field.length; i++) {

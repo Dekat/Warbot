@@ -4,7 +4,7 @@ import javax.swing.JOptionPane;
 
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionFuire;
-import edu.warbot.FSM.genericSettings.PlanSettings;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.brains.MovableWarAgentAdapter;
 
@@ -14,7 +14,7 @@ import edu.warbot.brains.MovableWarAgentAdapter;
 
 public class WarPlanBeSecure<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
 	
-	public WarPlanBeSecure(AgentAdapterType brain, PlanSettings planSettings) {
+	public WarPlanBeSecure(AgentAdapterType brain, GenericPlanSettings planSettings) {
 		super("PlanBeSecure", brain, planSettings);
 		JOptionPane.showMessageDialog(null, "Attention le plan BeSecure n'est pas terminé et risque de ne pas fonctionner", "Waring not terminated plan", JOptionPane.INFORMATION_MESSAGE);
 	}
