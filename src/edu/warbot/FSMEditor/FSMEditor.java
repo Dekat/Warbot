@@ -1,5 +1,6 @@
 package edu.warbot.FSMEditor;
 
+import edu.warbot.FSM.genericSettings.PlanSettings;
 import edu.warbot.FSMEditor.controleurs.Controleur;
 import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModelState;
@@ -55,16 +56,16 @@ public class FSMEditor {
 		model.createModelBrain(WarAgentType.WarKamikaze);
 		
 		model.getModelBrain(WarAgentType.WarBase).addState(
-				new ModelState("State Idle", EnumPlan.WarPlanIdle, null));
+				new ModelState("State Idle", EnumPlan.WarPlanIdle, new PlanSettings()));
 		model.getModelBrain(WarAgentType.WarExplorer).addState(
-				new ModelState("State Idle", EnumPlan.WarPlanWiggle, null));
+				new ModelState("State Idle", EnumPlan.WarPlanWiggle, new PlanSettings()));
 		model.getModelBrain(WarAgentType.WarRocketLauncher).addState(
-				new ModelState("State Wiggle", EnumPlan.WarPlanWiggle, null));
+				new ModelState("State Wiggle", EnumPlan.WarPlanWiggle, new PlanSettings()));
 		model.getModelBrain(WarAgentType.WarEngineer).addState(
-				new ModelState("State Wiggle", EnumPlan.WarPlanWiggle, null));
+				new ModelState("State Wiggle", EnumPlan.WarPlanWiggle, new PlanSettings()));
 		model.getModelBrain(WarAgentType.WarTurret).addState(
-				new ModelState("State Idle", EnumPlan.WarPlanIdle, null));
+				new ModelState("State Idle", EnumPlan.WarPlanIdle, new PlanSettings()));
 		model.getModelBrain(WarAgentType.WarKamikaze).addState(
-				new ModelState("State Wiggle", EnumPlan.WarPlanWiggle, null));
+				new ModelState("State Wiggle", EnumPlan.WarPlanWiggle, new PlanSettings()));
 	}
 }

@@ -204,14 +204,6 @@ public class Controleur {
 		
 		boolean isValid = true;
 		
-		try{
-			printModelInformations(this.model);
-		}catch(NullPointerException e){
-			JOptionPane.showMessageDialog(null, "Error while checking fsm. Check it manualy", "Checking error", JOptionPane.ERROR_MESSAGE);
-		}
-		
-		
-		
 		//For eatch brains
 		for (ModeleBrain modelBrain: this.model.getModelsBrains()) {
 			
@@ -317,13 +309,17 @@ public class Controleur {
 				    "Succes",
 				    JOptionPane.INFORMATION_MESSAGE);
 		
-		System.out.println("Controleur : Your FSM seen to be valid, check it in console");
+		System.out.println("Controleur : Your FSM seen to be valid");
 		
 	}
 	
 	public void eventMenuBarItemPrint(){
 		try{
 			printModelInformations(this.model);
+			JOptionPane.showMessageDialog(this.view,
+				    "Model sucessfull printed in console",
+				    "Print sucess",
+				    JOptionPane.INFORMATION_MESSAGE);
 		}catch(NullPointerException e){
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this.view,
@@ -367,7 +363,8 @@ public class Controleur {
 				
 				//Afichage des parametres du plan
 				PlanSettings planSet = modState.getPlanSettings();
-				Field field[] = planSet.getClass().getDeclaredFields();
+				Field field[] = planSet.getClass().
+						getDeclaredFields();
 				System.out.println("\tPlan settings : ");
 				for (int i = 0; i < field.length; i++) {
 					try {
