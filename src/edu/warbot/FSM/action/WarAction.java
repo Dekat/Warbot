@@ -1,7 +1,6 @@
 package edu.warbot.FSM.action;
 
 import edu.warbot.FSM.condition.WarCondition;
-import edu.warbot.FSMEditor.settings.EnumAction;
 import edu.warbot.brains.ControllableWarAgentAdapter;
 
 import java.util.ArrayList;

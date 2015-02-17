@@ -1,24 +1,24 @@
 package edu.warbot.gui.debug.infos;
 
 import edu.warbot.agents.ControllableWarAgent;
-import edu.warbot.gui.debug.DebugModeToolBar;
+import edu.warbot.gui.debug.DebugToolsPnl;
 
 import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class ControllableWarAgentInformationsPnl extends JPanel implements IWarAgentInformationsPnl {
 
-	private DebugModeToolBar _debugToolBar;
+	private DebugToolsPnl debugToolsPnl;
 
 	private InfoLabel _distanceOfView;
 	private InfoLabel _angleOfView;
 	private InfoLabel _bag;
 	private InfoLabel _viewDirection;
 
-	public ControllableWarAgentInformationsPnl(DebugModeToolBar debugToolBar) {
+	public ControllableWarAgentInformationsPnl(DebugToolsPnl debugToolsPnl) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		_debugToolBar = debugToolBar;
+		this.debugToolsPnl = debugToolsPnl;
 
 		add(new JLabel(" "));
 		_viewDirection = new InfoLabel("Direction du regard");
@@ -33,9 +33,9 @@ public class ControllableWarAgentInformationsPnl extends JPanel implements IWarA
 
 	@Override
 	public void update() {
-		if (_debugToolBar.getSelectedAgent() instanceof ControllableWarAgent) {
+		if (debugToolsPnl.getSelectedAgent() instanceof ControllableWarAgent) {
 			setVisible(true);
-			ControllableWarAgent a = (ControllableWarAgent) _debugToolBar.getSelectedAgent();
+			ControllableWarAgent a = (ControllableWarAgent) debugToolsPnl.getSelectedAgent();
 
 			_viewDirection.setValue(WarAgentInformationsPnl.doubleFormatter.format(a.getViewDirection()));
 			_distanceOfView.setValue(WarAgentInformationsPnl.doubleFormatter.format(a.getDistanceOfView()));

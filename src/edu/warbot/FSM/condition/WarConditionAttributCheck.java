@@ -1,14 +1,13 @@
 package edu.warbot.FSM.condition;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import javax.swing.JOptionPane;
-
 import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumMethod;
 import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.brains.ControllableWarAgentAdapter;
+
+import javax.swing.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType> {
 	

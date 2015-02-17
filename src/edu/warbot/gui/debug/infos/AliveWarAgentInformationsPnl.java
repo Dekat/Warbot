@@ -1,21 +1,21 @@
 package edu.warbot.gui.debug.infos;
 
 import edu.warbot.agents.AliveWarAgent;
-import edu.warbot.gui.debug.DebugModeToolBar;
+import edu.warbot.gui.debug.DebugToolsPnl;
 
 import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class AliveWarAgentInformationsPnl extends JPanel implements IWarAgentInformationsPnl {
 
-	private DebugModeToolBar _debugToolBar;
+	private DebugToolsPnl debugToolsPnl;
 
 	private InfoLabel _health;
 
-	public AliveWarAgentInformationsPnl(DebugModeToolBar debugToolBar) {
+	public AliveWarAgentInformationsPnl(DebugToolsPnl debugToolsPnl) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		_debugToolBar = debugToolBar;
+		this.debugToolsPnl = debugToolsPnl;
 
 		add(new JLabel(" "));
 		_health = new InfoLabel("Santé");
@@ -24,9 +24,9 @@ public class AliveWarAgentInformationsPnl extends JPanel implements IWarAgentInf
 
 	@Override
 	public void update() {
-		if (_debugToolBar.getSelectedAgent() instanceof AliveWarAgent) {
+		if (debugToolsPnl.getSelectedAgent() instanceof AliveWarAgent) {
 			setVisible(true);
-            AliveWarAgent a = (AliveWarAgent) _debugToolBar.getSelectedAgent();
+            AliveWarAgent a = (AliveWarAgent) debugToolsPnl.getSelectedAgent();
 
 			_health.setValue(a.getHealth() + " / " + a.getMaxHealth());
 		} else {

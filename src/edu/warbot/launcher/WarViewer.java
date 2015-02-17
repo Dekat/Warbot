@@ -82,12 +82,6 @@ public class WarViewer extends AbstractGridViewer {
         frame.remove(getDisplayPane());
 
         scrollPane = new JScrollPane(swingView);
-//        scrollPane.addMouseWheelListener(new MouseWheelListener() {
-//            @Override
-//            public void mouseWheelMoved(MouseWheelEvent e) {
-//                updateSize(e.getPoint(),e.getWheelRotation());
-//            }
-//        });
 
         tabs = new JTabbedPane();
         tabs.addTab("Vue standard", scrollPane);
@@ -97,7 +91,9 @@ public class WarViewer extends AbstractGridViewer {
         frame.add(tabs, BorderLayout.CENTER);
 
         mapExplorationMouseListener = new MapExplorationListener(this);
-        setMapExplorationEventsEnabled(true);
+        swingView.addMouseMotionListener(mapExplorationMouseListener);
+        swingView.addMouseListener(mapExplorationMouseListener);
+        swingView.addMouseWheelListener(mapExplorationMouseListener);
 
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 
@@ -200,8 +196,8 @@ public class WarViewer extends AbstractGridViewer {
             }
 
             if (autorModeToolBar.isVisible()) {
-                if (autorModeToolBar.getSelectedAgent() != null) {
-                    if (agent.getID() == autorModeToolBar.getSelectedAgent().getID()) {
+                if (autorModeToolBar.getDebugTools().getSelectedAgent() != null) {
+                    if (agent.getID() == autorModeToolBar.getDebugTools().getSelectedAgent().getID()) {
                         borderColor = Color.GRAY;
                         backgroundColor = Color.WHITE;
                         isCurrentAgentTheSelectedOne = true;
@@ -241,9 +237,9 @@ public class WarViewer extends AbstractGridViewer {
             }
         }
 
-        if (autorModeToolBar.getSelectedAgent() != null) {
-            if (autorModeToolBar.getSelectedAgent() instanceof ControllableWarAgent)
-                paintDebugMessage(g2d, (ControllableWarAgent) autorModeToolBar.getSelectedAgent());
+        if (autorModeToolBar.getDebugTools().getSelectedAgent() != null) {
+            if (autorModeToolBar.getDebugTools().getSelectedAgent() instanceof ControllableWarAgent)
+                paintDebugMessage(g2d, (ControllableWarAgent) autorModeToolBar.getDebugTools().getSelectedAgent());
         }
 
         // Affichage des agents mourants
@@ -363,25 +359,11 @@ public class WarViewer extends AbstractGridViewer {
     }
 
     public void setMapExplorationEventsEnabled(boolean bool) {
-        if (bool) {
-            Toolkit.getDefaultToolkit().addAWTEventListener(mapExplorationMouseListener, AWTEvent.KEY_EVENT_MASK);
-            swingView.addMouseListener(mapExplorationMouseListener);
-            swingView.addMouseMotionListener(mapExplorationMouseListener);
-            swingView.addMouseWheelListener(mapExplorationMouseListener);
-        } else {
-            Toolkit.getDefaultToolkit().removeAWTEventListener(mapExplorationMouseListener);
-            swingView.removeMouseListener(mapExplorationMouseListener);
-            swingView.removeMouseMotionListener(mapExplorationMouseListener);
-            swingView.removeMouseWheelListener(mapExplorationMouseListener);
-        }
+        mapExplorationMouseListener.setOnlyRightClick(! bool);
     }
 
     public JPanel getSwingView() {
         return swingView;
-    }
-
-    public JScrollPane getScrollPane() {
-        return scrollPane;
     }
 
     class SwingView extends JPanel {
@@ -404,11 +386,11 @@ public class WarViewer extends AbstractGridViewer {
             //affichage du nombre de FPS
             g2d.drawString("TPS : " + game.getFPS().toString(), 1, 11);
 
-            if (autorModeToolBar.getSelectedAgent() != null) {
+            if (autorModeToolBar.getDebugTools().getSelectedAgent() != null) {
                 // Update de l'affichage des infos sur l'unité sélectionnée
-                autorModeToolBar.getAgentInformationsPanel().update();
+                autorModeToolBar.getDebugTools().getAgentInformationsPanel().update();
                 // On récupère la liste des agents vus par l'agent sélectionné
-                WarAgent selectedAgent = autorModeToolBar.getSelectedAgent();
+                WarAgent selectedAgent = autorModeToolBar.getDebugTools().getSelectedAgent();
                 if (selectedAgent instanceof ControllableWarAgent) {
                     for(WarAgentPercept p : ((ControllableWarAgent) selectedAgent).getPercepts())
                         agentsIDsSeenBySelectedAgent.add(p.getID());

@@ -5,7 +5,6 @@ import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionSendMessage;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.ControllableWarAgentAdapter;
-import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 
 public class WarPlanSendMessage<AgentAdapterType extends ControllableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
 	

@@ -1,15 +1,12 @@
 package edu.warbot.FSMEditor.panels;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.util.ArrayList;
-
-import javax.swing.JPanel;
-
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.models.ModeleBrain;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
 
 public class PanelEditor extends JPanel {
 

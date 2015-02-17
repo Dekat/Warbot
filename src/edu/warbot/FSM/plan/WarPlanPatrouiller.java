@@ -1,7 +1,5 @@
 package edu.warbot.FSM.plan;
 
-import javax.swing.JOptionPane;
-
 import edu.warbot.FSM.WarGenericSettings.ConditionSettings;
 import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSM.action.WarAction;
@@ -12,6 +10,8 @@ import edu.warbot.FSM.condition.WarConditionPerceptCounter;
 import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
+
+import javax.swing.*;
 
 /**
  * Plan avancé ne marche pas encore !

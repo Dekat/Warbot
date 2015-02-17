@@ -1,12 +1,12 @@
 package edu.warbot.FSM.plan;
 
-import javax.swing.JOptionPane;
-
 import edu.warbot.FSM.WarGenericSettings.PlanSettings;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionFuire;
 import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.brains.MovableWarAgentAdapter;
+
+import javax.swing.*;
 
 /**
  * A amélioré par exemple en disant que on fuit mais si on a plus de vie on va en chercher et on ce heal 

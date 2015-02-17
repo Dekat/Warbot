@@ -1,20 +1,21 @@
 package edu.warbot.gui.debug.infos;
 
 import edu.warbot.agents.CreatorWarAgent;
-import edu.warbot.gui.debug.DebugModeToolBar;
+import edu.warbot.gui.debug.DebugToolsPnl;
 
 import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class CreatorWarAgentInformationsPnl extends JPanel  implements IWarAgentInformationsPnl{
-	private DebugModeToolBar _debugToolBar;
+
+	private DebugToolsPnl debugToolsPnl;
 	
 	private InfoLabel _nextAgentToCreate;
 	
-	public CreatorWarAgentInformationsPnl(DebugModeToolBar debugToolBar) {
+	public CreatorWarAgentInformationsPnl(DebugToolsPnl debugToolsPnl) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		_debugToolBar = debugToolBar;
+		this.debugToolsPnl = debugToolsPnl;
 		
 		add(new JLabel(" "));
 		_nextAgentToCreate = new InfoLabel("Prochain agent à créer");
@@ -23,9 +24,9 @@ public class CreatorWarAgentInformationsPnl extends JPanel  implements IWarAgent
 	
 	@Override
 	public void update() {
-		if (_debugToolBar.getSelectedAgent() instanceof CreatorWarAgent) {
+		if (debugToolsPnl.getSelectedAgent() instanceof CreatorWarAgent) {
 			setVisible(true);
-		CreatorWarAgent a = (CreatorWarAgent) _debugToolBar.getSelectedAgent();
+		CreatorWarAgent a = (CreatorWarAgent) debugToolsPnl.getSelectedAgent();
 
 		_nextAgentToCreate.setValue(a.getNextAgentToCreate().toString());
 		} else {

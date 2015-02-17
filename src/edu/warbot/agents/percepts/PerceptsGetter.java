@@ -140,6 +140,11 @@ public abstract class PerceptsGetter {
         wallsPercepts.clear();
     }
 
+    public void forcePerceptsUpdate() {
+        setPerceptsOutdated();
+        getPercepts();
+    }
+
     public ArrayList<WallPercept> getWallsPercepts() {
         return wallsPercepts;
     }

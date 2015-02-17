@@ -1,7 +1,7 @@
 package edu.warbot.gui.debug.infos;
 
 import edu.warbot.agents.WarAgent;
-import edu.warbot.gui.debug.DebugModeToolBar;
+import edu.warbot.gui.debug.DebugToolsPnl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +9,7 @@ import java.awt.*;
 @SuppressWarnings("serial")
 public class WarAgentInformationsPnl extends JPanel implements IWarAgentInformationsPnl {
 
-	private DebugModeToolBar _debugToolBar;
+	private DebugToolsPnl debugToolsPnl;
 
 	private InfoLabel _id;
 	private InfoLabel _type;
@@ -23,12 +23,12 @@ public class WarAgentInformationsPnl extends JPanel implements IWarAgentInformat
 	private CreatorWarAgentInformationsPnl _creatorAgent;
 	private WarProjectileInformationsPnl _projectile;
 
-	public WarAgentInformationsPnl(DebugModeToolBar debugToolBar) {
+	public WarAgentInformationsPnl(DebugToolsPnl debugToolsPnl) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-		_debugToolBar = debugToolBar;
+		this.debugToolsPnl = debugToolsPnl;
 
 		add(new JLabel("Informations sur l'agent sélectionné : "));
 
@@ -43,21 +43,21 @@ public class WarAgentInformationsPnl extends JPanel implements IWarAgentInformat
 		_heading = new InfoLabel("Heading");
 		add(_heading);
 
-        _aliveAgent = new AliveWarAgentInformationsPnl(_debugToolBar);
+        _aliveAgent = new AliveWarAgentInformationsPnl(this.debugToolsPnl);
         add(_aliveAgent);
-		_controllableAgent = new ControllableWarAgentInformationsPnl(_debugToolBar);
+		_controllableAgent = new ControllableWarAgentInformationsPnl(this.debugToolsPnl);
 		add(_controllableAgent);
-		_movableAgent = new MovableWarAgentInformationsPnl(_debugToolBar);
+		_movableAgent = new MovableWarAgentInformationsPnl(this.debugToolsPnl);
 		add(_movableAgent);
-		_creatorAgent = new CreatorWarAgentInformationsPnl(_debugToolBar);
+		_creatorAgent = new CreatorWarAgentInformationsPnl(this.debugToolsPnl);
 		add(_creatorAgent);
-		_projectile = new WarProjectileInformationsPnl(_debugToolBar);
+		_projectile = new WarProjectileInformationsPnl(this.debugToolsPnl);
 		add(_projectile);
 	}
 
 	@Override
 	public void update() {
-		WarAgent a = _debugToolBar.getSelectedAgent();
+		WarAgent a = debugToolsPnl.getSelectedAgent();
 
 		if (a == null) {
 			setVisible(false);

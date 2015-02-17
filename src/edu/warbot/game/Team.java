@@ -319,7 +319,16 @@ public class Team {
 		return a;
 	}
 
-	private Model getFSMModel() {
+    public WarBuilding instantiateNewBuilding(String buildingName) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
+        String buildingToCreateClassName = Wall.class.getPackage().getName() + "." + buildingName;
+        WarBuilding building = (WarBuilding) Class.forName(buildingToCreateClassName)
+                .getConstructor(Team.class)
+                .newInstance(this);
+
+        return building;
+    }
+
+    private Model getFSMModel() {
 		return this.fsmModel;
 	}
 	
@@ -356,11 +365,7 @@ public class Team {
             try {
                 ((AliveWarAgent) builderAgent).getLogger().log(Level.FINEST, builderAgent.toString() + " building " + buildingTypeToBuild);
                 if (builderAgent.isAbleToBuild(buildingTypeToBuild)) {
-                    // Instanciation
-                    String buildingToCreateClassName = Wall.class.getPackage().getName() + "." + buildingTypeToBuild.toString();
-                    WarBuilding building = (WarBuilding) Class.forName(buildingToCreateClassName)
-                            .getConstructor(Team.class)
-                            .newInstance(this);
+                    WarBuilding building = instantiateNewBuilding(buildingTypeToBuild.toString());
                     if(building.getCost() < ((AliveWarAgent) builderAgent).getHealth()) {
                         ((AliveWarAgent) builderAgent).launchAgent(building);
 

@@ -1,5 +1,6 @@
 package edu.warbot.gui.debug.eventlisteners;
 
+import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.game.WarGame;
 import edu.warbot.gui.debug.DebugModeToolBar;
@@ -7,9 +8,10 @@ import edu.warbot.tools.geometry.CoordCartesian;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
-public class MoveToolMouseListener implements MouseListener {
+public class MoveToolMouseListener implements MouseListener, MouseMotionListener {
 
 	private DebugModeToolBar _debugToolBar;
 	private WarAgent _currentSelectedAgent;
@@ -35,29 +37,42 @@ public class MoveToolMouseListener implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		_debugToolBar.getViewer().setMapExplorationEventsEnabled(false);
-		
-		// On sélectionne l'agent sous le clique de souris
-        CoordCartesian mouseClickPosition = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
-		ArrayList<WarAgent> agents = game.getAllAgentsInRadius(mouseClickPosition.getX(), mouseClickPosition.getY(), 3);
-		if (agents.size() > 0) {
-			_currentSelectedAgent = agents.get(0);
-		}
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            _debugToolBar.getViewer().setMapExplorationEventsEnabled(false);
+
+            // On sélectionne l'agent sous le clique de souris
+            CoordCartesian mouseClickPosition = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
+            ArrayList<WarAgent> agents = game.getAllAgentsInRadius(mouseClickPosition.getX(), mouseClickPosition.getY(), 3);
+            if (agents.size() > 0) {
+                _currentSelectedAgent = agents.get(0);
+            }
+        }
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if (_currentSelectedAgent != null) {
-			CoordCartesian newPos = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
-			newPos.normalize(0, game.getMap().getWidth() - 1, 0, game.getMap().getHeight() - 1);
-			_currentSelectedAgent.setPosition(newPos);
-            _currentSelectedAgent.moveOutOfCollision();
-
-            _debugToolBar.getViewer().getFrame().repaint();
-		}
-		_currentSelectedAgent = null;
-		
-		_debugToolBar.getViewer().setMapExplorationEventsEnabled(true);
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            _currentSelectedAgent = null;
+            _debugToolBar.getViewer().setMapExplorationEventsEnabled(true);
+        }
 	}
 
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        if (_currentSelectedAgent != null) {
+            CoordCartesian newPos = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
+            newPos.normalize(0, game.getMap().getWidth() - 1, 0, game.getMap().getHeight() - 1);
+            _currentSelectedAgent.setPosition(newPos);
+            _currentSelectedAgent.moveOutOfCollision();
+            if (_currentSelectedAgent instanceof ControllableWarAgent)
+            ((ControllableWarAgent) _currentSelectedAgent).forcePerceptsUpdate();
+
+            _debugToolBar.getViewer().getFrame().repaint();
+        }
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+    }
 }

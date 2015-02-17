@@ -1,10 +1,10 @@
 package edu.warbot.FSM;
 
-import javax.swing.JOptionPane;
-
 import edu.warbot.brains.ControllableWarAgentAdapter;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarExplorerAdapter;
+
+import javax.swing.*;
 
 //Ici plutot mettre ControllableWarAgentAdapter ?
 public class WarFSMBrainController extends WarBrain<WarExplorerAdapter>{

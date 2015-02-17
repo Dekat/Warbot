@@ -1,5 +1,6 @@
 package edu.warbot.gui.debug.eventlisteners;
 
+import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.game.WarGame;
@@ -11,14 +12,14 @@ import edu.warbot.tools.geometry.CoordPolar;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
-public class AddToolMouseListener implements MouseListener {
+public class AddToolMouseListener implements MouseListener, MouseMotionListener {
 
 	private DebugModeToolBar _debugToolBar;
 	private DebugToolsPnl _toolsPnl;
 
-	private CoordCartesian _clickedPos;
-	private String _lastSelectedTeam;
+    private WarAgent currentCreatedAgent;
 	
 	private WarGame game;
 
@@ -26,8 +27,6 @@ public class AddToolMouseListener implements MouseListener {
 		_debugToolBar = debugToolBar;
 		_toolsPnl = toolsPnl;
 
-		_clickedPos = null;
-		
 		game = _debugToolBar.getViewer().getGame();
 	}
 
@@ -45,48 +44,64 @@ public class AddToolMouseListener implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		_debugToolBar.getViewer().setMapExplorationEventsEnabled(false);
-		if (_toolsPnl.getSelectedWarAgentTypeToCreate() != null) {
-			_clickedPos = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
-		} else {
-			JOptionPane.showMessageDialog(_debugToolBar, "Veuillez sélectionner un type d'agent.", "Création d'un agent impossible", JOptionPane.ERROR_MESSAGE);
-		}
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            _debugToolBar.getViewer().setMapExplorationEventsEnabled(false);
+            if (_toolsPnl.getSelectedWarAgentTypeToCreate() != null) {
+                CoordCartesian mouseClickPosition = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
+                try {
+                    if (_toolsPnl.getSelectedWarAgentTypeToCreate().getCategory() == WarAgentCategory.Resource) {
+                        currentCreatedAgent = game.getMotherNatureTeam().instantiateNewWarResource(_toolsPnl.getSelectedWarAgentTypeToCreate().toString());
+                        _debugToolBar.getViewer().launchAgent(currentCreatedAgent);
+                        currentCreatedAgent.setPosition(mouseClickPosition.getX(), mouseClickPosition.getY());
+                        currentCreatedAgent.moveOutOfCollision();
+                    } else {
+                        if (_toolsPnl.getSelectedTeamForNextCreatedAgent() != null) {
+                            if (_toolsPnl.getSelectedWarAgentTypeToCreate().isControllable())
+                                currentCreatedAgent = _toolsPnl.getSelectedTeamForNextCreatedAgent().instantiateNewControllableWarAgent(_toolsPnl.getSelectedWarAgentTypeToCreate().toString());
+                            else
+                                currentCreatedAgent = _toolsPnl.getSelectedTeamForNextCreatedAgent().instantiateNewBuilding(_toolsPnl.getSelectedWarAgentTypeToCreate().toString());
+                            _debugToolBar.getViewer().launchAgent(currentCreatedAgent);
+                            currentCreatedAgent.setPosition(mouseClickPosition.getX(), mouseClickPosition.getY());
+                            currentCreatedAgent.moveOutOfCollision();
+                        } else {
+                            JOptionPane.showMessageDialog(_debugToolBar, "Veuillez sélectionner une équipe pour cet agent.", "Création d'un agent impossible", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+
+                    _debugToolBar.getViewer().getFrame().repaint();
+                } catch (Exception ex) { // TODO exception la plus précise possible
+                    System.err.println("Erreur lors de l'instanciation de l'agent " + _toolsPnl.getSelectedWarAgentTypeToCreate().toString());
+                    ex.printStackTrace();
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(_debugToolBar, "Veuillez sélectionner un type d'agent.", "Création d'un agent impossible", JOptionPane.ERROR_MESSAGE);
+            }
+        }
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		try {
-			if (_clickedPos != null) {
-				if (_toolsPnl.getSelectedWarAgentTypeToCreate().getCategory() == WarAgentCategory.Resource) {
-					WarAgent a = game.getMotherNatureTeam().instantiateNewWarResource(_toolsPnl.getSelectedWarAgentTypeToCreate().toString());
-					_debugToolBar.getViewer().launchAgent(a);
-					a.setPosition(_clickedPos);
-                    a.moveOutOfCollision();
-				} else {
-					CoordCartesian mouseClickPosition = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
-					CoordPolar movement = new CoordCartesian(mouseClickPosition.getX() - _clickedPos.getX(), mouseClickPosition.getY() - _clickedPos.getY()).toPolar();
-					String[] choices = game.getPlayerTeamNames();
-					if (_lastSelectedTeam == null)
-						_lastSelectedTeam = choices[0];
-					String teamName = (String) JOptionPane.showInputDialog(_debugToolBar, "A quelle équipe appartient cet agent ?",
-							"Choix d'équipe", JOptionPane.QUESTION_MESSAGE, null, choices, _lastSelectedTeam);
-					_lastSelectedTeam = teamName;
-					WarAgent a = game.getPlayerTeam(teamName).instantiateNewControllableWarAgent(_toolsPnl.getSelectedWarAgentTypeToCreate().toString());
-					_debugToolBar.getViewer().launchAgent(a);
-					a.setHeading(movement.getAngle());
-					a.setPosition(_clickedPos);
-                    a.moveOutOfCollision();
-				}
-
-                _debugToolBar.getViewer().getFrame().repaint();
-			}
-		} catch (Exception ex) { // TODO exception la plus précise possible
-			System.err.println("Erreur lors de l'instanciation de l'agent " + _toolsPnl.getSelectedWarAgentTypeToCreate().toString());
-			ex.printStackTrace();
-		}
-
-		_clickedPos = null;
-		_debugToolBar.getViewer().setMapExplorationEventsEnabled(true);
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            currentCreatedAgent = null;
+            _debugToolBar.getViewer().setMapExplorationEventsEnabled(true);
+        }
 	}
 
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        if (currentCreatedAgent != null) {
+            CoordCartesian mousePosition = _debugToolBar.getViewer().convertClickPositionToMapPosition(e.getX(), e.getY());
+            CoordPolar movement = new CoordCartesian(mousePosition.getX() - currentCreatedAgent.getX(), mousePosition.getY() - currentCreatedAgent.getY()).toPolar();
+            currentCreatedAgent.setHeading(movement.getAngle());
+            if (currentCreatedAgent instanceof ControllableWarAgent)
+                ((ControllableWarAgent) currentCreatedAgent).forcePerceptsUpdate();
+            _debugToolBar.getViewer().getFrame().repaint();
+        }
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+    }
 }
