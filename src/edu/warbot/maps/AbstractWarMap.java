@@ -13,8 +13,8 @@ public abstract class AbstractWarMap {
     private static final double MAP_ACCESSIBLE_AREA_PADDING = 5.;
     private static final double BORDER_THICKNESS = 5.;
 
-	protected static final float TEAM_POSITION_RADIUS = 100;
-	protected static final float FOOD_POSITION_RADIUS = 50;
+	public static final float TEAM_POSITION_RADIUS = 100;
+    public static final float FOOD_POSITION_RADIUS = 50;
 
     private String name;
     protected Area mapAccessibleArea;

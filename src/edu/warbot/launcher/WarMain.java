@@ -41,7 +41,7 @@ public class WarMain implements WarGameListener {
 	private Map<String, Team> availableTeams;
 
 	public WarMain() {
-		availableTeams = new HashMap<String, Team>();
+		availableTeams = new HashMap<>();
 		settings = new WarGameSettings();
 		
 		// On récupère les équipes
@@ -50,7 +50,7 @@ public class WarMain implements WarGameListener {
 
 		// On initialise la liste des équipes existantes dans le dossier "teams"
 		availableTeams = loadAvailableTeams();
-		Shared.availableTeams = new HashMap<String, Team>(availableTeams);
+		Shared.availableTeams = new HashMap<>(availableTeams);
 
 		// On vérifie qu'au moins une équipe a été chargée
 		if (availableTeams.size() > 0) {
@@ -71,11 +71,11 @@ public class WarMain implements WarGameListener {
 	}
 
     public WarMain(WarGameSettings settings, String ... selectedTeamsName) throws WarCommandException {
-        availableTeams = new HashMap<String, Team>();
+        availableTeams = new HashMap<>();
 
         // On initialise la liste des équipes existantes dans le dossier "teams"
         availableTeams = loadAvailableTeams();
-        Shared.availableTeams = new HashMap<String, Team>(availableTeams);
+        Shared.availableTeams = new HashMap<>(availableTeams);
 
         // On vérifie qu'au moins une équipe a été chargée
         if (availableTeams.size() > 0) {
@@ -121,67 +121,6 @@ public class WarMain implements WarGameListener {
                 loadedTeams.put(currentLoadedTeam.getKey(), currentLoadedTeam.getValue());
             }
         }
-
-//		String jarDirectoryPath = TEAMS_DIRECTORY_NAME + File.separator;
-//		File jarDirectory = new File(jarDirectoryPath);
-//		// On regarde si un dossier jar existe
-//		if (! jarDirectory.exists() || jarDirectory.isDirectory()) {
-//			jarDirectory.mkdir();
-//		}
-//		File[] filesInJarDirectory = jarDirectory.listFiles();
-//
-//		Team currentTeam;
-//
-//		// On va chercher les fichiers .jar dans le dossier adéquate
-//		for (File currentFile : filesInJarDirectory) {
-//			try {
-//				if (currentFile.getCanonicalPath().endsWith(".jar")) {
-//					JarFile jarCurrentFile = new JarFile(currentFile);
-//
-//					// On parcours les entrées du fichier JAR à la recherche des fichiers souhaités
-//					HashMap<String, JarEntry> allJarEntries = getAllJarEntry(jarCurrentFile);
-//
-//					boolean configFileFound = allJarEntries.containsKey("config.xml");
-//
-//					if(configFileFound) {
-//
-//						// Si l'équipe est disponible à partir des sources, on choisira de charger depuis le code source
-//                        Map<String, String> teamsSourcesFolders = UserSettings.getTeamsSourcesFolders();
-//                        if(teamsSourcesFolders.containsKey(teamXMLReader.getTeamName())) {
-//                            currentTeam = loadTeamFromSources(teamsSourcesFolders, teamXMLReader);
-//                            System.out.println("from sources " + currentTeam);
-//                        } else {
-//                            currentTeam = loadTeamFromJar(currentFile, jarCurrentFile, allJarEntries, teamXMLReader);
-//                            System.out.println("from Jar " + currentTeam);
-//                        }
-//
-//						// Puis on ferme le fichier JAR
-//						jarCurrentFile.close();
-//
-//						// Si il y a déjà une équipe du même nom on ne l'ajoute pas
-//						if (loadedTeams.containsKey(currentTeam.getName()))
-//							System.err.println("Erreur lors de la lecture d'une équipe : le nom " + currentTeam.getName() + " est déjà utilisé.");
-//						else
-//							loadedTeams.put(currentTeam.getName(), currentTeam);
-//
-//					} else { // Si le fichier de configuration n'a pas été trouvé
-//						System.err.println("Le fichier de configuration est introuvable dans le fichier JAR " + currentFile.getCanonicalPath());
-//					}
-//				}
-//			} catch (MalformedURLException e) {
-//				System.err.println("Lecture des fichiers JAR : URL mal formée");
-//				e.printStackTrace();
-//			} catch (ClassNotFoundException e) {
-//				System.err.println("Lecture des fichiers JAR : Classe non trouvée");
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				System.err.println("Lecture des fichiers JAR : Lecture de fichier");
-//				e.printStackTrace();
-//			}catch (NullPointerException e) {
-//				System.err.println("Lecture des fichiers JAR : Lecture de fichier");
-//				e.printStackTrace();
-//			}
-//        }
 		return loadedTeams;
 	}
 
@@ -205,7 +144,7 @@ public class WarMain implements WarGameListener {
                     // On parcours les entrées du fichier JAR à la recherche des fichiers souhaités
                     HashMap<String, JarEntry> allJarEntries = getAllJarEntry(jarCurrentFile);
 
-                    if(allJarEntries.containsKey("config.xml")) {
+                    if(allJarEntries.containsKey(TeamConfigReader.FILE_NAME)) {
                         currentTeam = loadTeamFromJar(currentFile, jarCurrentFile, allJarEntries);
 
                         // Puis on ferme le fichier JAR
@@ -242,15 +181,15 @@ public class WarMain implements WarGameListener {
         Team currentTeam;
 
         // On analyse le fichier XML
-        BufferedInputStream input = new BufferedInputStream(jarFile.getInputStream(jarEntries.get("config.xml")));
-        TeamXMLReader teamXMLReader = new TeamXMLReader();
-        teamXMLReader.load(input);
+        BufferedInputStream input = new BufferedInputStream(jarFile.getInputStream(jarEntries.get("config.yml")));
+        TeamConfigReader teamConfigReader = new TeamConfigReader();
+        teamConfigReader.load(input);
         input.close();
 
         // On créé l'équipe
-        currentTeam = new Team(teamXMLReader.getTeamName());
-        currentTeam.setLogo(getTeamLogoFromJar(jarEntries.get(teamXMLReader.getIconName()), jarFile));
-        currentTeam.setDescription(teamXMLReader.getTeamDescription().trim());
+        currentTeam = new Team(teamConfigReader.getTeamName());
+        currentTeam.setLogo(getTeamLogoFromJar(jarEntries.get(teamConfigReader.getIconPath()), jarFile));
+        currentTeam.setDescription(teamConfigReader.getTeamDescription().trim());
         // TODO get sound
 
         // On recherche les classes de type BrainController
@@ -259,7 +198,7 @@ public class WarMain implements WarGameListener {
         URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new URL("jar:file:" + urlName + "!/")});
 
         // Vérifie si l'équipe est une FSM (on regarde dans le fichier de configuration)
-        if(teamXMLReader.isFSMTeam()) {
+        if(teamConfigReader.isFSMTeam()) {
             JarEntry entryFSMConfiguration = jarEntries.get(FsmXmlParser.xmlConfigurationDefaultFilename);
 
             InputStream fileFSMConfig = jarFile.getInputStream(entryFSMConfiguration);
@@ -267,18 +206,18 @@ public class WarMain implements WarGameListener {
             FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
             currentTeam.setFsmModel(fsmModelRebuilder.getRebuildModel());
 
-            HashMap<String, String> brainControllersClassesName = teamXMLReader.getBrainControllersClassesNameOfEachAgentType();
+            Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
 
             for (String agentName : brainControllersClassesName.keySet()) {
                 currentTeam.addBrainControllerClassForAgent(agentName, WarFSMBrainController.class);
             }
         } else {
             // On parcours chaque nom de classe, puis on les charge
-            HashMap<String, String> brainControllersClassesName = teamXMLReader.getBrainControllersClassesNameOfEachAgentType();
+            Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
 
             for (String agentName : brainControllersClassesName.keySet()) {
                 currentTeam.addBrainControllerClassForAgent(agentName,
-                        classLoader.loadClass(teamXMLReader.getBrainsPackageName() + "." + brainControllersClassesName.get(agentName)).asSubclass(WarBrain.class));
+                        classLoader.loadClass(teamConfigReader.getBrainsPackageName() + "." + brainControllersClassesName.get(agentName)).asSubclass(WarBrain.class));
             }
         }
 
@@ -291,18 +230,18 @@ public class WarMain implements WarGameListener {
     private Map<String, Team> getTeamsFromSourceDirectory() {
         Map<String, Team> teamsLoaded = new HashMap<>();
 
-        Map<String, String> teamsSourcesFolders = UserSettings.getTeamsSourcesFolders();
+        Map<String, String> teamsSourcesFolders = UserPreferences.getTeamsSourcesFolders();
         for (String currentFolder : teamsSourcesFolders.values()) {
             try {
                 Team currentTeam;
 
                 // On analyse le fichier XML
-                FileInputStream input = new FileInputStream(currentFolder + File.separatorChar + "config.xml");
-                TeamXMLReader teamXMLReader = new TeamXMLReader();
-                teamXMLReader.load(input);
+                FileInputStream input = new FileInputStream(currentFolder + File.separatorChar + TeamConfigReader.FILE_NAME);
+                TeamConfigReader teamConfigReader = new TeamConfigReader();
+                teamConfigReader.load(input);
                 input.close();
 
-                currentTeam = loadTeamFromSources(teamsSourcesFolders, teamXMLReader);
+                currentTeam = loadTeamFromSources(teamsSourcesFolders, teamConfigReader);
 
                 // Si il y a déjà une équipe du même nom on ne l'ajoute pas
                 if (teamsLoaded.containsKey(currentTeam.getName()))
@@ -330,18 +269,18 @@ public class WarMain implements WarGameListener {
         return teamsLoaded;
     }
 
-    private Team loadTeamFromSources(Map<String, String> teamsSourcesFolders, TeamXMLReader teamXMLReader) throws ClassNotFoundException, FileNotFoundException {
+    private Team loadTeamFromSources(Map<String, String> teamsSourcesFolders, TeamConfigReader teamConfigReader) throws ClassNotFoundException, FileNotFoundException {
         Team currentTeam;
 
-        File teamDirectory = new File(teamsSourcesFolders.get(teamXMLReader.getTeamName()).replace("/", File.separator));
-        currentTeam = new Team(teamXMLReader.getTeamName());
-        currentTeam.setLogo(getTeamLogoFromFile(new File(teamDirectory.getAbsolutePath() + File.separatorChar + teamXMLReader.getIconName())));
-        currentTeam.setDescription(teamXMLReader.getTeamDescription().trim());
+        File teamDirectory = new File(teamsSourcesFolders.get(teamConfigReader.getTeamName()).replace("/", File.separator));
+        currentTeam = new Team(teamConfigReader.getTeamName());
+        currentTeam.setLogo(getTeamLogoFromFile(new File(teamDirectory.getAbsolutePath() + File.separatorChar + teamConfigReader.getIconPath())));
+        currentTeam.setDescription(teamConfigReader.getTeamDescription().trim());
         // TODO get sound
 
-        HashMap<String, String> brainControllersClassesName = teamXMLReader.getBrainControllersClassesNameOfEachAgentType();
-        if(teamXMLReader.isFSMTeam()) {
-            InputStream fileFSMConfig = new FileInputStream(teamDirectory.getAbsolutePath() + File.separatorChar + teamXMLReader.getIconName());
+        Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
+        if(teamConfigReader.isFSMTeam()) {
+            InputStream fileFSMConfig = new FileInputStream(teamDirectory.getAbsolutePath() + File.separatorChar + teamConfigReader.getIconPath());
             FsmXmlReader fsmXmlReader = new FsmXmlReader(fileFSMConfig);
             FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
             currentTeam.setFsmModel(fsmModelRebuilder.getRebuildModel());
@@ -351,7 +290,7 @@ public class WarMain implements WarGameListener {
             }
         } else {
             for (String agentName : brainControllersClassesName.keySet()) {
-                currentTeam.addBrainControllerClassForAgent(agentName, Class.forName(teamXMLReader.getBrainsPackageName() + "." + brainControllersClassesName.get(agentName)).asSubclass(WarBrain.class));
+                currentTeam.addBrainControllerClassForAgent(agentName, Class.forName(teamConfigReader.getBrainsPackageName() + "." + brainControllersClassesName.get(agentName)).asSubclass(WarBrain.class));
             }
         }
 
@@ -400,7 +339,7 @@ public class WarMain implements WarGameListener {
 			allJarEntries.put(currentEntryName.substring(currentEntryName.lastIndexOf("/") + 1, currentEntryName.length()), currentEntry);
 
 			// Si c'est le fichier config.xml
-			if (currentEntry.getName().endsWith("config.xml")) {
+			if (currentEntry.getName().endsWith(TeamConfigReader.FILE_NAME)) {
 				// On le lit et on l'analyse grâce à la classe TeamXmlReader
 				
 			}

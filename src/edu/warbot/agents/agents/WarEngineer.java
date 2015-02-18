@@ -13,7 +13,7 @@ import edu.warbot.brains.capacities.Creator;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarGameConfig;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class WarEngineer extends MovableWarAgent implements CreatorActions, Creator, BuilderActions, Builder {
 	
@@ -30,14 +30,14 @@ public class WarEngineer extends MovableWarAgent implements CreatorActions, Crea
     private int idNextBuildingToRepair;
 
 	static {
-		HashMap<String, String> data = WarGameConfig.getConfigOfWarAgent(WarAgentType.WarEngineer);
-		ANGLE_OF_VIEW = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_ANGLE_OF_VIEW));
-		DISTANCE_OF_VIEW = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_DISTANCE_OF_VIEW));
-		COST = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_COST));
-		MAX_HEALTH = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_MAX_HEALTH));
-		BAG_SIZE = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_BAG_SIZE));
-		SPEED = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_SPEED));
-        MAX_REPAIRS_PER_TICK = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_MAX_REPAIRS_PER_TICK));
+		Map<String, Object> data = WarGameConfig.getConfigOfWarAgent(WarAgentType.WarEngineer);
+		ANGLE_OF_VIEW = (double) data.get(WarGameConfig.AGENT_CONFIG_ANGLE_OF_VIEW);
+		DISTANCE_OF_VIEW = (double) data.get(WarGameConfig.AGENT_CONFIG_DISTANCE_OF_VIEW);
+		COST = (int) data.get(WarGameConfig.AGENT_CONFIG_COST);
+		MAX_HEALTH = (int) data.get(WarGameConfig.AGENT_CONFIG_MAX_HEALTH);
+		BAG_SIZE = (int) data.get(WarGameConfig.AGENT_CONFIG_BAG_SIZE);
+		SPEED = (double) data.get(WarGameConfig.AGENT_CONFIG_SPEED);
+        MAX_REPAIRS_PER_TICK = (int) data.get(WarGameConfig.AGENT_CONFIG_MAX_REPAIRS_PER_TICK);
 	}
 	
 	public WarEngineer(Team team, WarBrain<WarEngineerAdapter> brain) {

@@ -10,7 +10,7 @@ import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarGameConfig;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 public class WarTurret extends ControllableWarAgent implements AgressiveActions, Agressive {
@@ -27,13 +27,13 @@ public class WarTurret extends ControllableWarAgent implements AgressiveActions,
 	private int _tickLeftBeforeReloaded;
 	
 	static {
-		HashMap<String, String> data = WarGameConfig.getConfigOfWarAgent(WarAgentType.WarTurret);
-		ANGLE_OF_VIEW = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_ANGLE_OF_VIEW));
-		DISTANCE_OF_VIEW = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_DISTANCE_OF_VIEW));
-		COST = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_COST));
-		MAX_HEALTH = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_MAX_HEALTH));
-		BAG_SIZE = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_BAG_SIZE));
-		TICKS_TO_RELOAD = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_TICKS_TO_RELOAD));
+        Map<String, Object> data = WarGameConfig.getConfigOfWarAgent(WarAgentType.WarTurret);
+        ANGLE_OF_VIEW = (double) data.get(WarGameConfig.AGENT_CONFIG_ANGLE_OF_VIEW);
+        DISTANCE_OF_VIEW = (double) data.get(WarGameConfig.AGENT_CONFIG_DISTANCE_OF_VIEW);
+        COST = (int) data.get(WarGameConfig.AGENT_CONFIG_COST);
+        MAX_HEALTH = (int) data.get(WarGameConfig.AGENT_CONFIG_MAX_HEALTH);
+        BAG_SIZE = (int) data.get(WarGameConfig.AGENT_CONFIG_BAG_SIZE);
+        TICKS_TO_RELOAD = (int) data.get(WarGameConfig.AGENT_CONFIG_TICKS_TO_RELOAD);
 	}
 	
 	public WarTurret(Team team, WarBrain<WarTurretAdapter> brain) {

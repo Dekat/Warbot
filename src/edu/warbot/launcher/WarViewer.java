@@ -346,12 +346,14 @@ public class WarViewer extends AbstractGridViewer {
     }
 
     private void paintExplosionShape(Graphics2D g2d, WarStar s) {
-        RadialGradientPaint color = new RadialGradientPaint(new CoordCartesian(s.getCenter().getX(), s.getCenter().getY()),
-                (float) s.getRadiusOuterCircle(),
-                new float[] {0.0f, 0.8f},
-                new Color[] {Color.RED, Color.YELLOW});
-        g2d.setPaint(color);
-        g2d.fill(s);
+        if(s.getRadiusOuterCircle() > 0) { // Erreur de source inconnue qui arrivait souvent
+            RadialGradientPaint color = new RadialGradientPaint(new CoordCartesian(s.getCenter().getX(), s.getCenter().getY()),
+                    (float) s.getRadiusOuterCircle(),
+                    new float[]{0.0f, 0.8f},
+                    new Color[]{Color.RED, Color.YELLOW});
+            g2d.setPaint(color);
+            g2d.fill(s);
+        }
     }
 
     private WarStar createStar(int nbArms, Point2D.Double center, double radiusOuterCircle, double radiusInnerCircle) {

@@ -3,7 +3,6 @@ package edu.warbot.gui.debug.eventlisteners;
 import edu.warbot.agents.AliveWarAgent;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
-import edu.warbot.agents.WarBuilding;
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.game.WarGame;
 import edu.warbot.gui.debug.DebugModeToolBar;

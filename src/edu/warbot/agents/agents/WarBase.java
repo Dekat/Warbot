@@ -7,7 +7,7 @@ import edu.warbot.brains.adapters.WarBaseAdapter;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarGameConfig;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class WarBase extends CreatorWarAgent {
 
@@ -18,12 +18,12 @@ public class WarBase extends CreatorWarAgent {
 	public static final int BAG_SIZE;
 	
 	static {
-		HashMap<String, String> data = WarGameConfig.getConfigOfWarAgent(WarAgentType.WarBase);
-		ANGLE_OF_VIEW = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_ANGLE_OF_VIEW));
-		DISTANCE_OF_VIEW = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_DISTANCE_OF_VIEW));
-		COST = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_COST));
-		MAX_HEALTH = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_MAX_HEALTH));
-		BAG_SIZE = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_BAG_SIZE));
+        Map<String, Object> data = WarGameConfig.getConfigOfWarAgent(WarAgentType.WarBase);
+        ANGLE_OF_VIEW = (double) data.get(WarGameConfig.AGENT_CONFIG_ANGLE_OF_VIEW);
+        DISTANCE_OF_VIEW = (double) data.get(WarGameConfig.AGENT_CONFIG_DISTANCE_OF_VIEW);
+        COST = (int) data.get(WarGameConfig.AGENT_CONFIG_COST);
+        MAX_HEALTH = (int) data.get(WarGameConfig.AGENT_CONFIG_MAX_HEALTH);
+        BAG_SIZE = (int) data.get(WarGameConfig.AGENT_CONFIG_BAG_SIZE);
 	}
 	
 	public WarBase(Team team, WarBrain<WarBaseAdapter> brain) {

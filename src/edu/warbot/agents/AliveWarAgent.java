@@ -57,7 +57,7 @@ public abstract class AliveWarAgent extends WarAgent implements Alive, IdlerActi
         getTeam().setWarAgentAsDying(this);
     }
 
-    protected void init(int health) {
+    public void init(int health) {
         _health = health;
     }
 }

@@ -6,7 +6,7 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarGameConfig;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class WarDeathRocket extends WarProjectile {
 	
@@ -17,12 +17,12 @@ public class WarDeathRocket extends WarProjectile {
 	public static final double RANGE;
 	
 	static {
-		HashMap<String, String> data = WarGameConfig.getConfigOfWarAgent(WarAgentType.WarDeathRocket);
-		SPEED = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_SPEED));
-		EXPLOSION_RADIUS = Double.valueOf(data.get(WarGameConfig.PROJECTILE_CONFIG_EXPLOSION_RADIUS));
-		AUTONOMY = Integer.valueOf(data.get(WarGameConfig.PROJECTILE_CONFIG_AUTONOMY));
-		DAMAGE = Integer.valueOf(data.get(WarGameConfig.PROJECTILE_CONFIG_DAMAGE));
-		RANGE = SPEED * AUTONOMY;
+        Map<String, Object> data = WarGameConfig.getConfigOfWarAgent(WarAgentType.WarDeathRocket);
+        SPEED = (double) data.get(WarGameConfig.AGENT_CONFIG_SPEED);
+        EXPLOSION_RADIUS = (double) data.get(WarGameConfig.PROJECTILE_CONFIG_EXPLOSION_RADIUS);
+        AUTONOMY = (int) data.get(WarGameConfig.PROJECTILE_CONFIG_AUTONOMY);
+        DAMAGE = (int) data.get(WarGameConfig.PROJECTILE_CONFIG_DAMAGE);
+        RANGE = SPEED * AUTONOMY;
 	}
 
 	
