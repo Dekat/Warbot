@@ -18,7 +18,7 @@ public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 	boolean pourcentage;
 	
 	public WarPlanCreateUnit(WarBaseAdapter brain, GenericPlanSettings planSettings ) {
-		super("Plan healer", brain, planSettings);
+		super("Plan create unit", brain, planSettings);
 		
 		if(getPlanSettings().Agent_type != null)
 			this.agentType = getPlanSettings().Agent_type;

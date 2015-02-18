@@ -15,12 +15,10 @@ import java.util.ArrayList;
 
 public class WarActionFuire<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType>{
 	
-	private int lifeBeforStopFuire;
 
-	public WarActionFuire(AgentAdapterType brain, int lifeBeforStopFuire, int pourcentage) {
+	public WarActionFuire(AgentAdapterType brain) {
 		super(brain, "ActionFuire");
 		JOptionPane.showMessageDialog(null, "Attention l'action Fuire n'a pas étée vérifiée et risque de ne pas fonctionner", "Waring not terminated action", JOptionPane.INFORMATION_MESSAGE);
-		this.lifeBeforStopFuire = lifeBeforStopFuire * pourcentage/100;
 	}
 	
 	public String executeAction(){

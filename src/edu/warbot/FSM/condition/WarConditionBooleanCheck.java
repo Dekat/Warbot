@@ -20,9 +20,9 @@ public class WarConditionBooleanCheck<AgentAdapterType extends ControllableWarAg
 		
 		if(conditionSettings.Methode != null)
 			this.methodName = conditionSettings.Methode;
-		else{
+		else
 			JOptionPane.showMessageDialog(null, "You must chose <Method> for condition <WarConditionBooleanCheck>", "Missing attribut", JOptionPane.ERROR_MESSAGE);
-		}
+		
 		
 		try {
 			this.method = this.brain.getClass().getMethod(this.methodName.name());

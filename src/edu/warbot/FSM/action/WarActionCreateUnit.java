@@ -8,7 +8,6 @@ import edu.warbot.brains.adapters.WarBaseAdapter;
 /**
  * Crée le nombre d'unité passé en parametre si ma vie est supperieure a la valeur passé en parametre
  * Crée de agent du type passé en parametre
- * @author Olivier
  */
 public class WarActionCreateUnit extends WarAction<WarBaseAdapter> {
 

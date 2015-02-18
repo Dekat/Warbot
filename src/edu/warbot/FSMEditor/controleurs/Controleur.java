@@ -9,14 +9,17 @@ import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.FSMEditor.views.View;
 import edu.warbot.FSMEditor.views.ViewBrain;
+import edu.warbot.FSMEditor.xmlParser.FsmXmlParser;
 import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
 import edu.warbot.FSMEditor.xmlParser.FsmXmlSaver;
 import edu.warbot.agents.enums.WarAgentType;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,10 +93,16 @@ public class Controleur {
 				eventMenuBarItemSave();
 			}
 		});
+		view.miSaveAs.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				eventMenuBarItemSaveAs();
+			}
+		});
 		view.getMenuBarItemLoad().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				eventMenuBarItemLoad();
+				eventMenuBarItemOpen();
 			}
 		});
 		view.getMenuBarItemTest().addActionListener(new ActionListener() {
@@ -182,29 +191,42 @@ public class Controleur {
 	}
 	
 	public void eventMenuBarItemSave() {
-		int op = JOptionPane.showConfirmDialog(null, "Want you to test validity before save ?", "Test validity", JOptionPane.YES_NO_OPTION);
-		
-		if(op == JOptionPane.OK_OPTION)
-			eventMenuBarItemTest();
-		
+//		
 		FsmXmlSaver fsmSaver = new FsmXmlSaver();
 		
-		fsmSaver.saveFSM(model, FsmXmlReader.xmlConfigurationDefaultFilename);
+		if(this.fileToSave != null)
+			fsmSaver.saveFSM(model, this.fileToSave);
+		else
+			eventMenuBarItemSaveAs();
+		
 		System.out.println("Controleur : Configuration file exported successfull");
 		
-		JOptionPane.showMessageDialog(null, "Save sucessfull", "Sucess", JOptionPane.INFORMATION_MESSAGE);
+//		JOptionPane.showMessageDialog(null, "Save sucessfull", "Sucess", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void eventMenuBarItemSaveAs() {
+		
+		JFileChooser fc = new JFileChooser(fileToSave);
+		fc.setFileFilter(new FileNameExtensionFilter(".xml", "xml"));
+
+		fc.setCurrentDirectory(new File("").getAbsoluteFile());
+		fc.setSelectedFile(new File(FsmXmlParser.xmlConfigurationDefaultFilename));
+		
+		int result = fc.showSaveDialog(null);
+
+		
+		if(result == JFileChooser.APPROVE_OPTION){
+			this.fileToSave = fc.getSelectedFile();
+			this.eventMenuBarItemSave();
+		}
+		
 	}
 	
 	public void eventMenuBarItemTest() {
-		//Sauvegarde le model
-//		eventMenuBarItemSave();
-
-		//Charge le model
-//		eventMenuBarItemLoad();
 		
 		boolean isValid = true;
 		
-		//For eatch brains
+		//For each brains
 		for (ModeleBrain modelBrain: this.model.getModelsBrains()) {
 			
 			//Check no null pointeur
@@ -329,16 +351,33 @@ public class Controleur {
 		}
 	}
 	
-	public void eventMenuBarItemLoad(){
-		FsmXmlReader reader = new FsmXmlReader(FsmXmlReader.xmlConfigurationDefaultFilename);
-		this.model = reader.getGeneratedFSMModel();
-		
-		FSMModelRebuilder rebuilder = new FSMModelRebuilder(this.model);
-		this.model = rebuilder.getRebuildModel();
+	public void eventMenuBarItemOpen(){
+		JFileChooser fc = new JFileChooser(fileToSave);
+		fc.setFileFilter(new FileNameExtensionFilter(".xml", "xml"));
 
-		this.reloadModel();
+		fc.setCurrentDirectory(new File("").getAbsoluteFile());
 		
-		System.out.println("Controleur : Configuration file imported successfull");
+		if(this.fileToSave != null)
+			fc.setSelectedFile(fileToSave);
+		else
+			fc.setSelectedFile(new File(FsmXmlParser.xmlConfigurationDefaultFilename));
+		
+		int result = fc.showSaveDialog(null);
+
+		if(result == JFileChooser.APPROVE_OPTION){
+			this.fileToSave = fc.getSelectedFile();
+			
+			FsmXmlReader reader = new FsmXmlReader(fileToSave);
+			this.model = reader.getGeneratedFSMModel();
+			
+			FSMModelRebuilder rebuilder = new FSMModelRebuilder(this.model);
+			this.model = rebuilder.getRebuildModel();
+			
+			this.reloadModel();
+			
+			System.out.println("Controleur : Configuration file imported successfull");
+		}
+		
 	}
 
 	private void printModelInformations(Model modeleRead) {
@@ -416,5 +455,7 @@ public class Controleur {
 			}
 		}
 	}
+	
+	File fileToSave = null;
 
 }

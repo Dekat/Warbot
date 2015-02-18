@@ -39,12 +39,9 @@ public class FsmXmlReader extends FsmXmlParser{
 
 	private Model modeleFSM;
 	
-	public FsmXmlReader(String fileName) {
-
-		if(fileName == null)
-			fileName = xmlConfigurationDefaultFilename;
-			
-		// Ouvre le XML
+	String fileName = xmlConfigurationDefaultFilename;
+	
+	public FsmXmlReader(File file) {
 		File xmlFile = new File(fileName);
 
 		Document doc = null;
@@ -62,6 +59,10 @@ public class FsmXmlReader extends FsmXmlParser{
 		}catch(NullPointerException e){
 			JOptionPane.showMessageDialog(null, "Error while reading XML", "Xml error", JOptionPane.ERROR_MESSAGE);
 		}
+	}
+	
+	public FsmXmlReader(String fileName) {
+		this(new File(fileName));
 	}
 	
 	public FsmXmlReader(InputStream inputStream) {

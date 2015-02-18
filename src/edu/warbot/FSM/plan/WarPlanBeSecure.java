@@ -3,12 +3,12 @@ package edu.warbot.FSM.plan;
 import javax.swing.JOptionPane;
 
 import edu.warbot.FSM.action.WarAction;
+import edu.warbot.FSM.action.WarActionChercherNouriture;
 import edu.warbot.FSM.action.WarActionFuire;
+import edu.warbot.FSM.action.WarActionHealMe;
+import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
-import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.brains.MovableWarAgentAdapter;
-
-import javax.swing.*;
 
 /**
  * A amélioré par exemple en disant que on fuit mais si on a plus de vie on va en chercher et on ce heal 
@@ -25,7 +25,7 @@ public class WarPlanBeSecure<AgentAdapterType extends MovableWarAgentAdapter> ex
 		
 		setPrintTrace(true);
 		
-		WarAction<AgentAdapterType> actionFuire = new WarActionFuire<>(getBrain(), WarExplorer.MAX_HEALTH, 100);
+		WarAction<AgentAdapterType> actionFuire = new WarActionFuire<>(getBrain());
 		addAction(actionFuire);
 
 //		WarAction<AgentAdapterType> actionHeal = new WarActionHealMe<>(getBrain());
@@ -33,7 +33,7 @@ public class WarPlanBeSecure<AgentAdapterType extends MovableWarAgentAdapter> ex
 //		
 //		WarAction<AgentAdapterType> actionFood = new WarActionChercherNouriture<>(getBrain());
 //		addAction(actionFood);
-		
+//		
 //		WarCondition<AgentAdapterType> cond = new WarConditionActionTerminate(getBrain(), actionDontMove);
 //		actionDontMove.addCondition(condFinitDontMove);
 //		condFinitDontMove.setDestination(actionDontMove);

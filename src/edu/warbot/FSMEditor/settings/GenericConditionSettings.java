@@ -13,7 +13,7 @@ public class GenericConditionSettings extends AbstractGenericSettings{
 	
 	public EnumMethod Methode;
 
-	public EnumOperand Operateur;
+	public EnumOperand Operateur = EnumOperand.egal;
 	
 	public Integer Reference;
 

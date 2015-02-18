@@ -7,13 +7,11 @@ import edu.warbot.FSM.action.WarActionAttaquer;
 import edu.warbot.FSM.action.WarActionChercherBase;
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.condition.WarConditionPerceptCounter;
-import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumOperand;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
-
-import javax.swing.*;
 
 /**
  * Plan avancé ne marche pas encore !
@@ -29,7 +27,11 @@ public class WarPlanPatrouiller extends WarPlan<WarRocketLauncherAdapter> {
 	public WarPlanPatrouiller(WarRocketLauncherAdapter brain, GenericPlanSettings planSettings) {
 		super("Plan Patrouiller", brain, planSettings);
 		JOptionPane.showMessageDialog(null, "Attention le plan Patrouillé n'est pas terminé et risque de ne pas fonctionner", "Waring not terminated plan", JOptionPane.INFORMATION_MESSAGE);
-		this.offensif = getPlanSettings().Offensif;
+		
+		if(getPlanSettings().Offensif != null)
+			this.offensif = getPlanSettings().Offensif;
+		else
+			offensif = false;
 	}
 
 	public void buildActionList() {
