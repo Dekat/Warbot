@@ -5,8 +5,15 @@ import java.awt.geom.Point2D;
 
 public class WarStar extends Path2D.Double {
 
+    private Point2D.Double center;
+    private double radiusOuterCircle;
+    private double radiusInnerCircle;
+
     public WarStar(int nbArms, Point2D.Double center, double radiusOuterCircle, double radiusInnerCircle) {
         super();
+        this.center = center;
+        this.radiusOuterCircle = radiusOuterCircle;
+        this.radiusInnerCircle = radiusInnerCircle;
 
         double angle = Math.PI / nbArms;
         for (int i = 0; i < 2 * nbArms; i++) {
@@ -16,5 +23,17 @@ public class WarStar extends Path2D.Double {
             else lineTo(p.getX(), p.getY());
         }
         closePath();
+    }
+
+    public Point2D.Double getCenter() {
+        return center;
+    }
+
+    public double getRadiusInnerCircle() {
+        return radiusInnerCircle;
+    }
+
+    public double getRadiusOuterCircle() {
+        return radiusOuterCircle;
     }
 }

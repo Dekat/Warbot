@@ -1,12 +1,11 @@
-package edu.warbot.launcher;
+package edu.warbot.game;
 
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.InRadiusPerceptsGetter;
 import edu.warbot.agents.percepts.PerceptsGetter;
-import edu.warbot.game.Team;
-import edu.warbot.game.WarGame;
-import edu.warbot.game.WarGameMode;
+import edu.warbot.launcher.SituationLoader;
+import edu.warbot.launcher.WarGameConfig;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.maps.DefaultWarMap;
 
@@ -39,13 +38,13 @@ public class WarGameSettings {
 	
 	private void restartParameters() {
 		for (WarAgentType a : WarAgentType.values()) {
-			_nbAgentOfEachType.put(a, WarConfig.getNbAgentsAtStartOfType(a.toString()));
+			_nbAgentOfEachType.put(a, WarGameConfig.getNbAgentsAtStartOfType(a.toString()));
 		}
 		_gameMode = WarGameMode.Duel;
         gameModeArguments = new Object[]{};
-		_defaultLogLevel = WarConfig.getLoggerLevel();
-		_foodAppearanceRate = WarConfig.getFoodAppearanceRate();
-		_perceptsGetter = WarConfig.getDefaultPerception();
+		_defaultLogLevel = WarGameConfig.getLoggerLevel();
+		_foodAppearanceRate = WarGameConfig.getFoodAppearanceRate();
+		_perceptsGetter = WarGameConfig.getDefaultPerception();
 		_isEnabledEnhancedGraphism = false; // TODO set 3D as alternative viewer
         this.selectedMap = new DefaultWarMap();
 	}

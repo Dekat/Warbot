@@ -298,22 +298,13 @@ public class Team {
 		
 		if(a.getBrain() instanceof WarFSMBrainController){
 			WarAgentType agentType = WarAgentType.valueOf(agentName);
-			System.out.println("Team : Instance of FSM brain found");
-			System.out.println("Team : Generating fsm instance for " + agentName + "...");
-
 			//Intancie la fsm et la donne comme brain à l'agent
 			ControllableWarAgentAdapter adapter = a.getBrain().getAgent();
 //			Class<? extends ControllableWarAgentAdapter> agentTypeAdapterClass = adapter.getClass();
-
 			FSMInstancier<ControllableWarAgentAdapter> fsmInstancier = new FSMInstancier(getFSMModel());
-			
 			WarFSM warFsm = fsmInstancier.getBrainControleurForAgent(agentType, adapter);
-			System.out.println("Generation succesfull");
-			
 			WarFSMBrainController fsmBrainController = (WarFSMBrainController)a.getBrain();
-			System.out.println("Team : adding fsm to FSMBrainController...");
 			fsmBrainController.setFSM(warFsm);
-				
 		}
 		
 		return a;

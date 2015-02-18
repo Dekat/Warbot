@@ -8,7 +8,7 @@ import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
 import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.game.Team;
-import edu.warbot.launcher.WarConfig;
+import edu.warbot.launcher.WarGameConfig;
 
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -28,18 +28,18 @@ public class WarRocketLauncher extends MovableWarAgent implements AgressiveActio
 	private int _tickLeftBeforeReloaded; // Retient le tick global quand le reload a commencé
 	
 	static {
-		HashMap<String, String> data = WarConfig.getConfigOfWarAgent(WarAgentType.WarRocketLauncher);
-		ANGLE_OF_VIEW = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_ANGLE_OF_VIEW));
-		DISTANCE_OF_VIEW = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_DISTANCE_OF_VIEW));
-		COST = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_COST));
-		MAX_HEALTH = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_MAX_HEALTH));
-		BAG_SIZE = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_BAG_SIZE));
-		SPEED = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_SPEED));
-		TICKS_TO_RELOAD = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_TICKS_TO_RELOAD));
+		HashMap<String, String> data = WarGameConfig.getConfigOfWarAgent(WarAgentType.WarRocketLauncher);
+		ANGLE_OF_VIEW = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_ANGLE_OF_VIEW));
+		DISTANCE_OF_VIEW = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_DISTANCE_OF_VIEW));
+		COST = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_COST));
+		MAX_HEALTH = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_MAX_HEALTH));
+		BAG_SIZE = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_BAG_SIZE));
+		SPEED = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_SPEED));
+		TICKS_TO_RELOAD = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_TICKS_TO_RELOAD));
 	}
 
 	public WarRocketLauncher(Team team, WarBrain<WarRocketLauncherAdapter> brain) {
-		super(ACTION_IDLE, team, WarConfig.getHitboxOfWarAgent(WarAgentType.WarRocketLauncher), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
+		super(ACTION_IDLE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarRocketLauncher), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
 		
 		brain.setAgentAdapter(new WarRocketLauncherAdapter(this));
 		_tickLeftBeforeReloaded = TICKS_TO_RELOAD;

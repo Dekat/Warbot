@@ -37,7 +37,7 @@ public class WarViewer extends AbstractGridViewer {
 
     private MapExplorationListener mapExplorationMouseListener;
 
-    private ArrayList<Shape> explosions;
+    private ArrayList<WarStar> explosions;
     private ArrayList<Integer> agentsIDsSeenBySelectedAgent;
 
     private JTabbedPane tabs;
@@ -340,15 +340,15 @@ public class WarViewer extends AbstractGridViewer {
         g.draw(GeometryTools.resize(agent.getPerceptionArea(), cellSize));
     }
 
-    private Shape createExplosionShape(CoordCartesian pos, int radius) {
+    private WarStar createExplosionShape(CoordCartesian pos, int radius) {
         int newRadius = radius * cellSize;
         return createStar(10, new CoordCartesian(pos.getX() * cellSize, pos.getY() * cellSize), newRadius, newRadius / 2);
     }
 
-    private void paintExplosionShape(Graphics2D g2d, Shape s) {
-        RadialGradientPaint color = new RadialGradientPaint(new CoordCartesian(s.getBounds2D().getCenterX(), s.getBounds2D().getCenterY()),
-                (float) s.getBounds2D().getWidth(),
-                new float[] {0.0f, 0.5f},
+    private void paintExplosionShape(Graphics2D g2d, WarStar s) {
+        RadialGradientPaint color = new RadialGradientPaint(new CoordCartesian(s.getCenter().getX(), s.getCenter().getY()),
+                (float) s.getRadiusOuterCircle(),
+                new float[] {0.0f, 0.8f},
                 new Color[] {Color.RED, Color.YELLOW});
         g2d.setPaint(color);
         g2d.fill(s);
@@ -407,7 +407,7 @@ public class WarViewer extends AbstractGridViewer {
             }
 
             // Affichage des explosions
-            for (Shape s : explosions)
+            for (WarStar s : explosions)
                 paintExplosionShape(g2d, s);
             explosions.clear();
 

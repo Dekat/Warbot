@@ -22,13 +22,14 @@ public class TeamXMLReader {
 	private static final String iconPathNodePath = mainNodPath + "/IconPath";
 	private static final String soundPathNodePath = mainNodPath + "/SoundPath";
 	private static final String isFSMNodePath = mainNodPath + "/FSMImplementtion";
-	
+    private static final String brainsPackageNodePath = mainNodPath + "/BrainsPackage";
+
 	private Document _document = null;
 
 	/**
 	 * Méthode permettant d'ouvrir le fichier XML et d'obtenir l'élément racine.
 	 */
-	public void ouverture(InputStream input) {
+	public void load(InputStream input) {
 		try {
 			_document = WarXmlReader.getDocumentFromInputStream(input);
 		} catch (ParserConfigurationException e) {
@@ -61,7 +62,7 @@ public class TeamXMLReader {
 	 * @return {@code String} - le nom de l'icone 
 	 * @throws XPathExpressionException 
 	 */
-	public String getIconeName() {
+	public String getIconName() {
 		return WarXmlReader.getFirstStringResultOfXPath(_document, iconPathNodePath);
 	}
 
@@ -75,7 +76,16 @@ public class TeamXMLReader {
 		return WarXmlReader.getFirstStringResultOfXPath(_document, soundPathNodePath);
 	}
 
-	/**
+    /**
+     * Methode permettant de recuperer le nom du package où se trouvent les classes définis par l'utilisateur
+     *
+     * @return {@code String} - le package où se trouvent les classes de cerveaux
+     */
+    public String getBrainsPackageName() {
+        return WarXmlReader.getFirstStringResultOfXPath(_document, brainsPackageNodePath);
+    }
+
+    /**
 	 * Methode permettant de recuperer sous forme d'une HashMap les noms
 	 * des classes definis par l'utilisateur (constituant la valeur). La
 	 * cle est represente par le type d'agent sous forme de chaine de 

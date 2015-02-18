@@ -9,8 +9,8 @@ import edu.warbot.game.WarGameMode;
 import edu.warbot.gui.GuiIconsLoader;
 import edu.warbot.gui.launcher.mapSelection.MapMiniature;
 import edu.warbot.gui.launcher.mapSelection.MapSelectionListener;
-import edu.warbot.launcher.WarConfig;
-import edu.warbot.launcher.WarGameSettings;
+import edu.warbot.launcher.WarGameConfig;
+import edu.warbot.game.WarGameSettings;
 import edu.warbot.launcher.WarMain;
 
 import javax.swing.*;
@@ -83,7 +83,7 @@ public class WarLauncherInterface extends JFrame {
         // Controllables
 		for(WarAgentType a : WarAgentType.getControllableAgentTypes()) {
 			NbWarAgentSlider slider = new NbWarAgentSlider("Nombre de " + a.toString(),
-					0, 30, WarConfig.getNbAgentsAtStartOfType(a.toString()), 1, 10);
+					0, 30, WarGameConfig.getNbAgentsAtStartOfType(a.toString()), 1, 10);
 			sliderNbAgents.put(a, slider);
 			pnlNbUnits.add(slider);
 		}

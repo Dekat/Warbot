@@ -4,12 +4,13 @@
 	<IconPath>dekat.png</IconPath>
 	<SoundPath>dekat.wav</SoundPath>
 	<Description>Equipe d'ingénieur défensif un peu plus intelligent</Description>
+    <BrainsPackage>teams.engineer</BrainsPackage>
 	<AgentsBrainControllers>
-		<WarExplorer>WarExplorerBrainController.class</WarExplorer>
-		<WarRocketLauncher>WarRocketLauncherBrainController.class</WarRocketLauncher>
-		<WarBase>WarBaseBrainController.class</WarBase>
-		<WarKamikaze>WarKamikazeBrainController.class</WarKamikaze>
-		<WarEngineer>WarEngineerBrainController.class</WarEngineer>
-		<WarTurret>WarTurretBrainController.class</WarTurret>
+		<WarExplorer>WarExplorerBrainController</WarExplorer>
+		<WarRocketLauncher>WarRocketLauncherBrainController</WarRocketLauncher>
+		<WarBase>WarBaseBrainController</WarBase>
+		<WarKamikaze>WarKamikazeBrainController</WarKamikaze>
+		<WarEngineer>WarEngineerBrainController</WarEngineer>
+		<WarTurret>WarTurretBrainController</WarTurret>
 	</AgentsBrainControllers>
 </Team>

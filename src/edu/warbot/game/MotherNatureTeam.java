@@ -5,7 +5,7 @@ import edu.warbot.agents.WarResource;
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.resources.WarFood;
-import edu.warbot.launcher.WarConfig;
+import edu.warbot.launcher.WarGameConfig;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.tools.WarMathTools;
 import edu.warbot.tools.geometry.CoordCartesian;
@@ -101,7 +101,7 @@ public class MotherNatureTeam extends Team {
 				ArrayList<WarCircle> foodPositions = map.getFoodPositions();
 				CoordCartesian newPos = WarMathTools.addTwoPoints(
 						foodPositions.get(new Random().nextInt(foodPositions.size())).getCenterPosition(),
-						CoordPolar.getRandomInBounds(WarConfig.getRadiusResourcesAreas()).toCartesian());
+						CoordPolar.getRandomInBounds(WarGameConfig.getRadiusResourcesAreas()).toCartesian());
 				newPos.normalize(0, map.getWidth(), 0, map.getHeight());
 				resource.setPosition(newPos);
                 resource.moveOutOfCollision();

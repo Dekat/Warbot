@@ -8,7 +8,7 @@ import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.adapters.WarKamikazeAdapter;
 import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.game.Team;
-import edu.warbot.launcher.WarConfig;
+import edu.warbot.launcher.WarGameConfig;
 
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -23,17 +23,17 @@ public class WarKamikaze extends MovableWarAgent implements AgressiveActions, Ag
 	public static final double SPEED;
 	
 	static {
-		HashMap<String, String> data = WarConfig.getConfigOfWarAgent(WarAgentType.WarKamikaze);
-		ANGLE_OF_VIEW = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_ANGLE_OF_VIEW));
-		DISTANCE_OF_VIEW = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_DISTANCE_OF_VIEW));
-		COST = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_COST));
-		MAX_HEALTH = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_MAX_HEALTH));
-		BAG_SIZE = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_BAG_SIZE));
-		SPEED = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_SPEED));
+		HashMap<String, String> data = WarGameConfig.getConfigOfWarAgent(WarAgentType.WarKamikaze);
+		ANGLE_OF_VIEW = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_ANGLE_OF_VIEW));
+		DISTANCE_OF_VIEW = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_DISTANCE_OF_VIEW));
+		COST = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_COST));
+		MAX_HEALTH = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_MAX_HEALTH));
+		BAG_SIZE = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_BAG_SIZE));
+		SPEED = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_SPEED));
 	}
 	
 	public WarKamikaze(Team team, WarBrain<WarKamikazeAdapter> brain) {
-		super(ACTION_IDLE, team, WarConfig.getHitboxOfWarAgent(WarAgentType.WarKamikaze), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
+		super(ACTION_IDLE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarKamikaze), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
 		
 		brain.setAgentAdapter(new WarKamikazeAdapter(this));
 	}

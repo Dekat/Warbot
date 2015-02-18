@@ -11,7 +11,7 @@ import edu.warbot.brains.adapters.WarEngineerAdapter;
 import edu.warbot.brains.capacities.Builder;
 import edu.warbot.brains.capacities.Creator;
 import edu.warbot.game.Team;
-import edu.warbot.launcher.WarConfig;
+import edu.warbot.launcher.WarGameConfig;
 
 import java.util.HashMap;
 
@@ -30,18 +30,18 @@ public class WarEngineer extends MovableWarAgent implements CreatorActions, Crea
     private int idNextBuildingToRepair;
 
 	static {
-		HashMap<String, String> data = WarConfig.getConfigOfWarAgent(WarAgentType.WarEngineer);
-		ANGLE_OF_VIEW = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_ANGLE_OF_VIEW));
-		DISTANCE_OF_VIEW = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_DISTANCE_OF_VIEW));
-		COST = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_COST));
-		MAX_HEALTH = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_MAX_HEALTH));
-		BAG_SIZE = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_BAG_SIZE));
-		SPEED = Double.valueOf(data.get(WarConfig.AGENT_CONFIG_SPEED));
-        MAX_REPAIRS_PER_TICK = Integer.valueOf(data.get(WarConfig.AGENT_CONFIG_MAX_REPAIRS_PER_TICK));
+		HashMap<String, String> data = WarGameConfig.getConfigOfWarAgent(WarAgentType.WarEngineer);
+		ANGLE_OF_VIEW = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_ANGLE_OF_VIEW));
+		DISTANCE_OF_VIEW = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_DISTANCE_OF_VIEW));
+		COST = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_COST));
+		MAX_HEALTH = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_MAX_HEALTH));
+		BAG_SIZE = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_BAG_SIZE));
+		SPEED = Double.valueOf(data.get(WarGameConfig.AGENT_CONFIG_SPEED));
+        MAX_REPAIRS_PER_TICK = Integer.valueOf(data.get(WarGameConfig.AGENT_CONFIG_MAX_REPAIRS_PER_TICK));
 	}
 	
 	public WarEngineer(Team team, WarBrain<WarEngineerAdapter> brain) {
-		super(ACTION_IDLE, team, WarConfig.getHitboxOfWarAgent(WarAgentType.WarEngineer), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
+		super(ACTION_IDLE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarEngineer), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
 		
 		brain.setAgentAdapter(new WarEngineerAdapter(this));
 

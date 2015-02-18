@@ -5,6 +5,7 @@ import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.MotherNatureTeam;
 import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
+import edu.warbot.game.WarGameSettings;
 import edu.warbot.launcher.WarMain.Shared;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.tools.geometry.WarCircle;

@@ -2,7 +2,6 @@ package edu.warbot.game;
 
 import edu.warbot.agents.WarAgent;
 import edu.warbot.game.mode.AbstractGameMode;
-import edu.warbot.launcher.WarGameSettings;
 import edu.warbot.maps.AbstractWarMap;
 
 import java.awt.*;
