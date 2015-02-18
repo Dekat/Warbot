@@ -12,6 +12,7 @@ import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -20,14 +21,14 @@ import java.util.Arrays;
 public class FsmXmlSaver extends FsmXmlParser{
 	
 	Document document;
-	FileWriter file;
+	FileWriter fileWriter;
 	
-	public void saveFSM(Model modele, String fileName) {
+	public void saveFSM(Model modele, File file) {
 		
 		try {
-			file = new FileWriter(fileName);
-		} catch (IOException e1) {
-			e1.printStackTrace();
+			this.fileWriter = new FileWriter(file);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		
 		Element rootBrains = new Element(Brains);
@@ -47,12 +48,15 @@ public class FsmXmlSaver extends FsmXmlParser{
 		XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
 		
 		try {
-			sortie.output(document, file);
-			file.close();
+			sortie.output(document, fileWriter);
+			fileWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+	}
+	
+	public void saveFSM(Model modele, String fileName) {
+		saveFSM(modele, new File(fileName));
 	}
 
 	private Element getContentStatesForBrain(ModeleBrain brain) {

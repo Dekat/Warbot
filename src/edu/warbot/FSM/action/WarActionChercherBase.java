@@ -1,6 +1,7 @@
 package edu.warbot.FSM.action;
 
 import edu.warbot.FSM.WarFSMMessage;
+import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.enums.WarAgentType;
@@ -10,11 +11,11 @@ import edu.warbot.communications.WarMessage;
 import edu.warbot.tools.geometry.CoordPolar;
 
 import javax.swing.*;
+
 import java.util.ArrayList;
 
 /**
  * Cherche la base enemy
- *
  */
 public class WarActionChercherBase extends WarAction<WarRocketLauncherAdapter> {
 	
@@ -75,7 +76,7 @@ public class WarActionChercherBase extends WarAction<WarRocketLauncherAdapter> {
 
 	private WarMessage getMessageLocateBase() {
 		for (WarMessage m: getAgent().getMessages()) {
-			if(m.getMessage().equals(WarFSMMessage.enemyBaseHere))
+			if(m.getMessage().equals(EnumMessage.enemy_base_here.name()))
 				return m;
 		}
 		return null;

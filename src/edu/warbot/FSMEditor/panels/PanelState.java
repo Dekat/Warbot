@@ -21,7 +21,7 @@ public class PanelState extends AbstractPanel{
 		String msgName = this.modeleState.getName();
 		String msgPlan = this.modeleState.getPlanName().name();
 		
-		g.clearRect(position.x, position.y, size.width, size.height);
+		
 			
 		if(this.isSelected)
 			g.setColor(Color.red);
@@ -43,6 +43,8 @@ public class PanelState extends AbstractPanel{
         speechBubbleSizeMax.width = Math.max(speechBubbleSizeName.width, speechBubbleSizePlan.width);
         speechBubbleSizeMax.height = Math.max(speechBubbleSizeName.height, speechBubbleSizePlan.height);
 		
+        g.clearRect(position.x, position.y, speechBubbleSizeMax.width, size.height);
+        
         g.drawRect(position.x, position.y, speechBubbleSizeMax.width, size.height);
 
 //        g.drawRect(position.x, position.y, size.width, size.height);

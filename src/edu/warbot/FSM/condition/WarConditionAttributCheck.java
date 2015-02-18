@@ -24,9 +24,18 @@ public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarA
 
 		JOptionPane.showMessageDialog(null, "Attention la condition <Attributcheck> n'a pas été vérifié et risque de ne pas fonctionner", "Waring not terminated condition", JOptionPane.WARNING_MESSAGE);
 		
-		this.reference = conditionSettings.Reference;
+		if(conditionSettings.Reference != null)
+			this.reference = conditionSettings.Reference;
+		else
+			this.reference = (int) (brain.getMaxHealth() * 30 / 100);
+			
 		this.operand = conditionSettings.Operateur;
-		this.methodName = conditionSettings.Methode;
+		
+		if(conditionSettings.Methode != null)
+			this.methodName = conditionSettings.Methode;
+		else
+			JOptionPane.showMessageDialog(null, "You must chose <Method> for condition <WarConditionBooleanCheck>", "Missing attribut", JOptionPane.ERROR_MESSAGE);
+		
 		
 		
 		try {
