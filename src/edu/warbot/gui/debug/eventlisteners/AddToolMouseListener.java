@@ -1,7 +1,9 @@
 package edu.warbot.gui.debug.eventlisteners;
 
+import edu.warbot.agents.AliveWarAgent;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
+import edu.warbot.agents.WarBuilding;
 import edu.warbot.agents.enums.WarAgentCategory;
 import edu.warbot.game.WarGame;
 import edu.warbot.gui.debug.DebugModeToolBar;
@@ -58,8 +60,10 @@ public class AddToolMouseListener implements MouseListener, MouseMotionListener 
                         if (_toolsPnl.getSelectedTeamForNextCreatedAgent() != null) {
                             if (_toolsPnl.getSelectedWarAgentTypeToCreate().isControllable())
                                 currentCreatedAgent = _toolsPnl.getSelectedTeamForNextCreatedAgent().instantiateNewControllableWarAgent(_toolsPnl.getSelectedWarAgentTypeToCreate().toString());
-                            else
+                            else {
                                 currentCreatedAgent = _toolsPnl.getSelectedTeamForNextCreatedAgent().instantiateNewBuilding(_toolsPnl.getSelectedWarAgentTypeToCreate().toString());
+                                ((AliveWarAgent) currentCreatedAgent).init(((AliveWarAgent) currentCreatedAgent).getMaxHealth());
+                            }
                             _debugToolBar.getViewer().launchAgent(currentCreatedAgent);
                             currentCreatedAgent.setPosition(mouseClickPosition.getX(), mouseClickPosition.getY());
                             currentCreatedAgent.moveOutOfCollision();
