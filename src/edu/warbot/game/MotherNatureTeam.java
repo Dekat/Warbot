@@ -78,7 +78,7 @@ public class MotherNatureTeam extends Team {
 	public ArrayList<WarResource> getAccessibleResourcesFor(WarAgent referenceAgent) {
 		ArrayList<WarResource> toReturn = new ArrayList<>();
 		for (WarResource a : _resources) {
-			if (referenceAgent.getDistanceFrom(a) <= WarResource.MAX_DISTANCE_TAKE) {
+			if (referenceAgent.getAverageDistanceFrom(a) <= WarResource.MAX_DISTANCE_TAKE) {
 				toReturn.add(a);
 			}
 		}

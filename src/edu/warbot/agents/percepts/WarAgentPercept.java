@@ -20,7 +20,7 @@ public class WarAgentPercept extends WarPercept implements Comparable<WarAgentPe
 	public WarAgentPercept(ControllableWarAgent observer, WarAgent seenAgent) {
         super(observer);
 		_angle = observer.getPosition().getAngleToPoint(seenAgent.getPosition());
-		this._distance = observer.getDistanceFrom(seenAgent);
+		this._distance = observer.getAverageDistanceFrom(seenAgent);
 		this._teamName = seenAgent.getTeam().getName();
         this._id = seenAgent.getID();
 		this._type = WarAgentType.valueOf(seenAgent.getClass().getSimpleName());

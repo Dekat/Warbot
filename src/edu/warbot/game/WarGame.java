@@ -1,6 +1,7 @@
 package edu.warbot.game;
 
 import edu.warbot.agents.WarAgent;
+import edu.warbot.agents.WarBuilding;
 import edu.warbot.game.mode.AbstractGameMode;
 import edu.warbot.maps.AbstractWarMap;
 
@@ -124,8 +125,18 @@ public class WarGame {
 		toReturn.addAll(_motherNature.getAllAgentsInRadius(posX, posY, radius));
 		return toReturn;
 	}
-	
-	public String[] getPlayerTeamNames() {
+
+    public ArrayList<WarBuilding> getBuildingsInRadiusOf(WarAgent referenceAgent, double radius) {
+        ArrayList<WarBuilding> toReturn = new ArrayList<>();
+        for (Team t : _playerTeams) {
+            toReturn.addAll(t.getBuildingsInRadiusOf(referenceAgent, radius));
+        }
+        toReturn.addAll(_motherNature.getBuildingsInRadiusOf(referenceAgent, radius));
+        return toReturn;
+    }
+
+
+    public String[] getPlayerTeamNames() {
 		String[] toReturn = new String[_playerTeams.size()];
 		int compteur = 0;
 		for (Team t : _playerTeams) {

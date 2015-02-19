@@ -42,10 +42,6 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	@Override
 	protected void end() {
 		super.end();
-//		if (this instanceof WarResource)
-//			getTeam().removeWarAgent(this);
-//		else
-//			getTeam().setWarAgentAsDying(this);
 	}
 
     public abstract void kill();
@@ -204,12 +200,12 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
         }
 
         // Test de collision avec un autre agent
-        double searchAreaRadius = Math.max(getHitbox().getHeight(), getHitbox().getWidth());
+        double searchAreaRadius = getHitboxMaxRadius();
         for(WarAgent a : getTeam().getGame().getAllAgentsInRadius(getX(), getY(), searchAreaRadius)) {
             if (a.getID() != getID() && a instanceof AliveWarAgent) {
                 if (isInCollisionWith(a)) {
                     agentPosition = getPosition();
-                    CoordPolar moveAwayFromAgent = new CoordPolar(1, new Random().nextDouble() * 359);
+                    CoordPolar moveAwayFromAgent = new CoordPolar(1, a.getPosition().getAngleToPoint(getPosition()));
                     do {
                         agentPosition.add(moveAwayFromAgent.toCartesian());
                     } while (isInCollisionWithAtPosition(agentPosition, a)); // On boucle tant que l'agent est en collision avec l'autre agent
@@ -236,8 +232,14 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 		_dyingStep++;
 	}
 	
-	public double getDistanceFrom(WarAgent a) {
+	public double getAverageDistanceFrom(WarAgent a) {
 		return WarMathTools.getDistanceBetweenTwoPoints(getX(), getY(), a.getX(), a.getY())
 				- ((getHitboxMaxRadius() + getHitboxMinRadius()) / 2.) - ((a.getHitboxMaxRadius() + a.getHitboxMinRadius()) / 2.);
 	}
+
+    public double getMinDistanceFrom(WarAgent a) {
+        return WarMathTools.getDistanceBetweenTwoPoints(getX(), getY(), a.getX(), a.getY())
+                - getHitboxMaxRadius() - a.getHitboxMaxRadius();
+    }
+
 }

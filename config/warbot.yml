@@ -35,7 +35,7 @@ WarAgents:
         Wall:
             Cost: 500
             MaxHealth: 15000
-            Hitbox: { Shape: Rectangle, Width: 5, Height: 20.0 }
+            Hitbox: { Shape: Rectangle, Width: 5.0, Height: 20.0 }
     Worker:
         WarExplorer:
             AngleOfView: 180.0

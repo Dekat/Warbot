@@ -2,6 +2,7 @@ package edu.warbot.agents.percepts;
 
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
+import edu.warbot.agents.WarBuilding;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.game.WarGame;
 import edu.warbot.tools.WarMathTools;
@@ -154,6 +155,9 @@ public abstract class PerceptsGetter {
         ArrayList<Line2D.Double> seenWalls = new ArrayList<>();
 
         Area seenWallsArea = game.getMap().getMapForbidArea();
+        for(WarAgent building : game.getBuildingsInRadiusOf(getAgent(), getAgent().getHitboxMaxRadius() + getAgent().getDistanceOfView())) {
+            seenWallsArea.add(building.getActualForm());
+        }
         seenWallsArea.intersect(initialPerceptionArea);
 
         finalPerceptionArea = new Area(initialPerceptionArea);

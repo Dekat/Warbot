@@ -70,7 +70,7 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
 		if(getNbElementsInBag() > 0) { // Si l'agent courant a quelque chose à donner
 			WarAgent agentToGive = getTeam().getAgentWithID(_idNextAgentToGive);
 			if (agentToGive != null) { // Si agent existe
-				if (getDistanceFrom(agentToGive) <= MAX_DISTANCE_GIVE) { // Si il n'est pas trop loin
+				if (getAverageDistanceFrom(agentToGive) <= MAX_DISTANCE_GIVE) { // Si il n'est pas trop loin
 					if (agentToGive instanceof ControllableWarAgent) { // Si c'est un ControllableWarAgent
 						if (((ControllableWarAgent) agentToGive).getBagSize() > ((ControllableWarAgent) agentToGive).getNbElementsInBag()) { // Si son sac a un emplacement vide
 							logger.log(Level.FINER, this.toString() + " give WarFood to " + agentToGive.toString());

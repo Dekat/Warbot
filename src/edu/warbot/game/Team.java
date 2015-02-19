@@ -205,7 +205,7 @@ public class Team {
 	public ArrayList<WarAgent> getAllAgentsInRadiusOf(WarAgent referenceAgent, double radius) {
 		ArrayList<WarAgent> toReturn = new ArrayList<>();
 		for (WarAgent a : getAllAgents()) {
-			if (referenceAgent.getDistanceFrom(a) <= radius) {
+			if (referenceAgent.getMinDistanceFrom(a) <= radius) {
 				toReturn.add(a);
 			}
 		}
@@ -215,14 +215,24 @@ public class Team {
 	public ArrayList<WarAgent> getAllAgentsInRadius(double posX, double posY, double radius) {
 		ArrayList<WarAgent> toReturn = new ArrayList<>();
 		for (WarAgent a : getAllAgents()) {
-			if ((WarMathTools.getDistanceBetweenTwoPoints(posX, posY, a.getX(), a.getY()) - a.getHitboxMinRadius()) <= radius) {
+			if ((WarMathTools.getDistanceBetweenTwoPoints(posX, posY, a.getX(), a.getY()) - a.getHitboxMaxRadius()) <= radius) {
 				toReturn.add(a);
 			}
 		}
 		return toReturn;
 	}
 
-	public void setColor(Color color) {
+    public ArrayList<WarBuilding> getBuildingsInRadiusOf(WarAgent referenceAgent, double radius) {
+        ArrayList<WarBuilding> toReturn = new ArrayList<>();
+        for (WarBuilding building : _buildings) {
+            if (referenceAgent.getMinDistanceFrom(building) <= radius) {
+                toReturn.add(building);
+            }
+        }
+        return toReturn;
+    }
+
+    public void setColor(Color color) {
 		this._color = color;
 	}
 	
