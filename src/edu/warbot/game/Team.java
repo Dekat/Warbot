@@ -19,6 +19,7 @@ import edu.warbot.tools.geometry.CoordCartesian;
 import edu.warbot.tools.geometry.CoordPolar;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -49,13 +50,13 @@ public class Team {
 	
 	public Team(String nom) {
         this(nom, Color.WHITE, null, "", new ArrayList<ControllableWarAgent>(), new ArrayList<WarProjectile>(), new ArrayList<WarBuilding>(),
-                new HashMap<String, Class<? extends WarBrain>>(), new HashMap<WarAgentType, Integer>(), new ArrayList<WarAgent>());
+                new HashMap<String, Class<? extends WarBrain>>(), new HashMap<WarAgentType, Integer>(), new ArrayList<WarAgent>(), null);
 		for(WarAgentType type : WarAgentType.values())
 			_nbUnitsLeft.put(type, 0);
 	}
 	
 	public Team(String nom, Color color, ImageIcon logo, String description, ArrayList<ControllableWarAgent> controllableAgents, ArrayList<WarProjectile> projectiles, ArrayList<WarBuilding> buildings,
-			HashMap<String, Class<? extends WarBrain>> brainControllers, HashMap<WarAgentType, Integer> nbUnitsLeft, ArrayList<WarAgent> dyingAgents) {
+			HashMap<String, Class<? extends WarBrain>> brainControllers, HashMap<WarAgentType, Integer> nbUnitsLeft, ArrayList<WarAgent> dyingAgents, Model fsmModel) {
 		_name = nom;
 		_color = color;
 		_teamLogo = logo;
@@ -69,6 +70,8 @@ public class Team {
 
         listeners = new ArrayList<>();
         hasLost = false;
+        
+        this.fsmModel = fsmModel;
 	}
 	
     public void setLogo(ImageIcon logo) {
@@ -263,7 +266,8 @@ public class Team {
                 new ArrayList<>(t.getBuildings()),
 				new HashMap<>(t.getAllBrainControllers()),
 				new HashMap<>(t.getAllNbUnitsLeft()),
-				new ArrayList<>(t.getDyingAgents())
+				new ArrayList<>(t.getDyingAgents()),
+				t.getFSMModel()
 				);
 	}
 	
@@ -311,6 +315,10 @@ public class Team {
 			//Intancie la fsm et la donne comme brain à l'agent
 			ControllableWarAgentAdapter adapter = a.getBrain().getAgent();
 
+			if(getFSMModel() == null)
+				System.out.println();
+			
+			@SuppressWarnings("unchecked")
 			FSMInstancier<ControllableWarAgentAdapter> fsmInstancier = new FSMInstancier(getFSMModel());
 			WarFSM warFsm = fsmInstancier.getBrainControleurForAgent(agentType, adapter);
 			WarFSMBrainController fsmBrainController = (WarFSMBrainController)a.getBrain();
@@ -329,7 +337,7 @@ public class Team {
         return building;
     }
 
-    private Model getFSMModel() {
+    public Model getFSMModel() {
 		return this.fsmModel;
 	}
 	
