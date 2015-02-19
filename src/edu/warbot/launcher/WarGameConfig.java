@@ -38,7 +38,7 @@ public class WarGameConfig {
 	
 	public static final String RESOURCE_WARFOOD_CONFIG_HEALTH_GIVEN = "HealthGived";
 
-    static private String gameConfigFilePath = "config" + File.separatorChar + "warbot.yml";
+    static private String gameConfigFilePath = "config" + File.separatorChar + "warbot_settings.yml";
     static private Map<String, Object> config = null;
 
     static {

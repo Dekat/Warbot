@@ -1,6 +1,6 @@
 package edu.warbot.gui.debug;
 
-import edu.warbot.launcher.WarViewer;
+import edu.warbot.launcher.AbstractWarViewer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,12 +10,12 @@ import java.awt.event.MouseMotionListener;
 @SuppressWarnings("serial")
 public class DebugModeToolBar extends JToolBar {
 
-	private WarViewer _viewer;
+	private AbstractWarViewer _viewer;
 	private DebugToolsPnl _debugToolsPnl;
 
 	private MouseListener _currentViewMouseListener;
 
-	public DebugModeToolBar(WarViewer viewer) {
+	public DebugModeToolBar(AbstractWarViewer viewer) {
 		super();
 		_viewer = viewer;
 		_currentViewMouseListener = null;
@@ -62,7 +62,7 @@ public class DebugModeToolBar extends JToolBar {
 		}
 	}
 
-	public WarViewer getViewer() {
+	public AbstractWarViewer getViewer() {
 		return _viewer;
 	}
 
@@ -75,15 +75,15 @@ public class DebugModeToolBar extends JToolBar {
 	}
 
     private void addCurrentMouseListener() {
-        _viewer.getSwingView().addMouseListener(_currentViewMouseListener);
+        _viewer.getDisplayPane().addMouseListener(_currentViewMouseListener);
         if (_currentViewMouseListener instanceof MouseMotionListener)
-            _viewer.getSwingView().addMouseMotionListener((MouseMotionListener) _currentViewMouseListener);
+            _viewer.getDisplayPane().addMouseMotionListener((MouseMotionListener) _currentViewMouseListener);
     }
 
     private void removeCurrentMouseListener() {
-        _viewer.getSwingView().removeMouseListener(_currentViewMouseListener);
+        _viewer.getDisplayPane().removeMouseListener(_currentViewMouseListener);
         if (_currentViewMouseListener instanceof MouseMotionListener)
-            _viewer.getSwingView().removeMouseMotionListener((MouseMotionListener) _currentViewMouseListener);
+            _viewer.getDisplayPane().removeMouseMotionListener((MouseMotionListener) _currentViewMouseListener);
     }
 
 }

@@ -6,6 +6,7 @@ import edu.warbot.game.MotherNatureTeam;
 import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
 import edu.warbot.game.WarGameSettings;
+import edu.warbot.gui.viewer.WarDefaultViewer;
 import edu.warbot.launcher.WarMain.Shared;
 import edu.warbot.maps.AbstractWarMap;
 import edu.warbot.tools.geometry.WarCircle;
@@ -49,7 +50,7 @@ public class WarLauncher extends TKLauncher {
 		setMadkitProperty(TurtleKit.Option.envWidth, String.valueOf(((Double) Shared.getGame().getMap().getWidth()).intValue()));
 		setMadkitProperty(TurtleKit.Option.envHeight, String.valueOf(((Double) Shared.getGame().getMap().getHeight()).intValue()));
 
-		setMadkitProperty(TurtleKit.Option.viewers, WarViewer.class.getName());
+		setMadkitProperty(TurtleKit.Option.viewers, WarDefaultViewer.class.getName());
 		setMadkitProperty(TurtleKit.Option.scheduler, WarScheduler.class.getName());
 		setMadkitProperty(TurtleKit.Option.environment, WarEnvironment.class.getName());
 
@@ -69,13 +70,13 @@ public class WarLauncher extends TKLauncher {
 	}
 
 	public void executeLauncher(String... args) {
-		final ArrayList<String> arguments = new ArrayList<>(Arrays.asList(
-				Madkit.BooleanOption.desktop.toString(), "false",
-				Madkit.Option.configFile.toString(), "turtlekit/kernel/turtlekit.properties",
-				launcher.toString(), WarLauncher.class.getName()));
-		if (args != null) {
-			arguments.addAll(Arrays.asList(args));
-		}
+        final ArrayList<String> arguments = new ArrayList<>(Arrays.asList(
+                Madkit.BooleanOption.desktop.toString(),"false",
+                Madkit.Option.configFile.toString(), "turtlekit/kernel/turtlekit.properties",
+                launcher.toString(), WarLauncher.class.getName()));
+        if (args != null) {
+            arguments.addAll(Arrays.asList(args));
+        }
 		new Madkit(arguments.toArray(new String[0]));
 	}
 	

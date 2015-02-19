@@ -2,6 +2,7 @@ package edu.warbot.gui.launcher;
 
 import edu.warbot.game.Team;
 import edu.warbot.game.WarGame;
+import edu.warbot.game.WarGameListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-public class GameResultsDialog extends JFrame implements ActionListener, WindowListener {
+public class GameResultsDialog extends JFrame implements ActionListener, WindowListener, WarGameListener {
 
     private WarGame game;
 
@@ -23,6 +24,7 @@ public class GameResultsDialog extends JFrame implements ActionListener, WindowL
         addWindowListener(this);
 
         this.game = game;
+        game.addWarGameListener(this);
 
         JPanel pnlResult = new JPanel(new BorderLayout());
         JPanel pnlWinners = new JPanel(new FlowLayout());
@@ -53,14 +55,10 @@ public class GameResultsDialog extends JFrame implements ActionListener, WindowL
     }
 
     @Override
-    public void windowOpened(WindowEvent e) {
-
-    }
+    public void windowOpened(WindowEvent e) {}
 
     @Override
-    public void windowClosing(WindowEvent e) {
-
-    }
+    public void windowClosing(WindowEvent e) {}
 
     @Override
     public void windowClosed(WindowEvent e) {
@@ -68,22 +66,31 @@ public class GameResultsDialog extends JFrame implements ActionListener, WindowL
     }
 
     @Override
-    public void windowIconified(WindowEvent e) {
+    public void windowIconified(WindowEvent e) {}
 
+    @Override
+    public void windowDeiconified(WindowEvent e) {}
+
+    @Override
+    public void windowActivated(WindowEvent e) {}
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {}
+
+    @Override
+    public void onNewTeamAdded(Team newTeam) {}
+
+    @Override
+    public void onTeamLost(Team removedTeam) {}
+
+    @Override
+    public void onGameOver() {}
+
+    @Override
+    public void onGameStopped() {
+        dispose();
     }
 
     @Override
-    public void windowDeiconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-
-    }
+    public void onGameStarted() {}
 }

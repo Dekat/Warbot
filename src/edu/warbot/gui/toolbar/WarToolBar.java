@@ -2,7 +2,7 @@ package edu.warbot.gui.toolbar;
 
 import edu.warbot.gui.GuiIconsLoader;
 import edu.warbot.gui.debug.SaveSituationButton;
-import edu.warbot.launcher.WarViewer;
+import edu.warbot.launcher.AbstractWarViewer;
 import madkit.action.SchedulingAction;
 import madkit.message.SchedulingMessage;
 import turtlekit.agr.TKOrganization;
@@ -29,11 +29,11 @@ public class WarToolBar extends JToolBar implements ActionListener, CollapsibleP
 	private JToggleButton _btnDisplayHealthBars;
 	private JToggleButton _btnDisplayDebugMessages;
 	private JToggleButton _btnAutorMode;
-	private WarViewer _viewer;
+	private AbstractWarViewer _viewer;
 
 	private TeamsDatasTable _teamsDataTable;
 
-	public WarToolBar(WarViewer viewer) {
+	public WarToolBar(AbstractWarViewer viewer) {
 		super();
 		_viewer = viewer;
 	}
@@ -99,7 +99,7 @@ public class WarToolBar extends JToolBar implements ActionListener, CollapsibleP
 		_btnAutorMode.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				_viewer.getAutorModeToolBar().setVisible(_btnAutorMode.isSelected());
+				_viewer.getDebugModeToolBar().setVisible(_btnAutorMode.isSelected());
 				if (_btnAutorMode.isSelected()) {
 					_viewer.sendMessage(_viewer.getCommunity(), TKOrganization.ENGINE_GROUP, TKOrganization.SCHEDULER_ROLE,
 							new SchedulingMessage(SchedulingAction.PAUSE));
@@ -143,7 +143,7 @@ public class WarToolBar extends JToolBar implements ActionListener, CollapsibleP
 		return _teamsDataTable;
 	}
 
-	public WarViewer getViewer() {
+	public AbstractWarViewer getViewer() {
 		return _viewer;
 	}
 

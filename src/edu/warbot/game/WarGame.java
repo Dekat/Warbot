@@ -110,28 +110,25 @@ public class WarGame {
 	
 	public ArrayList<WarAgent> getAllAgentsInRadiusOf(WarAgent a, double radius) {
 		ArrayList<WarAgent> toReturn = new ArrayList<>();
-		for (Team t : _playerTeams) {
+		for (Team t : getAllTeams()) {
 			toReturn.addAll(t.getAllAgentsInRadiusOf(a, radius));
 		}
-		toReturn.addAll(_motherNature.getAllAgentsInRadiusOf(a, radius));
 		return toReturn;
 	}
 	
 	public ArrayList<WarAgent> getAllAgentsInRadius(double posX, double posY, double radius) {
 		ArrayList<WarAgent> toReturn = new ArrayList<>();
-		for (Team t : _playerTeams) {
-			toReturn.addAll(t.getAllAgentsInRadius(posX, posY, radius));
-		}
-		toReturn.addAll(_motherNature.getAllAgentsInRadius(posX, posY, radius));
+        for (Team t : getAllTeams()) {
+            toReturn.addAll(t.getAllAgentsInRadius(posX, posY, radius));
+        }
 		return toReturn;
 	}
 
     public ArrayList<WarBuilding> getBuildingsInRadiusOf(WarAgent referenceAgent, double radius) {
         ArrayList<WarBuilding> toReturn = new ArrayList<>();
-        for (Team t : _playerTeams) {
+        for (Team t : getAllTeams()) {
             toReturn.addAll(t.getBuildingsInRadiusOf(referenceAgent, radius));
         }
-        toReturn.addAll(_motherNature.getBuildingsInRadiusOf(referenceAgent, radius));
         return toReturn;
     }
 
