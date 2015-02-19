@@ -45,13 +45,6 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 			
 	}
 	
-//	public FSMInstancier(String xmlConfigurationFileName) {
-//		this(getModel(xmlConfigurationFileName));
-//		FSMXmlReader xmlReader = new FSMXmlReader(xmlConfigurationFileName);
-//		Modele model = xmlReader.getGeneratedFSMModel();
-//		FSMModelRebuilder fsmRebuilder = new FSMModelRebuilder(model);
-//	}
-
 	/**
 	 * 
 	 * @param agentType le type de l'agent que l'on souhaite récupére le brain

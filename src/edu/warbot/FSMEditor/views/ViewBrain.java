@@ -6,10 +6,12 @@ import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.panels.PanelCondition;
 import edu.warbot.FSMEditor.panels.PanelEditor;
 import edu.warbot.FSMEditor.panels.PanelState;
+
 import org.jfree.ui.tabbedui.VerticalLayout;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+
 import java.awt.*;
 
 public class ViewBrain extends JPanel{
@@ -50,7 +52,7 @@ public class ViewBrain extends JPanel{
 
 	private Component getPanelState() {
 		JPanel panel = new JPanel(new VerticalLayout());
-		panel.setBorder(new TitledBorder("Gestion des états"));
+		panel.setBorder(new TitledBorder("States"));
 		
 		buttonAddSate = new JButton("Add State");
 		buttonEditState = new JButton("Edit State");
@@ -58,6 +60,7 @@ public class ViewBrain extends JPanel{
 		
 		listModelState = new DefaultListModel<>();
 		jListState = new JList<>(listModelState);
+		
 		jListState.setLayoutOrientation(JList.VERTICAL);
 		jListState.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
@@ -70,8 +73,7 @@ public class ViewBrain extends JPanel{
 		panel.add(buttonDelState);
 		panel.add(new JSeparator());
 		panel.add(new JLabel("First state"));
-		panel.add(new JSeparator());
-		panel.add(jListState);
+		panel.add(new JScrollPane(jListState));
 		
 		
 		return panel;
@@ -79,20 +81,20 @@ public class ViewBrain extends JPanel{
 
 	private JPanel getPanelCondition() {
 		JPanel panel = new JPanel(new VerticalLayout());
-		panel.setBorder(new TitledBorder("Gestion des conditions"));
+		panel.setBorder(new TitledBorder("Conditions"));
+		panel.setPreferredSize(new Dimension(150, -1));
 
 		buttonAddCond = new JButton("Add condition");
 		buttonEditCond = new JButton("Edit condition");
 		buttonDelCond = new JButton("Delete condition");
 		
 		listModeleCond = new DefaultListModel<>();
-		updateSelectedCondition();
-		
 		jListCondition = new JList<>(listModeleCond);
 		jListCondition.setLayoutOrientation(JList.VERTICAL);
 		jListCondition.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//		listCond.setVisibleRowCount(10); //TODO ici ca serait mieux si il affiche un truc de taille dynamique
 		
+		updateSelectedCondition();
+
 		panel.add(buttonAddCond);
 		panel.add(new JSeparator());
 		panel.add(buttonEditCond);
@@ -100,6 +102,8 @@ public class ViewBrain extends JPanel{
 		panel.add(buttonDelCond);
 		panel.add(new JSeparator());
 		panel.add(jListCondition);
+		panel.add(new JLabel("Conditions list"));
+		panel.add(new JScrollPane(jListCondition));
 		
 		return panel;
 	}

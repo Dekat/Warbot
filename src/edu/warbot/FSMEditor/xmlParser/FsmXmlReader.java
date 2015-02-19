@@ -42,11 +42,10 @@ public class FsmXmlReader extends FsmXmlParser{
 	String fileName = xmlConfigurationDefaultFilename;
 	
 	public FsmXmlReader(File file) {
-		File xmlFile = new File(fileName);
 
 		Document doc = null;
 		try {
-			doc = new SAXBuilder().build(xmlFile);
+			doc = new SAXBuilder().build(file);
 		} catch (JDOMException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -57,7 +56,7 @@ public class FsmXmlReader extends FsmXmlParser{
 		try{
 			readConfigDocument(doc);
 		}catch(NullPointerException e){
-			JOptionPane.showMessageDialog(null, "Error while reading XML", "Xml error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error while reading fsm configuration file \"" + file.getName() + "\"", "Reading error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	

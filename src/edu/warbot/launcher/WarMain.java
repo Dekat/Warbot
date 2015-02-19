@@ -12,6 +12,7 @@ import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.tools.WarIOTools;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.io.*;
 import java.net.MalformedURLException;
@@ -280,10 +281,11 @@ public class WarMain implements WarGameListener {
 
         Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
         if(teamConfigReader.isFSMTeam()) {
-            InputStream fileFSMConfig = new FileInputStream(teamDirectory.getAbsolutePath() + File.separatorChar + teamConfigReader.getIconPath());
-            FsmXmlReader fsmXmlReader = new FsmXmlReader(fileFSMConfig);
-            FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
-            currentTeam.setFsmModel(fsmModelRebuilder.getRebuildModel());
+            File fileFSMConfig = new File(teamDirectory.getAbsolutePath() + File.separatorChar + teamConfigReader.getFSMConfigurationFileName());
+
+        	FsmXmlReader fsmXmlReader = new FsmXmlReader(fileFSMConfig);
+        	FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
+        	currentTeam.setFsmModel(fsmModelRebuilder.getRebuildModel());
 
             for (String agentName : brainControllersClassesName.keySet()) {
                 currentTeam.addBrainControllerClassForAgent(agentName, WarFSMBrainController.class);

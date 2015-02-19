@@ -310,7 +310,7 @@ public class Team {
 			WarAgentType agentType = WarAgentType.valueOf(agentName);
 			//Intancie la fsm et la donne comme brain à l'agent
 			ControllableWarAgentAdapter adapter = a.getBrain().getAgent();
-//			Class<? extends ControllableWarAgentAdapter> agentTypeAdapterClass = adapter.getClass();
+
 			FSMInstancier<ControllableWarAgentAdapter> fsmInstancier = new FSMInstancier(getFSMModel());
 			WarFSM warFsm = fsmInstancier.getBrainControleurForAgent(agentType, adapter);
 			WarFSMBrainController fsmBrainController = (WarFSMBrainController)a.getBrain();
