@@ -2,9 +2,10 @@ package edu.warbot.FSM.action;
 
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.resources.WarFood;
+import edu.warbot.brains.ControllableWarAgentAdapter;
 import edu.warbot.brains.MovableWarAgentAdapter;
 
-public class WarActionHealMe<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType>{
+public class WarActionHealMe<AgentAdapterType extends ControllableWarAgentAdapter> extends WarAction<AgentAdapterType>{
 
 	public WarActionHealMe(AgentAdapterType brain) {
 		super(brain);
@@ -17,15 +18,14 @@ public class WarActionHealMe<AgentAdapterType extends MovableWarAgentAdapter> ex
 			return MovableWarAgent.ACTION_IDLE;
 		}
 		
-		if(getAgent().getHealth() + WarFood.HEALTH_GIVEN < getAgent().getMaxHealth()){
+		if(! getAgent().isFullLife()){
 			getAgent().setDebugString("ActionHealMe : eat");
 			return MovableWarAgent.ACTION_EAT;
+			
+		}else{
+			getAgent().setDebugString("ActionHealMe : full life");
+			return MovableWarAgent.ACTION_IDLE;
 		}
-
-		if(getAgent().isBlocked())
-			getAgent().setRandomHeading();
-		getAgent().setDebugString("ActionHealMe : full life");
-		return MovableWarAgent.ACTION_MOVE;
 		
 	}
 

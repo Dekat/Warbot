@@ -8,20 +8,25 @@ import edu.warbot.brains.ControllableWarAgentAdapter;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 public class WarConditionPerceptCounter<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType> {
 	
-	int reference;
+	WarAgentType agentType;
 	EnumOperand operand;
+	int reference;
 	
 	boolean enemy;
-	WarAgentType agentType;
 	
 	public WarConditionPerceptCounter(String name, AgentAdapterType brain, 
 			GenericConditionSettings conditionSettings){
 
 		super(name, brain, conditionSettings);
 		
-		this.agentType = conditionSettings.Agent_type;
+		if(conditionSettings.Agent_type != null)
+			this.agentType = conditionSettings.Agent_type;
+		else
+			JOptionPane.showMessageDialog(null, "You must chose <Agent_type> for condition <WarConditionMessageCheck>", "Missing attribut", JOptionPane.ERROR_MESSAGE);
 		
 		if(conditionSettings.Operateur != null)
 			this.operand = conditionSettings.Operateur;
@@ -76,7 +81,7 @@ public class WarConditionPerceptCounter<AgentAdapterType extends ControllableWar
 		case dif:
 			return nbPercept != this.reference;
 		default:
-			System.err.println("FSM : unknown operateur " + this.operand + this.getClass());
+			System.err.println("WarConditionPerceptCounter : unknown operateur " + this.operand + this.getClass());
 			return false;
 		}
 		

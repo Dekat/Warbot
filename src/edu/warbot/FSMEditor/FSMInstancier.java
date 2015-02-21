@@ -35,6 +35,9 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 	HashMap<String, WarCondition<AgentAdapterType>> hashMapCond = new HashMap<>();
 
 	public FSMInstancier(Model modele) {
+		if(modele == null)
+			System.err.println("FSMInstancier : model is null impossible to build FSM");
+		
 		this.model = modele;
 
 		if(!modele.isRebuild()){
@@ -68,7 +71,8 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 			hashMapState.put(warState.getName(), warState);
 		}
 		//Remet l'état de départ
-		fsm.setFirstEtat(hashMapState.get(modelBrain.getFirstState().getName()));
+		if(modelBrain.getFirstState() != null)
+			fsm.setFirstEtat(hashMapState.get(modelBrain.getFirstState().getName()));
 		
 		//On ajoute ensuite les conditions
 		for (ModelCondition modelCond : modelBrain.getConditions()) {

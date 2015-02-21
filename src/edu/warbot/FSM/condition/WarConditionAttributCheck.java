@@ -22,19 +22,22 @@ public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarA
 	public WarConditionAttributCheck(String name, AgentAdapterType brain, GenericConditionSettings conditionSettings){
 		super(name, brain, conditionSettings);
 
-		JOptionPane.showMessageDialog(null, "Attention la condition <Attributcheck> n'a pas été vérifié et risque de ne pas fonctionner", "Waring not terminated condition", JOptionPane.WARNING_MESSAGE);
+//		JOptionPane.showMessageDialog(null, "Attention la condition <Attributcheck> n'a pas été vérifié et risque de ne pas fonctionner", "Waring not terminated condition", JOptionPane.WARNING_MESSAGE);
 		
 		if(conditionSettings.Reference != null)
 			this.reference = conditionSettings.Reference;
 		else
 			this.reference = (int) (brain.getMaxHealth() * 30 / 100);
 			
-		this.operand = conditionSettings.Operateur;
+		if(conditionSettings.Operateur != null)
+			this.operand = conditionSettings.Operateur;
+		else
+			this.operand = EnumOperand.egal;
 		
 		if(conditionSettings.Methode != null)
 			this.methodName = conditionSettings.Methode;
 		else
-			JOptionPane.showMessageDialog(null, "You must chose <Method> for condition <WarConditionBooleanCheck>", "Missing attribut", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "You must chose <Method> for condition <WarConditionAttributCheck>", "Missing attribut", JOptionPane.ERROR_MESSAGE);
 		
 		
 		
@@ -61,6 +64,7 @@ public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarA
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
+			System.err.println("WarCondition : unknow method for name " + method);
 			e.printStackTrace();
 		}
 		
@@ -74,7 +78,7 @@ public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarA
 		case dif:
 			return currentValue != this.reference;
 		default:
-			System.err.println("FSM : unknown operateur " + this.operand);
+			System.err.println("WarCondition : unknown operateur " + this.operand);
 			return false;
 		}
 			

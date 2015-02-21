@@ -228,7 +228,15 @@ public class Controleur {
 		
 		//For each brains
 		for (ModeleBrain modelBrain: this.model.getModelsBrains()) {
-			
+
+			if(modelBrain.getFirstState() == null){
+				JOptionPane.showMessageDialog(this.view,
+					    "Warning there is no first state for <" + modelBrain.getAgentTypeName() + "> agent",
+					    "Warning",
+					    JOptionPane.WARNING_MESSAGE);
+				isValid = false;
+			}
+				
 			//Check no null pointeur
 			for (ModelState modState : modelBrain.getStates()) {
 				if(modState.getConditionsOut() == null){

@@ -24,7 +24,6 @@ public class WarConditionPerceptBooleanCheck<AgentAdapterType extends Controllab
 			GenericConditionSettings conditionSettings){
 		
 		super(name, brain, conditionSettings);
-//		this.nameAtt = conditionSettings.Reference;
 		this.operand = conditionSettings.Operateur;
 		this.reference = conditionSettings.Reference;
 		

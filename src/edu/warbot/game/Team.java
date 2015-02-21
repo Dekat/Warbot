@@ -318,7 +318,6 @@ public class Team {
 			if(getFSMModel() == null)
 				System.out.println();
 			
-			@SuppressWarnings("unchecked")
 			FSMInstancier<ControllableWarAgentAdapter> fsmInstancier = new FSMInstancier(getFSMModel());
 			WarFSM warFsm = fsmInstancier.getBrainControleurForAgent(agentType, adapter);
 			WarFSMBrainController fsmBrainController = (WarFSMBrainController)a.getBrain();

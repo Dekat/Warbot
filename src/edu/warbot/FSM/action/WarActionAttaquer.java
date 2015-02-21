@@ -1,21 +1,24 @@
 package edu.warbot.FSM.action;
 
+import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
+import edu.warbot.agents.percepts.WarPercept;
 import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
+import edu.warbot.communications.WarMessage;
 import edu.warbot.tools.geometry.CoordPolar;
 
 import java.util.ArrayList;
 
 public class WarActionAttaquer extends WarAction<WarRocketLauncherAdapter> {
 	
-	CoordPolar coordBase;
 	WarAgentType agentType;
 	
 	public WarActionAttaquer(WarRocketLauncherAdapter agentAdapter, WarAgentType agentType) {
 		super(agentAdapter);
+		
 		this.agentType = agentType;
 	}
 
@@ -49,13 +52,32 @@ public class WarActionAttaquer extends WarAction<WarRocketLauncherAdapter> {
 			}
 		}else{ //Si il ny a pas agentType dans le percept
 
+			WarMessage m = getMessage();
+			if(m != null){
+				getAgent().setDebugString("ActionAttaquer : seek enemy with message");
+				getAgent().setHeading(m.getAngle());
+			}else{
+				getAgent().setDebugString("ActionAttaquer : seek enemy");
+			}
+			
 			if(getAgent().isBlocked())
 				getAgent().setRandomHeading();
-			getAgent().setDebugString("ActionAttaquer : seek enemy");
 			return MovableWarAgent.ACTION_MOVE;
 
 		}
 		
+	}
+
+	private WarMessage getMessage() {
+		for (WarMessage m : getAgent().getMessages()) {
+			if(m.getMessage().equals(EnumMessage.enemy_base_here.name()) && agentType == WarAgentType.WarBase)
+				return m;
+			else if(m.getMessage().equals(EnumMessage.enemy_RL_here.name()) && agentType == WarAgentType.WarRocketLauncher)
+				return m;
+			else if(m.getMessage().equals(EnumMessage.enemy_explorer_here.name()) && agentType == WarAgentType.WarExplorer)
+				return m;
+		}
+		return null;
 	}
 
 	@Override

@@ -16,7 +16,7 @@ public class WarConditionTimeOut<AgentAdapterType extends ControllableWarAgentAd
 		if(conditionSettings.Tik_number != null)
 			this.timeOut = conditionSettings.Tik_number;
 		else
-			this.timeOut = 0;
+			this.timeOut = 1;
 	}
 
 	@Override

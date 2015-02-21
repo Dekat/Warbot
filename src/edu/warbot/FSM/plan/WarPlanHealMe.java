@@ -6,12 +6,12 @@ package edu.warbot.FSM.plan;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionHealMe;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
-import edu.warbot.brains.MovableWarAgentAdapter;
+import edu.warbot.brains.ControllableWarAgentAdapter;
 
-public class WarPlanHealMe<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
+public class WarPlanHealMe<AgentAdapterType extends ControllableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
 	
 	public WarPlanHealMe(AgentAdapterType brain, GenericPlanSettings planSettings) {
-		super("Plan heal me", brain, planSettings);
+		super("Plan heal myself", brain, planSettings);
 	}
 
 	public void buildActionList() {

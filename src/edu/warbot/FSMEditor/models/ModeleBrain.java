@@ -22,6 +22,8 @@ public class ModeleBrain {
 
 	public void addState(ModelState d) {
 		this.sates.add(d);
+		if(this.firstState == null)
+			this.firstState = d;
 	}
 	
 	public void addCondition(ModelCondition c) {
@@ -85,9 +87,7 @@ public class ModeleBrain {
 	}
 
 	public void setFirstState(ModelState modelState) {
-//		this.firstState.setFirstState(false);
 		this.firstState = modelState;
-//		this.firstState.setFirstState(true);
 	}
 
 	public ModelState getFirstState() {
