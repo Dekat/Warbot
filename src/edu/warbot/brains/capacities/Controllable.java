@@ -40,6 +40,8 @@ public interface Controllable extends Alive {
 	public void setDebugString(String debugString);
 	public Color getDebugStringColor();
 	public void setDebugStringColor(Color color);
+    public Shape getDebugShape();
+    public void setDebugShape(Shape debugShape);
 	
 	public CoordPolar getAveragePositionOfUnitInPercept(WarAgentType agentType, boolean ally);
 	public CoordPolar getIndirectPositionOfAgentWithMessage(WarMessage message);

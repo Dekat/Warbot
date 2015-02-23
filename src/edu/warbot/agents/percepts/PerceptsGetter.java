@@ -9,6 +9,7 @@ import edu.warbot.tools.WarMathTools;
 import edu.warbot.tools.geometry.CoordCartesian;
 import edu.warbot.tools.geometry.CoordPolar;
 import edu.warbot.tools.geometry.GeometryTools;
+import edu.warbot.tools.geometry.WarCircle;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -152,74 +153,41 @@ public abstract class PerceptsGetter {
 
     private Area removeWallsHidedAreasAndGetWallPercepts(Area initialPerceptionArea) {
         Area finalPerceptionArea;
-        ArrayList<Line2D.Double> seenWalls = new ArrayList<>();
+        ArrayList<Line2D.Double> wallSegmentsInPerception = new ArrayList<>();
 
-        Area seenWallsArea = game.getMap().getMapForbidArea();
+        Area wallsInPerceptionArea = game.getMap().getMapForbidArea();
         for(WarAgent building : game.getBuildingsInRadiusOf(getAgent(), getAgent().getHitboxMaxRadius() + getAgent().getDistanceOfView())) {
-            seenWallsArea.add(building.getActualForm());
+            wallsInPerceptionArea.add(building.getActualForm());
         }
-        seenWallsArea.intersect(initialPerceptionArea);
+        wallsInPerceptionArea.intersect(initialPerceptionArea);
 
         finalPerceptionArea = new Area(initialPerceptionArea);
+        finalPerceptionArea.intersect(new Area(new Rectangle2D.Double(0, 0, game.getMap().getWidth(), game.getMap().getHeight())));
+        finalPerceptionArea.subtract(wallsInPerceptionArea);
 
-        ArrayList<Area> shadowsAreas = new ArrayList<>();
-        double shadowPointsDistance = 100;
         Path2D.Double wallsContoursPath = new Path2D.Double();
-        wallsContoursPath.append(seenWallsArea, false);
-        PathIterator it = wallsContoursPath.getPathIterator(null);
-        double[] coords = new double[6];
-        Path2D.Double currentShadow = new Path2D.Double();
-        CoordCartesian srcPoint = null;
-        while (!it.isDone()) {
-            int type = it.currentSegment(coords);
-            CoordCartesian destPoint = new CoordCartesian(coords[0], coords[1]);
-            switch (type) {
-                case PathIterator.SEG_MOVETO:
-                    currentShadow.moveTo(coords[0], coords[1]);
-                    break;
-                case PathIterator.SEG_LINETO:
-                case PathIterator.SEG_CUBICTO:
-                case PathIterator.SEG_QUADTO:
-                    currentShadow.lineTo(coords[0], coords[1]);
-            }
-            if (type == PathIterator.SEG_LINETO || type == PathIterator.SEG_CUBICTO || type == PathIterator.SEG_QUADTO) {
-                CoordCartesian srcShadowPoint = WarMathTools.addTwoPoints(srcPoint, new CoordPolar(shadowPointsDistance, getAgent().getPosition().getAngleToPoint(srcPoint)));
-                CoordCartesian destShadowPoint = WarMathTools.addTwoPoints(destPoint, new CoordPolar(shadowPointsDistance, getAgent().getPosition().getAngleToPoint(destPoint)));
-                currentShadow.lineTo(destShadowPoint.getX(), destShadowPoint.getY());
-                currentShadow.lineTo(srcShadowPoint.getX(), srcShadowPoint.getY());
-                currentShadow.lineTo(srcPoint.getX(), srcPoint.getY());
-                Area currentShadowArea = new Area(currentShadow);
-                finalPerceptionArea.subtract(currentShadowArea);
-                shadowsAreas.add(currentShadowArea);
-                currentShadow = new Path2D.Double();
-                currentShadow.moveTo(coords[0], coords[1]);
-                seenWalls.add(new Line2D.Double(srcPoint, destPoint));
-            }
-            srcPoint = destPoint;
-            it.next();
-        }
+        wallsContoursPath.append(wallsInPerceptionArea, false);
 
-        if(! finalPerceptionArea.isSingular()) {
-            Path2D.Double realPerceptionPath = new Path2D.Double();
-            realPerceptionPath.append(finalPerceptionArea, false);
-            List<Path2D.Double> singularVisiblePaths = dividePluralPathIntoSingularPathsLined(realPerceptionPath);
-            for(Path2D.Double path : singularVisiblePaths) {
-                Area pathArea = new Area(path);
-                pathArea.intersect(new Area(getAgent().getActualForm()));
-                if(! pathArea.isEmpty()) {
-                    finalPerceptionArea.intersect(new Area(path));
+        // On récupère les segments de murs dans la zone de perception
+        // Pour chaque bloque de murs dans la zone de perception
+        List<Point2D.Double> wallPoints = new ArrayList<>();
+        for(Path2D.Double wallInPerceptionPath : dividePluralPathIntoSingularPathsLined(wallsContoursPath)) {
+            List<Point2D.Double> currentWallPoints = GeometryTools.getPointsFromPath(wallInPerceptionPath);
+            if (currentWallPoints.size() > 1) {
+                for (int i = 0; i < (currentWallPoints.size() - 1); i++) {
+                    wallSegmentsInPerception.add(new Line2D.Double(currentWallPoints.get(i), currentWallPoints.get(i + 1)));
                 }
+                wallSegmentsInPerception.add(new Line2D.Double(currentWallPoints.get(currentWallPoints.size() - 1), currentWallPoints.get(0)));
             }
+            wallPoints.addAll(currentWallPoints);
         }
 
-        finalPerceptionArea.subtract(seenWallsArea);
-
-        // Get WallsPercepts
+        // On récupère les points de ces murs vus par l'agent
         HashMap<Point2D.Double, Boolean> wallPointsSeenByAgent = new HashMap<>();
-        for(Point2D.Double wallPoint : GeometryTools.getPointsFromPath(wallsContoursPath)) {
+        for(Point2D.Double wallPoint : wallPoints) {
             Line2D.Double lineFromPointToAgent = new Line2D.Double(wallPoint, getAgent().getPosition());
             boolean pointSeenByAgent = true;
-            for(Line2D.Double comparedWall : seenWalls) {
+            for(Line2D.Double comparedWall : wallSegmentsInPerception) {
                 if(! (comparedWall.getP1().equals(wallPoint) || comparedWall.getP2().equals(wallPoint))) { // Si le point n'appartient pas au segment
                     if(lineFromPointToAgent.intersectsLine(comparedWall)) {
                         pointSeenByAgent = false;
@@ -229,11 +197,76 @@ public abstract class PerceptsGetter {
             }
             wallPointsSeenByAgent.put(wallPoint, pointSeenByAgent);
         }
-        for(Line2D.Double wall : seenWalls) {
+        // On récupère les murs vus par l'agent (dont les deux extrémités ainsi que le point du milieu du mur sont vus par l'agent
+        List<Line2D.Double> seenWallsSegments = new ArrayList<>();
+        for(Line2D.Double wall : wallSegmentsInPerception) {
+            boolean wallSeenByAgent = true;
             if(wallPointsSeenByAgent.get(wall.getP1()) && wallPointsSeenByAgent.get(wall.getP2())) {
+                // Si on voit les deux extrémités du mur
+                // On regarde si le milieu du mur est aussi vu
+                Line2D.Double lineFromMiddleToAgent = new Line2D.Double(
+                        new Point2D.Double((wall.getX1() + wall.getX2()) / 2., (wall.getY1() + wall.getY2()) / 2.),
+                        getAgent().getPosition());
+                for (Line2D.Double comparedWall : wallSegmentsInPerception) {
+                    if (!(comparedWall.getP1().equals(wall.getP1()) && comparedWall.getP2().equals(wall.getP2()))) { // Si les deux murs ne sont pas les mêmes
+                        if (lineFromMiddleToAgent.intersectsLine(comparedWall)) {
+                            wallSeenByAgent = false;
+                            break;
+                        }
+                    }
+                }
+            } else if (wallPointsSeenByAgent.get(wall.getP1()) || wallPointsSeenByAgent.get(wall.getP2())) {
+                // Si une seule extrémité du mur est vue
+                // TODO Divide the wall to get only seen part
+                seenWallsSegments.add(wall);
+                wallSeenByAgent = false;
+            } else {
+                wallSeenByAgent = false;
+            }
+            if (wallSeenByAgent) {
+                seenWallsSegments.add(wall);
                 wallsPercepts.add(new WallPercept(getAgent(), wall));
             }
         }
+
+        // On supprime de la zone de perception de l'agent l'ombre des murs
+        double shadowPointsDistance = 100;
+        for(Line2D.Double wallSegment : seenWallsSegments) {
+            Path2D.Double currentShadow = new Path2D.Double();
+
+            CoordCartesian srcPoint = new CoordCartesian(wallSegment.getP1().getX(), wallSegment.getP1().getY());
+            CoordCartesian destPoint = new CoordCartesian(wallSegment.getP2().getX(), wallSegment.getP2().getY());
+            CoordCartesian srcShadowPoint = WarMathTools.addTwoPoints(srcPoint, new CoordPolar(shadowPointsDistance, getAgent().getPosition().getAngleToPoint(srcPoint)));
+            CoordCartesian destShadowPoint = WarMathTools.addTwoPoints(destPoint, new CoordPolar(shadowPointsDistance, getAgent().getPosition().getAngleToPoint(destPoint)));
+
+            currentShadow.moveTo(srcPoint.getX(), srcPoint.getY());
+            currentShadow.lineTo(destPoint.getX(), destPoint.getY());
+            currentShadow.lineTo(destShadowPoint.getX(), destShadowPoint.getY());
+            currentShadow.lineTo(srcShadowPoint.getX(), srcShadowPoint.getY());
+            currentShadow.lineTo(srcPoint.getX(), srcPoint.getY());
+
+            finalPerceptionArea.subtract(new Area(currentShadow));
+        }
+
+//        if(! finalPerceptionArea.isSingular()) {
+//            Path2D.Double finalPerceptionPath = new Path2D.Double();
+//            finalPerceptionPath.append(finalPerceptionArea, false);
+//            List<Path2D.Double> singularVisiblePaths = dividePluralPathIntoSingularPaths(finalPerceptionPath);
+//            for(Path2D.Double path : singularVisiblePaths) {
+//                Area pathArea = new Area(path);
+//                pathArea.intersect(new Area(getAgent().getActualForm()));
+//                if(pathArea.isEmpty()) {
+//                    finalPerceptionArea.subtract(new Area(path));
+//                }
+//            }
+//        }
+
+//        Area debug = new Area();
+//        for(Point2D.Double point : GeometryTools.getPointsFromPath(wallsContoursPath)) {
+//            debug.add(new Area(new WarCircle(point.getX(), point.getY(), .5)));
+//        }
+//        debug.add(new Area(wallsContoursPath));
+//        getAgent().setDebugShape(debug);
 
         return finalPerceptionArea;
     }
@@ -271,5 +304,38 @@ public abstract class PerceptsGetter {
         return singularPaths;
     }
 
+    private ArrayList<Path2D.Double> dividePluralPathIntoSingularPaths(Path2D.Double path) {
+        ArrayList<Path2D.Double> singularPaths = new ArrayList<Path2D.Double>();
 
+        PathIterator it = path.getPathIterator(null);
+        double[] coords = new double[6];
+        Path2D.Double currentPath = null;
+        while (!it.isDone()) {
+            int type = it.currentSegment(coords);
+            switch (type) {
+                case PathIterator.SEG_MOVETO:
+                    if(currentPath != null)
+                        singularPaths.add(new Path2D.Double(currentPath));
+                    currentPath = new Path2D.Double();
+                    currentPath.moveTo(coords[0], coords[1]);
+                    break;
+                case PathIterator.SEG_LINETO:
+                    currentPath.lineTo(coords[0], coords[1]);
+                case PathIterator.SEG_CUBICTO:
+                    currentPath.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+                case PathIterator.SEG_QUADTO:
+                    currentPath.quadTo(coords[0], coords[1], coords[2], coords[3]);
+                case PathIterator.SEG_CLOSE:
+                    currentPath.closePath();
+                    break;
+                default:
+                    throw new IllegalStateException("unknown PathIterator segment type: " + type);
+            }
+            it.next();
+        }
+        if(currentPath != null)
+            singularPaths.add(new Path2D.Double(currentPath));
+
+        return singularPaths;
+    }
 }

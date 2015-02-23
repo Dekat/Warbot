@@ -34,6 +34,7 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
 	private PerceptsGetter _perceptsGetter;
 	private String _debugString;
 	private Color _debugStringColor;
+    private Shape debugShape;
     private ArrayList<WarMessage> thisTickMessages;
 
 	public ControllableWarAgent(String firstActionToDo, Team team, Hitbox hitbox, WarBrain<? extends ControllableWarAgentAdapter> brain, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize) {
@@ -356,8 +357,16 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
 	public void setDebugStringColor(Color color) {
 		_debugStringColor = color;
 	}
-	
-	public void init(int health, int nbElementsInBag) {
+
+    public Shape getDebugShape() {
+        return debugShape;
+    }
+
+    public void setDebugShape(Shape debugShape) {
+        this.debugShape = debugShape;
+    }
+
+    public void init(int health, int nbElementsInBag) {
 		super.init(health);
 		_nbElementsInBag = nbElementsInBag;
 	}

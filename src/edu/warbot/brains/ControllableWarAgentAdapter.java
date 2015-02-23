@@ -158,8 +158,18 @@ public abstract class ControllableWarAgentAdapter extends WarAgentAdapter implem
 	public void setDebugStringColor(Color color) {
 		getAgent().setDebugStringColor(color);
 	}
-	
-	@Override
+
+    @Override
+    public Shape getDebugShape() {
+        return getAgent().getDebugShape();
+    }
+
+    @Override
+    public void setDebugShape(Shape debugShape) {
+        getAgent().setDebugShape(debugShape);
+    }
+
+    @Override
 	public CoordPolar getAveragePositionOfUnitInPercept(WarAgentType agentType, boolean ally) {
 		return getAgent().getAveragePositionOfUnitInPercept(agentType, ally);
 	}

@@ -38,54 +38,11 @@ public class GeometryTools {
         return transformedShape;
     }
 
-    public static List<Path2D.Double> dividePluralPathIntoSingularPaths(Path2D.Double path) {
-        long start = System.nanoTime();
-        List<Path2D.Double> singularPaths = new ArrayList<Path2D.Double>();
-
-        PathIterator it = path.getPathIterator(null);
-        double[] coords = new double[6];
-        Path2D.Double currentPath = null;
-        while (!it.isDone()) {
-            int type = it.currentSegment(coords);
-            switch (type) {
-                case PathIterator.SEG_MOVETO:
-                    if(currentPath != null)
-                        singularPaths.add(new Path2D.Double(currentPath));
-                    currentPath = new Path2D.Double();
-                    currentPath.moveTo(coords[0], coords[1]);
-                    break;
-                case PathIterator.SEG_LINETO:
-                    currentPath.lineTo(coords[0], coords[1]);
-                    break;
-                case PathIterator.SEG_CUBICTO:
-                    currentPath.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-                    break;
-                case PathIterator.SEG_QUADTO:
-                    currentPath.quadTo(coords[0], coords[1], coords[2], coords[3]);
-                    break;
-                case PathIterator.SEG_CLOSE:
-                    currentPath.closePath();
-                    break;
-                default:
-                    throw new IllegalStateException("unknown PathIterator segment type: " + type);
-            }
-            it.next();
-        }
-        if(currentPath != null)
-            singularPaths.add(new Path2D.Double(currentPath));
-
-        long timePassed = System.nanoTime()-start;
-        System.out.println("dividePluralPathIntoSingularPaths = " + timePassed);
-
-        return singularPaths;
-    }
-
     public static List<Point2D.Double> getPointsFromPath(Path2D.Double path) {
         List<Point2D.Double> points = new ArrayList<Point2D.Double>();
 
         PathIterator it = path.getPathIterator(null);
         double[] coords = new double[6];
-        Path2D.Double currentPath = null;
         while (!it.isDone()) {
             int type = it.currentSegment(coords);
             switch (type) {
@@ -97,9 +54,11 @@ public class GeometryTools {
                     break;
                 case PathIterator.SEG_CUBICTO:
                     points.add(new Point2D.Double(coords[0], coords[1]));
+                    points.add(new Point2D.Double(coords[4], coords[5]));
                     break;
                 case PathIterator.SEG_QUADTO:
                     points.add(new Point2D.Double(coords[0], coords[1]));
+                    points.add(new Point2D.Double(coords[2], coords[3]));
                     break;
             }
             it.next();

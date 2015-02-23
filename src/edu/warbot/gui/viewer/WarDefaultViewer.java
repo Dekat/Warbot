@@ -111,10 +111,12 @@ public class WarDefaultViewer extends AbstractWarViewer {
                 if(getWarToolBar().isShowPercepts()) {
                     paintPerceptionArea(g2d, (ControllableWarAgent) agent, perceptsColor);
                     if(isCurrentAgentTheSelectedOne)
-                        paintSeenWalls(g2d, (ControllableWarAgent) agent, perceptsColor.darker());
+                        paintSeenWalls(g2d, (ControllableWarAgent) agent, Color.GREEN);
                 }
                 if (getWarToolBar().isShowDebugMessages() || isCurrentAgentTheSelectedOne)
                     paintDebugMessage(g2d, (ControllableWarAgent) agent);
+                if(isCurrentAgentTheSelectedOne && ((ControllableWarAgent) agent).getDebugShape() != null)
+                    paintDebugShape(g2d, ((ControllableWarAgent) agent).getDebugShape());
             }
 
             Shape agentShape = GeometryTools.resize(agent.getActualForm(), cellSize);
@@ -234,6 +236,13 @@ public class WarDefaultViewer extends AbstractWarViewer {
         for(WallPercept wallPercept : agent.getWallPercepts())
             g.draw(GeometryTools.resize(wallPercept.getSeenWall(), cellSize));
         g.setStroke(previousStroke);
+    }
+
+    private void paintDebugShape(Graphics2D g, Shape debugShape) {
+        Color previousColor = g.getColor();
+        g.setColor(Color.MAGENTA);
+        g.draw(GeometryTools.resize(debugShape, cellSize));
+        g.setColor(previousColor);
     }
 
     private WarStar createExplosionShape(CoordCartesian pos, int radius) {

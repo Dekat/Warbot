@@ -59,4 +59,9 @@ public class CoordCartesian extends Point2D.Double {
 	public String toString() {
 		return "(" + getX() + "; " + getY() + ")";
 	}
+
+    public static double getAngleBetween(Point2D pSrc, Point2D pDest) {
+        CoordCartesian pFromOrigin = new CoordCartesian(pDest.getX() - pSrc.getX(), pDest.getY() - pSrc.getY());
+        return pFromOrigin.toPolar().getAngle();
+    }
 }
