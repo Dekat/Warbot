@@ -1,5 +1,6 @@
 package edu.warbot.launcher;
 
+import edu.warbot.agents.AliveWarAgent;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.enums.WarAgentCategory;
@@ -104,7 +105,10 @@ public class SituationLoader {
 					System.err.println("Le fichier JAR de l'équipe " + Team.getRealNameFromTeamName(teamName) + " est manquant.");
 					System.exit(0);
 				} else {
-					teamsToLoad.add(currentTeam);
+                    if (! teamsToLoad.contains(currentTeam))
+					    teamsToLoad.add(currentTeam);
+                    else
+                        teamsToLoad.add(Team.duplicate(currentTeam, teamName));
 				}
 			}
 		}
@@ -126,18 +130,21 @@ public class SituationLoader {
 					try {
 						if (WarAgentType.valueOf(agentTypeName).getCategory() == WarAgentCategory.Resource) {
 							agent = game.getMotherNatureTeam().instantiateNewWarResource(agentTypeName);
-						} else {
-							agent = t.instantiateNewControllableWarAgent(agentTypeName);
+						} else if (WarAgentType.valueOf(agentTypeName).isControllable()) {
+                            agent = t.instantiateNewControllableWarAgent(agentTypeName);
+                        } else {
+                            agent = t.instantiateNewBuilding(agentTypeName);
 						}
 						launcher.launchAgent(agent);
-						agent.setPosition(Double.valueOf(agentDatas.get("xPosition")),
-								Double.valueOf(agentDatas.get("yPosition")));
-						if (agent instanceof ControllableWarAgent) {
-							agent.setHeading(Double.valueOf(agentDatas.get("Heading")));
-							((ControllableWarAgent) agent).setViewDirection(Double.valueOf(agentDatas.get("ViewDirection")));
-							((ControllableWarAgent) agent).init(Integer.valueOf(agentDatas.get("Health")),
-									Integer.valueOf(agentDatas.get("NbElementsInBag")));
-						}
+						agent.setPosition(Double.valueOf(agentDatas.get("xPosition")), Double.valueOf(agentDatas.get("yPosition")));
+                        if (agent instanceof ControllableWarAgent) {
+                            agent.setHeading(Double.valueOf(agentDatas.get("Heading")));
+                            ((ControllableWarAgent) agent).setViewDirection(Double.valueOf(agentDatas.get("ViewDirection")));
+                            ((ControllableWarAgent) agent).init(Integer.valueOf(agentDatas.get("Health")),
+                                    Integer.valueOf(agentDatas.get("NbElementsInBag")));
+                        } else if (agent instanceof AliveWarAgent) {
+                            ((AliveWarAgent) agent).init(Integer.valueOf(agentDatas.get("Health")));
+                        }
 					} catch (InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
 						System.err.println("Erreur lors de l'instanciation de l'agent. Type non reconnu : " + agentTypeName);
 						e.printStackTrace();

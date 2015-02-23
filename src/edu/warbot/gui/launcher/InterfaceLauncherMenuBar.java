@@ -2,7 +2,7 @@ package edu.warbot.gui.launcher;
 
 import edu.warbot.FSMEditor.FSMEditor;
 import edu.warbot.gui.GuiIconsLoader;
-import edu.warbot.gui.debug.eventlisteners.LoadSituationActionListener;
+import edu.warbot.gui.viewer.debug.eventlisteners.LoadSituationActionListener;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

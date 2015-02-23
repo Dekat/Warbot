@@ -83,9 +83,9 @@ public class WarDefaultViewer extends AbstractWarViewer {
                 haveOneColorChanged = false;
             }
 
-            if (getDebugModeToolBar().isVisible()) {
-                if (getDebugModeToolBar().getDebugTools().getSelectedAgent() != null) {
-                    if (agent.getID() == getDebugModeToolBar().getDebugTools().getSelectedAgent().getID()) {
+            if (getDebugModePanel().isVisible()) {
+                if (getDebugModePanel().getDebugTools().getSelectedAgent() != null) {
+                    if (agent.getID() == getDebugModePanel().getDebugTools().getSelectedAgent().getID()) {
                         borderColor = Color.GRAY;
                         backgroundColor = Color.WHITE;
                         isCurrentAgentTheSelectedOne = true;
@@ -130,9 +130,9 @@ public class WarDefaultViewer extends AbstractWarViewer {
             }
         }
 
-        if (getDebugModeToolBar().getDebugTools().getSelectedAgent() != null) {
-            if (getDebugModeToolBar().getDebugTools().getSelectedAgent() instanceof ControllableWarAgent)
-                paintDebugMessage(g2d, (ControllableWarAgent) getDebugModeToolBar().getDebugTools().getSelectedAgent());
+        if (getDebugModePanel().getDebugTools().getSelectedAgent() != null) {
+            if (getDebugModePanel().getDebugTools().getSelectedAgent() instanceof ControllableWarAgent)
+                paintDebugMessage(g2d, (ControllableWarAgent) getDebugModePanel().getDebugTools().getSelectedAgent());
         }
 
         // Affichage des agents mourants

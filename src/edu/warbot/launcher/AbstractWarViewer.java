@@ -5,13 +5,13 @@ import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.game.WarGame;
 import edu.warbot.gui.viewer.MapExplorationListener;
-import edu.warbot.gui.debug.DebugModeToolBar;
-import edu.warbot.gui.toolbar.WarToolBar;
+import edu.warbot.gui.viewer.debug.DebugModePanel;
+import edu.warbot.gui.viewer.stats.GameStatsPanel;
+import edu.warbot.gui.viewer.WarToolBar;
 import edu.warbot.launcher.WarMain.Shared;
 import edu.warbot.tools.geometry.CoordCartesian;
 import madkit.simulation.probe.SingleAgentProbe;
 import turtlekit.agr.TKOrganization;
-import turtlekit.gui.toolbar.TKToolBar;
 import turtlekit.kernel.TKScheduler;
 import turtlekit.viewer.AbstractGridViewer;
 
@@ -28,7 +28,8 @@ public abstract class AbstractWarViewer extends AbstractGridViewer {
     protected static final int DEFAULT_CELL_SIZE = 1;
 
     private WarToolBar warToolBar;
-    private DebugModeToolBar debugModeToolBar;
+    private DebugModePanel debugModePanel;
+    private GameStatsPanel gameStatsPanel;
 
     private MapExplorationListener mapExplorationMouseListener;
 
@@ -42,7 +43,8 @@ public abstract class AbstractWarViewer extends AbstractGridViewer {
         super();
         this.game = Shared.getGame();
         warToolBar = new WarToolBar(this);
-        debugModeToolBar = new DebugModeToolBar(this);
+        debugModePanel = new DebugModePanel(this);
+        gameStatsPanel = new GameStatsPanel(game);
         agentsIDsSeenBySelectedAgent = new ArrayList<>();
     }
 
@@ -76,13 +78,12 @@ public abstract class AbstractWarViewer extends AbstractGridViewer {
 
         frame.setTitle("Warbot");
 
-        mapOffsetX = (frame.getWidth() - getWidth()) / 2.;
-        mapOffsetY = (frame.getHeight() - getHeight()) / 2.;
-        warToolBar.init(frame);
-        debugModeToolBar.init(frame);
+        debugModePanel.init(frame);
+        gameStatsPanel.init(frame);
+
         setCellSize(DEFAULT_CELL_SIZE);
         getDisplayPane().setSize(new Dimension(getWidth(), getHeight()));
-        getDisplayPane().setBackground(new Color(238, 238, 238));
+        getDisplayPane().setBackground(new Color(230, 230, 230));
 
         mapExplorationMouseListener = new MapExplorationListener(this);
         getDisplayPane().addMouseMotionListener(mapExplorationMouseListener);
@@ -90,24 +91,38 @@ public abstract class AbstractWarViewer extends AbstractGridViewer {
         getDisplayPane().addMouseWheelListener(mapExplorationMouseListener);
 
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        moveMapOffsetTo((Toolkit.getDefaultToolkit().getScreenSize().width - game.getMap().getWidth()) / 2.,
+                (frame.getContentPane().getHeight() - game.getMap().getHeight()) / 2.);
     }
 
     protected JMenuBar createJMenuBar() {
         JMenuBar menuBar = new JMenuBar();
+
+        menuBar.add(debugModePanel.getDebugMenu());
 
         return menuBar;
     }
 
     protected JToolBar createJToolBar() {
         JToolBar toolBar = new JToolBar();
+        toolBar.setFloatable(false);
 
         SingleAgentProbe<TKScheduler,Double> p = new SingleAgentProbe<>(getCommunity(), TKOrganization.ENGINE_GROUP, TKOrganization.SCHEDULER_ROLE,"GVT");
         addProbe(p);
         final TKScheduler tkScheduler = p.getCurrentAgentsList().get(0);
 
-        toolBar.add(getToolBar());
+        toolBar.add(warToolBar);
         toolBar.addSeparator();
-        toolBar.add(tkScheduler.getSchedulerToolBar());
+        toolBar.add(debugModePanel.getDebugModeToolBar());
+        toolBar.addSeparator();
+        toolBar.add(gameStatsPanel.getStatsToolBar());
+        toolBar.addSeparator();
+        toolBar.add(getToolBar());
+        getToolBar().setFloatable(false);
+        toolBar.addSeparator();
+        JToolBar schedulerToolBar = tkScheduler.getSchedulerToolBar();
+        schedulerToolBar.setFloatable(false);
+        toolBar.add(schedulerToolBar);
         toolBar.add(tkScheduler.getGVTLabel());
 
         return toolBar;
@@ -116,11 +131,11 @@ public abstract class AbstractWarViewer extends AbstractGridViewer {
 
     @Override
     protected void render(Graphics g) {
-        if (getDebugModeToolBar().getDebugTools().getSelectedAgent() != null) {
+        if (getDebugModePanel().getDebugTools().getSelectedAgent() != null) {
             // Update de l'affichage des infos sur l'unité sélectionnée
-            getDebugModeToolBar().getDebugTools().getAgentInformationsPanel().update();
+            getDebugModePanel().getDebugTools().getAgentInformationsPanel().update();
             // On récupère la liste des agents vus par l'agent sélectionné
-            WarAgent selectedAgent = getDebugModeToolBar().getDebugTools().getSelectedAgent();
+            WarAgent selectedAgent = getDebugModePanel().getDebugTools().getSelectedAgent();
             if (selectedAgent instanceof ControllableWarAgent) {
                 for(WarAgentPercept p : ((ControllableWarAgent) selectedAgent).getPercepts())
                     agentsIDsSeenBySelectedAgent.add(p.getID());
@@ -158,8 +173,8 @@ public abstract class AbstractWarViewer extends AbstractGridViewer {
         return getHeight() * cellSize;
     }
 
-    public DebugModeToolBar getDebugModeToolBar() {
-        return debugModeToolBar;
+    public DebugModePanel getDebugModePanel() {
+        return debugModePanel;
     }
 
     public WarGame getGame() {
