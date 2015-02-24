@@ -20,7 +20,7 @@ public class InterfaceLauncherMenuBar extends JMenuBar {
 		
 		JMenuItem itemOpen = new JMenuItem("Ouvrir", GuiIconsLoader.getIcon("open.png"));
         itemOpen.setMnemonic(KeyEvent.VK_O);
-        itemOpen.setToolTipText("Charge une situation sauvegard�e");
+        itemOpen.setToolTipText("Charge une situation sauvegardée");
         itemOpen.addActionListener(new LoadSituationActionListener(launcherInterface));
         menuFile.add(itemOpen);
         

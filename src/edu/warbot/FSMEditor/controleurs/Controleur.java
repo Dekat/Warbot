@@ -237,7 +237,7 @@ public class Controleur {
 				isValid = false;
 			}
 				
-			//Check no null pointeur
+			//Check no null pointeur states
 			for (ModelState modState : modelBrain.getStates()) {
 				if(modState.getConditionsOut() == null){
 					JOptionPane.showMessageDialog(this.view,
@@ -246,7 +246,7 @@ public class Controleur {
 						    JOptionPane.WARNING_MESSAGE);
 				}
 			}
-			//Check no null pointeur
+			//Check no null pointeur conditions
 			for (ModelCondition modcond : modelBrain.getConditions()) {
 				if(modcond.getStateDestination() == null){
 					JOptionPane.showMessageDialog(this.view,
@@ -256,9 +256,9 @@ public class Controleur {
 				}
 				if(modcond.getStateSource() == null){
 					JOptionPane.showMessageDialog(this.view,
-						    "Error condition <" + modcond.getName() + "> have no source !",
-						    "Error",
-						    JOptionPane.ERROR_MESSAGE);
+						    "Warning condition <" + modcond.getName() + "> have no source !",
+						    "Warning",
+						    JOptionPane.WARNING_MESSAGE);
 				}
 			}
 			
@@ -267,7 +267,7 @@ public class Controleur {
 			for (ModelState modState : modelBrain.getStates()) {
 				if(stateName.contains(modState.getName())){
 					JOptionPane.showMessageDialog(this.view,
-						    "States ID <" + modState.getName() + "> have to be unique !",
+						    "State name <" + modState.getName() + "> have to be unique !",
 						    "ID error",
 						    JOptionPane.ERROR_MESSAGE);
 					isValid = false;
@@ -281,57 +281,56 @@ public class Controleur {
 			for (ModelCondition modCond : modelBrain.getConditions()) {
 				if(CondName.contains(modCond.getName())){
 					JOptionPane.showMessageDialog(this.view,
-						    "Conditions ID <" + modCond.getName() + "> have to be unique !",
+						    "Condition  name <" + modCond.getName() + "> have to be unique !",
 						    "ID error",
 						    JOptionPane.ERROR_MESSAGE);
 					isValid = false;
 				}
 				CondName.add(modCond.getName());
-				
 			}
 		}
 		
-		//Check if declared ID exist
-		for (ModeleBrain modelBrain: this.model.getModelsBrains()) {
-			
-			//State ID
-			ArrayList<String> stateName = new ArrayList<>();
-			ArrayList<String> condOutID = new ArrayList<>();
-			for (ModelState modState : modelBrain.getStates()) {
-				stateName.add(modState.getName());
-				for (String string : modState.getConditionsOutID()) {
-					condOutID.add(string);
-				}
-			}
-			
-			//Cond ID
-			ArrayList<String> CondName = new ArrayList<>();
-			ArrayList<String> stateOutID = new ArrayList<>();
-			for (ModelCondition modCond : modelBrain.getConditions()) {
-				stateOutID.add(modCond.getStateOutId());
-				CondName.add(modCond.getName());
-			}
-
-			for (String string : stateOutID) {
-				if(! stateName.contains(string)){
-					JOptionPane.showMessageDialog(this.view,
-						    "Condition with state out ID " + string + " have no associated state",
-						    "ID error",
-						    JOptionPane.ERROR_MESSAGE);
-					isValid = false;
-				}
-			}
-			
-			for (String string : condOutID) {
-				if(! CondName.contains(string)){
-					JOptionPane.showMessageDialog(this.view,
-						    "State with condition out ID " + string + " have no associated condition",
-						    "ID error",
-						    JOptionPane.ERROR_MESSAGE);
-					isValid = false;
-				}
-			}
-		}
+//		//Check if declared ID exist
+//		for (ModeleBrain modelBrain: this.model.getModelsBrains()) {
+//			
+//			//State ID
+//			ArrayList<String> stateName = new ArrayList<>();
+//			ArrayList<String> condOutID = new ArrayList<>();
+//			for (ModelState modState : modelBrain.getStates()) {
+//				stateName.add(modState.getName());
+//				for (String string : modState.getConditionsOutID()) {
+//					condOutID.add(string);
+//				}
+//			}
+//			
+//			//Cond ID
+//			ArrayList<String> CondName = new ArrayList<>();
+//			ArrayList<String> stateOutID = new ArrayList<>();
+//			for (ModelCondition modCond : modelBrain.getConditions()) {
+//				stateOutID.add(modCond.getStateOutId());
+//				CondName.add(modCond.getName());
+//			}
+//
+//			for (String string : stateOutID) {
+//				if(! stateName.contains(string)){
+//					JOptionPane.showMessageDialog(this.view,
+//						    "Condition with state out ID " + string + " have no associated state",
+//						    "ID error",
+//						    JOptionPane.ERROR_MESSAGE);
+//					isValid = false;
+//				}
+//			}
+//			
+//			for (String string : condOutID) {
+//				if(! CondName.contains(string)){
+//					JOptionPane.showMessageDialog(this.view,
+//						    "State with condition out ID " + string + " have no associated condition",
+//						    "ID error",
+//						    JOptionPane.ERROR_MESSAGE);
+//					isValid = false;
+//				}
+//			}
+//		}
 
 		if(isValid)
 			JOptionPane.showMessageDialog(this.view,

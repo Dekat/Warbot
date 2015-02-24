@@ -3,46 +3,11 @@
   <Brain>
     <WarAgentType>WarBase</WarAgentType>
     <States>
-      <FirstState>créer des explorer</FirstState>
+      <FirstState>State Idle</FirstState>
       <State>
-        <Name>créer des explorer</Name>
+        <Name>State Idle</Name>
         <Plan>WarPlanCreateUnit</Plan>
-        <ConditionsOutID>
-          <ConditionOutID>plus de vie</ConditionOutID>
-          <ConditionOutID>ennemie aux alentours</ConditionOutID>
-        </ConditionsOutID>
-        <PlanSettings>
-          <Agent_type>WarExplorer</Agent_type>
-          <Number_agent>2</Number_agent>
-          <Min_life>30</Min_life>
-          <Message />
-          <Pourcentage>true</Pourcentage>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </PlanSettings>
-      </State>
-      <State>
-        <Name>Créer des rocket launcher</Name>
-        <Plan>WarPlanCreateUnit</Plan>
-        <ConditionsOutID>
-          <ConditionOutID>plus ennemie</ConditionOutID>
-        </ConditionsOutID>
-        <PlanSettings>
-          <Agent_type>WarRocketLauncher</Agent_type>
-          <Number_agent>1</Number_agent>
-          <Min_life>30</Min_life>
-          <Message />
-          <Pourcentage>true</Pourcentage>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </PlanSettings>
-      </State>
-      <State>
-        <Name>Se soigner</Name>
-        <Plan>WarPlanHealMe</Plan>
-        <ConditionsOutID>
-          <ConditionOutID>vie remonté</ConditionOutID>
-        </ConditionsOutID>
+        <ConditionsOutID />
         <PlanSettings>
           <Agent_type>WarExplorer</Agent_type>
           <Number_agent>1</Number_agent>
@@ -54,83 +19,17 @@
         </PlanSettings>
       </State>
     </States>
-    <Conditions>
-      <Condition>
-        <Name>plus de vie</Name>
-        <Type>WarConditionBooleanCheck</Type>
-        <StateOutID>Se soigner</StateOutID>
-        <ConditionSettings>
-          <Methode>isLowLife</Methode>
-          <Operateur>egal</Operateur>
-          <Reference />
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type>WarExplorer</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>vie remonté</Name>
-        <Type>WarConditionAttributCheck</Type>
-        <StateOutID>créer des explorer</StateOutID>
-        <ConditionSettings>
-          <Methode>getHealth</Methode>
-          <Operateur>sup</Operateur>
-          <Reference>30</Reference>
-          <Pourcentage>true</Pourcentage>
-          <Message />
-          <Agent_type>WarExplorer</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>ennemie aux alentours</Name>
-        <Type>WarConditionPerceptCounter</Type>
-        <StateOutID>Créer des rocket launcher</StateOutID>
-        <ConditionSettings>
-          <Methode />
-          <Operateur>sup</Operateur>
-          <Reference>4</Reference>
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type>WarRocketLauncher</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>plus ennemie</Name>
-        <Type>WarConditionPerceptCounter</Type>
-        <StateOutID>créer des explorer</StateOutID>
-        <ConditionSettings>
-          <Methode />
-          <Operateur>egal</Operateur>
-          <Reference>0</Reference>
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type>WarRocketLauncher</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </ConditionSettings>
-      </Condition>
-    </Conditions>
+    <Conditions />
   </Brain>
   <Brain>
     <WarAgentType>WarExplorer</WarAgentType>
     <States>
-      <FirstState>Ramsser nourriture</FirstState>
+      <FirstState>Rammaser nourriture</FirstState>
       <State>
-        <Name>Ramsser nourriture</Name>
+        <Name>Rammaser nourriture</Name>
         <Plan>WarPlanRamasserNouriture</Plan>
         <ConditionsOutID>
-          <ConditionOutID>vie faible</ConditionOutID>
-          <ConditionOutID>percept base ennemie</ConditionOutID>
+          <ConditionOutID>Si base ennemie</ConditionOutID>
         </ConditionsOutID>
         <PlanSettings>
           <Agent_type>WarExplorer</Agent_type>
@@ -143,23 +42,7 @@
         </PlanSettings>
       </State>
       <State>
-        <Name>Se soigner</Name>
-        <Plan>WarPlanHealMe</Plan>
-        <ConditionsOutID>
-          <ConditionOutID>full life</ConditionOutID>
-        </ConditionsOutID>
-        <PlanSettings>
-          <Agent_type>WarExplorer</Agent_type>
-          <Number_agent>1</Number_agent>
-          <Min_life>30</Min_life>
-          <Message />
-          <Pourcentage>true</Pourcentage>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </PlanSettings>
-      </State>
-      <State>
-        <Name>ennemie base found</Name>
+        <Name>Signaler base ennemie</Name>
         <Plan>WarPlanSendMessage</Plan>
         <ConditionsOutID>
           <ConditionOutID>un tik</ConditionOutID>
@@ -168,7 +51,7 @@
           <Agent_type>WarRocketLauncher</Agent_type>
           <Number_agent>1</Number_agent>
           <Min_life>30</Min_life>
-          <Message>enemy_base_here</Message>
+          <Message>base_here</Message>
           <Pourcentage>true</Pourcentage>
           <Offensif>false</Offensif>
           <Tik_number>500</Tik_number>
@@ -177,49 +60,17 @@
     </States>
     <Conditions>
       <Condition>
-        <Name>vie faible</Name>
-        <Type>WarConditionBooleanCheck</Type>
-        <StateOutID>Se soigner</StateOutID>
-        <ConditionSettings>
-          <Methode>isLowLife</Methode>
-          <Operateur>egal</Operateur>
-          <Reference />
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type>WarExplorer</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>full life</Name>
-        <Type>WarConditionBooleanCheck</Type>
-        <StateOutID>Ramsser nourriture</StateOutID>
-        <ConditionSettings>
-          <Methode>isFullLife</Methode>
-          <Operateur>egal</Operateur>
-          <Reference />
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type>WarExplorer</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>percept base ennemie</Name>
+        <Name>Si base ennemie</Name>
         <Type>WarConditionPerceptCounter</Type>
-        <StateOutID>ennemie base found</StateOutID>
+        <StateOutID>Signaler base ennemie</StateOutID>
         <ConditionSettings>
           <Methode />
           <Operateur>egal</Operateur>
-          <Reference />
+          <Reference>1</Reference>
           <Pourcentage>false</Pourcentage>
           <Message />
-          <Agent_type>WarBase</Agent_type>
-          <Enemie>true</Enemie>
+          <Agent_type>WarRocketLauncher</Agent_type>
+          <Enemie>false</Enemie>
           <Offensif>false</Offensif>
           <Tik_number>500</Tik_number>
         </ConditionSettings>
@@ -227,7 +78,7 @@
       <Condition>
         <Name>un tik</Name>
         <Type>WarConditionTimeOut</Type>
-        <StateOutID>Ramsser nourriture</StateOutID>
+        <StateOutID>Rammaser nourriture</StateOutID>
         <ConditionSettings>
           <Methode />
           <Operateur>egal</Operateur>
@@ -249,23 +100,6 @@
       <State>
         <Name>Attaquer</Name>
         <Plan>WarPlanAttaquer</Plan>
-        <ConditionsOutID>
-          <ConditionOutID>message base ennemie</ConditionOutID>
-          <ConditionOutID>bae dans percept</ConditionOutID>
-        </ConditionsOutID>
-        <PlanSettings>
-          <Agent_type>WarRocketLauncher</Agent_type>
-          <Number_agent>1</Number_agent>
-          <Min_life>30</Min_life>
-          <Message />
-          <Pourcentage>true</Pourcentage>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </PlanSettings>
-      </State>
-      <State>
-        <Name>Attaquer base ennemie</Name>
-        <Plan>WarPlanAttaquer</Plan>
         <ConditionsOutID />
         <PlanSettings>
           <Agent_type>WarBase</Agent_type>
@@ -277,73 +111,8 @@
           <Tik_number>500</Tik_number>
         </PlanSettings>
       </State>
-      <State>
-        <Name>message base ennemie</Name>
-        <Plan>WarPlanSendMessage</Plan>
-        <ConditionsOutID>
-          <ConditionOutID>un tik</ConditionOutID>
-        </ConditionsOutID>
-        <PlanSettings>
-          <Agent_type>WarRocketLauncher</Agent_type>
-          <Number_agent>1</Number_agent>
-          <Min_life>30</Min_life>
-          <Message>enemy_base_here</Message>
-          <Pourcentage>true</Pourcentage>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </PlanSettings>
-      </State>
     </States>
-    <Conditions>
-      <Condition>
-        <Name>message base ennemie</Name>
-        <Type>WarConditionMessageCheck</Type>
-        <StateOutID>Attaquer base ennemie</StateOutID>
-        <ConditionSettings>
-          <Methode />
-          <Operateur>egal</Operateur>
-          <Reference />
-          <Pourcentage>false</Pourcentage>
-          <Message>enemy_base_here</Message>
-          <Agent_type>WarExplorer</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>bae dans percept</Name>
-        <Type>WarConditionPerceptCounter</Type>
-        <StateOutID>message base ennemie</StateOutID>
-        <ConditionSettings>
-          <Methode />
-          <Operateur>egal</Operateur>
-          <Reference />
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type>WarBase</Agent_type>
-          <Enemie>true</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>un tik</Name>
-        <Type>WarConditionTimeOut</Type>
-        <StateOutID>Attaquer base ennemie</StateOutID>
-        <ConditionSettings>
-          <Methode />
-          <Operateur>egal</Operateur>
-          <Reference />
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type>WarExplorer</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>1</Tik_number>
-        </ConditionSettings>
-      </Condition>
-    </Conditions>
+    <Conditions />
   </Brain>
   <Brain>
     <WarAgentType>WarEngineer</WarAgentType>

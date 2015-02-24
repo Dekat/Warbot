@@ -57,7 +57,7 @@ public class WarActionAttaquer extends WarAction<WarRocketLauncherAdapter> {
 				getAgent().setDebugString("ActionAttaquer : seek enemy with message");
 				getAgent().setHeading(m.getAngle());
 			}else{
-				getAgent().setDebugString("ActionAttaquer : seek enemy");
+				getAgent().setDebugString("ActionAttaquer : seek enemy <" + agentType + ">");
 			}
 			
 			if(getAgent().isBlocked())
