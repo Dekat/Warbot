@@ -3,36 +3,15 @@
   <Brain>
     <WarAgentType>WarBase</WarAgentType>
     <States>
-      <FirstState>Create Explorer</FirstState>
+      <FirstState>Créer explorer</FirstState>
       <State>
-        <Name>Create Explorer</Name>
+        <Name>Créer explorer</Name>
         <Plan>WarPlanCreateUnit</Plan>
         <ConditionsOutID>
-          <ConditionOutID>To Create RL</ConditionOutID>
-          <ConditionOutID>we attack</ConditionOutID>
-          <ConditionOutID>ifAskWhereBase</ConditionOutID>
-          <ConditionOutID>low life</ConditionOutID>
-          <ConditionOutID>low life2</ConditionOutID>
+          <ConditionOutID>si demande où est la base</ConditionOutID>
         </ConditionsOutID>
         <PlanSettings>
           <Agent_type>WarExplorer</Agent_type>
-          <Number_agent>2</Number_agent>
-          <Min_life>30</Min_life>
-          <Message />
-          <Pourcentage>true</Pourcentage>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </PlanSettings>
-      </State>
-      <State>
-        <Name>Create RL</Name>
-        <Plan>WarPlanCreateUnit</Plan>
-        <ConditionsOutID>
-          <ConditionOutID>To create Ex</ConditionOutID>
-          <ConditionOutID>low life</ConditionOutID>
-        </ConditionsOutID>
-        <PlanSettings>
-          <Agent_type>WarRocketLauncher</Agent_type>
           <Number_agent>1</Number_agent>
           <Min_life>30</Min_life>
           <Message />
@@ -42,68 +21,17 @@
         </PlanSettings>
       </State>
       <State>
-        <Name>sayBaseAttacked</Name>
+        <Name>Repondre message</Name>
         <Plan>WarPlanSendMessage</Plan>
         <ConditionsOutID>
-          <ConditionOutID>low life</ConditionOutID>
-          <ConditionOutID>one tik</ConditionOutID>
-          <ConditionOutID>one tik 3</ConditionOutID>
-        </ConditionsOutID>
-        <PlanSettings>
-          <Agent_type>WarRocketLauncher</Agent_type>
-          <Number_agent>1</Number_agent>
-          <Min_life>30</Min_life>
-          <Message>base_attacked</Message>
-          <Pourcentage>true</Pourcentage>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </PlanSettings>
-      </State>
-      <State>
-        <Name>answerExplorer</Name>
-        <Plan>WarPlanSendMessage</Plan>
-        <ConditionsOutID>
-          <ConditionOutID>one tik</ConditionOutID>
-          <ConditionOutID>one tik 2</ConditionOutID>
+          <ConditionOutID>un tik</ConditionOutID>
         </ConditionsOutID>
         <PlanSettings>
           <Agent_type>WarExplorer</Agent_type>
-          <Number_agent />
-          <Min_life />
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
           <Message>base_here</Message>
           <Pourcentage>false</Pourcentage>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </PlanSettings>
-      </State>
-      <State>
-        <Name>sayBaseAttack</Name>
-        <Plan>WarPlanSendMessage</Plan>
-        <ConditionsOutID>
-          <ConditionOutID>one tik</ConditionOutID>
-        </ConditionsOutID>
-        <PlanSettings>
-          <Agent_type>WarExplorer</Agent_type>
-          <Number_agent>1</Number_agent>
-          <Min_life>30</Min_life>
-          <Message>base_attacked</Message>
-          <Pourcentage>true</Pourcentage>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </PlanSettings>
-      </State>
-      <State>
-        <Name>sayBaseAttackToRL</Name>
-        <Plan>WarPlanSendMessage</Plan>
-        <ConditionsOutID>
-          <ConditionOutID>one tik 1</ConditionOutID>
-        </ConditionsOutID>
-        <PlanSettings>
-          <Agent_type>WarRocketLauncher</Agent_type>
-          <Number_agent>1</Number_agent>
-          <Min_life>30</Min_life>
-          <Message>base_attacked</Message>
-          <Pourcentage>true</Pourcentage>
           <Offensif>false</Offensif>
           <Tik_number>500</Tik_number>
         </PlanSettings>
@@ -111,60 +39,12 @@
     </States>
     <Conditions>
       <Condition>
-        <Name>To create Ex</Name>
-        <Type>WarConditionTimeOut</Type>
-        <StateOutID>Create Explorer</StateOutID>
-        <ConditionSettings>
-          <Methode>getHealth</Methode>
-          <Operateur />
-          <Reference />
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type>WarExplorer</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>To Create RL</Name>
-        <Type>WarConditionTimeOut</Type>
-        <StateOutID>Create RL</StateOutID>
-        <ConditionSettings>
-          <Methode>getHealth</Methode>
-          <Operateur />
-          <Reference />
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type>WarExplorer</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>we attack</Name>
+        <Name>si demande où est la base</Name>
         <Type>WarConditionMessageCheck</Type>
-        <StateOutID>sayBaseAttacked</StateOutID>
-        <ConditionSettings>
-          <Methode>getHealth</Methode>
-          <Operateur>egal</Operateur>
-          <Reference />
-          <Pourcentage>false</Pourcentage>
-          <Message>we_attack</Message>
-          <Agent_type>WarRocketLauncher</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>ifAskWhereBase</Name>
-        <Type>WarConditionMessageCheck</Type>
-        <StateOutID>answerExplorer</StateOutID>
+        <StateOutID>Repondre message</StateOutID>
         <ConditionSettings>
           <Methode />
-          <Operateur />
+          <Operateur>egal</Operateur>
           <Reference />
           <Pourcentage>false</Pourcentage>
           <Message>where_is_base</Message>
@@ -175,92 +55,12 @@
         </ConditionSettings>
       </Condition>
       <Condition>
-        <Name>one tik</Name>
+        <Name>un tik</Name>
         <Type>WarConditionTimeOut</Type>
-        <StateOutID>Create RL</StateOutID>
+        <StateOutID>Créer explorer</StateOutID>
         <ConditionSettings>
           <Methode />
-          <Operateur />
-          <Reference />
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type>WarExplorer</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>1</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>one tik 2</Name>
-        <Type>WarConditionTimeOut</Type>
-        <StateOutID>Create Explorer</StateOutID>
-        <ConditionSettings>
-          <Methode />
-          <Operateur />
-          <Reference />
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type>WarExplorer</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>1</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>one tik 3</Name>
-        <Type>WarConditionTimeOut</Type>
-        <StateOutID>Create Explorer</StateOutID>
-        <ConditionSettings>
-          <Methode />
-          <Operateur />
-          <Reference />
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type>WarExplorer</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>1</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>low life</Name>
-        <Type>WarConditionBooleanCheck</Type>
-        <StateOutID>sayBaseAttack</StateOutID>
-        <ConditionSettings>
-          <Methode>isLowLife</Methode>
-          <Operateur />
-          <Reference />
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type>WarExplorer</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>low life2</Name>
-        <Type>WarConditionTimeOut</Type>
-        <StateOutID>sayBaseAttackToRL</StateOutID>
-        <ConditionSettings>
-          <Methode>isLowLife</Methode>
-          <Operateur />
-          <Reference />
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type>WarExplorer</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>one tik 1</Name>
-        <Type>WarConditionTimeOut</Type>
-        <StateOutID>Create RL</StateOutID>
-        <ConditionSettings>
-          <Methode />
-          <Operateur />
+          <Operateur>egal</Operateur>
           <Reference />
           <Pourcentage>false</Pourcentage>
           <Message />
@@ -275,53 +75,70 @@
   <Brain>
     <WarAgentType>WarExplorer</WarAgentType>
     <States>
-      <FirstState>Ramasser food</FirstState>
+      <FirstState>Rammaser nourriture</FirstState>
       <State>
-        <Name>Ramasser food</Name>
+        <Name>Rammaser nourriture</Name>
         <Plan>WarPlanRamasserNouriture</Plan>
         <ConditionsOutID>
-          <ConditionOutID>lowLife</ConditionOutID>
-          <ConditionOutID>base is attacked</ConditionOutID>
+          <ConditionOutID>Si base ennemie</ConditionOutID>
+          <ConditionOutID>Si plus de vie</ConditionOutID>
+          <ConditionOutID>Message besoin d'aide</ConditionOutID>
         </ConditionsOutID>
         <PlanSettings>
           <Agent_type>WarExplorer</Agent_type>
-          <Number_agent />
-          <Min_life />
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
           <Message />
-          <Pourcentage>false</Pourcentage>
+          <Pourcentage>true</Pourcentage>
           <Offensif>false</Offensif>
           <Tik_number>500</Tik_number>
         </PlanSettings>
       </State>
       <State>
-        <Name>HealMe</Name>
+        <Name>Signaler base ennemie</Name>
+        <Plan>WarPlanSendMessage</Plan>
+        <ConditionsOutID>
+          <ConditionOutID>un tik</ConditionOutID>
+        </ConditionsOutID>
+        <PlanSettings>
+          <Agent_type>WarRocketLauncher</Agent_type>
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
+          <Message>enemy_base_here</Message>
+          <Pourcentage>true</Pourcentage>
+          <Offensif>false</Offensif>
+          <Tik_number>500</Tik_number>
+        </PlanSettings>
+      </State>
+      <State>
+        <Name>Me soigner</Name>
         <Plan>WarPlanHealMe</Plan>
         <ConditionsOutID>
-          <ConditionOutID>fullLife</ConditionOutID>
-          <ConditionOutID>is empty bag</ConditionOutID>
+          <ConditionOutID>Si beaucoup de vie</ConditionOutID>
+          <ConditionOutID>Message besoin d'aide 2</ConditionOutID>
         </ConditionsOutID>
         <PlanSettings>
           <Agent_type>WarExplorer</Agent_type>
-          <Number_agent />
-          <Min_life />
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
           <Message />
-          <Pourcentage>false</Pourcentage>
+          <Pourcentage>true</Pourcentage>
           <Offensif>false</Offensif>
           <Tik_number>500</Tik_number>
         </PlanSettings>
       </State>
       <State>
-        <Name>heal Base</Name>
+        <Name>Soigner alliés</Name>
         <Plan>WarPlanHealAlly</Plan>
         <ConditionsOutID>
-          <ConditionOutID>fin heal base</ConditionOutID>
+          <ConditionOutID>Pendant un certain temps</ConditionOutID>
         </ConditionsOutID>
         <PlanSettings>
-          <Agent_type>WarBase</Agent_type>
-          <Number_agent />
-          <Min_life />
+          <Agent_type>WarRocketLauncher</Agent_type>
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
           <Message />
-          <Pourcentage>false</Pourcentage>
+          <Pourcentage>true</Pourcentage>
           <Offensif>false</Offensif>
           <Tik_number>500</Tik_number>
         </PlanSettings>
@@ -329,9 +146,41 @@
     </States>
     <Conditions>
       <Condition>
-        <Name>lowLife</Name>
+        <Name>Si base ennemie</Name>
+        <Type>WarConditionPerceptCounter</Type>
+        <StateOutID>Signaler base ennemie</StateOutID>
+        <ConditionSettings>
+          <Methode />
+          <Operateur>sup</Operateur>
+          <Reference>0</Reference>
+          <Pourcentage>false</Pourcentage>
+          <Message />
+          <Agent_type>WarRocketLauncher</Agent_type>
+          <Enemie>true</Enemie>
+          <Offensif>false</Offensif>
+          <Tik_number>500</Tik_number>
+        </ConditionSettings>
+      </Condition>
+      <Condition>
+        <Name>un tik</Name>
+        <Type>WarConditionTimeOut</Type>
+        <StateOutID>Rammaser nourriture</StateOutID>
+        <ConditionSettings>
+          <Methode />
+          <Operateur>egal</Operateur>
+          <Reference />
+          <Pourcentage>false</Pourcentage>
+          <Message />
+          <Agent_type>WarExplorer</Agent_type>
+          <Enemie>false</Enemie>
+          <Offensif>false</Offensif>
+          <Tik_number>1</Tik_number>
+        </ConditionSettings>
+      </Condition>
+      <Condition>
+        <Name>Si plus de vie</Name>
         <Type>WarConditionBooleanCheck</Type>
-        <StateOutID>HealMe</StateOutID>
+        <StateOutID>Me soigner</StateOutID>
         <ConditionSettings>
           <Methode>isLowLife</Methode>
           <Operateur>egal</Operateur>
@@ -345,9 +194,9 @@
         </ConditionSettings>
       </Condition>
       <Condition>
-        <Name>fullLife</Name>
+        <Name>Si beaucoup de vie</Name>
         <Type>WarConditionBooleanCheck</Type>
-        <StateOutID>Ramasser food</StateOutID>
+        <StateOutID>Rammaser nourriture</StateOutID>
         <ConditionSettings>
           <Methode>isFullLife</Methode>
           <Operateur>egal</Operateur>
@@ -361,48 +210,48 @@
         </ConditionSettings>
       </Condition>
       <Condition>
-        <Name>base is attacked</Name>
+        <Name>Message besoin d'aide</Name>
         <Type>WarConditionMessageCheck</Type>
-        <StateOutID>heal Base</StateOutID>
+        <StateOutID>Soigner alliés</StateOutID>
         <ConditionSettings>
           <Methode />
-          <Operateur />
+          <Operateur>egal</Operateur>
           <Reference />
           <Pourcentage>false</Pourcentage>
-          <Message>base_attacked</Message>
-          <Agent_type>WarBase</Agent_type>
+          <Message>nead_heal</Message>
+          <Agent_type>WarRocketLauncher</Agent_type>
           <Enemie>false</Enemie>
           <Offensif>false</Offensif>
           <Tik_number>500</Tik_number>
         </ConditionSettings>
       </Condition>
       <Condition>
-        <Name>fin heal base</Name>
+        <Name>Pendant un certain temps</Name>
         <Type>WarConditionTimeOut</Type>
-        <StateOutID>Ramasser food</StateOutID>
+        <StateOutID>Rammaser nourriture</StateOutID>
         <ConditionSettings>
           <Methode />
-          <Operateur />
-          <Reference />
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type />
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>2000</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>is empty bag</Name>
-        <Type>WarConditionBooleanCheck</Type>
-        <StateOutID>Ramasser food</StateOutID>
-        <ConditionSettings>
-          <Methode>isBagEmpty</Methode>
-          <Operateur />
+          <Operateur>egal</Operateur>
           <Reference />
           <Pourcentage>false</Pourcentage>
           <Message />
           <Agent_type>WarExplorer</Agent_type>
+          <Enemie>false</Enemie>
+          <Offensif>false</Offensif>
+          <Tik_number>1000</Tik_number>
+        </ConditionSettings>
+      </Condition>
+      <Condition>
+        <Name>Message besoin d'aide 2</Name>
+        <Type>WarConditionMessageCheck</Type>
+        <StateOutID>Soigner alliés</StateOutID>
+        <ConditionSettings>
+          <Methode />
+          <Operateur>egal</Operateur>
+          <Reference />
+          <Pourcentage>false</Pourcentage>
+          <Message>nead_heal</Message>
+          <Agent_type>WarRocketLauncher</Agent_type>
           <Enemie>false</Enemie>
           <Offensif>false</Offensif>
           <Tik_number>500</Tik_number>
@@ -418,30 +267,47 @@
         <Name>Attaquer</Name>
         <Plan>WarPlanAttaquer</Plan>
         <ConditionsOutID>
-          <ConditionOutID>healMe</ConditionOutID>
+          <ConditionOutID>Si base ennemie dans percept</ConditionOutID>
+          <ConditionOutID>Vie basse</ConditionOutID>
         </ConditionsOutID>
         <PlanSettings>
-          <Agent_type>WarRocketLauncher</Agent_type>
-          <Number_agent />
-          <Min_life />
+          <Agent_type>WarBase</Agent_type>
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
           <Message />
-          <Pourcentage>false</Pourcentage>
+          <Pourcentage>true</Pourcentage>
           <Offensif>false</Offensif>
           <Tik_number>500</Tik_number>
         </PlanSettings>
       </State>
       <State>
-        <Name>HealMe</Name>
-        <Plan>WarPlanHealMe</Plan>
+        <Name>Signaler base ennemie</Name>
+        <Plan>WarPlanSendMessage</Plan>
         <ConditionsOutID>
-          <ConditionOutID>fullLife</ConditionOutID>
+          <ConditionOutID>un tik</ConditionOutID>
+        </ConditionsOutID>
+        <PlanSettings>
+          <Agent_type>WarRocketLauncher</Agent_type>
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
+          <Message>enemy_base_here</Message>
+          <Pourcentage>true</Pourcentage>
+          <Offensif>false</Offensif>
+          <Tik_number>500</Tik_number>
+        </PlanSettings>
+      </State>
+      <State>
+        <Name>Demander soin</Name>
+        <Plan>WarPlanSendMessage</Plan>
+        <ConditionsOutID>
+          <ConditionOutID>un seul tik</ConditionOutID>
         </ConditionsOutID>
         <PlanSettings>
           <Agent_type>WarExplorer</Agent_type>
-          <Number_agent />
-          <Min_life />
-          <Message />
-          <Pourcentage>false</Pourcentage>
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
+          <Message>nead_heal</Message>
+          <Pourcentage>true</Pourcentage>
           <Offensif>false</Offensif>
           <Tik_number>500</Tik_number>
         </PlanSettings>
@@ -449,9 +315,41 @@
     </States>
     <Conditions>
       <Condition>
-        <Name>healMe</Name>
+        <Name>Si base ennemie dans percept</Name>
+        <Type>WarConditionPerceptCounter</Type>
+        <StateOutID>Signaler base ennemie</StateOutID>
+        <ConditionSettings>
+          <Methode />
+          <Operateur>sup</Operateur>
+          <Reference>0</Reference>
+          <Pourcentage>false</Pourcentage>
+          <Message />
+          <Agent_type>WarBase</Agent_type>
+          <Enemie>true</Enemie>
+          <Offensif>false</Offensif>
+          <Tik_number>500</Tik_number>
+        </ConditionSettings>
+      </Condition>
+      <Condition>
+        <Name>un tik</Name>
+        <Type>WarConditionTimeOut</Type>
+        <StateOutID>Attaquer</StateOutID>
+        <ConditionSettings>
+          <Methode />
+          <Operateur>egal</Operateur>
+          <Reference />
+          <Pourcentage>false</Pourcentage>
+          <Message />
+          <Agent_type>WarExplorer</Agent_type>
+          <Enemie>false</Enemie>
+          <Offensif>false</Offensif>
+          <Tik_number>1</Tik_number>
+        </ConditionSettings>
+      </Condition>
+      <Condition>
+        <Name>Vie basse</Name>
         <Type>WarConditionBooleanCheck</Type>
-        <StateOutID>HealMe</StateOutID>
+        <StateOutID>Demander soin</StateOutID>
         <ConditionSettings>
           <Methode>isLowLife</Methode>
           <Operateur>egal</Operateur>
@@ -465,11 +363,11 @@
         </ConditionSettings>
       </Condition>
       <Condition>
-        <Name>fullLife</Name>
-        <Type>WarConditionBooleanCheck</Type>
+        <Name>un seul tik</Name>
+        <Type>WarConditionTimeOut</Type>
         <StateOutID>Attaquer</StateOutID>
         <ConditionSettings>
-          <Methode>isFullLife</Methode>
+          <Methode />
           <Operateur>egal</Operateur>
           <Reference />
           <Pourcentage>false</Pourcentage>
@@ -477,7 +375,7 @@
           <Agent_type>WarExplorer</Agent_type>
           <Enemie>false</Enemie>
           <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
+          <Tik_number>1</Tik_number>
         </ConditionSettings>
       </Condition>
     </Conditions>
@@ -491,11 +389,11 @@
         <Plan>WarPlanWiggle</Plan>
         <ConditionsOutID />
         <PlanSettings>
-          <Agent_type />
-          <Number_agent />
-          <Min_life />
+          <Agent_type>WarExplorer</Agent_type>
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
           <Message />
-          <Pourcentage />
+          <Pourcentage>true</Pourcentage>
           <Offensif />
           <Tik_number>500</Tik_number>
         </PlanSettings>
@@ -512,11 +410,11 @@
         <Plan>WarPlanIdle</Plan>
         <ConditionsOutID />
         <PlanSettings>
-          <Agent_type />
-          <Number_agent />
-          <Min_life />
+          <Agent_type>WarExplorer</Agent_type>
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
           <Message />
-          <Pourcentage />
+          <Pourcentage>true</Pourcentage>
           <Offensif />
           <Tik_number>500</Tik_number>
         </PlanSettings>
@@ -533,11 +431,11 @@
         <Plan>WarPlanWiggle</Plan>
         <ConditionsOutID />
         <PlanSettings>
-          <Agent_type />
-          <Number_agent />
-          <Min_life />
+          <Agent_type>WarExplorer</Agent_type>
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
           <Message />
-          <Pourcentage />
+          <Pourcentage>true</Pourcentage>
           <Offensif />
           <Tik_number>500</Tik_number>
         </PlanSettings>

@@ -1,4 +1,4 @@
-package teams.fsm;
+package teams.fsmDemo;
 
 import edu.warbot.FSM.WarFSM;
 import edu.warbot.brains.WarBrain;
