@@ -2,6 +2,9 @@
 teamsSourcesFolders:
 #   <teamName>: path/to/directory/separated/by/slashes
     Engineer:   "demos/teams/engineer"
+#    FSM:   "demos/teams/fsm"
+    FSM2:   "demos/teams/fsm2"
+    FSMDemo:   "demos/teams/fsmDemo"
 
 # Number of agents of each type to deploy at game start
 NbAgentsAtStart:
