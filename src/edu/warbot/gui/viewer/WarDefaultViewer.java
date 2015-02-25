@@ -100,13 +100,6 @@ public class WarDefaultViewer extends AbstractWarViewer {
                 haveOneColorChanged = true;
             }
 
-            if (agent instanceof AliveWarAgent) {
-                if (getWarToolBar().isShowHealthBars())
-                    paintHealthBar(g2d, (AliveWarAgent) agent);
-                if (getWarToolBar().isShowInfos())
-                    paintInfos(g2d, (AliveWarAgent) agent, backgroundColor);
-            }
-
             if (agent instanceof ControllableWarAgent) {
                 if(getWarToolBar().isShowPercepts()) {
                     paintPerceptionArea(g2d, (ControllableWarAgent) agent, perceptsColor);
@@ -128,6 +121,15 @@ public class WarDefaultViewer extends AbstractWarViewer {
             if (agent instanceof MovableActions) {
                 paintHeading(g2d, agent, borderColor);
             }
+
+            if (agent instanceof AliveWarAgent) {
+                if (getWarToolBar().isShowHealthBars())
+                    paintHealthBar(g2d, (AliveWarAgent) agent);
+                if (getWarToolBar().isShowInfos())
+                    paintInfos(g2d, (AliveWarAgent) agent, backgroundColor);
+            }
+
+
         }
 
         if (getDebugModePanel().getDebugTools().getSelectedAgent() != null) {
