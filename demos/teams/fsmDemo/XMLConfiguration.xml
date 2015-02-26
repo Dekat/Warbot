@@ -3,13 +3,13 @@
   <Brain>
     <WarAgentType>WarBase</WarAgentType>
     <States>
-      <FirstState>State Idle</FirstState>
+      <FirstState>Crée roquet launcher</FirstState>
       <State>
-        <Name>State Idle</Name>
+        <Name>Crée roquet launcher</Name>
         <Plan>WarPlanCreateUnit</Plan>
         <ConditionsOutID />
         <PlanSettings>
-          <Agent_type>WarExplorer</Agent_type>
+          <Agent_type>WarRocketLauncher</Agent_type>
           <Number_agent>1</Number_agent>
           <Min_life>30</Min_life>
           <Message />
@@ -24,12 +24,12 @@
   <Brain>
     <WarAgentType>WarExplorer</WarAgentType>
     <States>
-      <FirstState>Rammaser nourriture</FirstState>
+      <FirstState />
       <State>
-        <Name>Rammaser nourriture</Name>
+        <Name>Ramasser nourriture</Name>
         <Plan>WarPlanRamasserNouriture</Plan>
         <ConditionsOutID>
-          <ConditionOutID>Si base ennemie</ConditionOutID>
+          <ConditionOutID>Si base ennemie dans percept</ConditionOutID>
         </ConditionsOutID>
         <PlanSettings>
           <Agent_type>WarExplorer</Agent_type>
@@ -51,7 +51,7 @@
           <Agent_type>WarRocketLauncher</Agent_type>
           <Number_agent>1</Number_agent>
           <Min_life>30</Min_life>
-          <Message>base_here</Message>
+          <Message>enemy_base_here</Message>
           <Pourcentage>true</Pourcentage>
           <Offensif>false</Offensif>
           <Tik_number>500</Tik_number>
@@ -60,17 +60,17 @@
     </States>
     <Conditions>
       <Condition>
-        <Name>Si base ennemie</Name>
+        <Name>Si base ennemie dans percept</Name>
         <Type>WarConditionPerceptCounter</Type>
         <StateOutID>Signaler base ennemie</StateOutID>
         <ConditionSettings>
           <Methode />
-          <Operateur>egal</Operateur>
-          <Reference>1</Reference>
+          <Operateur>sup</Operateur>
+          <Reference>0</Reference>
           <Pourcentage>false</Pourcentage>
           <Message />
-          <Agent_type>WarRocketLauncher</Agent_type>
-          <Enemie>false</Enemie>
+          <Agent_type>WarBase</Agent_type>
+          <Enemie>true</Enemie>
           <Offensif>false</Offensif>
           <Tik_number>500</Tik_number>
         </ConditionSettings>
@@ -78,7 +78,7 @@
       <Condition>
         <Name>un tik</Name>
         <Type>WarConditionTimeOut</Type>
-        <StateOutID>Rammaser nourriture</StateOutID>
+        <StateOutID>Ramasser nourriture</StateOutID>
         <ConditionSettings>
           <Methode />
           <Operateur>egal</Operateur>
@@ -96,9 +96,9 @@
   <Brain>
     <WarAgentType>WarRocketLauncher</WarAgentType>
     <States>
-      <FirstState>Attaquer</FirstState>
+      <FirstState>Attaquer base ennemie</FirstState>
       <State>
-        <Name>Attaquer</Name>
+        <Name>Attaquer base ennemie</Name>
         <Plan>WarPlanAttaquer</Plan>
         <ConditionsOutID />
         <PlanSettings>
