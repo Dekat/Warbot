@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Brains>
+  <Brain>
+    <WarAgentType>WarBase</WarAgentType>
+    <States>
+      <FirstState>Crée roquet launcher</FirstState>
+      <State>
+<<<<<<< HEAD
+        <Name>State Idle</Name>
+        <Plan>edu.warbot.FSM.plan.WarPlanIdle</Plan>
+=======
+        <Name>Crée roquet launcher</Name>
+        <Plan>WarPlanCreateUnit</Plan>
+>>>>>>> cafb2ea1ab31104704e459105d73259679134c00
+        <ConditionsOutID />
+        <PlanSettings>
+          <Agent_type>WarRocketLauncher</Agent_type>
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
+          <Message />
+          <Pourcentage>true</Pourcentage>
+          <Offensif />
+          <Tik_number>500</Tik_number>
+        </PlanSettings>
+      </State>
+    </States>
+    <Conditions />
+  </Brain>
+  <Brain>
+    <WarAgentType>WarExplorer</WarAgentType>
+    <States>
+<<<<<<< HEAD
+      <FirstState>State Idle</FirstState>
+      <State>
+        <Name>State Idle</Name>
+        <Plan>edu.warbot.FSM.plan.WarPlanIdle</Plan>
+        <ConditionsOutID />
+=======
+      <FirstState />
+      <State>
+        <Name>Ramasser nourriture</Name>
+        <Plan>WarPlanRamasserNouriture</Plan>
+        <ConditionsOutID>
+          <ConditionOutID>Si base ennemie dans percept</ConditionOutID>
+        </ConditionsOutID>
+>>>>>>> cafb2ea1ab31104704e459105d73259679134c00
+        <PlanSettings>
+          <Agent_type>WarExplorer</Agent_type>
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
+          <Message />
+          <Pourcentage>true</Pourcentage>
+<<<<<<< HEAD
+          <Offensif />
+=======
+          <Offensif>false</Offensif>
+          <Tik_number>500</Tik_number>
+        </PlanSettings>
+      </State>
+      <State>
+        <Name>Signaler base ennemie</Name>
+        <Plan>WarPlanSendMessage</Plan>
+        <ConditionsOutID>
+          <ConditionOutID>un tik</ConditionOutID>
+        </ConditionsOutID>
+        <PlanSettings>
+          <Agent_type>WarRocketLauncher</Agent_type>
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
+          <Message>enemy_base_here</Message>
+          <Pourcentage>true</Pourcentage>
+          <Offensif>false</Offensif>
+>>>>>>> cafb2ea1ab31104704e459105d73259679134c00
+          <Tik_number>500</Tik_number>
+        </PlanSettings>
+      </State>
+    </States>
+<<<<<<< HEAD
+    <Conditions />
+=======
+    <Conditions>
+      <Condition>
+        <Name>Si base ennemie dans percept</Name>
+        <Type>WarConditionPerceptCounter</Type>
+        <StateOutID>Signaler base ennemie</StateOutID>
+        <ConditionSettings>
+          <Methode />
+          <Operateur>sup</Operateur>
+          <Reference>0</Reference>
+          <Pourcentage>false</Pourcentage>
+          <Message />
+          <Agent_type>WarBase</Agent_type>
+          <Enemie>true</Enemie>
+          <Offensif>false</Offensif>
+          <Tik_number>500</Tik_number>
+        </ConditionSettings>
+      </Condition>
+      <Condition>
+        <Name>un tik</Name>
+        <Type>WarConditionTimeOut</Type>
+        <StateOutID>Ramasser nourriture</StateOutID>
+        <ConditionSettings>
+          <Methode />
+          <Operateur>egal</Operateur>
+          <Reference />
+          <Pourcentage>false</Pourcentage>
+          <Message />
+          <Agent_type>WarExplorer</Agent_type>
+          <Enemie>false</Enemie>
+          <Offensif>false</Offensif>
+          <Tik_number>1</Tik_number>
+        </ConditionSettings>
+      </Condition>
+    </Conditions>
+>>>>>>> cafb2ea1ab31104704e459105d73259679134c00
+  </Brain>
+  <Brain>
+    <WarAgentType>WarRocketLauncher</WarAgentType>
+    <States>
+<<<<<<< HEAD
+      <FirstState>State Wiggle</FirstState>
+      <State>
+        <Name>State Wiggle</Name>
+        <Plan>edu.warbot.FSM.plan.WarPlanIdle</Plan>
+=======
+      <FirstState>Attaquer base ennemie</FirstState>
+      <State>
+        <Name>Attaquer base ennemie</Name>
+        <Plan>WarPlanAttaquer</Plan>
+>>>>>>> cafb2ea1ab31104704e459105d73259679134c00
+        <ConditionsOutID />
+        <PlanSettings>
+          <Agent_type>WarExplorer</Agent_type>
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
+          <Message />
+          <Pourcentage>true</Pourcentage>
+          <Offensif />
+          <Tik_number>500</Tik_number>
+        </PlanSettings>
+      </State>
+    </States>
+    <Conditions />
+  </Brain>
+  <Brain>
+    <WarAgentType>WarEngineer</WarAgentType>
+    <States>
+      <FirstState>State Wiggle</FirstState>
+      <State>
+        <Name>State Wiggle</Name>
+        <Plan>edu.warbot.FSM.plan.WarPlanIdle</Plan>
+        <ConditionsOutID />
+        <PlanSettings>
+          <Agent_type>WarExplorer</Agent_type>
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
+          <Message />
+          <Pourcentage>true</Pourcentage>
+          <Offensif />
+          <Tik_number>500</Tik_number>
+        </PlanSettings>
+      </State>
+    </States>
+    <Conditions />
+  </Brain>
+  <Brain>
+    <WarAgentType>WarTurret</WarAgentType>
+    <States>
+      <FirstState>State Idle</FirstState>
+      <State>
+        <Name>State Idle</Name>
+        <Plan>edu.warbot.FSM.plan.WarPlanIdle</Plan>
+        <ConditionsOutID />
+        <PlanSettings>
+          <Agent_type>WarExplorer</Agent_type>
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
+          <Message />
+          <Pourcentage>true</Pourcentage>
+          <Offensif />
+          <Tik_number>500</Tik_number>
+        </PlanSettings>
+      </State>
+    </States>
+    <Conditions />
+  </Brain>
+  <Brain>
+    <WarAgentType>WarKamikaze</WarAgentType>
+    <States>
+      <FirstState>State Wiggle</FirstState>
+      <State>
+        <Name>State Wiggle</Name>
+        <Plan>edu.warbot.FSM.plan.WarPlanIdle</Plan>
+        <ConditionsOutID />
+        <PlanSettings>
+          <Agent_type>WarExplorer</Agent_type>
+          <Number_agent>1</Number_agent>
+          <Min_life>30</Min_life>
+          <Message />
+          <Pourcentage>true</Pourcentage>
+          <Offensif />
+          <Tik_number>500</Tik_number>
+        </PlanSettings>
+      </State>
+    </States>
+    <Conditions />
+  </Brain>
+</Brains>
