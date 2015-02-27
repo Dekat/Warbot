@@ -105,22 +105,6 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 		return fsm;
 	}
 
-//	private HashMap<String, ModelState> getHashMapStates(ModeleBrain modelBrain) {
-//		HashMap<String, ModelState> hashRes = new HashMap<>();
-//		for (ModelState state : modelBrain.getStates()) {
-//			hashRes.put(state.getName(), state);
-//		}
-//		return hashRes;
-//	}
-//
-//	private HashMap<String, ModelCondition> getHashMapConditions(ModeleBrain modelBrain) {
-//		HashMap<String, ModelCondition> hashRes = new HashMap<>();
-//		for (ModelCondition cond: modelBrain.getConditions()) {
-//			hashRes.put(cond.getName(), cond);
-//		}
-//		return hashRes;
-//	}
-	
 	private WarCondition<AgentAdapterType> getGeneratedCondition(ModelCondition modelCond,
 			ControllableWarAgentAdapter adapter) {
 		
@@ -130,7 +114,7 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 		Class c = null;
 		try {
 			
-			c = Class.forName(modelCond.getConditionLoaderName());
+			c = Class.forName(modelCond.getConditionType());
 
 			//Récupère le constructeur
 			typeOfAdapter = c.getConstructors()[0].getParameterTypes()[1];
@@ -144,21 +128,21 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 			e.printStackTrace();
 			System.err.println("*** ERROR in dynamic instanciation of generated model check everything:");
 			System.err.println("* Check constructor in WarPlan, WarCondition, WarReflexe");
-			System.err.println("* Check attribut usage in subclass of previews and in " + modelCond.getConditionLoaderName());
+			System.err.println("* Check attribut usage in subclass of previews and in " + modelCond.getConditionType());
 			
-			System.err.println("ERROR during instanciate WarCondition with class name " + modelCond.getConditionLoaderName() + " check name, constructor, classPath, etc...");
+			System.err.println("ERROR during instanciate WarCondition with class name " + modelCond.getConditionType() + " check name, constructor, classPath, etc...");
 			System.err.println("Objects send Type : Name : " + String.class + ", Adapter : " + typeOfAdapter + ", WarConditionSettings : " + modelCond.getConditionSettings().getClass());
-			System.err.println("Objects send Object : Name : " + modelCond.getName() + ", Adapter : " + adapter + ", WarConditionSettings : " + modelCond.getConditionLoaderName());
+			System.err.println("Objects send Object : Name : " + modelCond.getName() + ", Adapter : " + adapter + ", WarConditionSettings : " + modelCond.getConditionType());
 			try {
-				System.err.println("Objects expected Type : Name : " + Class.forName(modelCond.getConditionLoaderName()).getConstructors()[0].getParameterTypes()[0] + 
-						", Adapter : " + Class.forName(modelCond.getConditionLoaderName()).getConstructors()[0].getParameterTypes()[1] + 
-						", WarPlanSettings : " + Class.forName(modelCond.getConditionLoaderName()).getConstructors()[0].getParameterTypes()[2]);
+				System.err.println("Objects expected Type : Name : " + Class.forName(modelCond.getConditionType()).getConstructors()[0].getParameterTypes()[0] + 
+						", Adapter : " + Class.forName(modelCond.getConditionType()).getConstructors()[0].getParameterTypes()[1] + 
+						", WarPlanSettings : " + Class.forName(modelCond.getConditionType()).getConstructors()[0].getParameterTypes()[2]);
 			} catch (SecurityException | ClassNotFoundException e1) {
 				e1.printStackTrace();
 			}
 			
-			if(modelCond.getConditionLoaderName() != null)
-				JOptionPane.showMessageDialog(null, "Error during dynamic instanciation of condition <" + modelCond.getConditionLoaderName() + "> \nPlease check attribut of this condition, attribut in the editor, and generic type of the condition", "Instanciation error", JOptionPane.ERROR_MESSAGE);
+			if(modelCond.getConditionType() != null)
+				JOptionPane.showMessageDialog(null, "Error during dynamic instanciation of condition <" + modelCond.getConditionType() + "> \nPlease check attribut of this condition, attribut in the editor, and generic type of the condition", "Instanciation error", JOptionPane.ERROR_MESSAGE);
 			else
 				JOptionPane.showMessageDialog(null, "Error during dynamic instanciation of condition. Condition have no loader name", "Internal error", JOptionPane.ERROR_MESSAGE);
 			
@@ -187,7 +171,7 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 		WarPlan<AgentAdapterType> instanciatePlan = null;
 		try {
 			
-			Class c = Class.forName(modelState.getPlanLoaderName());
+			Class c = Class.forName(modelState.getPlanName());
 
 			//Récupère le constructeur
 			Class typeOfAdapter = c.getConstructors()[0].getParameterTypes()[0];
@@ -201,20 +185,20 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 			e.printStackTrace();
 			System.err.println("*** ERROR in dynamic instanciation of generated model check everything :");
 			System.err.println("* Check constructor in WarPlan");
-			System.err.println("* Check attribut usage in subclass of previews and in " + modelState.getPlanLoaderName());
+			System.err.println("* Check attribut usage in subclass of previews and in " + modelState.getPlanName());
 			
-			System.err.println("ERROR during instanciate WarPlan with class name " + modelState.getPlanLoaderName() + " check name, constructor, classPath, etc...");
+			System.err.println("ERROR during instanciate WarPlan with class name " + modelState.getPlanName() + " check name, constructor, classPath, etc...");
 			System.err.println("Objects send type : Adapter : " + adapter.getClass() + ", WarPlanSettings : " + modelState.getPlanSettings().getClass());
 			System.err.println("Objects send instance : Adapter : " + adapter + ", WarPlanSettings : " + modelState.getPlanSettings());
 			try {
-				System.err.println("Objects expected : Adapter : " + Class.forName(modelState.getPlanLoaderName()).getConstructors()[0].getParameterTypes()[0] 
-						+ ", WarPlanSettings : " + Class.forName(modelState.getPlanLoaderName()).getConstructors()[0].getParameterTypes()[1]);
+				System.err.println("Objects expected : Adapter : " + Class.forName(modelState.getPlanName()).getConstructors()[0].getParameterTypes()[0] 
+						+ ", WarPlanSettings : " + Class.forName(modelState.getPlanName()).getConstructors()[0].getParameterTypes()[1]);
 			} catch (SecurityException | ClassNotFoundException e1) {
 				e1.printStackTrace();
 			}
 			
-			if(modelState.getPlanLoaderName() != null)
-				JOptionPane.showMessageDialog(null, "Error during dynamic instanciation of plan <" + modelState.getPlanLoaderName() + "> \nPlease check attribut of this plan, attribut in the editor, and generic type of the plan", "Instanciation error", JOptionPane.ERROR_MESSAGE);
+			if(modelState.getPlanName() != null)
+				JOptionPane.showMessageDialog(null, "Error during dynamic instanciation of plan <" + modelState.getPlanName() + "> \nPlease check attribut of this plan, attribut in the editor, and generic type of the plan", "Instanciation error", JOptionPane.ERROR_MESSAGE);
 			else
 				JOptionPane.showMessageDialog(null, "Error during dynamic instanciation of plan. Condition have no loader name", "Internal error", JOptionPane.ERROR_MESSAGE);
 		

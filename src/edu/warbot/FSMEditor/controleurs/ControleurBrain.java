@@ -214,7 +214,8 @@ public class ControleurBrain {
 				modeleStateDest = panelDest.getModelState();
 				
 				//Crée le nouveau modele condition
-				ModelCondition mc = new ModelCondition(d.getConditionName(), d.getConditionType(), condSett);
+				ModelCondition mc = 
+						new ModelCondition(d.getConditionName(), d.getConditionType(), condSett);
 				modeleStateSource.addConditionOut(mc);
 				mc.setDestination(modeleStateDest);
 				

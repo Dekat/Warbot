@@ -13,17 +13,15 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
+import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSMEditor.models.Model;
 import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.settings.AbstractGenericSettings;
-import edu.warbot.FSMEditor.settings.EnumAction;
-import edu.warbot.FSMEditor.settings.EnumCondition;
 import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.FSMEditor.settings.EnumMethod;
 import edu.warbot.FSMEditor.settings.EnumOperand;
-import edu.warbot.FSMEditor.settings.EnumPlan;
 import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.agents.enums.WarAgentType;
@@ -128,7 +126,7 @@ public class FsmXmlReader extends FsmXmlParser{
 		GenericPlanSettings warPlanSetting = 
 				(GenericPlanSettings) getWarGenericSettings(GenericPlanSettings.class, state.getChild(PlanSettings));
 		
-		ModelState modeleState = new ModelState(name, EnumPlan.valueOf(plan), warPlanSetting);
+		ModelState modeleState = new ModelState(name, plan, warPlanSetting);
 		modeleState.setConditionsOutID(condID);
 		
 		modeleBrain.addState(modeleState);
@@ -143,7 +141,8 @@ public class FsmXmlReader extends FsmXmlParser{
 		GenericConditionSettings warConditionSetting = 
 				(GenericConditionSettings) getWarGenericSettings(GenericConditionSettings.class, cond.getChild(ConditionSettings));
 
-		ModelCondition modeleCond = new ModelCondition(name, EnumCondition.valueOf(type), warConditionSetting);
+		ModelCondition modeleCond = 
+				new ModelCondition(name, type, warConditionSetting);
 		modeleCond.setStateOutId(stateOutID);
 		
 		modeleBrain.addCondition(modeleCond);		
@@ -176,7 +175,7 @@ public class FsmXmlReader extends FsmXmlParser{
 				else if (fields[i].getType().equals(WarAgentType.class))
 					fields[i].set(settings,getFieldForAgentType(fields[i], element));
 				
-				else if (fields[i].getType().equals(EnumAction.class))
+				else if (fields[i].getType().equals(WarAction.class))
 					fields[i].set(settings,getFieldForAction(fields[i], element));
 				
 				else if (fields[i].getType().equals(EnumOperand.class))
@@ -255,9 +254,9 @@ public class FsmXmlReader extends FsmXmlParser{
 		}
 	}
 	
-	private EnumAction getFieldForAction(Field field, Element elemPlanSetting) {
+	private String getFieldForAction(Field field, Element elemPlanSetting) {
 		try{
-			return EnumAction.valueOf(getField(field, elemPlanSetting));
+			return getField(field, elemPlanSetting);
 		}catch(NumberFormatException e){
 			return null;
 		}catch (IllegalArgumentException e) {

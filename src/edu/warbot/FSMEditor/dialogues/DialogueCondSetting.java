@@ -1,14 +1,17 @@
 package edu.warbot.FSMEditor.dialogues;
 
-import edu.warbot.FSMEditor.models.ModelCondition;
-import edu.warbot.FSMEditor.settings.GenericConditionSettings;
-import edu.warbot.FSMEditor.settings.EnumCondition;
-import edu.warbot.FSMEditor.views.ViewBrain;
+import java.awt.GridLayout;
 
-import javax.swing.*;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import java.awt.*;
+import edu.warbot.FSMEditor.models.ModelCondition;
+import edu.warbot.FSMEditor.settings.EditorSettings;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
+import edu.warbot.FSMEditor.views.ViewBrain;
 
 public class DialogueCondSetting extends AbstractDialogue{
 	
@@ -59,8 +62,8 @@ public class DialogueCondSetting extends AbstractDialogue{
 		return this.fieldName.getText();
 	}
 	
-	public EnumCondition getConditionType(){
-		return (EnumCondition) comboTypeCond.getSelectedItem();
+	public String getConditionType(){
+		return EditorSettings.getConditionFullName((String) comboTypeCond.getSelectedItem());
 	}
 	
 	public GenericConditionSettings getConditionSettings(){
@@ -68,6 +71,6 @@ public class DialogueCondSetting extends AbstractDialogue{
 	}
 
 	JTextField fieldName = new JTextField(DEFAULT_CONDITION_NAME);
-	JComboBox<EnumCondition> comboTypeCond = new JComboBox<>(EnumCondition.values());
+	JComboBox<String> comboTypeCond = new JComboBox<>(EditorSettings.getConditionClassSimpleName());
 	
 }

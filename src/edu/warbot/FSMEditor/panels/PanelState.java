@@ -19,9 +19,7 @@ public class PanelState extends AbstractPanel{
 	public void paint(Graphics g){
 		
 		String msgName = this.modeleState.getName();
-		String msgPlan = this.modeleState.getPlanName().name();
-		
-		
+		String msgPlan = this.modeleState.getPlanSimpleName();
 			
 		if(this.isSelected)
 			g.setColor(Color.red);
@@ -54,7 +52,7 @@ public class PanelState extends AbstractPanel{
 		
 		g.drawString(this.modeleState.getName(), position.x + 1, position.y + 12);
 		
-		g.drawString(this.modeleState.getPlanName().name(), position.x + 2, position.y + size.height/2 + 12);
+		g.drawString(this.modeleState.getPlanSimpleName(), position.x + 2, position.y + size.height/2 + 12);
 		
 		
 	}

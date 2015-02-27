@@ -1,18 +1,17 @@
 package edu.warbot.FSMEditor.models;
 
-import edu.warbot.FSMEditor.panels.PanelState;
-import edu.warbot.FSMEditor.settings.EnumPlan;
-import edu.warbot.FSMEditor.settings.GenericPlanSettings;
-import edu.warbot.FSMEditor.settings.ClassPathSettings;
-
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import edu.warbot.FSMEditor.panels.PanelState;
+import edu.warbot.FSMEditor.settings.EditorSettings;
+import edu.warbot.FSMEditor.settings.GenericPlanSettings;
+
 public class ModelState {
 	
 	private String name;
-	private EnumPlan warPlanName;
+	private String planName;
 	
 	private GenericPlanSettings planSettings;
 	
@@ -21,9 +20,9 @@ public class ModelState {
 	private ArrayList<ModelCondition> conditionsOut = new ArrayList<>();
 	private ArrayList<ModelCondition> conditionsIn = new ArrayList<>();
 
-	public ModelState(String name, EnumPlan planName, GenericPlanSettings planSettings) {
+	public ModelState(String name, String planName, GenericPlanSettings planSettings) {
 		this.name = name;
-		this.warPlanName = planName;
+		this.planName = planName;
 		this.planSettings = planSettings;
 	}
 
@@ -54,12 +53,12 @@ public class ModelState {
 		return this.conditionsIn;
 	}
 
-	public String getPlanLoaderName(){
-		return ClassPathSettings.getFullNameOf(this.warPlanName);
+	public String getPlanName(){
+		return planName;
 	}
 	
-	public EnumPlan getPlanName(){
-		return warPlanName;
+	public String getPlanSimpleName(){
+		return EditorSettings.getSimpleName(planName);
 	}
 	
 	public String getName() {
@@ -82,8 +81,8 @@ public class ModelState {
 		this.name = name;
 	}
 
-	public void setPlanName(EnumPlan planName) {
-		this.warPlanName = planName;
+	public void setPlanName(String planName) {
+		this.planName = planName;
 	}
 
 	public void addConditionOutID(String name) {

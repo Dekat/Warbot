@@ -6,7 +6,7 @@
       <FirstState>State Idle</FirstState>
       <State>
         <Name>State Idle</Name>
-        <Plan>WarPlanCreateUnit</Plan>
+        <Plan>edu.warbot.FSM.plan.WarPlanIdle</Plan>
         <ConditionsOutID />
         <PlanSettings>
           <Agent_type>WarExplorer</Agent_type>
@@ -14,7 +14,7 @@
           <Min_life>30</Min_life>
           <Message />
           <Pourcentage>true</Pourcentage>
-          <Offensif>false</Offensif>
+          <Offensif />
           <Tik_number>500</Tik_number>
         </PlanSettings>
       </State>
@@ -24,90 +24,39 @@
   <Brain>
     <WarAgentType>WarExplorer</WarAgentType>
     <States>
-      <FirstState>Rammaser nourriture</FirstState>
+      <FirstState>State Idle</FirstState>
       <State>
-        <Name>Rammaser nourriture</Name>
-        <Plan>WarPlanRamasserNouriture</Plan>
-        <ConditionsOutID>
-          <ConditionOutID>Si base ennemie</ConditionOutID>
-        </ConditionsOutID>
+        <Name>State Idle</Name>
+        <Plan>edu.warbot.FSM.plan.WarPlanIdle</Plan>
+        <ConditionsOutID />
         <PlanSettings>
           <Agent_type>WarExplorer</Agent_type>
           <Number_agent>1</Number_agent>
           <Min_life>30</Min_life>
           <Message />
           <Pourcentage>true</Pourcentage>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </PlanSettings>
-      </State>
-      <State>
-        <Name>Signaler base ennemie</Name>
-        <Plan>WarPlanSendMessage</Plan>
-        <ConditionsOutID>
-          <ConditionOutID>un tik</ConditionOutID>
-        </ConditionsOutID>
-        <PlanSettings>
-          <Agent_type>WarRocketLauncher</Agent_type>
-          <Number_agent>1</Number_agent>
-          <Min_life>30</Min_life>
-          <Message>base_here</Message>
-          <Pourcentage>true</Pourcentage>
-          <Offensif>false</Offensif>
+          <Offensif />
           <Tik_number>500</Tik_number>
         </PlanSettings>
       </State>
     </States>
-    <Conditions>
-      <Condition>
-        <Name>Si base ennemie</Name>
-        <Type>WarConditionPerceptCounter</Type>
-        <StateOutID>Signaler base ennemie</StateOutID>
-        <ConditionSettings>
-          <Methode />
-          <Operateur>egal</Operateur>
-          <Reference>1</Reference>
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type>WarRocketLauncher</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>500</Tik_number>
-        </ConditionSettings>
-      </Condition>
-      <Condition>
-        <Name>un tik</Name>
-        <Type>WarConditionTimeOut</Type>
-        <StateOutID>Rammaser nourriture</StateOutID>
-        <ConditionSettings>
-          <Methode />
-          <Operateur>egal</Operateur>
-          <Reference />
-          <Pourcentage>false</Pourcentage>
-          <Message />
-          <Agent_type>WarExplorer</Agent_type>
-          <Enemie>false</Enemie>
-          <Offensif>false</Offensif>
-          <Tik_number>1</Tik_number>
-        </ConditionSettings>
-      </Condition>
-    </Conditions>
+    <Conditions />
   </Brain>
   <Brain>
     <WarAgentType>WarRocketLauncher</WarAgentType>
     <States>
-      <FirstState>Attaquer</FirstState>
+      <FirstState>State Wiggle</FirstState>
       <State>
-        <Name>Attaquer</Name>
-        <Plan>WarPlanAttaquer</Plan>
+        <Name>State Wiggle</Name>
+        <Plan>edu.warbot.FSM.plan.WarPlanIdle</Plan>
         <ConditionsOutID />
         <PlanSettings>
-          <Agent_type>WarBase</Agent_type>
+          <Agent_type>WarExplorer</Agent_type>
           <Number_agent>1</Number_agent>
           <Min_life>30</Min_life>
           <Message />
           <Pourcentage>true</Pourcentage>
-          <Offensif>false</Offensif>
+          <Offensif />
           <Tik_number>500</Tik_number>
         </PlanSettings>
       </State>
@@ -120,7 +69,7 @@
       <FirstState>State Wiggle</FirstState>
       <State>
         <Name>State Wiggle</Name>
-        <Plan>WarPlanWiggle</Plan>
+        <Plan>edu.warbot.FSM.plan.WarPlanIdle</Plan>
         <ConditionsOutID />
         <PlanSettings>
           <Agent_type>WarExplorer</Agent_type>
@@ -141,7 +90,7 @@
       <FirstState>State Idle</FirstState>
       <State>
         <Name>State Idle</Name>
-        <Plan>WarPlanIdle</Plan>
+        <Plan>edu.warbot.FSM.plan.WarPlanIdle</Plan>
         <ConditionsOutID />
         <PlanSettings>
           <Agent_type>WarExplorer</Agent_type>
@@ -162,7 +111,7 @@
       <FirstState>State Wiggle</FirstState>
       <State>
         <Name>State Wiggle</Name>
-        <Plan>WarPlanWiggle</Plan>
+        <Plan>edu.warbot.FSM.plan.WarPlanIdle</Plan>
         <ConditionsOutID />
         <PlanSettings>
           <Agent_type>WarExplorer</Agent_type>
