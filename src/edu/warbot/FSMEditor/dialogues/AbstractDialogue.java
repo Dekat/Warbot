@@ -1,5 +1,6 @@
 package edu.warbot.FSMEditor.dialogues;
 
+import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSMEditor.settings.*;
 import edu.warbot.FSMEditor.views.ViewBrain;
 import edu.warbot.agents.enums.WarAgentType;
@@ -119,7 +120,7 @@ public abstract class AbstractDialogue extends JDialog{
 		}else if (field.getType().equals(WarAgentType.class)) {
 			panel.add(component = getComponentForAgentType(field));
 			
-		}else if (field.getType().equals(EnumAction.class)) {
+		}else if (field.getType().equals(WarAction.class)) {
 			panel.add(component = getComponentForAction(field));
 
 		}else if (field.getType().equals(EnumMessage.class)) {
@@ -230,8 +231,8 @@ public abstract class AbstractDialogue extends JDialog{
 		return cb;
 	}
 	
-	private JComboBox<EnumAction> getComponentForAction(Field field) {
-		JComboBox<EnumAction> cb = new JComboBox<>(EnumAction.values());
+	private JComboBox<String> getComponentForAction(Field field) {
+		JComboBox<String> cb = new JComboBox<>(EditorSettings.getActionsClassSimpleName());
 		try {
 			cb.setSelectedItem(field.get(this.genericSettings));
 		} catch (IllegalArgumentException e) {
@@ -282,7 +283,7 @@ public abstract class AbstractDialogue extends JDialog{
 			}else if(field.getType().equals(WarAgentType.class)){
 				setFieldForAgentType(field, dynamicComp);
 				
-			}else if(field.getType().equals(EnumAction.class)){
+			}else if(field.getType().equals(WarAction.class)){
 				setFieldForAction(field, dynamicComp);
 				
 			}else if(field.getType().equals(EnumOperand.class)){
@@ -333,9 +334,10 @@ public abstract class AbstractDialogue extends JDialog{
 	}
 	
 	private void setFieldForAction(Field field, JComponent comp) {
-		EnumAction at = null;
+		String at = null;
 		try{
-			at = (EnumAction) ((JComboBox<EnumAction>)comp).getSelectedItem();
+			at = EditorSettings.getActionFullName(
+					(String) ((JComboBox<String>)comp).getSelectedItem());
 		} catch (NumberFormatException e) {
 			at = null;
 		}

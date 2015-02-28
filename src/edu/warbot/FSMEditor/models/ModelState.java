@@ -1,8 +1,7 @@
 package edu.warbot.FSMEditor.models;
 
 import edu.warbot.FSMEditor.panels.PanelState;
-import edu.warbot.FSMEditor.settings.ClassPathSettings;
-import edu.warbot.FSMEditor.settings.EnumPlan;
+import edu.warbot.FSMEditor.settings.EditorSettings;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 
 import javax.swing.*;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 public class ModelState {
 	
 	private String name;
-	private EnumPlan warPlanName;
+	private String planName;
 	
 	private GenericPlanSettings planSettings;
 	
@@ -20,9 +19,9 @@ public class ModelState {
 	private ArrayList<ModelCondition> conditionsOut = new ArrayList<>();
 	private ArrayList<ModelCondition> conditionsIn = new ArrayList<>();
 
-	public ModelState(String name, EnumPlan planName, GenericPlanSettings planSettings) {
+	public ModelState(String name, String planName, GenericPlanSettings planSettings) {
 		this.name = name;
-		this.warPlanName = planName;
+		this.planName = planName;
 		this.planSettings = planSettings;
 	}
 
@@ -34,9 +33,9 @@ public class ModelState {
 			mc.setSource(this);
 		}catch(NullPointerException e){
 			JOptionPane.showMessageDialog(null, "Erro while creating fsm."
-					+ "\nState with name <" + this.name + "> can't have source condition."
-					+ "\nCheck your fsm."
-					, "Loading error", JOptionPane.ERROR_MESSAGE);
+                    + "\nState with name <" + this.name + "> can't have source condition."
+                    + "\nCheck your fsm."
+                    , "Loading error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -53,12 +52,12 @@ public class ModelState {
 		return this.conditionsIn;
 	}
 
-	public String getPlanLoaderName(){
-		return ClassPathSettings.getFullNameOf(this.warPlanName);
+	public String getPlanName(){
+		return planName;
 	}
 	
-	public EnumPlan getPlanName(){
-		return warPlanName;
+	public String getPlanSimpleName(){
+		return EditorSettings.getSimpleName(planName);
 	}
 	
 	public String getName() {
@@ -81,8 +80,8 @@ public class ModelState {
 		this.name = name;
 	}
 
-	public void setPlanName(EnumPlan planName) {
-		this.warPlanName = planName;
+	public void setPlanName(String planName) {
+		this.planName = planName;
 	}
 
 	public void addConditionOutID(String name) {

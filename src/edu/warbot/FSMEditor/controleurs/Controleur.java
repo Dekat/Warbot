@@ -396,7 +396,7 @@ public class Controleur {
 		
 			System.out.println("Liste des états " + modBrain.getStates().size());
 			for (ModelState modState : modBrain.getStates()) {
-				System.out.println("\tEtat : Name=" + modState.getName() + " plan=" + modState.getPlanLoaderName());
+				System.out.println("\tEtat : Name=" + modState.getName() + " plan=" + modState.getPlanName());
 				System.out.println("\tConditions de sorties ID : " + modState.getConditionsOutID().size());
 				for (String condID : modState.getConditionsOutID()) {
 					System.out.println("\t\t" + condID);

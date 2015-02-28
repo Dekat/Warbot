@@ -1,13 +1,18 @@
 package edu.warbot.FSMEditor.dialogues;
 
 import edu.warbot.FSMEditor.models.ModelState;
-import edu.warbot.FSMEditor.settings.EnumPlan;
+import edu.warbot.FSMEditor.settings.EditorSettings;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.FSMEditor.views.ViewBrain;
 
-import javax.swing.*;
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
-import java.awt.*;
 
 public class DialogueStateSetting extends AbstractDialogue {
 
@@ -59,12 +64,12 @@ public class DialogueStateSetting extends AbstractDialogue {
 		return this.fieldName.getText();
 	}
 
-	public EnumPlan getPlanName() {
-		return (EnumPlan) comboxPlan.getSelectedItem();
+	public String getPlanName() {
+		return EditorSettings.getPlanFullName((String) comboxPlan.getSelectedItem());
 	}
 
 	JTextField fieldName = new JTextField(DEFAULT_STATE_NAME);
-	JComboBox<EnumPlan> comboxPlan = new JComboBox<EnumPlan>(EnumPlan.values());
+	JComboBox<String> comboxPlan = new JComboBox<>(EditorSettings.getPlansClassSimpleName());
 
 	public JButton getValidationButton() {
 		return this.buttonOk;
