@@ -3,21 +3,21 @@ package edu.warbot.FSM.plan;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 
 import java.util.ArrayList;
 
-public abstract class WarPlan<AgentAdapterType extends ControllableWarAgentAdapter> {
+public abstract class WarPlan<BrainType extends WarBrain> {
 
-	private WarAction<AgentAdapterType> actionCourante;
-	private WarAction<AgentAdapterType> firstAction;
-	private ArrayList<WarAction<AgentAdapterType>> actions = new ArrayList<>();
+	private WarAction<BrainType> actionCourante;
+	private WarAction<BrainType> firstAction;
+	private ArrayList<WarAction<BrainType>> actions = new ArrayList<>();
 	
 	private String nom;
-	private AgentAdapterType brain;
+	private BrainType brain;
 	private GenericPlanSettings planSettings;
 
-	public WarPlan(String nomPlan, AgentAdapterType brain, GenericPlanSettings planSettings){
+	public WarPlan(String nomPlan, BrainType brain, GenericPlanSettings planSettings){
 		this.nom = nomPlan;
 		this.brain = brain;
 		this.planSettings = planSettings;
@@ -67,9 +67,9 @@ public abstract class WarPlan<AgentAdapterType extends ControllableWarAgentAdapt
 		instructionResultat = this.actionCourante.executeAction();
 		
 		//On change d'état si besoin
-		ArrayList<WarCondition<AgentAdapterType>> conditions = this.actionCourante.getConditions();
+		ArrayList<WarCondition<BrainType>> conditions = this.actionCourante.getConditions();
 			
-		for (WarCondition<AgentAdapterType> conditionCourante : conditions) {
+		for (WarCondition<BrainType> conditionCourante : conditions) {
 			if(conditionCourante.isValide()){
 				this.actionCourante = conditionCourante.getActionDestination();
 				this.actionCourante.actionWillBegin();
@@ -96,10 +96,10 @@ public abstract class WarPlan<AgentAdapterType extends ControllableWarAgentAdapt
 		
 		System.out.println("\tLe plan contient <" + this.getNom() + "> contient " + this.actions.size() + " actions");
 		
-		for (WarAction<AgentAdapterType> act : this.actions) {
+		for (WarAction<BrainType> act : this.actions) {
 			System.out.println("\t\tL'action <" + act.getName() + "> contient " + act.getConditions().size() + " conditions de sortie");
 			
-			for (WarCondition<AgentAdapterType> cond : act.getConditions()) {
+			for (WarCondition<BrainType> cond : act.getConditions()) {
 				System.out.println("\t\t\tLa condition <" + cond.getClass().getSimpleName() + " a pour destination <" + cond.getActionDestination().getName() + ">");
 			}
 		}
@@ -107,11 +107,11 @@ public abstract class WarPlan<AgentAdapterType extends ControllableWarAgentAdapt
 	}
 	
 
-	public void addAction(WarAction<AgentAdapterType> a){
+	public void addAction(WarAction<BrainType> a){
 		this.actions.add(a);
 	}
 	
-	public AgentAdapterType getBrain(){
+	public BrainType getBrain(){
 		return this.brain;
 	}
 	
@@ -119,11 +119,11 @@ public abstract class WarPlan<AgentAdapterType extends ControllableWarAgentAdapt
 		return this.nom;
 	}
 	
-	public void setFirstAction(WarAction<AgentAdapterType> a){
+	public void setFirstAction(WarAction<BrainType> a){
 		this.firstAction = a;
 	}
 	
-	public WarAction<AgentAdapterType> getFirstAction(){
+	public WarAction<BrainType> getFirstAction(){
 		return this.firstAction;
 	}
 	
@@ -131,7 +131,7 @@ public abstract class WarPlan<AgentAdapterType extends ControllableWarAgentAdapt
 		this.printTrace = b;
 	}
 	
-	public ArrayList<WarAction<AgentAdapterType>> getListAction(){
+	public ArrayList<WarAction<BrainType>> getListAction(){
 		return this.actions;
 	}
 	

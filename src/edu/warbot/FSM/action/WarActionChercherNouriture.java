@@ -5,7 +5,8 @@ import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.brains.MovableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.capacities.Movable;
 import edu.warbot.communications.WarMessage;
 
 import java.util.ArrayList;
@@ -13,10 +14,10 @@ import java.util.ArrayList;
 /**
  * Va chercher de la nouriture
  */
-public class WarActionChercherNouriture<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType> {
+public class WarActionChercherNouriture<BrainType extends WarBrain & Movable> extends WarAction<BrainType> {
 	
 	
-	public WarActionChercherNouriture(AgentAdapterType brain) {
+	public WarActionChercherNouriture(BrainType brain) {
 		super(brain);
 	}
 

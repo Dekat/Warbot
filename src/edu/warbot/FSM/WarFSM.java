@@ -2,17 +2,17 @@ package edu.warbot.FSM;
 
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.reflexe.WarReflexe;
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 
 import java.util.ArrayList;
 
-public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
+public class WarFSM<BrainType extends WarBrain> {
 	
-	private WarEtat<AgentAdapterType> firstEtat;
-	private WarEtat<AgentAdapterType> etatCourant;
+	private WarEtat<BrainType> firstEtat;
+	private WarEtat<BrainType> etatCourant;
 
-	private ArrayList<WarEtat<AgentAdapterType>> listeEtat = new ArrayList<>();
-	private ArrayList<WarReflexe<AgentAdapterType>> listeReflexe = new ArrayList<>();
+	private ArrayList<WarEtat<BrainType>> listeEtat = new ArrayList<>();
+	private ArrayList<WarReflexe<BrainType>> listeReflexe = new ArrayList<>();
 	
 
 	public void initFSM() {
@@ -30,7 +30,7 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 	
 		this.etatCourant = firstEtat;
 		
-		for (WarEtat<AgentAdapterType> e : this.listeEtat) {
+		for (WarEtat<BrainType> e : this.listeEtat) {
 			e.initEtat();
 		}
 	
@@ -49,7 +49,7 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 		}
 		
 		//On execute les reflexes
-		for (WarReflexe<AgentAdapterType> r : this.listeReflexe) {
+		for (WarReflexe<BrainType> r : this.listeReflexe) {
 			actionResultat = r.executeReflexe();
 		}
 		
@@ -58,9 +58,9 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 			actionResultat = this.etatCourant.getPlan().executePlan();
 
 		//On change d'état si besoin
-		ArrayList<WarCondition<AgentAdapterType>> conditions = this.etatCourant.getConditions();
+		ArrayList<WarCondition<BrainType>> conditions = this.etatCourant.getConditions();
 			
-		for (WarCondition<AgentAdapterType> conditionCourante : conditions) {
+		for (WarCondition<BrainType> conditionCourante : conditions) {
 			if(conditionCourante.isValide()){
 				this.etatCourant = conditionCourante.getEtatDestination();
 				this.etatCourant.stateWillBegin();
@@ -72,21 +72,21 @@ public class WarFSM<AgentAdapterType extends ControllableWarAgentAdapter> {
 		
 	}
 
-	public void addEtat(WarEtat<AgentAdapterType> e) {
+	public void addEtat(WarEtat<BrainType> e) {
 		if(this.listeEtat.contains(e))
 			System.err.println("ATTENTION l'état <" + e.getName() + "> à déjà ete ajoute à la FSM");
 		this.listeEtat.add(e);
 	}
 	
-	public void setFirstEtat(WarEtat<AgentAdapterType> e){
+	public void setFirstEtat(WarEtat<BrainType> e){
 		this.firstEtat = e;
 	}
 
-	public void addReflexe(WarReflexe<AgentAdapterType> r) {
+	public void addReflexe(WarReflexe<BrainType> r) {
 		this.listeReflexe.add(r);
 	}
 
-	public ArrayList<WarEtat<AgentAdapterType>> getAllStates() {
+	public ArrayList<WarEtat<BrainType>> getAllStates() {
 		return this.listeEtat;
 	}
 

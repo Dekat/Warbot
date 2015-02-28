@@ -4,15 +4,16 @@ import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.resources.WarFood;
-import edu.warbot.brains.MovableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.capacities.Movable;
 
 import java.util.ArrayList;
 
-public class WarActionHealAlly<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType>{
+public class WarActionHealAlly<BrainType extends WarBrain & Movable> extends WarAction<BrainType>{
 
 	private WarAgentType agentType;
 
-	public WarActionHealAlly(AgentAdapterType brain, WarAgentType agentType) {
+	public WarActionHealAlly(BrainType brain, WarAgentType agentType) {
 		super(brain);
 		this.agentType = agentType;
 	}

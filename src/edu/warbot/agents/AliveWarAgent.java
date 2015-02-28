@@ -1,12 +1,12 @@
 package edu.warbot.agents;
 
-import edu.warbot.agents.actions.IdlerActions;
+import edu.warbot.agents.actions.IdlerActionsMethods;
 import edu.warbot.brains.capacities.Alive;
 import edu.warbot.game.Team;
 
 import java.util.logging.Level;
 
-public abstract class AliveWarAgent extends WarAgent implements Alive, IdlerActions {
+public abstract class AliveWarAgent extends WarAgent implements Alive, IdlerActionsMethods {
 
     private int _cost;
     private int _health;

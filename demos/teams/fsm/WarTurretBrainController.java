@@ -1,10 +1,9 @@
 package teams.fsm;
 
 import edu.warbot.agents.agents.WarTurret;
-import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.adapters.WarTurretAdapter;
+import edu.warbot.brains.brains.WarTurretBrain;
 
-public class WarTurretBrainController extends WarBrain<WarTurretAdapter> {
+public abstract class WarTurretBrainController extends WarTurretBrain {
 	
 	public WarTurretBrainController() {
 		super();

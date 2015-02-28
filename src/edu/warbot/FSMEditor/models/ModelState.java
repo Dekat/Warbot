@@ -1,13 +1,12 @@
 package edu.warbot.FSMEditor.models;
 
 import edu.warbot.FSMEditor.panels.PanelState;
+import edu.warbot.FSMEditor.settings.ClassPathSettings;
 import edu.warbot.FSMEditor.settings.EnumPlan;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
-import edu.warbot.FSMEditor.settings.ClassPathSettings;
 
+import javax.swing.*;
 import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
 
 public class ModelState {
 	

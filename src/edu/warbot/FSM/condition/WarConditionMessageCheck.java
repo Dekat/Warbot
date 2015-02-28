@@ -1,19 +1,19 @@
 package edu.warbot.FSM.condition;
 
-import javax.swing.JOptionPane;
-
-import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumMessage;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 import edu.warbot.communications.WarMessage;
 
-public class WarConditionMessageCheck<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType>{
+import javax.swing.*;
+
+public class WarConditionMessageCheck<BrainType extends WarBrain> extends WarCondition<BrainType>{
 	
 	WarAgentType agentType;
 	EnumMessage message;
 
-	public WarConditionMessageCheck(String name, AgentAdapterType brain, GenericConditionSettings conditionSettings){
+	public WarConditionMessageCheck(String name, BrainType brain, GenericConditionSettings conditionSettings){
 		super(name, brain, conditionSettings);
 		
 		if(conditionSettings.Message != null)

@@ -2,15 +2,15 @@ package edu.warbot.FSM.reflexe;
 
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 
-public class WarReflexeWarnWithCondition<AgentAdapterType extends ControllableWarAgentAdapter> extends WarReflexe<AgentAdapterType>{
+public class WarReflexeWarnWithCondition<BrainType extends WarBrain> extends WarReflexe<BrainType>{
 
-	WarCondition<AgentAdapterType> condition;
+	WarCondition<BrainType> condition;
 	String message;
 	WarAgentType agentType;
 	
-	public WarReflexeWarnWithCondition(AgentAdapterType b, WarCondition<AgentAdapterType> condition, WarAgentType agentType, String message) {
+	public WarReflexeWarnWithCondition(BrainType b, WarCondition<BrainType> condition, WarAgentType agentType, String message) {
 		super(b, "Reflexe warn wit condition");
 		this.condition = condition;
 		this.message = message;

@@ -3,11 +3,11 @@ package edu.warbot.agents.agents;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarBuilding;
-import edu.warbot.agents.actions.BuilderActions;
-import edu.warbot.agents.actions.CreatorActions;
+import edu.warbot.agents.actions.BuilderActionsMethods;
+import edu.warbot.agents.actions.CreatorActionsMethods;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.adapters.WarEngineerAdapter;
+import edu.warbot.brains.brains.WarEngineerBrain;
 import edu.warbot.brains.capacities.Builder;
 import edu.warbot.brains.capacities.Creator;
 import edu.warbot.game.Team;
@@ -15,7 +15,7 @@ import edu.warbot.launcher.WarGameConfig;
 
 import java.util.Map;
 
-public class WarEngineer extends MovableWarAgent implements CreatorActions, Creator, BuilderActions, Builder {
+public class WarEngineer extends MovableWarAgent implements CreatorActionsMethods, Creator, BuilderActionsMethods, Builder {
 	
 	public static final double ANGLE_OF_VIEW;
 	public static final double DISTANCE_OF_VIEW;
@@ -40,10 +40,10 @@ public class WarEngineer extends MovableWarAgent implements CreatorActions, Crea
         MAX_REPAIRS_PER_TICK = (int) data.get(WarGameConfig.AGENT_CONFIG_MAX_REPAIRS_PER_TICK);
 	}
 	
-	public WarEngineer(Team team, WarBrain<WarEngineerAdapter> brain) {
+	public WarEngineer(Team team, WarEngineerBrain brain) {
 		super(ACTION_IDLE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarEngineer), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
 		
-		brain.setAgentAdapter(new WarEngineerAdapter(this));
+		//brain.setAgentAdapter(new WarEngineerBrain(this));
 
         nextAgentToCreate = WarAgentType.WarTurret;
         nextBuildingToBuild = WarAgentType.Wall;

@@ -1,11 +1,11 @@
 package edu.warbot.FSM.reflexe;
 
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 import edu.warbot.communications.WarMessage;
 
-public class WarReflexeAnswerMessage<AgentAdapterType extends ControllableWarAgentAdapter> extends WarReflexe<AgentAdapterType>{
+public class WarReflexeAnswerMessage<BrainType extends WarBrain> extends WarReflexe<BrainType>{
 
-	public WarReflexeAnswerMessage(AgentAdapterType brain, String message, String answer) {
+	public WarReflexeAnswerMessage(BrainType brain, String message, String answer) {
 		super(brain, "Reflexe answer message");
 	}
 

@@ -9,12 +9,11 @@ import edu.warbot.FSMEditor.models.ModelCondition;
 import edu.warbot.FSMEditor.models.ModelState;
 import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 
+import javax.swing.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-
-import javax.swing.JOptionPane;
 
 /**
  * Permet de générer et d'instanicer un objet de type FSM grâce à un modele de FSM
@@ -23,16 +22,16 @@ import javax.swing.JOptionPane;
  * @author Olivier
  *
  */
-public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter> {
+public class FSMInstancier<BrainType extends WarBrain> {
 	
-	WarFSM<AgentAdapterType> fsm = new WarFSM<>();
+	WarFSM<BrainType> fsm = new WarFSM<>();
 	
 	Model model;
 	
 	//HashMap pour assicier les états et condition avec leurs nom
 	//Ca pourrait plutot etre des hashmap de ModelState associé au warState
-	HashMap<String, WarEtat<AgentAdapterType>> hashMapState = new HashMap<>();
-	HashMap<String, WarCondition<AgentAdapterType>> hashMapCond = new HashMap<>();
+	HashMap<String, WarEtat<BrainType>> hashMapState = new HashMap<>();
+	HashMap<String, WarCondition<BrainType>> hashMapCond = new HashMap<>();
 
 	public FSMInstancier(Model modele) {
 		if(modele == null)
@@ -51,10 +50,10 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 	/**
 	 * 
 	 * @param agentType le type de l'agent que l'on souhaite récupére le brain
-	 * @param adapter l'adapteur de l'agent dont on souhaite récupérer le BrainContoleur
+	 * @param brain l'adapteur de l'agent dont on souhaite récupérer le BrainContoleur
 	 * @return une instance de BrainControleur pour une fsm (semble à un brainController du équipe classique) (sous classe de WarBrain)
 	 */
-	public WarFSM getBrainControleurForAgent(WarAgentType agentType, ControllableWarAgentAdapter adapter) {
+	public WarFSM getBrainControleurForAgent(WarAgentType agentType, WarBrain brain) {
 		System.out.println("FSMInstancier begining instanciation for " + agentType + "...");
 		
 		//On recupère le modeleBrain qui correspond à l'agentType
@@ -62,7 +61,7 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 
 		//On commence par ajouter tous les états à la FSM
 		for (ModelState modelState : modelBrain.getStates()) {
-			WarEtat<AgentAdapterType> warState = getGenerateWarState(modelState, adapter);
+			WarEtat<BrainType> warState = getGenerateWarState(modelState, brain);
 			
 			//Ajoute l'état à la fsm
 			fsm.addEtat(warState);
@@ -76,10 +75,10 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 		
 		//On ajoute ensuite les conditions
 		for (ModelCondition modelCond : modelBrain.getConditions()) {
-			WarCondition<AgentAdapterType> warCond = getGeneratedCondition(modelCond, adapter);
+			WarCondition<BrainType> warCond = getGeneratedCondition(modelCond, brain);
 			
 			//Ajoute l'état de destination de la condition
-			WarEtat<AgentAdapterType> etat = hashMapState.get(modelCond.getStateDestination().getName());
+			WarEtat<BrainType> etat = hashMapState.get(modelCond.getStateDestination().getName());
 			warCond.setDestination(etat);
 			
 			//Ajoute la condition à la HashMap
@@ -89,10 +88,10 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 		//Reparcourir tous les états pour leurs ajouter leurs conditions de sorties
 		//(C'était pas possible avant car les conditions n'existaient pas
 		for (ModelState modelState : modelBrain.getStates()) {
-			WarEtat<AgentAdapterType> warEtat = hashMapState.get(modelState.getName());
+			WarEtat<BrainType> warEtat = hashMapState.get(modelState.getName());
 			
 			for (ModelCondition modelCond : modelState.getConditionsOut()) {
-				WarCondition<AgentAdapterType> warCond = hashMapCond.get(modelCond.getName());
+				WarCondition<BrainType> warCond = hashMapCond.get(modelCond.getName());
 				
 				warEtat.addCondition(warCond);
 			}
@@ -121,11 +120,11 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 //		return hashRes;
 //	}
 	
-	private WarCondition<AgentAdapterType> getGeneratedCondition(ModelCondition modelCond,
-			ControllableWarAgentAdapter adapter) {
+	private WarCondition<BrainType> getGeneratedCondition(ModelCondition modelCond,
+			WarBrain brain) {
 		
 		//Instancie le plan
-		WarCondition<AgentAdapterType> instanciateCond = null;
+		WarCondition<BrainType> instanciateCond = null;
 		Class typeOfAdapter = null;
 		Class c = null;
 		try {
@@ -135,9 +134,9 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 			//Récupère le constructeur
 			typeOfAdapter = c.getConstructors()[0].getParameterTypes()[1];
 			
-			instanciateCond = (WarCondition<AgentAdapterType>) c
+			instanciateCond = (WarCondition<BrainType>) c
 					.getConstructor(String.class, typeOfAdapter, modelCond.getConditionSettings().getClass())
-					.newInstance(modelCond.getName(), adapter, modelCond.getConditionSettings());
+					.newInstance(modelCond.getName(), brain, modelCond.getConditionSettings());
 			
 		} catch (NoSuchMethodException | SecurityException
 				| ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -148,7 +147,7 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 			
 			System.err.println("ERROR during instanciate WarCondition with class name " + modelCond.getConditionLoaderName() + " check name, constructor, classPath, etc...");
 			System.err.println("Objects send Type : Name : " + String.class + ", Adapter : " + typeOfAdapter + ", WarConditionSettings : " + modelCond.getConditionSettings().getClass());
-			System.err.println("Objects send Object : Name : " + modelCond.getName() + ", Adapter : " + adapter + ", WarConditionSettings : " + modelCond.getConditionLoaderName());
+			System.err.println("Objects send Object : Name : " + modelCond.getName() + ", Adapter : " + brain + ", WarConditionSettings : " + modelCond.getConditionLoaderName());
 			try {
 				System.err.println("Objects expected Type : Name : " + Class.forName(modelCond.getConditionLoaderName()).getConstructors()[0].getParameterTypes()[0] + 
 						", Adapter : " + Class.forName(modelCond.getConditionLoaderName()).getConstructors()[0].getParameterTypes()[1] + 
@@ -167,24 +166,24 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 		return instanciateCond;
 	}
 
-	private WarEtat<AgentAdapterType> getGenerateWarState(
-			ModelState modelState, ControllableWarAgentAdapter adapter) {
+	private WarEtat<BrainType> getGenerateWarState(
+			ModelState modelState, WarBrain brain) {
 		//Récupère le plan
-		WarPlan<AgentAdapterType> warPlan = 
-				getGenerateWarPlan(modelState, adapter);
+		WarPlan<BrainType> warPlan =
+				getGenerateWarPlan(modelState, brain);
 		
 		//Crée l'état
-		WarEtat<AgentAdapterType> warState = 
+		WarEtat<BrainType> warState =
 				new WarEtat<>(modelState.getName(), warPlan);
 				
 		return warState;
 	}
 
-	private WarPlan<AgentAdapterType> getGenerateWarPlan(
-			ModelState modelState, ControllableWarAgentAdapter adapter) {
+	private WarPlan<BrainType> getGenerateWarPlan(
+			ModelState modelState, WarBrain brain) {
 		
 		//Instancie le plan
-		WarPlan<AgentAdapterType> instanciatePlan = null;
+		WarPlan<BrainType> instanciatePlan = null;
 		try {
 			
 			Class c = Class.forName(modelState.getPlanLoaderName());
@@ -192,9 +191,9 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 			//Récupère le constructeur
 			Class typeOfAdapter = c.getConstructors()[0].getParameterTypes()[0];
 			
-			instanciatePlan = (WarPlan<AgentAdapterType>) c
+			instanciatePlan = (WarPlan<BrainType>) c
 					.getConstructor(typeOfAdapter, modelState.getPlanSettings().getClass())
-					.newInstance(adapter, modelState.getPlanSettings());
+					.newInstance(brain, modelState.getPlanSettings());
 			
 		} catch (NoSuchMethodException | SecurityException
 				| ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -204,8 +203,8 @@ public class FSMInstancier<AgentAdapterType extends ControllableWarAgentAdapter>
 			System.err.println("* Check attribut usage in subclass of previews and in " + modelState.getPlanLoaderName());
 			
 			System.err.println("ERROR during instanciate WarPlan with class name " + modelState.getPlanLoaderName() + " check name, constructor, classPath, etc...");
-			System.err.println("Objects send type : Adapter : " + adapter.getClass() + ", WarPlanSettings : " + modelState.getPlanSettings().getClass());
-			System.err.println("Objects send instance : Adapter : " + adapter + ", WarPlanSettings : " + modelState.getPlanSettings());
+			System.err.println("Objects send type : Adapter : " + brain.getClass() + ", WarPlanSettings : " + modelState.getPlanSettings().getClass());
+			System.err.println("Objects send instance : Adapter : " + brain + ", WarPlanSettings : " + modelState.getPlanSettings());
 			try {
 				System.err.println("Objects expected : Adapter : " + Class.forName(modelState.getPlanLoaderName()).getConstructors()[0].getParameterTypes()[0] 
 						+ ", WarPlanSettings : " + Class.forName(modelState.getPlanLoaderName()).getConstructors()[0].getParameterTypes()[1]);

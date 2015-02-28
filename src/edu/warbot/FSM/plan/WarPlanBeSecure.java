@@ -1,22 +1,20 @@
 package edu.warbot.FSM.plan;
 
-import javax.swing.JOptionPane;
-
 import edu.warbot.FSM.action.WarAction;
-import edu.warbot.FSM.action.WarActionChercherNouriture;
 import edu.warbot.FSM.action.WarActionFuire;
-import edu.warbot.FSM.action.WarActionHealMe;
-import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
-import edu.warbot.brains.MovableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.capacities.Movable;
+
+import javax.swing.*;
 
 /**
  * A amélioré par exemple en disant que on fuit mais si on a plus de vie on va en chercher et on ce heal 
  */
 
-public class WarPlanBeSecure<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
+public class WarPlanBeSecure<BrainType extends WarBrain & Movable> extends WarPlan<BrainType> {
 	
-	public WarPlanBeSecure(AgentAdapterType brain, GenericPlanSettings planSettings) {
+	public WarPlanBeSecure(BrainType brain, GenericPlanSettings planSettings) {
 		super("PlanBeSecure", brain, planSettings);
 		JOptionPane.showMessageDialog(null, "Attention le plan BeSecure n'est pas terminé et risque de ne pas fonctionner", "Waring not terminated plan", JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -25,7 +23,7 @@ public class WarPlanBeSecure<AgentAdapterType extends MovableWarAgentAdapter> ex
 		
 		setPrintTrace(true);
 		
-		WarAction<AgentAdapterType> actionFuire = new WarActionFuire<>(getBrain());
+		WarAction<BrainType> actionFuire = new WarActionFuire<>(getBrain());
 		addAction(actionFuire);
 
 //		WarAction<AgentAdapterType> actionHeal = new WarActionHealMe<>(getBrain());

@@ -1,24 +1,26 @@
 package edu.warbot.launcher;
 
-import edu.warbot.FSM.WarFSMBrainController;
+import edu.warbot.FSM.WarFSMBrain;
 import edu.warbot.FSMEditor.FSMModelRebuilder;
 import edu.warbot.FSMEditor.xmlParser.FsmXmlParser;
 import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.capacities.Agressive;
+import edu.warbot.brains.implementations.WarBrainImplementation;
 import edu.warbot.game.*;
 import edu.warbot.gui.launcher.LoadingDialog;
 import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.tools.WarIOTools;
+import javassist.*;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.io.*;
+import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.*;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
@@ -32,7 +34,9 @@ public class WarMain implements WarGameListener {
     private static final String CMD_HELP = "--help";
 
 	public static final String TEAMS_DIRECTORY_NAME = "teams";
-	
+
+    private static final String TMP_BRAINS_OUTPUT_DIRECTORY = "bin";
+
 	private LoadingDialog loadingDialog;
 	
 	private WarGame game;
@@ -117,15 +121,13 @@ public class WarMain implements WarGameListener {
 		Map<String, Team> loadedTeams = new HashMap<String, Team>();
         loadedTeams.putAll(getTeamsFromSourceDirectory());
 
-        for(Map.Entry<String, Team> currentLoadedTeam : getTeamsFromJarDirectory().entrySet()) {
-            if(! loadedTeams.containsKey(currentLoadedTeam.getKey())) {
-                loadedTeams.put(currentLoadedTeam.getKey(), currentLoadedTeam.getValue());
-            }
+        for(Map.Entry<String, Team> currentLoadedTeam : getTeamsFromJarDirectory(loadedTeams.keySet()).entrySet()) {
+            loadedTeams.put(currentLoadedTeam.getKey(), currentLoadedTeam.getValue());
         }
 		return loadedTeams;
 	}
 
-    private Map<String, Team> getTeamsFromJarDirectory() {
+    private Map<String, Team> getTeamsFromJarDirectory(Set<String> excludedTeams) {
         Map<String, Team> teamsLoaded = new HashMap<>();
 
         String jarDirectoryPath = TEAMS_DIRECTORY_NAME + File.separator;
@@ -145,21 +147,23 @@ public class WarMain implements WarGameListener {
                     // On parcours les entrées du fichier JAR à la recherche des fichiers souhaités
                     HashMap<String, JarEntry> allJarEntries = getAllJarEntry(jarCurrentFile);
 
-                    if(allJarEntries.containsKey(TeamConfigReader.FILE_NAME)) {
-                        currentTeam = loadTeamFromJar(currentFile, jarCurrentFile, allJarEntries);
+                    if (allJarEntries.containsKey(TeamConfigReader.FILE_NAME)) {
+                        currentTeam = loadTeamFromJar(currentFile, jarCurrentFile, allJarEntries, excludedTeams);
 
                         // Puis on ferme le fichier JAR
                         jarCurrentFile.close();
 
-                        // Si il y a déjà une équipe du même nom on ne l'ajoute pas
+                        // Si il y a déjà une équipe du même nom ou qu'elle est exclue, on ne l'ajoute pas
                         if (teamsLoaded.containsKey(currentTeam.getName()))
-                            System.err.println("Erreur lors de la lecture d'une équipe : le nom " + currentTeam.getName() + " est déjà utilisé.");
+                            System.err.println("Erreur lors de la lecture d'une équipe : le nom d'équipe '" + currentTeam.getName() + "' est déjà utilisé.");
                         else
                             teamsLoaded.put(currentTeam.getName(), currentTeam);
                     } else { // Si le fichier de configuration n'a pas été trouvé
                         System.err.println("Le fichier de configuration est introuvable dans le fichier JAR " + currentFile.getCanonicalPath());
                     }
                 }
+            } catch (TeamAlreadyExistsException e) {
+                System.err.println("Lecture des fichiers JAR : " + e.getMessage());
             } catch (MalformedURLException e) {
                 System.err.println("Lecture des fichiers JAR : URL mal formée");
                 e.printStackTrace();
@@ -172,13 +176,17 @@ public class WarMain implements WarGameListener {
             } catch (NullPointerException e) {
                 System.err.println("Lecture des fichiers JAR : Lecture de fichier");
                 e.printStackTrace();
+            } catch (CannotCompileException e) {
+                e.printStackTrace();
+            } catch (NotFoundException e) {
+                e.printStackTrace();
             }
         }
 
         return teamsLoaded;
     }
 
-    private Team loadTeamFromJar(File file, JarFile jarFile, HashMap<String, JarEntry> jarEntries) throws IOException, ClassNotFoundException {
+    private Team loadTeamFromJar(File file, JarFile jarFile, HashMap<String, JarEntry> jarEntries, Set<String> excludedTeams) throws IOException, ClassNotFoundException, NotFoundException, CannotCompileException, TeamAlreadyExistsException {
         Team currentTeam;
 
         // On analyse le fichier XML
@@ -187,43 +195,39 @@ public class WarMain implements WarGameListener {
         teamConfigReader.load(input);
         input.close();
 
+        if (excludedTeams.contains(teamConfigReader.getTeamName())) {
+            throw new TeamAlreadyExistsException(teamConfigReader.getTeamName());
+        }
         // On créé l'équipe
         currentTeam = new Team(teamConfigReader.getTeamName());
         currentTeam.setLogo(getTeamLogoFromJar(jarEntries.get(teamConfigReader.getIconPath()), jarFile));
         currentTeam.setDescription(teamConfigReader.getTeamDescription().trim());
         // TODO get sound
 
-        // On recherche les classes de type BrainController
-        // Pour cela, on utilise un URLClassLoader
+        // On recherche les classes de type Brain
         String urlName = file.getCanonicalPath();
-        URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new URL("jar:file:" + urlName + "!/")});
+        ClassPool classPool = ClassPool.getDefault();
+        classPool.insertClassPath(urlName);
 
         // Vérifie si l'équipe est une FSM (on regarde dans le fichier de configuration)
-        if(teamConfigReader.isFSMTeam()) {
-            JarEntry entryFSMConfiguration = jarEntries.get(FsmXmlParser.xmlConfigurationDefaultFilename);
-
-            InputStream fileFSMConfig = jarFile.getInputStream(entryFSMConfiguration);
-            FsmXmlReader fsmXmlReader = new FsmXmlReader(fileFSMConfig);
-            FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
-            currentTeam.setFsmModel(fsmModelRebuilder.getRebuildModel());
-
-            Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
-
-            for (String agentName : brainControllersClassesName.keySet()) {
-                currentTeam.addBrainControllerClassForAgent(agentName, WarFSMBrainController.class);
-            }
+        Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
+        if (teamConfigReader.isFSMTeam()) {
+            // TODO
+//            JarEntry entryFSMConfiguration = jarEntries.get(FsmXmlParser.xmlConfigurationDefaultFilename);
+//
+//            InputStream fileFSMConfig = jarFile.getInputStream(entryFSMConfiguration);
+//            FsmXmlReader fsmXmlReader = new FsmXmlReader(fileFSMConfig);
+//            FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
+//            currentTeam.setFsmModel(fsmModelRebuilder.getRebuildModel());
+//
+//            for (String agentName : brainControllersClassesName.keySet()) {
+//                currentTeam.addBrainControllerClassForAgent(agentName, WarFSMBrain.class);
+//            }
         } else {
-            // On parcours chaque nom de classe, puis on les charge
-            Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
-
             for (String agentName : brainControllersClassesName.keySet()) {
-                currentTeam.addBrainControllerClassForAgent(agentName,
-                        classLoader.loadClass(teamConfigReader.getBrainsPackageName() + "." + brainControllersClassesName.get(agentName)).asSubclass(WarBrain.class));
+                currentTeam.addBrainControllerClassForAgent(agentName, createNewWarBrainImplementationClass(classPool, teamConfigReader.getBrainsPackageName() + "." + brainControllersClassesName.get(agentName)));
             }
         }
-
-        // On ferme le loader
-        classLoader.close();
 
         return currentTeam;
     }
@@ -264,13 +268,17 @@ public class WarMain implements WarGameListener {
             } catch (NullPointerException e) {
                 System.err.println("Lecture des fichiers JAR : Lecture de fichier");
                 e.printStackTrace();
+            } catch (CannotCompileException e) {
+                e.printStackTrace();
+            } catch (NotFoundException e) {
+                e.printStackTrace();
             }
         }
 
         return teamsLoaded;
     }
 
-    private Team loadTeamFromSources(Map<String, String> teamsSourcesFolders, TeamConfigReader teamConfigReader) throws ClassNotFoundException, FileNotFoundException {
+    private Team loadTeamFromSources(Map<String, String> teamsSourcesFolders, TeamConfigReader teamConfigReader) throws ClassNotFoundException, IOException, NotFoundException, CannotCompileException {
         Team currentTeam;
 
         File teamDirectory = new File(teamsSourcesFolders.get(teamConfigReader.getTeamName()).replace("/", File.separator));
@@ -281,22 +289,51 @@ public class WarMain implements WarGameListener {
 
         Map<String, String> brainControllersClassesName = teamConfigReader.getBrainControllersClassesNameOfEachAgentType();
         if(teamConfigReader.isFSMTeam()) {
-            File fileFSMConfig = new File(teamDirectory.getAbsolutePath() + File.separatorChar + teamConfigReader.getFSMConfigurationFileName());
-
-        	FsmXmlReader fsmXmlReader = new FsmXmlReader(fileFSMConfig);
-        	FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
-        	currentTeam.setFsmModel(fsmModelRebuilder.getRebuildModel());
-
-            for (String agentName : brainControllersClassesName.keySet()) {
-                currentTeam.addBrainControllerClassForAgent(agentName, WarFSMBrainController.class);
-            }
+//            File fileFSMConfig = new File(teamDirectory.getAbsolutePath() + File.separatorChar + teamConfigReader.getFSMConfigurationFileName());
+//
+//        	FsmXmlReader fsmXmlReader = new FsmXmlReader(fileFSMConfig);
+//        	FSMModelRebuilder fsmModelRebuilder = new FSMModelRebuilder(fsmXmlReader.getGeneratedFSMModel());
+//        	currentTeam.setFsmModel(fsmModelRebuilder.getRebuildModel());
+//
+//            for (String agentName : brainControllersClassesName.keySet()) {
+//                currentTeam.addBrainControllerClassForAgent(agentName, WarFSMBrain.class);
+//            }
         } else {
+            ClassPool defaultClassPool = ClassPool.getDefault();
             for (String agentName : brainControllersClassesName.keySet()) {
-                currentTeam.addBrainControllerClassForAgent(agentName, Class.forName(teamConfigReader.getBrainsPackageName() + "." + brainControllersClassesName.get(agentName)).asSubclass(WarBrain.class));
+                currentTeam.addBrainControllerClassForAgent(agentName, createNewWarBrainImplementationClass(defaultClassPool, teamConfigReader.getBrainsPackageName() + "." + brainControllersClassesName.get(agentName)));
             }
         }
 
         return currentTeam;
+    }
+
+    private Class<? extends WarBrain> createNewWarBrainImplementationClass(ClassPool classPool, String brainClassName) throws NotFoundException, CannotCompileException, IOException {
+        CtClass brainImplementationClass = classPool.get(WarBrainImplementation.class.getName());
+        if(! brainImplementationClass.isFrozen()) {
+            brainImplementationClass.setName(brainClassName + "BrainImplementation");
+            brainImplementationClass.setModifiers(Modifier.PUBLIC);
+
+            CtClass brainClass = classPool.get(brainClassName);
+            String capacitiesPackageName = Agressive.class.getPackage().getName();
+            for (CtClass brainInterface : brainClass.getSuperclass().getInterfaces()) {
+                if (brainInterface.getPackageName().equals(capacitiesPackageName)) {
+                    CtClass brainInterfaceImplementation = classPool.get(WarBrainImplementation.class.getPackage().getName() + ".War" + brainInterface.getSimpleName() + "BrainImplementation");
+                    for (CtMethod interfaceImplementationMethod : brainInterface.getDeclaredMethods()) {
+                        brainImplementationClass.addMethod(new CtMethod(
+                                brainInterfaceImplementation.getDeclaredMethod(interfaceImplementationMethod.getName(), interfaceImplementationMethod.getParameterTypes()),
+                                brainImplementationClass, null));
+                    }
+                }
+            }
+
+            brainImplementationClass.setSuperclass(brainClass);
+            brainImplementationClass.writeFile(TMP_BRAINS_OUTPUT_DIRECTORY);
+            brainClass.writeFile(TMP_BRAINS_OUTPUT_DIRECTORY);
+            return brainImplementationClass.toClass().asSubclass(WarBrain.class);
+        } else {
+            return null;
+        }
     }
 
     private ImageIcon getTeamLogoFromJar(JarEntry logoEntry, JarFile jarCurrentFile) {
@@ -521,6 +558,12 @@ public class WarMain implements WarGameListener {
             super(message + "\nEnter \""+CMD_NAME+" "+CMD_HELP+"\" for more informations.");
         }
 
+    }
+
+    protected static class TeamAlreadyExistsException extends Exception {
+        public TeamAlreadyExistsException(String teamName) {
+            super("Team name '" + teamName + "' already used.");
+        }
     }
 
 }

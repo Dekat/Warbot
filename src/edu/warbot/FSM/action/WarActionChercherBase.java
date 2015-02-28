@@ -6,22 +6,21 @@ import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
+import edu.warbot.brains.brains.WarRocketLauncherBrain;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.tools.geometry.CoordPolar;
 
 import javax.swing.*;
-
 import java.util.ArrayList;
 
 /**
  * Cherche la base enemy
  */
-public class WarActionChercherBase extends WarAction<WarRocketLauncherAdapter> {
+public class WarActionChercherBase extends WarAction<WarRocketLauncherBrain> {
 	
 	CoordPolar coordPolarBase;
 	
-	public WarActionChercherBase(WarRocketLauncherAdapter brain) {
+	public WarActionChercherBase(WarRocketLauncherBrain brain) {
 		super(brain);
 		JOptionPane.showMessageDialog(null, "Attention l'action ChercherBase n'a pas étée vérifiée et risque de ne pas fonctionner", "Waring not terminated action", JOptionPane.INFORMATION_MESSAGE);
 	}

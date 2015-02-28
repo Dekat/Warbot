@@ -1,15 +1,15 @@
 package edu.warbot.FSM.condition;
 
 import edu.warbot.FSMEditor.settings.GenericConditionSettings;
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 
-public class WarConditionTimeOut<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType>{
+public class WarConditionTimeOut<BrainType extends WarBrain> extends WarCondition<BrainType>{
 	
 	Integer timeOut;
 
 	Integer currentTime = 0;
 	
-	public WarConditionTimeOut(String name, AgentAdapterType brain, 
+	public WarConditionTimeOut(String name, BrainType brain,
 			GenericConditionSettings conditionSettings){
 		super(name, brain, conditionSettings);
 		

@@ -4,7 +4,8 @@ import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.brains.MovableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.capacities.Movable;
 import edu.warbot.communications.WarMessage;
 
 import java.util.ArrayList;
@@ -13,9 +14,9 @@ import java.util.ArrayList;
  * Raporte la nouriture
  *
  */
-public class WarActionRaporterNouriture<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType>{
+public class WarActionRaporterNouriture<BrainType extends WarBrain & Movable> extends WarAction<BrainType>{
 	
-	public WarActionRaporterNouriture(AgentAdapterType brain) {
+	public WarActionRaporterNouriture(BrainType brain) {
 		super(brain);
 	}
 

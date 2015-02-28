@@ -1,19 +1,20 @@
 package edu.warbot.FSM.action;
 
 import edu.warbot.agents.MovableWarAgent;
-import edu.warbot.brains.MovableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.capacities.Movable;
 
 import java.util.Random;
 
 /**
  * Description de l'action : wiggle pendant un certains nombre de pas
  */
-public class WarActionWiggle<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType> {
+public class WarActionWiggle<BrainType extends WarBrain & Movable> extends WarAction<BrainType> {
 
 	private int nbPasMax;	
 	private int nbPas = 0;
 	
-	public WarActionWiggle(AgentAdapterType brain, int nombrePas) {
+	public WarActionWiggle(BrainType brain, int nombrePas) {
 		super(brain);
 		this.nbPasMax = nombrePas;
 	}

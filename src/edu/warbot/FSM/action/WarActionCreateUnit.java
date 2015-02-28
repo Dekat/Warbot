@@ -3,20 +3,20 @@ package edu.warbot.FSM.action;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.adapters.WarBaseAdapter;
+import edu.warbot.brains.brains.WarBaseBrain;
 
 /**
  * Crée le nombre d'unité passé en parametre si ma vie est supperieure a la valeur passé en parametre
  * Crée de agent du type passé en parametre
  */
-public class WarActionCreateUnit extends WarAction<WarBaseAdapter> {
+public class WarActionCreateUnit extends WarAction<WarBaseBrain> {
 
 	int minLife;
 	WarAgentType agentType;
 	int nbToCreate;
 	int nbCreate;
 	
-	public WarActionCreateUnit(WarBaseAdapter brain, WarAgentType agentType, int nb, int minLife) {
+	public WarActionCreateUnit(WarBaseBrain brain, WarAgentType agentType, int nb, int minLife) {
 		super(brain);
 		this.agentType = agentType;
 		this.nbToCreate = nb;

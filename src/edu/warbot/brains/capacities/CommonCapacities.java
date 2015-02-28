@@ -8,7 +8,7 @@ public interface CommonCapacities {
 	public AbstractAgent.ReturnCode requestRole(String group, String role);
 	public AbstractAgent.ReturnCode leaveRole(String group, String role);
 	public AbstractAgent.ReturnCode leaveGroup(String group);
-	public int numberOfAgentsInRole(String group, String role);
+	public int getNumberOfAgentsInRole(String group, String role);
 	
 	public double getHeading();
 	public void setHeading(double angle);

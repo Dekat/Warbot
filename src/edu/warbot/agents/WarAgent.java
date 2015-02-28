@@ -1,6 +1,6 @@
 package edu.warbot.agents;
 
-import edu.warbot.agents.actions.MovableActions;
+import edu.warbot.agents.actions.MovableActionsMethods;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.brains.capacities.CommonCapacities;
 import edu.warbot.brains.capacities.Movable;
@@ -15,7 +15,6 @@ import madkit.kernel.AbstractAgent;
 import turtlekit.kernel.Turtle;
 
 import java.awt.geom.Area;
-import java.util.Random;
 
 public abstract class WarAgent extends Turtle implements CommonCapacities {
 
@@ -65,7 +64,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	}
 
 	@Override
-	public int numberOfAgentsInRole(String group, String role) {
+	public int getNumberOfAgentsInRole(String group, String role) {
 		return (getAgentsWithRole(getTeam().getName(), group, role).size());
 	}
 
@@ -120,7 +119,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	protected boolean isGoingToBeOutOfMap() {
 
 		CoordCartesian nextPos = new CoordCartesian(getX(), getY());
-		if (this instanceof MovableActions)
+		if (this instanceof MovableActionsMethods)
 			nextPos.add(new CoordPolar(((Movable) this).getSpeed(), getHeading()).toCartesian());
 
         return ! getTeam().getGame().getMap().getMapAccessibleArea().contains(nextPos.getX(), nextPos.getY());
@@ -129,7 +128,7 @@ public abstract class WarAgent extends Turtle implements CommonCapacities {
 	protected boolean isGoingToBeOverAnOtherAgent() {
 		CoordCartesian futurePosition = getPosition();
 		double searchAreaRadius = getHitboxMaxRadius() * 4.;
-        if (this instanceof MovableActions) {
+        if (this instanceof MovableActionsMethods) {
 			searchAreaRadius += ((Movable) this).getSpeed();
 			futurePosition = WarMathTools.addTwoPoints(new CoordCartesian(getX(), getY()), new CoordPolar(((Movable) this).getSpeed(), getHeading()));
 		}

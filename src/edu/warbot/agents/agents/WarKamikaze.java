@@ -1,11 +1,11 @@
 package edu.warbot.agents.agents;
 
 import edu.warbot.agents.MovableWarAgent;
-import edu.warbot.agents.actions.AgressiveActions;
+import edu.warbot.agents.actions.AgressiveActionsMethods;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.projectiles.WarBomb;
 import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.adapters.WarKamikazeAdapter;
+import edu.warbot.brains.brains.WarKamikazeBrain;
 import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarGameConfig;
@@ -13,7 +13,7 @@ import edu.warbot.launcher.WarGameConfig;
 import java.util.Map;
 import java.util.logging.Level;
 
-public class WarKamikaze extends MovableWarAgent implements AgressiveActions, Agressive {
+public class WarKamikaze extends MovableWarAgent implements AgressiveActionsMethods, Agressive {
 
 	public static final double ANGLE_OF_VIEW;
 	public static final double DISTANCE_OF_VIEW;
@@ -32,10 +32,10 @@ public class WarKamikaze extends MovableWarAgent implements AgressiveActions, Ag
         SPEED = (double) data.get(WarGameConfig.AGENT_CONFIG_SPEED);
 	}
 	
-	public WarKamikaze(Team team, WarBrain<WarKamikazeAdapter> brain) {
+	public WarKamikaze(Team team, WarKamikazeBrain brain) {
 		super(ACTION_IDLE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarKamikaze), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
 		
-		brain.setAgentAdapter(new WarKamikazeAdapter(this));
+//		brain.setAgentAdapter(new WarKamikazeBrain(this));
 	}
 
 	@Override

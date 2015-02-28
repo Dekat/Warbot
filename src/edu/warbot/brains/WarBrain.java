@@ -1,23 +1,15 @@
 package edu.warbot.brains;
 
 
-public abstract class WarBrain<Adapter extends ControllableWarAgentAdapter> {
+import edu.warbot.agents.actions.constants.ControllableActions;
+import edu.warbot.brains.capacities.Controllable;
 
-	protected Adapter adapter;
+public abstract class WarBrain implements ControllableActions, Controllable {
+
+	public WarBrain() {}
 	
-	public WarBrain() {
-	}
-	
-	public void setAgentAdapter(Adapter adapter) {
-		this.adapter = adapter;
-	}
-	
-	public Adapter getAgent() {
-		return adapter;
-	}
-	
-    public abstract String action();
-    
     public void activate() {}
-	
+
+    public String action() { return ACTION_IDLE; }
+
 }

@@ -4,13 +4,12 @@ import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.agents.WarEngineer;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.adapters.WarBaseAdapter;
+import edu.warbot.brains.brains.WarBaseBrain;
 import edu.warbot.communications.WarMessage;
 
 import java.util.ArrayList;
 
-public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
+public abstract class WarBaseBrainController extends WarBaseBrain {
 
 	private boolean _alreadyCreated;
 	private boolean _inDanger;
@@ -61,27 +60,27 @@ public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
 	public String action() {
 		
 		if(!_alreadyCreated) {
-			getAgent().setNextAgentToCreate(WarAgentType.WarEngineer);
+			setNextAgentToCreate(WarAgentType.WarEngineer);
 			_alreadyCreated = true;
 			return WarBase.ACTION_CREATE;
 		}
 		
-		ArrayList<WarMessage> msgs = getAgent().getMessages();
+		ArrayList<WarMessage> msgs = getMessages();
 		for(WarMessage msg : msgs) {
 			if(msg.getMessage().equals("Give me your ID base")) {
-				getAgent().reply(msg, "I am the base and here is my ID", Integer.toString(getAgent().getID()));
+				reply(msg, "I am the base and here is my ID", Integer.toString(getID()));
 			}
 			if(msg.getMessage().equals("Give me my next target")) {
 				
 				
-				ArrayList<WarAgentPercept> percepts = getAgent().getPercepts();
+				ArrayList<WarAgentPercept> percepts = getPercepts();
 				
 				for (WarAgentPercept p : percepts) {
 					switch(p.getType()) {
 					case WarEngineer :
-						if(!getAgent().isEnemy(p)) {
+						if(!isEnemy(p)) {
 							Double angleAim = getAngleRT(getXRT(p.getDistance(),p.getAngle()),getYRT(p.getDistance(),p.getAngle())); 
-							getAgent().reply(msg, "Here is your next target", Double.toString(angleAim));
+							reply(msg, "Here is your next target", Double.toString(angleAim));
 						}
 						break;
 					default:
@@ -90,19 +89,19 @@ public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
 				}
 			}
 			if(msg.getMessage().equals("Am I on aim")) {
-				ArrayList<WarAgentPercept> percepts = getAgent().getPercepts();
+				ArrayList<WarAgentPercept> percepts = getPercepts();
 				
 				for (WarAgentPercept p : percepts) {
 					switch(p.getType()) {
 					case WarEngineer :
-						if(!getAgent().isEnemy(p)) {
+						if(!isEnemy(p)) {
 							if(p.getAngle() >= ((_towerCount*45)-5) && p.getAngle() <= ((_towerCount*45)+5) && p.getDistance() >= 38 && p.getDistance() <= 42)
 							{
 								_towerCount += 2;
-								getAgent().reply(msg, "You are on aim", "");
+								reply(msg, "You are on aim", "");
 							}
 							else {
-								getAgent().reply(msg, "You are not on aim", "");
+								reply(msg, "You are not on aim", "");
 							}
 						}
 						break;
@@ -114,24 +113,24 @@ public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
 			
 		}
 		
-		ArrayList<WarAgentPercept> percepts = getAgent().getPercepts();
+		ArrayList<WarAgentPercept> percepts = getPercepts();
 		
 		//System.out.println(percepts);
 		
 		for (WarAgentPercept p : percepts) {
 			switch(p.getType()) {
 			case WarRocketLauncher :
-				if(getAgent().isEnemy(p)) {
-					if(getAgent().getHealth() < (WarBase.MAX_HEALTH - WarEngineer.COST)) {
-						getAgent().broadcastMessageToAll("We are under attack", String.valueOf(p.getAngle()), String.valueOf(p.getDistance()));
+				if(isEnemy(p)) {
+					if(getHealth() < (WarBase.MAX_HEALTH - WarEngineer.COST)) {
+						broadcastMessageToAll("We are under attack", String.valueOf(p.getAngle()), String.valueOf(p.getDistance()));
 						_inDanger = true;
 					}
 				}
 				break;
 			case WarKamikaze :
-				if(getAgent().isEnemy(p)) {
-					if(getAgent().getHealth() < (WarBase.MAX_HEALTH - WarEngineer.COST)) {
-						getAgent().broadcastMessageToAll("We are under attack", String.valueOf(p.getAngle()), String.valueOf(p.getDistance()));
+				if(isEnemy(p)) {
+					if(getHealth() < (WarBase.MAX_HEALTH - WarEngineer.COST)) {
+						broadcastMessageToAll("We are under attack", String.valueOf(p.getAngle()), String.valueOf(p.getDistance()));
 						_inDanger = true;
 					}
 				}
@@ -142,10 +141,10 @@ public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
 		}
 		
 		if(_inDanger) {
-			ArrayList<WarAgentPercept> enemies = getAgent().getPerceptsEnemies();
+			ArrayList<WarAgentPercept> enemies = getPerceptsEnemies();
 			if(enemies.isEmpty()) {
 				_inDanger = false;
-				getAgent().broadcastMessageToAll("I am the danger", "");
+				broadcastMessageToAll("I am the danger", "");
 			}
 		}
 		

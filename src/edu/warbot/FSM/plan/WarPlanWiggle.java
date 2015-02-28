@@ -3,17 +3,18 @@ package edu.warbot.FSM.plan;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionWiggle;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
-import edu.warbot.brains.MovableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.capacities.Movable;
 
 /**
  * Avance de manière perdu
  */
-public class WarPlanWiggle<AgentAdapterType extends MovableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
+public class WarPlanWiggle<BrainType extends WarBrain & Movable> extends WarPlan<BrainType> {
 	
 	
 	private Integer nombreTik;
 
-	public WarPlanWiggle(AgentAdapterType brain, GenericPlanSettings planSettings) {
+	public WarPlanWiggle(BrainType brain, GenericPlanSettings planSettings) {
 		super("Plan Wiggle", brain, planSettings);
 		
 		if(getPlanSettings().Tik_number != null)
@@ -26,7 +27,7 @@ public class WarPlanWiggle<AgentAdapterType extends MovableWarAgentAdapter> exte
 		
 		setPrintTrace(true);
 		
-		WarAction<AgentAdapterType> actionAttaquer = new WarActionWiggle<AgentAdapterType>(getBrain(),
+		WarAction<BrainType> actionAttaquer = new WarActionWiggle<BrainType>(getBrain(),
 				nombreTik);
 		
 		addAction(actionAttaquer);

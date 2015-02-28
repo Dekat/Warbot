@@ -3,16 +3,16 @@ package edu.warbot.FSM.plan;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionIdle;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 
 /**
  * Reste sans bougé
  */
-public class WarPlanIdle<AgentAdapterType extends ControllableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
+public class WarPlanIdle<BrainType extends WarBrain> extends WarPlan<BrainType> {
 	
 	private Integer nombreTik;
 
-	public WarPlanIdle(AgentAdapterType brain, GenericPlanSettings planSettings) {
+	public WarPlanIdle(BrainType brain, GenericPlanSettings planSettings) {
 		super("Plan Idle", brain, planSettings);
 		
 		if(getPlanSettings().Tik_number != null)
@@ -25,7 +25,7 @@ public class WarPlanIdle<AgentAdapterType extends ControllableWarAgentAdapter> e
 		
 		setPrintTrace(true);
 		
-		WarAction<AgentAdapterType> actionAttaquer = new WarActionIdle<>(getBrain(), nombreTik);
+		WarAction<BrainType> actionAttaquer = new WarActionIdle<>(getBrain(), nombreTik);
 		
 		addAction(actionAttaquer);
 		

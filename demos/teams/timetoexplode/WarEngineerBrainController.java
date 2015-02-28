@@ -1,10 +1,9 @@
 package teams.timetoexplode;
 
 import edu.warbot.agents.agents.WarEngineer;
-import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.adapters.WarEngineerAdapter;
+import edu.warbot.brains.brains.WarEngineerBrain;
 
-public class WarEngineerBrainController extends WarBrain<WarEngineerAdapter> {
+public abstract class WarEngineerBrainController extends WarEngineerBrain {
 	
 	public WarEngineerBrainController() {
 		super();

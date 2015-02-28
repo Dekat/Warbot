@@ -1,11 +1,10 @@
 package edu.warbot.agents.agents;
 
 import edu.warbot.agents.ControllableWarAgent;
-import edu.warbot.agents.actions.AgressiveActions;
+import edu.warbot.agents.actions.AgressiveActionsMethods;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.projectiles.WarDeathRocket;
-import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.adapters.WarTurretAdapter;
+import edu.warbot.brains.brains.WarTurretBrain;
 import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarGameConfig;
@@ -13,7 +12,7 @@ import edu.warbot.launcher.WarGameConfig;
 import java.util.Map;
 import java.util.logging.Level;
 
-public class WarTurret extends ControllableWarAgent implements AgressiveActions, Agressive {
+public class WarTurret extends ControllableWarAgent implements AgressiveActionsMethods, Agressive {
 
 	public static final double ANGLE_OF_VIEW;
 	public static final double DISTANCE_OF_VIEW;
@@ -36,10 +35,10 @@ public class WarTurret extends ControllableWarAgent implements AgressiveActions,
         TICKS_TO_RELOAD = (int) data.get(WarGameConfig.AGENT_CONFIG_TICKS_TO_RELOAD);
 	}
 	
-	public WarTurret(Team team, WarBrain<WarTurretAdapter> brain) {
+	public WarTurret(Team team, WarTurretBrain brain) {
 		super(ACTION_IDLE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarTurret), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE);
 		
-		brain.setAgentAdapter(new WarTurretAdapter(this));
+//		brain.setAgentAdapter(new WarTurretAdapter(this));
 		_tickLeftBeforeReloaded = TICKS_TO_RELOAD;
 		_reloaded = false;
 		_reloading = true;

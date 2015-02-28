@@ -1,8 +1,7 @@
 package edu.warbot.agents;
 
-import edu.warbot.agents.actions.MovableActions;
-import edu.warbot.agents.actions.PickerActions;
-import edu.warbot.brains.MovableWarAgentAdapter;
+import edu.warbot.agents.actions.MovableActionsMethods;
+import edu.warbot.agents.actions.PickerActionsMethods;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Movable;
 import edu.warbot.brains.capacities.Picker;
@@ -11,12 +10,12 @@ import edu.warbot.game.Team;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-public abstract class MovableWarAgent extends ControllableWarAgent implements PickerActions, Picker, MovableActions, Movable {
+public abstract class MovableWarAgent extends ControllableWarAgent implements PickerActionsMethods, Picker, MovableActionsMethods, Movable {
 
 	private double _speed;
 
-	public MovableWarAgent(String firstActionToDo, Team team, Hitbox hitbox, WarBrain<? extends MovableWarAgentAdapter> brainController, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize, double speed) {
-		super(firstActionToDo, team, hitbox, brainController, distanceOfView, angleOfView, cost, maxHealth, bagSize);
+	public MovableWarAgent(String firstActionToDo, Team team, Hitbox hitbox, WarBrain brain, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize, double speed) {
+		super(firstActionToDo, team, hitbox, brain, distanceOfView, angleOfView, cost, maxHealth, bagSize);
 
 		this._speed = speed;
 	}

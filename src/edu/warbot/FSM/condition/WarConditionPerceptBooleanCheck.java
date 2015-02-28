@@ -1,14 +1,14 @@
 package edu.warbot.FSM.condition;
 
-import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumOperand;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 
 import java.util.ArrayList;
 
-public class WarConditionPerceptBooleanCheck<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType> {
+public class WarConditionPerceptBooleanCheck<BrainType extends WarBrain> extends WarCondition<BrainType> {
 	
 	int attribut;
 	int reference;
@@ -20,7 +20,7 @@ public class WarConditionPerceptBooleanCheck<AgentAdapterType extends Controllab
 	WarAgentType agentType;
 	boolean oneOf;
 	
-	public WarConditionPerceptBooleanCheck(String name, AgentAdapterType brain, 
+	public WarConditionPerceptBooleanCheck(String name, BrainType brain,
 			GenericConditionSettings conditionSettings){
 		
 		super(name, brain, conditionSettings);

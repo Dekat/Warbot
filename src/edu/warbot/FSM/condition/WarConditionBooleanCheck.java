@@ -1,20 +1,19 @@
 package edu.warbot.FSM.condition;
 
-import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumMethod;
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
+import edu.warbot.brains.WarBrain;
 
+import javax.swing.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import javax.swing.JOptionPane;
-
-public class WarConditionBooleanCheck<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType> {
+public class WarConditionBooleanCheck<BrainType extends WarBrain> extends WarCondition<BrainType> {
 	
 	EnumMethod methodName;
 	Method method;
 	
-	public WarConditionBooleanCheck(String name, AgentAdapterType brain, GenericConditionSettings conditionSettings){
+	public WarConditionBooleanCheck(String name, BrainType brain, GenericConditionSettings conditionSettings){
 		
 		super(name, brain, conditionSettings);
 		

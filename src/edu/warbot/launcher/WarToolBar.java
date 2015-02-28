@@ -1,8 +1,6 @@
 package edu.warbot.launcher;
 
-import madkit.gui.SwingUtil;
 import madkit.kernel.AbstractAgent;
-import turtlekit.kernel.TurtleKit;
 
 import javax.swing.*;
 

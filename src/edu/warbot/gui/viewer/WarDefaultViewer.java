@@ -4,7 +4,7 @@ import edu.warbot.agents.AliveWarAgent;
 import edu.warbot.agents.ControllableWarAgent;
 import edu.warbot.agents.WarAgent;
 import edu.warbot.agents.WarProjectile;
-import edu.warbot.agents.actions.MovableActions;
+import edu.warbot.agents.actions.MovableActionsMethods;
 import edu.warbot.agents.percepts.WallPercept;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.AbstractWarViewer;
@@ -118,7 +118,7 @@ public class WarDefaultViewer extends AbstractWarViewer {
             g2d.setColor(borderColor);
             g2d.draw(agentShape);
 
-            if (agent instanceof MovableActions) {
+            if (agent instanceof MovableActionsMethods) {
                 paintHeading(g2d, agent, borderColor);
             }
 

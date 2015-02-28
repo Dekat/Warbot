@@ -4,7 +4,8 @@ import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.resources.WarFood;
-import edu.warbot.brains.MovableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
+import edu.warbot.brains.capacities.Movable;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -13,10 +14,10 @@ import java.util.ArrayList;
  * Description de l'action
  */
 
-public class WarActionFuire<AgentAdapterType extends MovableWarAgentAdapter> extends WarAction<AgentAdapterType>{
+public class WarActionFuire<BrainType extends WarBrain & Movable> extends WarAction<BrainType>{
 	
 
-	public WarActionFuire(AgentAdapterType brain) {
+	public WarActionFuire(BrainType brain) {
 		super(brain, "ActionFuire");
 		JOptionPane.showMessageDialog(null, "Attention l'action Fuire n'a pas étée vérifiée et risque de ne pas fonctionner", "Waring not terminated action", JOptionPane.INFORMATION_MESSAGE);
 	}

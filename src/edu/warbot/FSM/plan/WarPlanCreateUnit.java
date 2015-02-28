@@ -1,15 +1,15 @@
 package edu.warbot.FSM.plan;
 
-import javax.swing.JOptionPane;
-
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionCreateUnit;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.agents.agents.WarBase;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.adapters.WarBaseAdapter;
+import edu.warbot.brains.brains.WarBaseBrain;
 
-public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
+import javax.swing.*;
+
+public class WarPlanCreateUnit extends WarPlan<WarBaseBrain>{
 	
 	Integer nombreAgent;
 	WarAgentType agentType;
@@ -17,7 +17,7 @@ public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 	int minLife;
 	boolean pourcentage;
 	
-	public WarPlanCreateUnit(WarBaseAdapter brain, GenericPlanSettings planSettings ) {
+	public WarPlanCreateUnit(WarBaseBrain brain, GenericPlanSettings planSettings ) {
 		super("Plan create unit", brain, planSettings);
 		
 		if(getPlanSettings().Agent_type != null)
@@ -50,7 +50,7 @@ public class WarPlanCreateUnit extends WarPlan<WarBaseAdapter>{
 		
 		setPrintTrace(true);
 		
-		WarAction<WarBaseAdapter> actionC = new WarActionCreateUnit(getBrain(), agentType, nombreAgent, minLife);
+		WarAction<WarBaseBrain> actionC = new WarActionCreateUnit(getBrain(), agentType, nombreAgent, minLife);
 		this.addAction(actionC);
 		
 		setFirstAction(actionC);

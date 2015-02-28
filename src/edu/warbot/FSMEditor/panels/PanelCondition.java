@@ -2,11 +2,10 @@ package edu.warbot.FSMEditor.panels;
 
 import edu.warbot.FSMEditor.models.ModelCondition;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Path2D;
 import java.util.Random;
-
-import javax.swing.JOptionPane;
 
 public class PanelCondition extends AbstractPanel{
 

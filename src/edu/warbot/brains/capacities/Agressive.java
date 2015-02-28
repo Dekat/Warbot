@@ -4,5 +4,5 @@ public interface Agressive {
 
 	public boolean isReloaded();
 	public boolean isReloading();
-	
+
 }

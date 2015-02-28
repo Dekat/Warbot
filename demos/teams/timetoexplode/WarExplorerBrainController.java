@@ -5,13 +5,12 @@ import edu.warbot.agents.agents.WarEngineer;
 import edu.warbot.agents.agents.WarExplorer;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.resources.WarFood;
-import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.adapters.WarExplorerAdapter;
+import edu.warbot.brains.brains.WarExplorerBrain;
 import edu.warbot.communications.WarMessage;
 
 import java.util.ArrayList;
 
-public class WarExplorerBrainController extends WarBrain<WarExplorerAdapter> {
+public abstract class WarExplorerBrainController extends WarExplorerBrain {
 
 	private int _idBase;
 	private boolean _baseFullLife;
@@ -29,36 +28,36 @@ public class WarExplorerBrainController extends WarBrain<WarExplorerAdapter> {
 	public String action() {
 		
 		if(_idBase == 0) {
-			getAgent().broadcastMessageToAll("Give me your ID base", "");
+			broadcastMessageToAll("Give me your ID base", "");
 		} 
 		else {
-			getAgent().sendMessage(_idBase, "Are you full life", "");
+			sendMessage(_idBase, "Are you full life", "");
 		}
 		
-		ArrayList<WarAgentPercept> percepts = getAgent().getPercepts();
+		ArrayList<WarAgentPercept> percepts = getPercepts();
 		
 		for (WarAgentPercept p : percepts) {
 			switch(p.getType()) {
 			case WarFood :
-				if(p.getDistance() < WarFood.MAX_DISTANCE_TAKE && !getAgent().isBagFull()) {
-					getAgent().setHeading(p.getAngle());
+				if(p.getDistance() < WarFood.MAX_DISTANCE_TAKE && !isBagFull()) {
+					setHeading(p.getAngle());
 					return WarExplorer.ACTION_TAKE;
-				}else if(!getAgent().isBagFull()){
-					getAgent().setHeading(p.getAngle());
+				}else if(!isBagFull()){
+					setHeading(p.getAngle());
 				}
 				break;
 			case WarBase :
-				if(getAgent().isEnemy(p)) {
-					getAgent().broadcastMessageToAll("Enemy base on sight", String.valueOf(p.getAngle()), String.valueOf(p.getDistance()));
+				if(isEnemy(p)) {
+					broadcastMessageToAll("Enemy base on sight", String.valueOf(p.getAngle()), String.valueOf(p.getDistance()));
 				}
-				if(!getAgent().isEnemy(p)) {
-					if(getAgent().isBagEmpty()) {
-						getAgent().setRandomHeading();
+				if(!isEnemy(p)) {
+					if(isBagEmpty()) {
+						setRandomHeading();
 						return WarExplorer.ACTION_MOVE;
 					}
-					if(!getAgent().isBagEmpty()){
+					if(!isBagEmpty()){
 						if(p.getDistance() < WarBase.MAX_DISTANCE_GIVE) {
-							getAgent().setIdNextAgentToGive(p.getID());
+							setIdNextAgentToGive(p.getID());
 							return WarExplorer.ACTION_GIVE;
 						}
 						else {
@@ -72,14 +71,14 @@ public class WarExplorerBrainController extends WarBrain<WarExplorerAdapter> {
 			}
 		}
 		
-		if(getAgent().isBagFull()) {
+		if(isBagFull()) {
 			if(!_baseFullLife) {
-				getAgent().setHeading(_positionBase);
+				setHeading(_positionBase);
 				return WarEngineer.ACTION_MOVE;
 			}
 		}
 		
-		ArrayList<WarMessage> msgs = getAgent().getMessages();
+		ArrayList<WarMessage> msgs = getMessages();
 		for(WarMessage msg : msgs) {
 			if(msg.getMessage().equals("I am the base and here is my ID")) {
 				String[] content = msg.getContent();
@@ -93,21 +92,21 @@ public class WarExplorerBrainController extends WarBrain<WarExplorerAdapter> {
 				_baseFullLife = false;
 			}
 			if (msg.getMessage().equals("Need food")) {
-				if(!getAgent().isBagEmpty())
+				if(!isBagEmpty())
 				{
-					getAgent().setHeading(msg.getAngle());
+					setHeading(msg.getAngle());
 					return WarExplorer.ACTION_MOVE;
 				}
 			}
 			if(msg.getMessage().equals("Don't need food anymore")) {
-				if (getAgent().isBlocked())
-					getAgent().setRandomHeading();
+				if (isBlocked())
+					setRandomHeading();
 				return WarExplorer.ACTION_MOVE;
 			}
 		}
 		
-		if (getAgent().isBlocked())
-			getAgent().setRandomHeading();
+		if (isBlocked())
+			setRandomHeading();
 		return WarExplorer.ACTION_MOVE;
 	}
 

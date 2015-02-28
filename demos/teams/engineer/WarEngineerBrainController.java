@@ -3,13 +3,12 @@ package teams.engineer;
 import edu.warbot.agents.agents.WarEngineer;
 import edu.warbot.agents.agents.WarTurret;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.adapters.WarEngineerAdapter;
+import edu.warbot.brains.brains.WarEngineerBrain;
 import edu.warbot.communications.WarMessage;
 
 import java.util.ArrayList;
 
-public class WarEngineerBrainController extends WarBrain<WarEngineerAdapter> {
+public abstract class WarEngineerBrainController extends WarEngineerBrain {
 	
 	private int _idBase;
 	private boolean _aim;
@@ -39,14 +38,14 @@ public class WarEngineerBrainController extends WarBrain<WarEngineerAdapter> {
 	public String action() {
 		
 		if(_idBase == 0) {
-			getAgent().broadcastMessageToAll("Give me your ID base", "");
+			broadcastMessageToAll("Give me your ID base", "");
 		}
 		
-		if(getAgent().getHealth() < WarEngineer.MAX_HEALTH && !getAgent().isBagEmpty()) {
+		if(getHealth() < WarEngineer.MAX_HEALTH && !isBagEmpty()) {
 			return WarEngineer.ACTION_EAT;
 		}
 		
-		ArrayList<WarMessage> msgs = getAgent().getMessages();
+		ArrayList<WarMessage> msgs = getMessages();
 		for(WarMessage msg : msgs) {
 			if(msg.getMessage().equals("I am the base and here is my ID")) {
 				String[] content = msg.getContent();
@@ -55,15 +54,15 @@ public class WarEngineerBrainController extends WarBrain<WarEngineerAdapter> {
 			if(msg.getMessage().equals("Here is your next target")) {
 				String[] content = msg.getContent();
 				_angleDirection = Double.parseDouble(content[0]);
-				getAgent().setHeading(_angleDirection);
+				setHeading(_angleDirection);
 				return WarEngineer.ACTION_MOVE;
 			}
 			if(msg.getMessage().equals("You are on aim")) {
 				//_aim = true;
-				if(getAgent().getHealth() > WarTurret.COST) {
-					getAgent().setDebugString("Creating tower");
-					getAgent().broadcastMessageToAll("Don't need food anymore", "");
-					getAgent().setNextAgentToCreate(WarAgentType.WarTurret);
+				if(getHealth() > WarTurret.COST) {
+					setDebugString("Creating tower");
+					broadcastMessageToAll("Don't need food anymore", "");
+					setNextAgentToCreate(WarAgentType.WarTurret);
 					_angleDirection = 0.0;
 					_nbTurrets++;
 					if(_nbTurrets == 4) {
@@ -76,7 +75,7 @@ public class WarEngineerBrainController extends WarBrain<WarEngineerAdapter> {
 				}
 			}
 			if(msg.getMessage().equals("You are not on aim")) {
-				getAgent().setDebugString("I don't stop");
+				setDebugString("I don't stop");
 				return WarEngineer.ACTION_MOVE;
 			}
 		}
@@ -86,18 +85,18 @@ public class WarEngineerBrainController extends WarBrain<WarEngineerAdapter> {
 			if(!_defenseOnDuty) {
 				if(!_aim) {
 					if(_angleDirection == 0.0) {
-						getAgent().sendMessage(_idBase, "Give me my next target", "");
-						getAgent().setDebugString("Give me my next target");
+						sendMessage(_idBase, "Give me my next target", "");
+						setDebugString("Give me my next target");
 						//System.out.println("Give me my next target");
 						return WarEngineer.ACTION_IDLE;
 					}
 					else {
-						if(getAgent().isBlocked()) {
+						if(isBlocked()) {
 							_state = 1;
 							return WarEngineer.ACTION_IDLE;
 						}
-						getAgent().setDebugString("Going to put a turret");
-						getAgent().sendMessage(_idBase, "Am I on aim", "");
+						setDebugString("Going to put a turret");
+						sendMessage(_idBase, "Am I on aim", "");
 						//System.out.println("I ask if I'm on aim");
 						//return WarEngineer.ACTION_MOVE;
 					}
@@ -106,10 +105,10 @@ public class WarEngineerBrainController extends WarBrain<WarEngineerAdapter> {
 			
 		}
 		if(_state == 1) {
-			//getAgent().setHeading(_angleDirection + 120);
+			//setHeading(_angleDirection + 120);
 			if(_randomHeading == 0.0) {
-				getAgent().setRandomHeading();
-				_randomHeading = getAgent().getHeading();
+				setRandomHeading();
+				_randomHeading = getHeading();
 			}
 			if(_distance < 20) {
 				_distance++;
@@ -124,14 +123,14 @@ public class WarEngineerBrainController extends WarBrain<WarEngineerAdapter> {
 			}
 		}
 		if(_state == 2) {
-			if(getAgent().getHealth() <= WarTurret.COST) {
-				getAgent().broadcastMessageToAll("Need food", "");
+			if(getHealth() <= WarTurret.COST) {
+				broadcastMessageToAll("Need food", "");
 				return WarEngineer.ACTION_IDLE;
 			}
 			else {
-				getAgent().setDebugString("Creating tower");
-				getAgent().broadcastMessageToAll("Don't need food anymore", "");
-				getAgent().setNextAgentToCreate(WarAgentType.WarTurret);
+				setDebugString("Creating tower");
+				broadcastMessageToAll("Don't need food anymore", "");
+				setNextAgentToCreate(WarAgentType.WarTurret);
 				_angleDirection = 0.0;
 				_nbTurrets++;
 				if(_nbTurrets == 4) {

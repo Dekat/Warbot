@@ -6,6 +6,6 @@ public interface Creator {
 
 	public void setNextAgentToCreate(WarAgentType nextAgentToCreate);
 	public WarAgentType getNextAgentToCreate();
-	public boolean isAbleToCreate(WarAgentType agent);	
+	public boolean isAbleToCreate(WarAgentType agent);
 	
 }

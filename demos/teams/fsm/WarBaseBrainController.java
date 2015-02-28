@@ -1,12 +1,11 @@
 package teams.fsm;
 
 import edu.warbot.FSM.WarFSM;
-import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.adapters.WarBaseAdapter;
+import edu.warbot.brains.brains.WarBaseBrain;
 
-public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
+public abstract class WarBaseBrainController extends WarBaseBrain {
 
-	WarFSM<WarBaseAdapter> fsm;
+	WarFSM<WarBaseBrain> fsm;
 
 	public WarBaseBrainController() {
 		super();
@@ -23,7 +22,7 @@ public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
 	}
 
 	private void initialisation() {
-		fsm = new WarFSM<WarBaseAdapter>();
+		fsm = new WarFSM<WarBaseBrain>();
 //
 //		/*** Refelexes ***/
 //		fsm.addReflexe(new WarReflexeAnswerMessage<WarBaseAdapter>(getAgent(), WarFSMMessage.whereAreYou, WarFSMMessage.here));

@@ -3,7 +3,7 @@ package edu.warbot.agents.agents;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.adapters.WarExplorerAdapter;
+import edu.warbot.brains.brains.WarExplorerBrain;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarGameConfig;
 
@@ -28,10 +28,10 @@ public class WarExplorer extends MovableWarAgent {
         SPEED = (double) data.get(WarGameConfig.AGENT_CONFIG_SPEED);
     }
 	
-	public WarExplorer(Team team, WarBrain<WarExplorerAdapter> brain) {
+	public WarExplorer(Team team, WarExplorerBrain brain) {
 		super(ACTION_IDLE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarExplorer), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
 		
-		brain.setAgentAdapter(new WarExplorerAdapter(this));
+//		brain.setAgentAdapter(new WarExplorerBrain(this));
 	}
 
 }

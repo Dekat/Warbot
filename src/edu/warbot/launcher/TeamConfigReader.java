@@ -1,15 +1,9 @@
 package edu.warbot.launcher;
 
 import edu.warbot.FSMEditor.xmlParser.FsmXmlReader;
-import edu.warbot.tools.WarXmlReader;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 import org.yaml.snakeyaml.Yaml;
 
-import javax.swing.*;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
-import java.io.*;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 

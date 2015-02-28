@@ -3,7 +3,7 @@ package edu.warbot.agents.agents;
 import edu.warbot.agents.CreatorWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.adapters.WarBaseAdapter;
+import edu.warbot.brains.brains.WarBaseBrain;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarGameConfig;
 
@@ -26,10 +26,10 @@ public class WarBase extends CreatorWarAgent {
         BAG_SIZE = (int) data.get(WarGameConfig.AGENT_CONFIG_BAG_SIZE);
 	}
 	
-	public WarBase(Team team, WarBrain<WarBaseAdapter> brain) {
+	public WarBase(Team team, WarBaseBrain brain) {
 		super(ACTION_IDLE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarBase), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE);
 		
-		brain.setAgentAdapter(new WarBaseAdapter(this));
+		//brain.setAgentAdapter(new WarBaseBrain(this));
 	}
 
 	@Override

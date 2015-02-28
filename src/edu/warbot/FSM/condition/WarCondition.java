@@ -3,18 +3,18 @@ package edu.warbot.FSM.condition;
 import edu.warbot.FSM.WarEtat;
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSMEditor.settings.GenericConditionSettings;
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 
-public abstract class WarCondition<AgentAdapterType extends ControllableWarAgentAdapter> {
+public abstract class WarCondition<BrainType extends WarBrain> {
 	
 	String name;
-	AgentAdapterType brain;
+	BrainType brain;
 	GenericConditionSettings conditionSettings;
 	
-	private WarEtat<AgentAdapterType> etatDestination;
-	private WarAction<AgentAdapterType> actionDestination;
+	private WarEtat<BrainType> etatDestination;
+	private WarAction<BrainType> actionDestination;
 	
-	public WarCondition(String name, AgentAdapterType brain, GenericConditionSettings conditionSettings){
+	public WarCondition(String name, BrainType brain, GenericConditionSettings conditionSettings){
 		this.name = name;
 		this.brain = brain;
 		this.conditionSettings = conditionSettings;
@@ -26,15 +26,15 @@ public abstract class WarCondition<AgentAdapterType extends ControllableWarAgent
 		//Ici rien a faire mais certains conditions peuvent en avoir besoin
 	}
 
-	public void setDestination(WarEtat<AgentAdapterType> etatDestination) {
+	public void setDestination(WarEtat<BrainType> etatDestination) {
 		this.etatDestination = etatDestination;
 	}
 	
-	public void setDestination(WarAction<AgentAdapterType> a) {
+	public void setDestination(WarAction<BrainType> a) {
 		this.actionDestination = a;
 	}
 
-	public WarEtat<AgentAdapterType> getEtatDestination() {
+	public WarEtat<BrainType> getEtatDestination() {
 		return etatDestination;
 	}
 
@@ -50,7 +50,7 @@ public abstract class WarCondition<AgentAdapterType extends ControllableWarAgent
 		
 	}
 
-	public WarAction<AgentAdapterType> getActionDestination() {
+	public WarAction<BrainType> getActionDestination() {
 		return this.actionDestination;
 	}
 	
@@ -58,7 +58,7 @@ public abstract class WarCondition<AgentAdapterType extends ControllableWarAgent
 		return name;
 	}
 
-	public AgentAdapterType getBrain(){
+	public BrainType getBrain(){
 		return this.brain;
 	}
 	

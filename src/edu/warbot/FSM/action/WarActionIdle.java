@@ -1,17 +1,17 @@
 package edu.warbot.FSM.action;
 
 import edu.warbot.agents.MovableWarAgent;
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 
 /**
  * Reste sans bougé pendant un certains nombre de tik
  */
-public class WarActionIdle<AgentAdapterType extends ControllableWarAgentAdapter> extends WarAction<AgentAdapterType> {
+public class WarActionIdle<BrainType extends WarBrain> extends WarAction<BrainType> {
 
 	private int nombreTikMax;
 	private int currentNombreTik = 0;
 	
-	public WarActionIdle(AgentAdapterType brain, int nombrePas) {
+	public WarActionIdle(BrainType brain, int nombrePas) {
 		super(brain);
 		this.nombreTikMax = nombrePas;
 	}

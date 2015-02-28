@@ -1,26 +1,26 @@
 package edu.warbot.FSM.reflexe;
 
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 
-public abstract class WarReflexe<AgentAdapterType extends ControllableWarAgentAdapter> {
+public abstract class WarReflexe<BrainType extends WarBrain> {
 	
-	private AgentAdapterType brain;
+	private BrainType brain;
 
 	private String nom;
 	
-	public WarReflexe(AgentAdapterType b){
+	public WarReflexe(BrainType b){
 		this.brain = b;
 		this.nom = this.getClass().getSimpleName();
 	}
 	
-	public WarReflexe(AgentAdapterType b, String nom){
+	public WarReflexe(BrainType b, String nom){
 		this.brain = b;
 		this.nom = nom;
 	}
 
 	public abstract String executeReflexe();
 
-	public AgentAdapterType getBrain(){
+	public BrainType getBrain(){
 		return this.brain;
 	}
 	

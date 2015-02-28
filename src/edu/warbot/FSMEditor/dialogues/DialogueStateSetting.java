@@ -7,7 +7,6 @@ import edu.warbot.FSMEditor.views.ViewBrain;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-
 import java.awt.*;
 
 public class DialogueStateSetting extends AbstractDialogue {

@@ -1,12 +1,11 @@
 package teams.fsm;
 
 import edu.warbot.FSM.WarFSM;
-import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
+import edu.warbot.brains.brains.WarRocketLauncherBrain;
 
-public class WarRocketLauncherBrainController extends WarBrain<WarRocketLauncherAdapter> {
+public abstract class WarRocketLauncherBrainController extends WarRocketLauncherBrain {
 
-	WarFSM<WarRocketLauncherAdapter> fsm;
+	WarFSM<WarRocketLauncherBrain> fsm;
 
 	public WarRocketLauncherBrainController() {
 		super();
@@ -23,7 +22,7 @@ public class WarRocketLauncherBrainController extends WarBrain<WarRocketLauncher
 	}
 
 	private void initialisation() {
-		fsm = new WarFSM<WarRocketLauncherAdapter>();
+		fsm = new WarFSM<WarRocketLauncherBrain>();
 
 //		/*** Refelxes ***/
 //		WarCondition<WarRocketLauncherAdapter> condReflex = new WarConditionPerceptCounter<WarRocketLauncherAdapter>(getAgent(), WarAgentType.WarBase, true, ">", 0);

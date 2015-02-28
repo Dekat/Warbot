@@ -1,16 +1,15 @@
 package edu.warbot.FSM.condition;
 
-import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumOperand;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
-public class WarConditionPerceptCounter<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType> {
+public class WarConditionPerceptCounter<BrainType extends WarBrain> extends WarCondition<BrainType> {
 	
 	WarAgentType agentType;
 	EnumOperand operand;
@@ -18,7 +17,7 @@ public class WarConditionPerceptCounter<AgentAdapterType extends ControllableWar
 	
 	boolean enemy;
 	
-	public WarConditionPerceptCounter(String name, AgentAdapterType brain, 
+	public WarConditionPerceptCounter(String name, BrainType brain,
 			GenericConditionSettings conditionSettings){
 
 		super(name, brain, conditionSettings);

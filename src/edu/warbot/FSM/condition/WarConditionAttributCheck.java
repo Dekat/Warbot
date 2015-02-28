@@ -1,16 +1,15 @@
 package edu.warbot.FSM.condition;
 
+import edu.warbot.FSMEditor.settings.EnumMethod;
+import edu.warbot.FSMEditor.settings.EnumOperand;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
+import edu.warbot.brains.WarBrain;
+
+import javax.swing.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import javax.swing.JOptionPane;
-
-import edu.warbot.FSMEditor.settings.GenericConditionSettings;
-import edu.warbot.FSMEditor.settings.EnumMethod;
-import edu.warbot.FSMEditor.settings.EnumOperand;
-import edu.warbot.brains.ControllableWarAgentAdapter;
-
-public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarAgentAdapter> extends WarCondition<AgentAdapterType> {
+public class WarConditionAttributCheck<BrainType extends WarBrain> extends WarCondition<BrainType> {
 	
 	
 	EnumMethod methodName;
@@ -19,7 +18,7 @@ public class WarConditionAttributCheck<AgentAdapterType extends ControllableWarA
 	
 	Method method;
 	
-	public WarConditionAttributCheck(String name, AgentAdapterType brain, GenericConditionSettings conditionSettings){
+	public WarConditionAttributCheck(String name, BrainType brain, GenericConditionSettings conditionSettings){
 		super(name, brain, conditionSettings);
 
 //		JOptionPane.showMessageDialog(null, "Attention la condition <Attributcheck> n'a pas été vérifié et risque de ne pas fonctionner", "Waring not terminated condition", JOptionPane.WARNING_MESSAGE);

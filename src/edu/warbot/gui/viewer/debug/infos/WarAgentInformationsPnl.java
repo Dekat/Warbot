@@ -4,7 +4,6 @@ import edu.warbot.agents.WarAgent;
 import edu.warbot.gui.viewer.debug.DebugToolsPnl;
 
 import javax.swing.*;
-import java.awt.*;
 
 @SuppressWarnings("serial")
 public class WarAgentInformationsPnl extends JPanel implements IWarAgentInformationsPnl {

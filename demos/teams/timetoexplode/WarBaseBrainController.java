@@ -5,13 +5,12 @@ import edu.warbot.agents.agents.WarEngineer;
 import edu.warbot.agents.agents.WarKamikaze;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.adapters.WarBaseAdapter;
+import edu.warbot.brains.brains.WarBaseBrain;
 import edu.warbot.communications.WarMessage;
 
 import java.util.ArrayList;
 
-public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
+public abstract class WarBaseBrainController extends WarBaseBrain {
 
 	private boolean _inDanger;
 	private int _nbKamikaze;
@@ -26,47 +25,47 @@ public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
 	@Override
 	public String action() {
 		
-		if((getAgent().getHealth() < WarBase.MAX_HEALTH) && (!getAgent().isBagEmpty())) {
+		if((getHealth() < WarBase.MAX_HEALTH) && (!isBagEmpty())) {
 			return WarBase.ACTION_EAT;
 		}
 		
-		if((getAgent().getHealth() > WarKamikaze.COST) && (_nbKamikaze < ((WarBase.MAX_HEALTH / WarKamikaze.COST) - 1))) {
-			getAgent().setNextAgentToCreate(WarAgentType.WarKamikaze);
+		if((getHealth() > WarKamikaze.COST) && (_nbKamikaze < ((WarBase.MAX_HEALTH / WarKamikaze.COST) - 1))) {
+			setNextAgentToCreate(WarAgentType.WarKamikaze);
 			_nbKamikaze++;
 			return WarBase.ACTION_CREATE;
 		}
 		
-		ArrayList<WarMessage> msgs = getAgent().getMessages();
+		ArrayList<WarMessage> msgs = getMessages();
 		for(WarMessage msg : msgs) {
 			if(msg.getMessage().equals("Give me your ID base")) {
-				getAgent().reply(msg, "I am the base and here is my ID", Integer.toString(getAgent().getID()));
+				reply(msg, "I am the base and here is my ID", Integer.toString(getID()));
 			}
 			if(msg.getMessage().equals("Are you full life")) {
-				if(getAgent().getHealth() < WarBase.MAX_HEALTH) {
-					getAgent().reply(msg, "I am not full life", "");
+				if(getHealth() < WarBase.MAX_HEALTH) {
+					reply(msg, "I am not full life", "");
 				}
 				else {
-					getAgent().reply(msg, "I am full life", "");
+					reply(msg, "I am full life", "");
 				}
 			}
 		}
 		
-		ArrayList<WarAgentPercept> percepts = getAgent().getPercepts();
+		ArrayList<WarAgentPercept> percepts = getPercepts();
 		
 		for (WarAgentPercept p : percepts) {
 			switch(p.getType()) {
 			case WarRocketLauncher :
-				if(getAgent().isEnemy(p)) {
-					if(getAgent().getHealth() < (WarBase.MAX_HEALTH - WarEngineer.COST)) {
-						getAgent().broadcastMessageToAll("We are under attack", String.valueOf(p.getAngle()), String.valueOf(p.getDistance()));
+				if(isEnemy(p)) {
+					if(getHealth() < (WarBase.MAX_HEALTH - WarEngineer.COST)) {
+						broadcastMessageToAll("We are under attack", String.valueOf(p.getAngle()), String.valueOf(p.getDistance()));
 						_inDanger = true;
 					}
 				}
 				break;
 			case WarKamikaze :
-				if(getAgent().isEnemy(p)) {
-					if(getAgent().getHealth() < (WarBase.MAX_HEALTH - WarEngineer.COST)) {
-						getAgent().broadcastMessageToAll("We are under attack", String.valueOf(p.getAngle()), String.valueOf(p.getDistance()));
+				if(isEnemy(p)) {
+					if(getHealth() < (WarBase.MAX_HEALTH - WarEngineer.COST)) {
+						broadcastMessageToAll("We are under attack", String.valueOf(p.getAngle()), String.valueOf(p.getDistance()));
 						_inDanger = true;
 					}
 				}
@@ -77,10 +76,10 @@ public class WarBaseBrainController extends WarBrain<WarBaseAdapter> {
 		}
 		
 		if(_inDanger) {
-			ArrayList<WarAgentPercept> enemies = getAgent().getPerceptsEnemies();
+			ArrayList<WarAgentPercept> enemies = getPerceptsEnemies();
 			if(enemies.isEmpty()) {
 				_inDanger = false;
-				getAgent().broadcastMessageToAll("I am the danger", "");
+				broadcastMessageToAll("I am the danger", "");
 			}
 		}
 		

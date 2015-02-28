@@ -5,18 +5,16 @@ import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.agents.WarRocketLauncher;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.WarAgentPercept;
-import edu.warbot.agents.percepts.WarPercept;
-import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
+import edu.warbot.brains.brains.WarRocketLauncherBrain;
 import edu.warbot.communications.WarMessage;
-import edu.warbot.tools.geometry.CoordPolar;
 
 import java.util.ArrayList;
 
-public class WarActionAttaquer extends WarAction<WarRocketLauncherAdapter> {
+public class WarActionAttaquer extends WarAction<WarRocketLauncherBrain> {
 	
 	WarAgentType agentType;
 	
-	public WarActionAttaquer(WarRocketLauncherAdapter agentAdapter, WarAgentType agentType) {
+	public WarActionAttaquer(WarRocketLauncherBrain agentAdapter, WarAgentType agentType) {
 		super(agentAdapter);
 		
 		this.agentType = agentType;

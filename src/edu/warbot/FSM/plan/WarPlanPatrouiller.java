@@ -1,7 +1,5 @@
 package edu.warbot.FSM.plan;
 
-import javax.swing.JOptionPane;
-
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionAttaquer;
 import edu.warbot.FSM.action.WarActionChercherBase;
@@ -11,7 +9,9 @@ import edu.warbot.FSMEditor.settings.EnumOperand;
 import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
+import edu.warbot.brains.brains.WarRocketLauncherBrain;
+
+import javax.swing.*;
 
 /**
  * Plan avancé ne marche pas encore !
@@ -20,11 +20,11 @@ import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
  * que l'agent croise en chemin si il est en position de force
  * (Etre en position de force siginifie que le nombre d'allié/enemie aux allentour est avantageux
  */
-public class WarPlanPatrouiller extends WarPlan<WarRocketLauncherAdapter> {
+public class WarPlanPatrouiller extends WarPlan<WarRocketLauncherBrain> {
 	
 	boolean offensif;
 	
-	public WarPlanPatrouiller(WarRocketLauncherAdapter brain, GenericPlanSettings planSettings) {
+	public WarPlanPatrouiller(WarRocketLauncherBrain brain, GenericPlanSettings planSettings) {
 		super("Plan Patrouiller", brain, planSettings);
 		JOptionPane.showMessageDialog(null, "Attention le plan Patrouillé n'est pas terminé et risque de ne pas fonctionner", "Waring not terminated plan", JOptionPane.INFORMATION_MESSAGE);
 		
@@ -38,11 +38,11 @@ public class WarPlanPatrouiller extends WarPlan<WarRocketLauncherAdapter> {
 		
 		setPrintTrace(true);
 		
-		WarAction<WarRocketLauncherAdapter> actionSeekBase = new WarActionChercherBase(getBrain());
+		WarAction<WarRocketLauncherBrain> actionSeekBase = new WarActionChercherBase(getBrain());
 		addAction(actionSeekBase);
 
 		if(this.offensif){
-			WarAction<WarRocketLauncherAdapter> actionKillEnemy = new WarActionAttaquer(getBrain(), WarAgentType.WarRocketLauncher);
+			WarAction<WarRocketLauncherBrain> actionKillEnemy = new WarActionAttaquer(getBrain(), WarAgentType.WarRocketLauncher);
 			addAction(actionKillEnemy);
 		
 			GenericConditionSettings condSet1 = new GenericConditionSettings();
@@ -50,8 +50,8 @@ public class WarPlanPatrouiller extends WarPlan<WarRocketLauncherAdapter> {
 			condSet1.Pourcentage = true;
 			condSet1.Operateur = EnumOperand.sup;
 			condSet1.Reference = 1;
-			WarCondition<WarRocketLauncherAdapter> condSeekToKill = 
-					new WarConditionPerceptCounter<WarRocketLauncherAdapter>("cond_kill", getBrain(), condSet1);
+			WarCondition<WarRocketLauncherBrain> condSeekToKill =
+					new WarConditionPerceptCounter<WarRocketLauncherBrain>("cond_kill", getBrain(), condSet1);
 			actionSeekBase.addCondition(condSeekToKill);
 			condSeekToKill.setDestination(actionKillEnemy);
 		
@@ -60,8 +60,8 @@ public class WarPlanPatrouiller extends WarPlan<WarRocketLauncherAdapter> {
 			condSet2.Pourcentage = true;
 			condSet2.Operateur = EnumOperand.egal;
 			condSet2.Reference = 0;
-			WarCondition<WarRocketLauncherAdapter> condKillToSeek = 
-					new WarConditionPerceptCounter<WarRocketLauncherAdapter>("cond_seek", getBrain(), condSet2);
+			WarCondition<WarRocketLauncherBrain> condKillToSeek =
+					new WarConditionPerceptCounter<WarRocketLauncherBrain>("cond_seek", getBrain(), condSet2);
 			actionKillEnemy.addCondition(condKillToSeek);
 			condKillToSeek.setDestination(actionSeekBase);
 		

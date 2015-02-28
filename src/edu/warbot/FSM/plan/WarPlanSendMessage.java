@@ -1,20 +1,20 @@
 package edu.warbot.FSM.plan;
 
-import javax.swing.JOptionPane;
-
 import edu.warbot.FSM.action.WarAction;
 import edu.warbot.FSM.action.WarActionSendMessage;
 import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 
-public class WarPlanSendMessage<AgentAdapterType extends ControllableWarAgentAdapter> extends WarPlan<AgentAdapterType> {
+import javax.swing.*;
+
+public class WarPlanSendMessage<BrainType extends WarBrain> extends WarPlan<BrainType> {
 	
 	WarAgentType agentType;
 	EnumMessage msg;
 	
-	public WarPlanSendMessage(AgentAdapterType brain, GenericPlanSettings planSettings) {
+	public WarPlanSendMessage(BrainType brain, GenericPlanSettings planSettings) {
 		super("Plan Attaquer", brain, planSettings);
 		
 		if(getPlanSettings().Agent_type != null)
@@ -34,7 +34,7 @@ public class WarPlanSendMessage<AgentAdapterType extends ControllableWarAgentAda
 		
 		setPrintTrace(true);
 			
-		WarAction<AgentAdapterType> actionMsg = 
+		WarAction<BrainType> actionMsg =
 				new WarActionSendMessage<>(getBrain(), agentType, msg);
 		
 		addAction(actionMsg);

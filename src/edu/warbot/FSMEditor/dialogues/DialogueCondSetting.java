@@ -1,13 +1,12 @@
 package edu.warbot.FSMEditor.dialogues;
 
 import edu.warbot.FSMEditor.models.ModelCondition;
-import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.settings.EnumCondition;
+import edu.warbot.FSMEditor.settings.GenericConditionSettings;
 import edu.warbot.FSMEditor.views.ViewBrain;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-
 import java.awt.*;
 
 public class DialogueCondSetting extends AbstractDialogue{

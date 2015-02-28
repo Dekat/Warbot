@@ -1,34 +1,17 @@
 package edu.warbot.FSMEditor.dialogues;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import edu.warbot.FSMEditor.settings.*;
+import edu.warbot.FSMEditor.views.ViewBrain;
+import edu.warbot.agents.enums.WarAgentType;
+import org.jfree.ui.tabbedui.VerticalLayout;
+
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Field;
 import java.util.HashMap;
-
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-
-import org.jfree.ui.tabbedui.VerticalLayout;
-
-import edu.warbot.FSMEditor.settings.AbstractGenericSettings;
-import edu.warbot.FSMEditor.settings.EnumAction;
-import edu.warbot.FSMEditor.settings.EnumMessage;
-import edu.warbot.FSMEditor.settings.EnumMethod;
-import edu.warbot.FSMEditor.settings.EnumOperand;
-import edu.warbot.FSMEditor.views.ViewBrain;
-import edu.warbot.agents.enums.WarAgentType;
 
 public abstract class AbstractDialogue extends JDialog{
 	

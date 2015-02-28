@@ -1,14 +1,15 @@
 package edu.warbot.agents;
 
-import edu.warbot.agents.actions.ControllableActions;
+import edu.warbot.agents.actions.ControllableActionsMethods;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.percepts.PerceptsGetter;
 import edu.warbot.agents.percepts.WallPercept;
 import edu.warbot.agents.percepts.WarAgentPercept;
 import edu.warbot.agents.resources.WarFood;
-import edu.warbot.brains.ControllableWarAgentAdapter;
 import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.capacities.Controllable;
+import edu.warbot.brains.implementations.AgentBrainImplementer;
+import edu.warbot.brains.implementations.WarBrainImplementation;
 import edu.warbot.communications.WarKernelMessage;
 import edu.warbot.communications.WarMessage;
 import edu.warbot.game.Team;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
 
-public abstract class ControllableWarAgent extends AliveWarAgent implements ControllableActions, Controllable {
+public abstract class ControllableWarAgent extends AliveWarAgent implements ControllableActionsMethods, Controllable {
 
 	private double _angleOfView;
 	private double _distanceOfView;
@@ -30,14 +31,14 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
 	private int _bagSize;
 	private int _idNextAgentToGive;
 	private double _viewDirection;
-	private WarBrain<? extends ControllableWarAgentAdapter> _brain;
+	private WarBrain _brain;
 	private PerceptsGetter _perceptsGetter;
 	private String _debugString;
 	private Color _debugStringColor;
     private Shape debugShape;
     private ArrayList<WarMessage> thisTickMessages;
 
-	public ControllableWarAgent(String firstActionToDo, Team team, Hitbox hitbox, WarBrain<? extends ControllableWarAgentAdapter> brain, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize) {
+	public ControllableWarAgent(String firstActionToDo, Team team, Hitbox hitbox, WarBrain brain, double distanceOfView, double angleOfView, int cost, int maxHealth, int bagSize) {
 		super(firstActionToDo, team, hitbox, cost, maxHealth);
 
 		_distanceOfView = distanceOfView;
@@ -45,10 +46,13 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
 		_bagSize = bagSize;
 		_nbElementsInBag = 0;
 		_viewDirection = 180 * new Random().nextDouble();
-		_brain = brain;
 		_debugString = "";
 		_debugStringColor = Color.BLACK;
-	}
+
+        _brain = brain;
+        if(_brain instanceof AgentBrainImplementer)
+            ((AgentBrainImplementer) _brain).setAgent(this);
+    }
 
 	@Override
 	protected void activate() {
@@ -106,11 +110,11 @@ public abstract class ControllableWarAgent extends AliveWarAgent implements Cont
         _perceptsGetter.forcePerceptsUpdate();
     }
 
-	public WarBrain<? extends ControllableWarAgentAdapter> getBrain() {
+	public WarBrain getBrain() {
 		return _brain;
 	}
 	
-	public void setBrain(WarBrain<? extends ControllableWarAgentAdapter> brain) {
+	public void setBrain(WarBrain brain) {
 		_brain = brain;
 	}
 

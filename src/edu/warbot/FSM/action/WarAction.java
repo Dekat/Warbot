@@ -1,24 +1,24 @@
 package edu.warbot.FSM.action;
 
 import edu.warbot.FSM.condition.WarCondition;
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 
 import java.util.ArrayList;
 
-public abstract class WarAction<AgentAdapterType extends ControllableWarAgentAdapter> {
+public abstract class WarAction<BrainType extends WarBrain> {
 	
-	ArrayList<WarCondition<AgentAdapterType>> conditions = new ArrayList<>();
+	ArrayList<WarCondition<BrainType>> conditions = new ArrayList<>();
 	
 	private String nom;
 
-	private AgentAdapterType agent;
+	private BrainType agent;
 	
-	public WarAction(AgentAdapterType b){
+	public WarAction(BrainType b){
 		this.agent = b;
 		this.nom = this.getClass().getSimpleName();
 	}
 	
-	public WarAction(AgentAdapterType b, String nom){
+	public WarAction(BrainType b, String nom){
 		this.agent = b;
 		this.nom = nom;
 	}
@@ -28,7 +28,7 @@ public abstract class WarAction<AgentAdapterType extends ControllableWarAgentAda
 	 */
 	public abstract String executeAction();
 
-	public AgentAdapterType getAgent() {
+	public BrainType getAgent() {
 		return this.agent;
 	}
 
@@ -37,11 +37,11 @@ public abstract class WarAction<AgentAdapterType extends ControllableWarAgentAda
 		return this.nom;
 	}
 
-	public ArrayList<WarCondition<AgentAdapterType>> getConditions() {
+	public ArrayList<WarCondition<BrainType>> getConditions() {
 		return this.conditions;
 	}
 	
-	public void addCondition(WarCondition<AgentAdapterType> cond){
+	public void addCondition(WarCondition<BrainType> cond){
 		this.conditions.add(cond);
 	}
 	
@@ -49,7 +49,7 @@ public abstract class WarAction<AgentAdapterType extends ControllableWarAgentAda
 	 * Méthode appelée avant chaque première exécution de l'action
 	 */
 	public void actionWillBegin(){
-		for (WarCondition<AgentAdapterType> warCondition : conditions) {
+		for (WarCondition<BrainType> warCondition : conditions) {
 			warCondition.conditionWillBegin();
 		}
 		getAgent().setDebugString(this.getClass().getSimpleName());

@@ -1,11 +1,11 @@
 package edu.warbot.agents.agents;
 
 import edu.warbot.agents.MovableWarAgent;
-import edu.warbot.agents.actions.AgressiveActions;
+import edu.warbot.agents.actions.AgressiveActionsMethods;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.projectiles.WarRocket;
 import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.adapters.WarRocketLauncherAdapter;
+import edu.warbot.brains.brains.WarRocketLauncherBrain;
 import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarGameConfig;
@@ -13,7 +13,7 @@ import edu.warbot.launcher.WarGameConfig;
 import java.util.Map;
 import java.util.logging.Level;
 
-public class WarRocketLauncher extends MovableWarAgent implements AgressiveActions, Agressive {
+public class WarRocketLauncher extends MovableWarAgent implements AgressiveActionsMethods, Agressive {
 
 	public static final double ANGLE_OF_VIEW;
 	public static final double DISTANCE_OF_VIEW;
@@ -38,10 +38,10 @@ public class WarRocketLauncher extends MovableWarAgent implements AgressiveActio
         TICKS_TO_RELOAD = (int) data.get(WarGameConfig.AGENT_CONFIG_TICKS_TO_RELOAD);
 	}
 
-	public WarRocketLauncher(Team team, WarBrain<WarRocketLauncherAdapter> brain) {
+	public WarRocketLauncher(Team team, WarRocketLauncherBrain brain) {
 		super(ACTION_IDLE, team, WarGameConfig.getHitboxOfWarAgent(WarAgentType.WarRocketLauncher), brain, DISTANCE_OF_VIEW, ANGLE_OF_VIEW, COST, MAX_HEALTH, BAG_SIZE, SPEED);
 		
-		brain.setAgentAdapter(new WarRocketLauncherAdapter(this));
+//		brain.setAgentAdapter(new WarRocketLauncherBrain(this));
 		_tickLeftBeforeReloaded = TICKS_TO_RELOAD;
 		_reloaded = false;
 		_reloading = true;

@@ -1,12 +1,11 @@
 package teams.fsm;
 
 import edu.warbot.FSM.WarFSM;
-import edu.warbot.brains.WarBrain;
-import edu.warbot.brains.adapters.WarExplorerAdapter;
+import edu.warbot.brains.brains.WarExplorerBrain;
 
-public class WarExplorerBrainController extends WarBrain<WarExplorerAdapter> {
+public abstract class WarExplorerBrainController extends WarExplorerBrain {
 
-	private WarFSM<WarExplorerAdapter> fsm;
+	private WarFSM<WarExplorerBrain> fsm;
 
 	public WarExplorerBrainController() {
 		super();
@@ -23,7 +22,7 @@ public class WarExplorerBrainController extends WarBrain<WarExplorerAdapter> {
 	}
 
 	private void initialisation() {
-		fsm = new WarFSM<WarExplorerAdapter>();
+		fsm = new WarFSM<WarExplorerBrain>();
 
 //		/*** Reflexes ***/
 //		WarCondition<WarExplorerAdapter> condReflex = new WarConditionPerceptCounter<WarExplorerAdapter>(getAgent(), WarAgentType.WarBase, true, ">", 0);

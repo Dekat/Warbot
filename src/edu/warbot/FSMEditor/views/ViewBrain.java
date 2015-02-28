@@ -6,12 +6,10 @@ import edu.warbot.FSMEditor.models.ModeleBrain;
 import edu.warbot.FSMEditor.panels.PanelCondition;
 import edu.warbot.FSMEditor.panels.PanelEditor;
 import edu.warbot.FSMEditor.panels.PanelState;
-
 import org.jfree.ui.tabbedui.VerticalLayout;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-
 import java.awt.*;
 
 public class ViewBrain extends JPanel{

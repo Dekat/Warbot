@@ -2,31 +2,31 @@ package edu.warbot.FSM;
 
 import edu.warbot.FSM.condition.WarCondition;
 import edu.warbot.FSM.plan.WarPlan;
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 
 import java.util.ArrayList;
 
-public class WarEtat<AgentAdapterType extends ControllableWarAgentAdapter> {
+public class WarEtat<BrainType extends WarBrain> {
 	
-	private WarPlan<? extends AgentAdapterType> plan;
-	private ArrayList<WarCondition<AgentAdapterType>> conditions = new ArrayList<>();
+	private WarPlan<? extends BrainType> plan;
+	private ArrayList<WarCondition<BrainType>> conditions = new ArrayList<>();
 	
 	private String nom;
 	
-	public WarEtat(String nom, WarPlan<? extends AgentAdapterType> plan){
+	public WarEtat(String nom, WarPlan<? extends BrainType> plan){
 		this.nom = nom;
 		this.plan = plan;
 	}
 
-	public void addCondition(WarCondition<AgentAdapterType> cond1) {
+	public void addCondition(WarCondition<BrainType> cond1) {
 		this.conditions.add(cond1);
 	}
 
-	public WarPlan<? extends AgentAdapterType> getPlan() {
+	public WarPlan<? extends BrainType> getPlan() {
 		return this.plan;
 	}
 	
-	public ArrayList<WarCondition<AgentAdapterType>> getConditions() {
+	public ArrayList<WarCondition<BrainType>> getConditions() {
 		return this.conditions;
 	}
 
@@ -39,7 +39,7 @@ public class WarEtat<AgentAdapterType extends ControllableWarAgentAdapter> {
 		if(this.conditions.size() < 1)
 			System.out.println("ATTENTION l'état <" + this.nom + "> ne contient aucune conditions de sortie");
 		
-		for (WarCondition<AgentAdapterType> cond : this.conditions) {
+		for (WarCondition<BrainType> cond : this.conditions) {
 			cond.init();
 		}
 		
@@ -57,7 +57,7 @@ public class WarEtat<AgentAdapterType extends ControllableWarAgentAdapter> {
 		//On dit l'état qu'il va commencer
 		this.plan.planWillBegin();
 		//On dit aux conditions qu'elles vont commencer
-		for (WarCondition<AgentAdapterType> warCondition : conditions) {
+		for (WarCondition<BrainType> warCondition : conditions) {
 			warCondition.conditionWillBegin();
 		}
 	}

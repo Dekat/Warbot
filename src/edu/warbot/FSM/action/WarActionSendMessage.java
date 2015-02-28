@@ -3,14 +3,14 @@ package edu.warbot.FSM.action;
 import edu.warbot.FSMEditor.settings.EnumMessage;
 import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.ControllableWarAgentAdapter;
+import edu.warbot.brains.WarBrain;
 
-public class WarActionSendMessage<AgentAdapterType extends ControllableWarAgentAdapter> extends WarAction<AgentAdapterType> {
+public class WarActionSendMessage<BrainType extends WarBrain> extends WarAction<BrainType> {
 	
 	EnumMessage message;
 	WarAgentType agentType;
 	
-	public WarActionSendMessage(AgentAdapterType agentAdapter, WarAgentType agentType, EnumMessage message) {
+	public WarActionSendMessage(BrainType agentAdapter, WarAgentType agentType, EnumMessage message) {
 		super(agentAdapter);
 		this.agentType = agentType;
 		this.message = message;
