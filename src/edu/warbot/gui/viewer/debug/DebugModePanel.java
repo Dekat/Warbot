@@ -10,6 +10,8 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
@@ -58,9 +60,9 @@ public class DebugModePanel extends JPanel {
         final JToggleButton btnDebug = new JToggleButton();
         btnDebug.setIcon(GuiIconsLoader.getIcon("debug.png"));
         btnDebug.setToolTipText("Active le mode debug");
-        btnDebug.addChangeListener(new ChangeListener() {
+        btnDebug.addActionListener(new ActionListener() {
             @Override
-            public void stateChanged(ChangeEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 _viewer.getDebugModePanel().setVisible(btnDebug.isSelected());
                 if (btnDebug.isSelected()) {
                     _viewer.sendMessage(_viewer.getCommunity(), TKOrganization.ENGINE_GROUP, TKOrganization.SCHEDULER_ROLE,
