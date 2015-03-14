@@ -2,7 +2,6 @@ package edu.warbot.brains.implementations;
 
 import edu.warbot.agents.actions.constants.BuilderActions;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.brains.capacities.Builder;
 
 public class WarBuilderBrainImplementation extends WarBrainImplementation implements BuilderActions, Builder {

@@ -1,6 +1,5 @@
 package edu.warbot.FSM.action;
 
-import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.brains.WarBrain;
 
 public class WarActionHealMe<BrainType extends WarBrain> extends WarAction<BrainType>{

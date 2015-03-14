@@ -4,7 +4,6 @@ import edu.warbot.agents.MovableWarAgent;
 import edu.warbot.agents.actions.AgressiveActionsMethods;
 import edu.warbot.agents.enums.WarAgentType;
 import edu.warbot.agents.projectiles.WarBomb;
-import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.brains.WarKamikazeBrain;
 import edu.warbot.brains.capacities.Agressive;
 import edu.warbot.game.Team;

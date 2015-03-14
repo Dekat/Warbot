@@ -5,14 +5,9 @@ import edu.warbot.FSMEditor.settings.EditorSettings;
 import edu.warbot.FSMEditor.settings.GenericPlanSettings;
 import edu.warbot.FSMEditor.views.ViewBrain;
 
-import java.awt.GridLayout;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import java.awt.*;
 
 public class DialogueStateSetting extends AbstractDialogue {
 

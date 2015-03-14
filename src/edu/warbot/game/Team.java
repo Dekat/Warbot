@@ -13,8 +13,6 @@ import edu.warbot.gui.launcher.WarLauncherInterface;
 import edu.warbot.tools.WarMathTools;
 import edu.warbot.tools.geometry.CoordCartesian;
 import edu.warbot.tools.geometry.CoordPolar;
-import javassist.ClassPool;
-import javassist.CtClass;
 
 import javax.swing.*;
 import java.awt.*;

@@ -2,7 +2,6 @@ package edu.warbot.agents.agents;
 
 import edu.warbot.agents.CreatorWarAgent;
 import edu.warbot.agents.enums.WarAgentType;
-import edu.warbot.brains.WarBrain;
 import edu.warbot.brains.brains.WarBaseBrain;
 import edu.warbot.game.Team;
 import edu.warbot.launcher.WarGameConfig;
